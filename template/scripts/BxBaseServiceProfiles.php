@@ -980,7 +980,7 @@ class BxBaseServiceProfiles extends BxDol
             }
             
             if(!$bApiBrowseSimple || $aDataApi)
-                $aDataApi = bx_api_get_block($sApiContentType, [
+                $aDataApi = [bx_api_get_block($sApiContentType, [
                     'module' => 'system',
                     'unit' => 'invitations',
                     'request_url' => '/api.php?r=system/browse_invitations/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]=',
@@ -989,9 +989,9 @@ class BxBaseServiceProfiles extends BxDol
                         'start' => 0, 
                         'per_page' => 999
                     ]
-                ]);
+                ])];
 
-            return [$aDataApi];
+            return $aDataApi;
         }
         else {
             if(!$aData && $aParams['empty_message'])
@@ -1139,13 +1139,13 @@ class BxBaseServiceProfiles extends BxDol
 
             $aData = $oRecommendation->getCodeAPI($iProfileId, array_merge($aParams, ['force_get_data' => $bBrowseSimple]));
             if(!$bBrowseSimple || $aData['data'])
-                $aData = bx_api_get_block($sContentType, array_merge($aData, [
+                $aData = [bx_api_get_block($sContentType, array_merge($aData, [
                     'module' => 'system',
                     'unit' => 'mixed', 
                     'request_url' => '/api.php?r=system/' . $sUri . '/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]='
-                ]));
+                ]))];
 
-            return [$aData];
+            return $aData;
         }
 
         $sCode = $oRecommendation->getCode($iProfileId, $aParams);

@@ -3750,10 +3750,7 @@ class BxBaseModGeneralModule extends BxDolModule
             $bBrowseSimple = $sContentType == 'browse_simple';
 
             $a = $o->processingAPI($bBrowseSimple);
-            if(!$bBrowseSimple || $a['data'])
-                $a = bx_api_get_block($sContentType, $a);
-
-            return [$a];
+            return !$bBrowseSimple || $a['data'] ? [bx_api_get_block($sContentType, $a)] : [];
         }
         else
             return ($s = $o->processing()) ? $s : '';
