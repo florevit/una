@@ -923,6 +923,19 @@ class BxBaseServiceProfiles extends BxDol
         else
             $aModules = $aParamsBrowse['modules'];
 
+        $sApiContentType = 'browse';
+        $bApiBrowseSimple = $bApiGetData = false;
+        if($this->_bIsApi) {
+            $aBlock = BxDolPage::getBlockProcessing();
+
+            $sApiContentType = 'browse';
+            if(($sK = 'config_api') && $aBlock[$sK] && is_array($aBlock[$sK]))
+                $sApiContentType = $aBlock[$sK]['content_type'] ?? $sApiContentType;
+
+            $bApiBrowseSimple = $sApiContentType == 'browse_simple';
+            $bApiGetData = !defined('BX_API_PAGE') || $bApiBrowseSimple;
+        }
+        
         $aData = $this->_bIsApi ? ['queries' => [], 'limit' => ''] : [];
         foreach($aModules as $sModule) {
             $o = new BxTemplProfileSearchResult($sMode, array_merge($aParamsBrowse, ['module' => $sModule]));
@@ -934,7 +947,7 @@ class BxBaseServiceProfiles extends BxDol
             if($o->isError)
                 continue;
 
-            if($this->_bIsApi && !defined('BX_API_PAGE')) {
+            if($this->_bIsApi && $bApiGetData) {
                 $aQuery = $o->getSearchQuery($sModule);
 
                 if(!empty($aQuery['query']))
@@ -948,7 +961,7 @@ class BxBaseServiceProfiles extends BxDol
  
         if($this->_bIsApi) {
             $aDataApi = [];
-            if(!defined('BX_API_PAGE')) {
+            if($bApiGetData) {
                 $aItems = BxDolDb::getInstance()->getAll('(' . implode(') UNION (', $aData['queries']) . ') ORDER BY `added` DESC ' . $aData['limit']);
 
                 $oProfileQuery = BxDolProfileQuery::getInstance();
@@ -965,17 +978,20 @@ class BxBaseServiceProfiles extends BxDol
                         ]);
                     }
             }
+            
+            if(!$bApiBrowseSimple || $aDataApi)
+                $aDataApi = bx_api_get_block($sApiContentType, [
+                    'module' => 'system',
+                    'unit' => 'invitations',
+                    'request_url' => '/api.php?r=system/browse_invitations/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]=',
+                    'data' =>  $aDataApi,
+                    'params' => [
+                        'start' => 0, 
+                        'per_page' => 999
+                    ]
+                ]);
 
-            return [bx_api_get_block('browse', [
-                'module' => 'system',
-                'unit' => 'invitations',
-                'request_url' => '/api.php?r=system/browse_invitations/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]=',
-                'data' =>  $aDataApi,
-                'params' => [
-                    'start' => 0, 
-                    'per_page' => 999
-                ]
-            ])];
+            return [$aDataApi];
         }
         else {
             if(!$aData && $aParams['empty_message'])
