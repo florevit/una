@@ -117,13 +117,21 @@ class BxDolPageQuery extends BxDolDb
         return BxDolDb::getInstance()->getAll("SELECT * FROM `sys_pages_types` WHERE 1");
     }
 
+    public function getPageLayoutColumns($iLayoutId)
+    {
+        return $this->getAllWithKey('SELECT * FROM `sys_pages_layout_columns` WHERE `layout_id`=:layout_id', 'index', [
+            'layout_id' => $iLayoutId
+        ]);
+    }
+
     public function getPageBlocks($bIsApi = false)
     {
         $sActiveClause = $bIsApi ? "`active_api` = 1" : "`active` = 1";
-
+        $aLayoutColumns = $bIsApi ? $this->getPageLayoutColumns($this->_aObject['layout_id']) : [];
+        
         $aRet = [];
         for($i = 1; $i <= $this->_aObject['cells_number']; ++$i)
-            $aRet['cell_'.$i] = $this->getAll("SELECT * FROM `sys_pages_blocks` WHERE `object` = :object AND `cell_id` = :cell_id AND " . $sActiveClause . " ORDER BY `order` ASC", [
+            $aRet['cell_' . ($bIsApi && isset($aLayoutColumns[$i]) ? $aLayoutColumns[$i]['name'] : $i)] = $this->getAll("SELECT * FROM `sys_pages_blocks` WHERE `object` = :object AND `cell_id` = :cell_id AND " . $sActiveClause . " ORDER BY `order` ASC", [
                 'object' => $this->_aObject['object'],
                 'cell_id' => $i
             ]);
