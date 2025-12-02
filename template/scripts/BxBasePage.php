@@ -758,6 +758,8 @@ class BxBasePage extends BxDolPage
                     if(isset($aContent['module'], $aContent['method']))
                         $sSource = $aContent['module'] . ':' . $aContent['method'];
                 }
+                else if($aBlock['type'] == 'custom')
+                    $sSource = $aBlock['content'];
                 else
                     $sSource = 'system:block_' . $aBlock['id'];
 
