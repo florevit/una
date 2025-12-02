@@ -180,9 +180,11 @@
     <string name="_bx_timeline_form_filters_input_by_media"><![CDATA[Прикрепленные медиа:]]></string>
     <string name="_bx_timeline_form_filters_input_by_media_all"><![CDATA[Все]]></string>
     <string name="_bx_timeline_form_filters_input_by_media_selected"><![CDATA[Выборочно]]></string>
+    <string name="_bx_timeline_form_filters_input_by_media_links"><![CDATA[ссылки]]></string>
     <string name="_bx_timeline_form_filters_input_by_media_images"><![CDATA[изображения]]></string>
     <string name="_bx_timeline_form_filters_input_by_media_videos"><![CDATA[видео]]></string>
     <string name="_bx_timeline_form_filters_input_by_media_files"><![CDATA[файлы]]></string>
+    <string name="_bx_timeline_form_filters_input_by_media_polls"><![CDATA[голосования]]></string>
     <string name="_bx_timeline_form_filters_input_do_apply"><![CDATA[Применить]]></string>
 
     <string name="_bx_timeline_privacy_view"><![CDATA[Просматривать события]]></string>

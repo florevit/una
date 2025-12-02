@@ -93,6 +93,11 @@ CREATE TABLE IF NOT EXISTS `bx_timeline_events2users` (
   UNIQUE `view` (`user_id`, `event_id`)
 );
 
+CREATE TABLE IF NOT EXISTS `bx_timeline_ef_links` (
+  `event_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`event_id`)
+);
+
 CREATE TABLE IF NOT EXISTS `bx_timeline_ef_photos` (
   `event_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`event_id`)
@@ -104,6 +109,11 @@ CREATE TABLE IF NOT EXISTS `bx_timeline_ef_videos` (
 );
 
 CREATE TABLE IF NOT EXISTS `bx_timeline_ef_files` (
+  `event_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`event_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `bx_timeline_ef_polls` (
   `event_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`event_id`)
 );

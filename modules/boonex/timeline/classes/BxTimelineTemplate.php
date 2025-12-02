@@ -440,45 +440,41 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         //--- by Media
         if ($this->_bIsApi){
             $aInputs = array_merge($aInputs, [
-            'media' => [
-                'name' => 'media',
-                'type' => 'checkbox_set',
-                'caption' => _t('_bx_timeline_form_filters_input_by_media'),
-                'values' => [
-                    ['key' => 'images', 'value' => _t('_bx_timeline_form_filters_input_by_media_images')],
-                    ['key' => 'videos', 'value' => _t('_bx_timeline_form_filters_input_by_media_videos')],
-                    ['key' => 'files', 'value' => _t('_bx_timeline_form_filters_input_by_media_files')]
-                ],
-                'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
-            ]
-        ]);
+                'media' => [
+                    'name' => 'media',
+                    'type' => 'checkbox_set',
+                    'caption' => _t('_bx_timeline_form_filters_input_by_media'),
+                    'values' => [],
+                    'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
+                ]
+            ]);
         }
         else{
             $aInputs = array_merge($aInputs, [
-            'by_media' => [
-                'name' => 'by_media',
-                'type' => 'radio_set',
-                'caption' => _t('_bx_timeline_form_filters_input_by_media'),
-                'values' => [
-                    ['key' => 'all', 'value' => _t('_bx_timeline_form_filters_input_by_media_all')],
-                    ['key' => 'selected', 'value' => _t('_bx_timeline_form_filters_input_by_media_selected')]
+                'by_media' => [
+                    'name' => 'by_media',
+                    'type' => 'radio_set',
+                    'caption' => _t('_bx_timeline_form_filters_input_by_media'),
+                    'values' => [
+                        ['key' => 'all', 'value' => _t('_bx_timeline_form_filters_input_by_media_all')],
+                        ['key' => 'selected', 'value' => _t('_bx_timeline_form_filters_input_by_media_selected')]
+                    ],
+                    'value' => 'all',
+                    'attrs' => ['onchange' => $sJsObject . '.onFilterByMediaChange(this)'],
+                    'dv_thd' => 1
                 ],
-                'value' => 'all',
-                'attrs' => ['onchange' => $sJsObject . '.onFilterByMediaChange(this)'],
-                'dv_thd' => 1
-            ],
-            'media' => [
-                'name' => 'media',
-                'type' => 'checkbox_set',
-                'values' => [
-                    ['key' => 'images', 'value' => _t('_bx_timeline_form_filters_input_by_media_images')],
-                    ['key' => 'videos', 'value' => _t('_bx_timeline_form_filters_input_by_media_videos')],
-                    ['key' => 'files', 'value' => _t('_bx_timeline_form_filters_input_by_media_files')]
-                ],
-                'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
-            ]
-        ]);   
+                'media' => [
+                    'name' => 'media',
+                    'type' => 'checkbox_set',
+                    'values' => [],
+                    'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
+                ]
+            ]);
         }
+
+        $aFlagTypes = $this->_oDb->getEventFlagTypes();
+        foreach($aFlagTypes as $sFt)
+            $aInputs['media']['values'][] = ['key' => $sFt, 'value' => _t('_bx_timeline_form_filters_input_by_media_' . $sFt)];
 
         $aForm = [
             'form_attrs' => [

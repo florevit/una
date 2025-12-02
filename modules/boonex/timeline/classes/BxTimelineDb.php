@@ -34,9 +34,11 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         $this->_sTableSlice = $this->_sPrefix . 'events_slice';
         $this->_sTableEvent2User = $this->_sPrefix . 'events2users';
         $this->_aTablesEventFlags = [
+            'links' => $this->_sPrefix . 'ef_links',
             'images' => $this->_sPrefix . 'ef_photos',
             'videos' => $this->_sPrefix . 'ef_videos',
-            'files' => $this->_sPrefix . 'ef_files'
+            'files' => $this->_sPrefix . 'ef_files',
+            'polls' => $this->_sPrefix . 'ef_polls',
         ];
 
         $this->_sTableRepostsTrack = $this->_sPrefix . 'reposts_track';
