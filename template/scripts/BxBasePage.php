@@ -524,6 +524,8 @@ class BxBasePage extends BxDolPage
         $sMetaTitle = $this->_getPageMetaTitle();
         $sName = $this->_getPageTitle();
         $sModule = $this->getModule();
+        $aElements = $this->getPageBlocksAPI($aBlocks);
+
         $a = [
             'id' => $this->_aObject['id'],
             'title' => $sMetaTitle ? $sMetaTitle : $sName,
@@ -538,7 +540,7 @@ class BxBasePage extends BxDolPage
             'module' => $sModule,
             'type' => $this->getType (),
             'layout' => str_replace('.html', '', $this->_aObject['template']),
-            'layout_parsed' => true,
+            'layout_parsed' => !is_numeric(trim(current(array_keys($aElements)), 'cell_')),
             'cover_block' => '',
             'cover' => $this->_aObject['cover'],
             'menu_top' => '',
@@ -546,7 +548,7 @@ class BxBasePage extends BxDolPage
             'menu_bottom' => '',
             'menu_add' => '',
             'config' => $this->_aObject['config_api'],
-            'elements' => $this->getPageBlocksAPI($aBlocks),
+            'elements' => $aElements
         ];
 
         $sMenuTop = getParam('sys_api_menu_top');
