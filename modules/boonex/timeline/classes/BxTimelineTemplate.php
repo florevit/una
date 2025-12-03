@@ -404,17 +404,17 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         uasort($aModules, function($aV1, $aV2) {
             return strcmp($aV1['value'], $aV2['value']);
         });
-        if ($this->_bIsApi){
+        if ($this->_bIsApi)
             $aInputs = array_merge($aInputs, [
                 'modules' => [
                     'name' => 'modules',
                     'type' => 'checkbox_set',
-                     'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
+                    'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
                     'values' => array_values($aModules),
                     'tr_attrs' => ['class' => 'modules', 'style' => 'display:none']
                 ]
             ]);
-        }else{
+        else
             $aInputs = array_merge($aInputs, [
                 'by_module' => [
                     'name' => 'by_module',
@@ -435,10 +435,9 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     'tr_attrs' => ['class' => 'modules', 'style' => 'display:none']
                 ]
             ]);
-        }
         
         //--- by Media
-        if ($this->_bIsApi){
+        if ($this->_bIsApi)
             $aInputs = array_merge($aInputs, [
                 'media' => [
                     'name' => 'media',
@@ -448,8 +447,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
                 ]
             ]);
-        }
-        else{
+        else
             $aInputs = array_merge($aInputs, [
                 'by_media' => [
                     'name' => 'by_media',
@@ -470,15 +468,18 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
                 ]
             ]);
-        }
 
         $aFlagTypes = $this->_oDb->getEventFlagTypes();
         foreach($aFlagTypes as $sFt)
             $aInputs['media']['values'][] = ['key' => $sFt, 'value' => _t('_bx_timeline_form_filters_input_by_media_' . $sFt)];
 
+        $sForm = $this->_oConfig->getName() . '_filters';
         $aForm = [
             'form_attrs' => [
-                'name' => $this->_oConfig->getName() . '_filters',
+                'name' => $sForm
+            ],
+            'params' => [
+                'display' => $sForm
             ],
             'inputs' => array_merge($aInputs, [                
                 'apply' => [
