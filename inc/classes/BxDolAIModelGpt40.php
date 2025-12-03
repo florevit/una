@@ -452,9 +452,8 @@ class BxDolAIModelGpt40 extends BxDolAIModel
         if(!empty($aParams) && is_array($aParams))
             $aData = array_merge($aData, $aParams);
 
-        $sResponse = bx_file_get_contents($this->_sEndpointChat, $aData, "post-json", [
-            "Authorization: Bearer " . $this->_sKey, 
-            'Content-Type: application/json', 
+        $sResponse = bx_file_get_contents($this->_sEndpointChat, $aData, 'post-json', [
+            'Authorization: Bearer ' . $this->_sKey, 
             'OpenAI-Beta: assistants=v1'
         ]);
 
@@ -482,13 +481,12 @@ class BxDolAIModelGpt40 extends BxDolAIModel
         return $mixedResponse;
     }
 
-    protected function _call($sEndpoint, $aData, $sMethod = "post-json")
+    protected function _call($sEndpoint, $aData, $sMethod = 'post-json')
     {
-        $sResponse = bx_file_get_contents($sEndpoint, $aData, $sMethod, [
-            "Authorization: Bearer " . $this->_sKey, 
-            'Content-Type: application/json', 
+        $sResponse = bx_file_get_contents($sEndpoint, $aData, $sMethod, array_merge([
+            'Authorization: Bearer ' . $this->_sKey, 
             'OpenAI-Beta: assistants=v2'
-        ]);
+        ], ($sMethod != 'post-json' ? ['Content-Type: application/json'] : [])));
 
         $aResponse = json_decode($sResponse, true);
         if(isset($aResponse['error'])) {
