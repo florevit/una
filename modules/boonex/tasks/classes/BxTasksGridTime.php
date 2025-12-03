@@ -27,6 +27,8 @@ class BxTasksGridTime extends BxBaseModGeneralGrid
 
         parent::__construct ($aOptions, $oTemplate);
 
+        $this->_sTableAlias = 'ttt';
+
         $this->_sDefaultSortingOrder = 'DESC';
 
         /*

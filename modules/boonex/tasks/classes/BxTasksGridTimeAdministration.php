@@ -50,16 +50,16 @@ class BxTasksGridTimeAdministration extends BxTasksGridTime
         $this->_parseFilterValue($sFilter);
 
     	if(!empty($this->_sFilter1Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`author_id`=?", $this->_sFilter1Value);
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND ' . $this->_getSqlField('author_id') . '=?', $this->_sFilter1Value);
 
         if(!empty($this->_sFilter2Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`type`=?", $this->_sFilter2Value);
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND `tp`.`type`=?', $this->_sFilter2Value);
         
         if(!empty($this->_sFilter3Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`>=?", strtotime($this->_sFilter3Value));
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND ' . $this->_getSqlField('value_date') . '>=?', strtotime($this->_sFilter3Value));
 
         if(!empty($this->_sFilter4Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`<=?", strtotime($this->_sFilter4Value));
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND ' . $this->_getSqlField('value_date') . '<=?', strtotime($this->_sFilter4Value));
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }

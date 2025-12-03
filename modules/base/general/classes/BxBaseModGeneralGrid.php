@@ -14,6 +14,7 @@ class BxBaseModGeneralGrid extends BxTemplGrid
     protected $_sModule;
     protected $_oModule;
 
+    protected $_sTableAlias;
     protected $_sParamsDivider;
 
     protected $_sJsObject;
@@ -26,6 +27,7 @@ class BxBaseModGeneralGrid extends BxTemplGrid
 
         parent::__construct ($aOptions, $oTemplate ?: $this->_oModule->_oTemplate);
 
+        $this->_sTableAlias = '';
         $this->_sParamsDivider = '#-#';
     }
 
@@ -68,6 +70,11 @@ class BxBaseModGeneralGrid extends BxTemplGrid
                 $this->$sField = $aFilterParts[$i - 1];
 
         $sFilter = $aFilterParts[$iFilterParts];
+    }
+
+    protected function _getSqlField($sField)
+    {
+        return ($this->_sTableAlias ? '`' . $this->_sTableAlias . '`.' : '') . '`' . $sField . '`';
     }
 }
 

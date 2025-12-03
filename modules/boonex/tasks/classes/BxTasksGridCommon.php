@@ -20,6 +20,8 @@ class BxTasksGridCommon extends BxBaseModTextGridCommon
     	$this->MODULE = 'bx_tasks';
         parent::__construct ($aOptions, $oTemplate);
 
+        $this->_sTableAlias = 'tt';
+
         $this->_initFilter(3, $this->_oModule->getContexts());
     }
 

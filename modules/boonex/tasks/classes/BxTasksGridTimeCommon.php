@@ -32,7 +32,7 @@ class BxTasksGridTimeCommon extends BxTasksGridTimeAdministration
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
-        $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`author_id`=?", $this->_iLogged);
+        $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND ' . $this->_getSqlField('author_id') . '=?', $this->_iLogged);
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }

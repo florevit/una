@@ -91,10 +91,10 @@ class BxBaseModTextGridAdministration extends BxBaseModGeneralGridAdministration
         $this->_parseFilterValue($sFilter);
 
     	if(!empty($this->_sFilter1Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `" . $this->_sStatusField . "`=?", $this->_sFilter1Value);
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND " . $this->_getSqlField($this->_sStatusField) . "=?", $this->_sFilter1Value);
 
         if($this->_bContentFilter && !empty($this->_sFilter2Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `" . $CNF['FIELD_CF'] . "`=?", $this->_sFilter2Value);
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND " . $this->_getSqlField($CNF['FIELD_CF']) . "=?", $this->_sFilter2Value);
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }
