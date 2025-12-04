@@ -35,7 +35,12 @@ class BxDevFormsForms extends BxTemplStudioFormsForms
         $sFormDisplay = $this->oModule->_oConfig->getObject('form_display_forms_form_add');
 
         $oForm = BxDolForm::getObjectInstance($sFormObject, $sFormDisplay, $this->oModule->_oTemplate);
-        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . 'grid.php?o=' . $this->_sObject . '&a=' . $sAction;
+        $oForm->setId($sFormDisplay);
+        $oForm->setAction(BX_DOL_URL_ROOT . bx_append_url_params('grid.php', [
+            'o' => $this->_sObject, 
+            'a' => $sAction,
+            $this->_aOptions['filter_get'] => $this->_sFilter
+        ]));
         $oForm->aInputs['module']['values'] = array_merge(array('' => _t('_bx_dev_frm_txt_select_module')), BxDolStudioUtils::getModules());
 
         $oForm->initChecker();
@@ -88,7 +93,12 @@ class BxDevFormsForms extends BxTemplStudioFormsForms
         }
 
         $oForm = BxDolForm::getObjectInstance($sFormObject, $sFormDisplay, $this->oModule->_oTemplate);
-        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . 'grid.php?o=' . $this->_sObject . '&a=' . $sAction;
+        $oForm->setId($sFormDisplay);
+        $oForm->setAction(BX_DOL_URL_ROOT . bx_append_url_params('grid.php', [
+            'o' => $this->_sObject, 
+            'a' => $sAction,
+            $this->_aOptions['filter_get'] => $this->_sFilter
+        ]));
         $oForm->aInputs['module']['values'] = array_merge(array('' => _t('_bx_dev_frm_txt_select_module')), BxDolStudioUtils::getModules());
         $oForm->aInputs['controls'][0]['value'] = _t('_bx_dev_frm_btn_forms_save');
 

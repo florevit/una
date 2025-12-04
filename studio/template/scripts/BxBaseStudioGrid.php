@@ -52,6 +52,16 @@ class BxBaseStudioGrid extends BxDolStudioGrid
         return $oForm->genRow($aInputModules);
     }
 
+    public function getSearchInput()
+    {
+        return parent::_getSearchInput();
+    }
+
+    protected function _getFilterOnChange()
+    {
+        return $this->getJsObject() . '.onChangeFilter()';
+    }
+
     protected function _getItem($sDbMethod = '')
     {
         $aIds = bx_get('ids');
