@@ -143,6 +143,8 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
         $this->_replaceMarkersInControls();
 
         $sResult = parent::getCode($bDynamicMode);
+        if($this->isViewMode() && !$sResult)
+            return $sResult;
 
         $aPrivacyFields = $this->_getPrivacyFields();
         foreach($aPrivacyFields as $sField => $sObject)

@@ -301,6 +301,11 @@ class BxBaseFormView extends BxDolForm
         return $this->_bAjaxMode;
     }
 
+    function isViewMode()
+    {
+        return (bool)($this->aParams['view_mode'] ?? 0);
+    }
+
     function setAbsoluteActionUrl($sUrl)
     {
         if(empty($sUrl))
@@ -360,7 +365,6 @@ class BxBaseFormView extends BxDolForm
     {
         $this->aFormAttrs = $this->_replaceMarkers($this->aFormAttrs);
     
-        
         $this->sCode = false;
         /**
          * @hooks
@@ -381,8 +385,10 @@ class BxBaseFormView extends BxDolForm
             'code' => &$this->sCode,
         ]);
 
-        if($this->sCode === false)
-            $this->genForm();
+        if($this->sCode === false) {
+            if(!$this->genForm() && (bool)($this->aParams['view_mode'] ?? 0))
+                return [];
+        }
 
         $oIconset = BxDolIconset::getObjectInstance();
         $oFunctions = BxTemplFunctions::getInstanceWithTemplate($this->oTemplate);
@@ -560,12 +566,15 @@ class BxBaseFormView extends BxDolForm
     {
         $this->_sCodeAdd = '';
 
+        $bViewMode = $this->isViewMode();
         $sTable = $this->genRows();
+        if($bViewMode && !$sTable)
+            return '';
 
         $sHtmlBefore = isset($this->aParams['html_before']) ? $this->aParams['html_before'] : '';
         $sHtmlAfter = isset($this->aParams['html_after']) ? $this->aParams['html_after'] : '';
 
-        if (!empty($this->aParams['remove_form']) || (isset($this->aParams['view_mode']) && $this->aParams['view_mode'])) {
+        if (!empty($this->aParams['remove_form']) || $bViewMode) {
             $sForm = <<<BLAH
                     $sHtmlBefore
                     {$this->_sCodeAdd}
@@ -700,7 +709,7 @@ BLAH;
 
         $sCloseSection = $this->{$this->_sSectionClose}();
 
-        return $sOpenSection . $sCont . $sCloseSection;
+        return $this->isViewMode() && !$sCont ? '' : $sOpenSection . $sCont . $sCloseSection;
     }
 
     /**
