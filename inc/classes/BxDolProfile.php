@@ -157,6 +157,9 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
     
     public static function getDataForPage($mixedProfileId = false, $aParams = [])
     {
+        $oAcl = BxDolAcl::getInstance();
+        $oTemplate = BxDolTemplate::getInstance();
+
         if(!($mixedProfileId instanceof BxDolProfile))
             $oProfile = BxDolProfile::getInstanceMagic($mixedProfileId);
         else
@@ -167,7 +170,11 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
         $iId = $oProfile->id();
         $sUrl = bx_api_get_relative_url($oProfile->getUrl());
 
-        $aMembershipInfo = BxDolAcl::getInstance()->getMemberMembershipInfo($iId);
+        $aMembershipInfo = $oAcl->getMemberMembershipInfo($iId);
+        $aMembershipLevelInfo =  $oAcl->getMembershipInfo($aMembershipInfo['id']);
+
+        $sIconS = $aMembershipLevelInfo['icon'];
+        $sIconD = $oTemplate->getImage($sIconS, ['wrap_in_tag' => false]);
 
         $aRv = [
             'id' => $iId,
@@ -180,7 +187,7 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
             'settings' => $oProfile->getSettings(),
             'membership' => $aMembershipInfo['id'],
             'membership_name' => _t($aMembershipInfo['name']),
-            //'level' => BxDolAcl::getInstance()->getMemberMembershipInfo($iId),
+            'membership_icon' => strcmp($sIconS, $sIconD) != 0 ? $sIconD : BxDolIconset::getObjectInstance()->getIcon($sIconD),
             'moderator' => (bool)BxDolAcl::getInstance()->isMemberLevelInSet([MEMBERSHIP_ID_ADMINISTRATOR, MEMBERSHIP_ID_MODERATOR], $iId),
             'operator' => isAdmin(),
             //'info' => $oProfile->getInfo(),
@@ -195,7 +202,7 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
         if ($iId == bx_get_logged_profile_id()){
             $aRv['counters'] = bx_srv('system', 'profile_counters', [], 'TemplServiceProfiles');
             
-            $oInformer = BxDolInformer::getInstance(BxDolTemplate::getInstance());
+            $oInformer = BxDolInformer::getInstance($oTemplate);
             $sRet = $oInformer ? $oInformer->display() : '';
             if ($sRet){
                 $aRv['informer'] = $sRet;
