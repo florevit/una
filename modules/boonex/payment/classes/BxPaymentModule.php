@@ -1477,7 +1477,8 @@ class BxPaymentModule extends BxBaseModPaymentModule
         if(!defined('BX_DOL_CRON_EXECUTE'))
             return;
 
-        $CNF = &$this->_oConfig->CNF;
+        if(!$this->_oConfig->isCommissions())
+            return;
 
         if((int)date('j') == $this->_oConfig->getInvoiceIssueDay())
             $this->_invoicesIssue();
@@ -1501,17 +1502,17 @@ class BxPaymentModule extends BxBaseModPaymentModule
         $aCommissionsInfo = array();
         $aAclLevels = BxDolAcl::getInstance()->getMemberships(false, true, false, true);
         foreach($aAclLevels as $iAclLevelId => $sAclLevelTitle)
-            $aCommissionsInfo[$iAclLevelId] = $this->_oDb->getCommissions(array('type' => 'acl_id', 'acl_id' => $iAclLevelId));
+            $aCommissionsInfo[$iAclLevelId] = $this->_oDb->getCommissions(['type' => 'acl_id', 'acl_id' => $iAclLevelId]);
 
         $iMainSellerId = $this->_oConfig->getSiteAdmin();
 
-        $aVendors = $this->_oDb->getOrderProcessed(array('type' => 'income', 'period_start' => $iPeriodStart, 'period_end' => $iPeriodEnd));
+        $aVendors = $this->_oDb->getOrderProcessed(['type' => 'income', 'period_start' => $iPeriodStart, 'period_end' => $iPeriodEnd]);
         foreach($aVendors as $aVendor) {
             $iVendorId = (int)$aVendor['id'];
             if($iVendorId == $iMainSellerId)
                 continue;
 
-            $aInvoice = $this->_oDb->getInvoices(array('type' => 'committent_id', 'committent_id' => $iVendorId, 'period_start' => $iPeriodStart, 'period_end' => $iPeriodEnd));
+            $aInvoice = $this->_oDb->getInvoices(['type' => 'committent_id', 'committent_id' => $iVendorId, 'period_start' => $iPeriodStart, 'period_end' => $iPeriodEnd]);
             if(!empty($aInvoice) && is_array($aInvoice))
                 continue;
 
@@ -1526,28 +1527,29 @@ class BxPaymentModule extends BxBaseModPaymentModule
                 if((float)$aCommission['installment'] > 0)
                     $fCommission += (float)$aCommission['installment'];
             }
-            
-            $this->alert('calculate_commission', 0, 0, array(
+
+            $this->alert('calculate_commission', 0, 0, [
                 'vendor' => $aVendor,
                 'commissions' => $aCommissions,
                 'override_result' => &$fCommission,
-            ));
+            ]);
 
-            $this->_oDb->insertInvoice(array(
-                'name' => sprintf($sInvoiceNameMask, $iMainSellerId, $iVendorId, $this->_oDb->getInvoices(array(
-                    'type' => 'index', 
+            if($fCommission > 0)
+                $this->_oDb->insertInvoice([
+                    'name' => sprintf($sInvoiceNameMask, $iMainSellerId, $iVendorId, $this->_oDb->getInvoices([
+                        'type' => 'index', 
+                        'commissionaire_id' => $iMainSellerId, 
+                        'committent_id' => $iVendorId
+                    ])),
                     'commissionaire_id' => $iMainSellerId, 
-                    'committent_id' => $iVendorId
-                ))),
-                'commissionaire_id' => $iMainSellerId, 
-                'committent_id' => $iVendorId,
-                'amount' => $fCommission,
-                'period_start' => $iPeriodStart,
-                'period_end' => $iPeriodEnd,
-                'date_issue' => $iDateIssue,
-                'date_due' => $iDateDue,
-                'status' => BX_PAYMENT_INV_STATUS_UNPAID
-            ));
+                    'committent_id' => $iVendorId,
+                    'amount' => $fCommission,
+                    'period_start' => $iPeriodStart,
+                    'period_end' => $iPeriodEnd,
+                    'date_issue' => $iDateIssue,
+                    'date_due' => $iDateDue,
+                    'status' => BX_PAYMENT_INV_STATUS_UNPAID
+                ]);
         }
     }
 

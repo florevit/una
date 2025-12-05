@@ -56,6 +56,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
             // some params
             'PARAM_CURRENCY_EXCHANGE_API' => 'bx_payment_currency_exchange_api',
+            'PARAM_CMSN_ENABLE' => 'bx_payment_commissions',
             'PARAM_CMSN_INVOICE_ISSUE_DAY' => 'bx_payment_inv_issue_day', //some day of month
             'PARAM_CMSN_INVOICE_LIFETIME' => 'bx_payment_inv_lifetime', //in days
             'PARAM_CMSN_INVOICE_EXPIRATION_NOTIFY' => 'bx_payment_inv_expiraction_notify', //in days, before expiration date

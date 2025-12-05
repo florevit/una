@@ -33,6 +33,7 @@ class BxBaseModPaymentConfig extends BxBaseModGeneralConfig
             // some params
             'PARAM_CURRENCY_CODE' => $this->_sName . '_default_currency_code',
 
+            'PARAM_CMSN_ENABLE' => true,
             'PARAM_CMSN_INVOICE_ISSUE_DAY' => 1, //the first day of month
             'PARAM_CMSN_INVOICE_LIFETIME' => 4, //in days
             'PARAM_CMSN_INVOICE_EXPIRATION_NOTIFY' => 1, //in days, before expiration date
@@ -138,6 +139,12 @@ class BxBaseModPaymentConfig extends BxBaseModGeneralConfig
     public function isSingleSeller()
     {
         return $this->_bSingleSeller;
+    }
+
+    public function isCommissions()
+    {
+        $sKey = 'PARAM_CMSN_ENABLE';
+        return is_bool($this->CNF[$sKey]) ? $this->CNF[$sKey] : $this->_oDb->getParam($this->CNF[$sKey]) == 'on';
     }
 
     public function getInvoiceIssueDay()

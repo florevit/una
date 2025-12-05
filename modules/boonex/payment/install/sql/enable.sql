@@ -29,6 +29,7 @@ VALUES (@iTypeId, 'bx_payment_commissions', '_bx_payment_options_category_commis
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `check`, `check_params`, `check_error`, `extra`, `order`) VALUES
+('bx_payment_commissions', '', @iCategoryId, '_bx_payment_option_commissions', 'checkbox', '', '', '', '', 0),
 ('bx_payment_inv_issue_day', '1', @iCategoryId, '_bx_payment_option_inv_issue_day', 'digit', '', '', '', '', 1),
 ('bx_payment_inv_lifetime', '4', @iCategoryId, '_bx_payment_option_inv_lifetime', 'digit', '', '', '', '', 2),
 ('bx_payment_inv_expiraction_notify', '1', @iCategoryId, '_bx_payment_option_inv_expiraction_notify', 'digit', '', '', '', '', 3);
