@@ -12,6 +12,7 @@
     <string name="_bx_payment_option_site_admin"><![CDATA[Главный продавец (для продажи от имени сайта)]]></string>
     <string name="_bx_payment_option_credits_only"><![CDATA[Режим оплаты только кредитами (приложение 'Кредиты' должно быть установлено).]]></string>
     <string name="_bx_payment_option_single_seller"><![CDATA[Режим единого продавца (все продается от имени 'Главный продавец').]]></string>
+    <string name="_bx_payment_option_commissions"><![CDATA[Включить расчет комиссий]]></string>
     <string name="_bx_payment_option_inv_issue_day"><![CDATA[День месяца, когда автоматически генерятся счета-фактуры (1, 2, 3 и тп)]]></string>
     <string name="_bx_payment_option_inv_lifetime"><![CDATA[Срок оплаты - количество дней после даты выставления счета-фактуры]]></string>
     <string name="_bx_payment_option_inv_expiraction_notify"><![CDATA[За сколько дней до истечения срока оплаты оповестить платильщика]]></string>
