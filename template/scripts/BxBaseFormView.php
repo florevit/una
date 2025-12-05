@@ -403,9 +403,12 @@ class BxBaseFormView extends BxDolForm
             list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $oFunctions->getIcon($aInput['icon'] ?? '');
 
             $aInput['icon'] = $sIcon ? $oIconset->getIcon($sIcon) : ($sIconHtml ? $sIconHtml : '');
-            $aInput['info'] = strip_tags($aInput['info']);
-            $aInput['help'] = strip_tags($aInput['help']);
-            $aInput['error'] = strip_tags($aInput['error']);
+            if(!empty($aInput['info']))
+                $aInput['info'] = strip_tags($aInput['info']);
+            if(!empty($aInput['help']))
+                $aInput['help'] = strip_tags($aInput['help']);
+            if(!empty($aInput['error']))
+                $aInput['error'] = strip_tags($aInput['error']);
 
             if (isset($aInput['type']) && 'files' == $aInput['type']){
                 $oStorage = BxDolStorage::getObjectInstance($aInput['storage_object']);
