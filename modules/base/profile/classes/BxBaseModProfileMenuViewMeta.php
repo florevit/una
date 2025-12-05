@@ -85,11 +85,15 @@ class BxBaseModProfileMenuViewMeta extends BxTemplMenuUnitMeta
         $aMembership =  $oAcl->getMemberMembershipInfo($iProfileId);
         $aLevelInfo =  $oAcl->getMembershipInfo($aMembership['id']);
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            $sIconS = $aLevelInfo['icon'];
+            $sIconD = $oTemplate->getImage($sIconS, ['wrap_in_tag' => false]);
+
             return $this->_getMenuItemAPI($aItem, ['display' => 'button'], [
                 'title' => _t($aMembership['name']),
-                'icon' => $oTemplate->getImage($aLevelInfo['icon'], ['wrap_in_tag' => false])
+                'icon' => strcmp($sIconS, $sIconD) != 0 ? $sIconD : BxDolIconset::getObjectInstance()->getIcon($sIconD)
             ]);
+        }
 
         $sMembership = '';
         if($aMembership)
