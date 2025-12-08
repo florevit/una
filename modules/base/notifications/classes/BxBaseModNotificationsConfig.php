@@ -9,6 +9,8 @@
  * @{
  */
 
+bx_import('BxDolPrivacy');
+
 class BxBaseModNotificationsConfig extends BxBaseModGeneralConfig
 {
     protected $_oDb;
