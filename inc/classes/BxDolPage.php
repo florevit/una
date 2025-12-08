@@ -674,20 +674,19 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         unset($aUrl[1]['i']);
         $aParams = $aUrl[1];
 
-        $sAuthorName = $sAuthorUrl = $sThumb = '';
-        if (isset($aParams['id'])){
-            $sContentInfoObject = BxDolPageQuery::getContentInfoObjectNameByURI($sUri);
-            $oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfoObject);
-
-            $sTitle = $oContentInfo->getContentTitle($aParams['id']);
-            $iAuthor = $oContentInfo->getContentAuthor($aParams['id']);
-            $sAuthorName = BxDolProfile::getInstance($iAuthor)->getDisplayName();
-            $sAuthorUrl = BxDolProfile::getInstance($iAuthor)->getUrl();
-            $sThumb = $oContentInfo->getContentThumb($aParams['id']);
-            $sHtml = $oContentInfo->getContentEmbed($aParams['id']);
-
+        $sTitle = $sAuthorName = $sAuthorUrl = $sThumb = $sHtml = '';
+        if (isset($aParams['id'])) {
+            $sContentInfo = BxDolPageQuery::getContentInfoObjectNameByURI($sUri);
+            if(($oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfo))) {
+                $sTitle = $oContentInfo->getContentTitle($aParams['id']);
+                $iAuthor = $oContentInfo->getContentAuthor($aParams['id']);
+                $sAuthorName = BxDolProfile::getInstance($iAuthor)->getDisplayName();
+                $sAuthorUrl = BxDolProfile::getInstance($iAuthor)->getUrl();
+                $sThumb = $oContentInfo->getContentThumb($aParams['id']);
+                $sHtml = $oContentInfo->getContentEmbed($aParams['id']);
+            }
         }
-        else{
+        else {
             $oPage = BxDolPage::getObjectInstanceByURI($sUri, false, true);
             $aPage = $oPage->getObject();
             $sTitle = $oPage->_getPageTitle();
