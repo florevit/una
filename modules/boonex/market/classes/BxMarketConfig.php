@@ -27,7 +27,7 @@ class BxMarketConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'shopping-cart col-green3',
+            'ICON' => 'shopping-cart',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'products',

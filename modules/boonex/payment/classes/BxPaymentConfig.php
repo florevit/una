@@ -24,7 +24,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
         $this->CNF = array_merge($this->CNF, [
             // module icon
-            'ICON' => 'credit-card col-gray-dark',
+            'ICON' => 'credit-card',
 
             // database tables
             'TABLE_COMMISSIONS' => $aModule['db_prefix'] . 'commissions',

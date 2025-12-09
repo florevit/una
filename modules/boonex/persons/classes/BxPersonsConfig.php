@@ -32,7 +32,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'user col-blue3',
+            'ICON' => 'user',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',
