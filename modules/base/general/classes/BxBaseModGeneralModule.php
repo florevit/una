@@ -1316,12 +1316,19 @@ class BxBaseModGeneralModule extends BxDolModule
 
     public function serviceGetMenuAddonManageTools()
     {
-    	return 0;
+        return 0;
     }
 
     public function serviceGetMenuAddonManageToolsProfileStats($iProfileId = 0)
     {
-    	return 0;
+        return 0;
+    }
+
+    public function serviceGetObjectBrowse($sMode, $aParams = false, $sClassSearchResult = 'SearchResult')
+    {
+        bx_import($sClassSearchResult, $this->_aModule);
+        $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
+        return new $sClass($sMode, array_merge(['mode' => $sMode], $aParams));
     }
 
     /**
