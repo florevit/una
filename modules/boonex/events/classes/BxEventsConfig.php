@@ -33,7 +33,7 @@ class BxEventsConfig extends BxBaseModGroupsConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'calendar col-red2',
+            'ICON' => 'calendar',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',

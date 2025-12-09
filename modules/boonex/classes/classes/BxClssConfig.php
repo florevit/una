@@ -25,7 +25,7 @@ class BxClssConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'file-alt col-red3',
+            'ICON' => 'file-alt',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'classes',

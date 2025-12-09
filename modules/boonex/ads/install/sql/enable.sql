@@ -249,17 +249,17 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system` , `
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', 'bx_ads', 'ads-home', '_bx_ads_menu_item_title_system_entries_home', '_bx_ads_menu_item_title_entries_home', 'page.php?i=ads-home', '', '', 'ad col-green2', 'bx_ads_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', 'bx_ads', 'ads-home', '_bx_ads_menu_item_title_system_entries_home', '_bx_ads_menu_item_title_entries_home', 'page.php?i=ads-home', '', '', 'ad', 'bx_ads_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', 'bx_ads', 'ads-home', '_bx_ads_menu_item_title_system_entries_home', '_bx_ads_menu_item_title_entries_home', 'page.php?i=ads-home', '', '', 'ad col-green2', 'bx_ads_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', 'bx_ads', 'ads-home', '_bx_ads_menu_item_title_system_entries_home', '_bx_ads_menu_item_title_entries_home', 'page.php?i=ads-home', '', '', 'ad', 'bx_ads_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: add to "add content" menu
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', 'bx_ads', 'create-ad', '_bx_ads_menu_item_title_system_create_entry', '_bx_ads_menu_item_title_create_entry', 'page.php?i=create-ad', '', '', 'ad col-green2', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', 'bx_ads', 'create-ad', '_bx_ads_menu_item_title_system_create_entry', '_bx_ads_menu_item_title_create_entry', 'page.php?i=create-ad', '', '', 'ad', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 -- MENU: create ad form attachments (link, photo, video, etc)
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -402,12 +402,12 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: notifications menu in account popup
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES
-('sys_account_notifications', 'bx_ads', 'notifications-ads-offers', '_bx_ads_menu_item_title_system_offers_all', '_bx_ads_menu_item_title_offers_all', 'page.php?i=ads-offers', '', '', 'ad col-green2', 'a:3:{s:6:"module";s:6:"bx_ads";s:6:"method";s:16:"get_offers_count";s:6:"params";a:1:{i:0;s:8:"awaiting";}}', '', 2147483646, '', 1, 0, @iNotifMenuOrder + 1);
+('sys_account_notifications', 'bx_ads', 'notifications-ads-offers', '_bx_ads_menu_item_title_system_offers_all', '_bx_ads_menu_item_title_offers_all', 'page.php?i=ads-offers', '', '', 'ad', 'a:3:{s:6:"module";s:6:"bx_ads";s:6:"method";s:16:"get_offers_count";s:6:"params";a:1:{i:0;s:8:"awaiting";}}', '', 2147483646, '', 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_ads', 'profile-stats-my-ads', '_bx_ads_menu_item_title_system_manage_my_posts', '_bx_ads_menu_item_title_manage_my_posts', 'page.php?i=ads-author&profile_id={member_id}', '', '_self', 'ad col-green2', 'a:2:{s:6:"module";s:6:"bx_ads";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
+('sys_profile_stats', 'bx_ads', 'profile-stats-my-ads', '_bx_ads_menu_item_title_system_manage_my_posts', '_bx_ads_menu_item_title_manage_my_posts', 'page.php?i=ads-author&profile_id={member_id}', '', '_self', 'ad', 'a:2:{s:6:"module";s:6:"bx_ads";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -427,12 +427,12 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: account dashboard
 SET @iDashboardMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name`='sys_account_dashboard' LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES
-('sys_account_dashboard', 'bx_ads', 'dashboard-ads-licenses', '_bx_ads_menu_item_title_system_licenses', '_bx_ads_menu_item_title_licenses', 'page.php?i=ads-licenses', '', '', 'ad col-green2', '', '', 2147483646, 1, 0, 1, @iDashboardMenuOrder + 1);
+('sys_account_dashboard', 'bx_ads', 'dashboard-ads-licenses', '_bx_ads_menu_item_title_system_licenses', '_bx_ads_menu_item_title_licenses', 'page.php?i=ads-licenses', '', '', 'ad', '', '', 2147483646, 1, 0, 1, @iDashboardMenuOrder + 1);
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_ads', 'ads-author', '_bx_ads_menu_item_title_system_view_entries_author', '_bx_ads_menu_item_title_view_entries_author', 'page.php?i=ads-author&profile_id={profile_id}', '', '', 'ad col-green2', '', 2147483647, 1, 0, 0),
-('trigger_group_view_submenu', 'bx_ads', 'ads-context', '_bx_ads_menu_item_title_system_view_entries_in_context', '_bx_ads_menu_item_title_view_entries_in_context', 'page.php?i=ads-context&profile_id={profile_id}', '', '', 'ad col-green2', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_submenu', 'bx_ads', 'ads-author', '_bx_ads_menu_item_title_system_view_entries_author', '_bx_ads_menu_item_title_view_entries_author', 'page.php?i=ads-author&profile_id={profile_id}', '', '', 'ad', '', 2147483647, 1, 0, 0),
+('trigger_group_view_submenu', 'bx_ads', 'ads-context', '_bx_ads_menu_item_title_system_view_entries_in_context', '_bx_ads_menu_item_title_view_entries_in_context', 'page.php?i=ads-context&profile_id={profile_id}', '', '', 'ad', '', 2147483647, 1, 0, 0);
 
 
 -- PRIVACY 
@@ -539,7 +539,7 @@ INSERT INTO `sys_objects_metatags` (`object`, `module`, `table_keywords`, `table
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_ads', 'bx_ads', '_bx_ads', 'page.php?i=ads-home', 'ad col-green2', 'SELECT COUNT(*) FROM `bx_ads_entries` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+('bx_ads', 'bx_ads', '_bx_ads', 'page.php?i=ads-home', 'ad', 'SELECT COUNT(*) FROM `bx_ads_entries` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 
 -- CHARTS

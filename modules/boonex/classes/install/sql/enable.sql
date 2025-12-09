@@ -207,7 +207,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_classes', 'profile-stats-manage-classes', '_bx_classes_menu_item_title_system_manage_my_classes', '_bx_classes_menu_item_title_manage_my_classes', 'page.php?i=classes-manage', '', '_self', 'file-alt col-red3', 'a:2:{s:6:"module";s:10:"bx_classes";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
+('sys_profile_stats', 'bx_classes', 'profile-stats-manage-classes', '_bx_classes_menu_item_title_system_manage_my_classes', '_bx_classes_menu_item_title_manage_my_classes', 'page.php?i=classes-manage', '', '_self', 'file-alt', 'a:2:{s:6:"module";s:10:"bx_classes";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -227,7 +227,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('trigger_group_view_submenu', 'bx_classes', 'classes-context', '_bx_classes_menu_item_title_system_view_entries_in_context', '_bx_classes_menu_item_title_view_entries_in_context', 'page.php?i=classes-context&profile_id={profile_id}', '', '', 'file-alt col-red3', '', 2147483647, 1, 0, 0);
+('trigger_group_view_submenu', 'bx_classes', 'classes-context', '_bx_classes_menu_item_title_system_view_entries_in_context', '_bx_classes_menu_item_title_view_entries_in_context', 'page.php?i=classes-context&profile_id={profile_id}', '', '', 'file-alt', '', 2147483647, 1, 0, 0);
 
 
 -- PRIVACY 
@@ -323,7 +323,7 @@ INSERT INTO `sys_objects_metatags` (`object`, `module`, `table_keywords`, `table
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_classes', 'bx_classes', '_bx_classes', 'page.php?i=classes-home', 'file-alt col-red3', 'SELECT COUNT(*) FROM `bx_classes_classes` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+('bx_classes', 'bx_classes', '_bx_classes', 'page.php?i=classes-home', 'file-alt', 'SELECT COUNT(*) FROM `bx_classes_classes` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);

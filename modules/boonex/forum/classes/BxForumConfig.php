@@ -34,7 +34,7 @@ class BxForumConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'far comments col-blue2',
+            'ICON' => 'far comments',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'discussions',

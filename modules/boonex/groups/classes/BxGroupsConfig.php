@@ -30,7 +30,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'users col-red2',
+            'ICON' => 'users',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',

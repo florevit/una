@@ -42,7 +42,7 @@ class BxAdsConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'ad col-green2',
+            'ICON' => 'ad',
 
             // database tables
             'TABLE_SOURCES' => $aModule['db_prefix'] . 'sources',

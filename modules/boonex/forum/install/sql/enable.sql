@@ -198,22 +198,22 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', @sName, 'discussions-home', '_bx_forum_menu_item_title_system_entries_home', '_bx_forum_menu_item_title_entries_home', 'page.php?i=discussions-home', '', '', 'far comments col-blue2', 'bx_forum_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', @sName, 'discussions-home', '_bx_forum_menu_item_title_system_entries_home', '_bx_forum_menu_item_title_entries_home', 'page.php?i=discussions-home', '', '', 'far comments', 'bx_forum_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', @sName, 'discussions-home', '_bx_forum_menu_item_title_system_entries_home', '_bx_forum_menu_item_title_entries_home', 'page.php?i=discussions-home', '', '', 'far comments col-blue2', 'bx_forum_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', @sName, 'discussions-home', '_bx_forum_menu_item_title_system_entries_home', '_bx_forum_menu_item_title_entries_home', 'page.php?i=discussions-home', '', '', 'far comments', 'bx_forum_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: add to "add content" menu
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', @sName, 'create-discussion', '_bx_forum_menu_item_title_system_create_entry', '_bx_forum_menu_item_title_create_entry', 'page.php?i=create-discussion', '', '', 'far comments col-blue2', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', @sName, 'create-discussion', '_bx_forum_menu_item_title_system_create_entry', '_bx_forum_menu_item_title_create_entry', 'page.php?i=create-discussion', '', '', 'far comments', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 -- MENU: add to "create post" menu
 SET @iCreatePostOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_create_post' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_create_post', @sName, 'create-discussion', '_bx_forum_menu_item_title_system_create_entry', '_bx_forum_menu_item_title_create_entry', 'page.php?i=create-discussion', '', '', 'far comments col-blue2', '', 2147483647, 1, 0, IFNULL(@iCreatePostOrder, 0) + 1);
+('sys_create_post', @sName, 'create-discussion', '_bx_forum_menu_item_title_system_create_entry', '_bx_forum_menu_item_title_create_entry', 'page.php?i=create-discussion', '', '', 'far comments', '', 2147483647, 1, 0, IFNULL(@iCreatePostOrder, 0) + 1);
 
 -- MENU: create post form attachments (link, photo, video, etc)
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -378,7 +378,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 -- MENU: profile stats
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', @sName, 'profile-stats-my-forum', '_bx_forum_menu_item_title_system_discussions', '_bx_forum_menu_item_title_discussions', 'page.php?i=discussions-author&profile_id={member_id}', '', '', 'far comments col-blue2', 'a:2:{s:6:"module";s:8:"bx_forum";s:6:"method";s:19:"get_discussions_num";}', '', 2147483646, 1, 0, 2);
+('sys_profile_stats', @sName, 'profile-stats-my-forum', '_bx_forum_menu_item_title_system_discussions', '_bx_forum_menu_item_title_discussions', 'page.php?i=discussions-author&profile_id={member_id}', '', '', 'far comments', 'a:2:{s:6:"module";s:8:"bx_forum";s:6:"method";s:19:"get_discussions_num";}', '', 2147483646, 1, 0, 2);
 
 -- MENU: categories
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -392,8 +392,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', @sName, 'discussions-author', '_bx_forum_menu_item_title_system_view_entries_author', '_bx_forum_menu_item_title_view_entries_author', 'page.php?i=discussions-author&profile_id={profile_id}', '', '', 'far comments col-blue2', '', 2147483647, 1, 0, 0),
-('trigger_group_view_submenu', @sName, 'discussions-context', '_bx_forum_menu_item_title_system_view_entries_in_context', '_bx_forum_menu_item_title_view_entries_in_context', 'page.php?i=discussions-context&profile_id={profile_id}', '', '', 'far comments col-blue2', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_submenu', @sName, 'discussions-author', '_bx_forum_menu_item_title_system_view_entries_author', '_bx_forum_menu_item_title_view_entries_author', 'page.php?i=discussions-author&profile_id={profile_id}', '', '', 'far comments', '', 2147483647, 1, 0, 0),
+('trigger_group_view_submenu', @sName, 'discussions-context', '_bx_forum_menu_item_title_system_view_entries_in_context', '_bx_forum_menu_item_title_view_entries_in_context', 'page.php?i=discussions-context&profile_id={profile_id}', '', '', 'far comments', '', 2147483647, 1, 0, 0);
 
 -- GRIDS: main
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_mode`, `sorting_fields`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
@@ -593,7 +593,7 @@ INSERT INTO `sys_objects_category` (`object`, `module`, `search_object`, `form_o
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-(@sName, @sName, '_bx_forum', 'page.php?i=discussions-home', 'far comments col-blue2', 'SELECT COUNT(*) FROM `bx_forum_discussions` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+(@sName, @sName, '_bx_forum', 'page.php?i=discussions-home', 'far comments', 'SELECT COUNT(*) FROM `bx_forum_discussions` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 
 -- CHARTS

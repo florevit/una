@@ -243,19 +243,19 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', 'bx_courses', 'courses-home', '_bx_courses_menu_item_title_system_entries_home', '_bx_courses_menu_item_title_entries_home', 'page.php?i=courses-home', '', '', 'book-reader col-blue3-dark', 'bx_courses_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', 'bx_courses', 'courses-home', '_bx_courses_menu_item_title_system_entries_home', '_bx_courses_menu_item_title_entries_home', 'page.php?i=courses-home', '', '', 'book-reader', 'bx_courses_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', 'bx_courses', 'courses-home', '_bx_courses_menu_item_title_system_entries_home', '_bx_courses_menu_item_title_entries_home', 'page.php?i=courses-home', '', '', 'book-reader col-blue3-dark', 'bx_courses_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', 'bx_courses', 'courses-home', '_bx_courses_menu_item_title_system_entries_home', '_bx_courses_menu_item_title_entries_home', 'page.php?i=courses-home', '', '', 'book-reader', 'bx_courses_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: add to "add content" menu
 
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', 'bx_courses', 'create-course-profile', '_bx_courses_menu_item_title_system_create_profile', '_bx_courses_menu_item_title_create_profile', 'page.php?i=create-course-profile', '', '', 'book-reader col-blue3-dark', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', 'bx_courses', 'create-course-profile', '_bx_courses_menu_item_title_system_create_profile', '_bx_courses_menu_item_title_create_profile', 'page.php?i=create-course-profile', '', '', 'book-reader', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 -- MENU: view actions
 
@@ -389,7 +389,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 ('bx_courses_view_submenu', 'bx_courses', '_bx_courses_menu_set_title_view_profile_submenu', 0);
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('bx_courses_view_submenu', 'bx_courses', 'view-course-profile', '_bx_courses_menu_item_title_system_view_profile_view', '_bx_courses_menu_item_title_view_profile_view', 'page.php?i=view-course-profile&id={content_id}', '', '', 'book-reader col-blue3-dark', '', '', 0, 2147483647, 1, 0, 1),
+('bx_courses_view_submenu', 'bx_courses', 'view-course-profile', '_bx_courses_menu_item_title_system_view_profile_view', '_bx_courses_menu_item_title_view_profile_view', 'page.php?i=view-course-profile&id={content_id}', '', '', 'book-reader', '', '', 0, 2147483647, 1, 0, 1),
 ('bx_courses_view_submenu', 'bx_courses', 'course-profile-info', '_bx_courses_menu_item_title_system_view_profile_info', '_bx_courses_menu_item_title_view_profile_info', 'page.php?i=course-profile-info&id={content_id}', '', '', 'info-circle col-gray', '', '', 0, 2147483647, 1, 0, 2),
 ('bx_courses_view_submenu', 'bx_courses', 'course-profile-comments', '_bx_courses_menu_item_title_system_view_profile_comments', '_bx_courses_menu_item_title_view_profile_comments', 'page.php?i=course-profile-comments&id={content_id}', '', '', '', '', '', 0, 2147483647, 0, 0, 3),
 ('bx_courses_view_submenu', 'bx_courses', 'course-fans', '_bx_courses_menu_item_title_system_view_fans', '_bx_courses_menu_item_title_view_fans', 'page.php?i=course-fans&profile_id={profile_id}', '', '', 'users col-blue3', '', '', 0, 2147483647, 1, 0, 4),
@@ -426,12 +426,12 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_courses', 'profile-stats-my-courses', '_bx_courses_menu_item_title_system_manage_my_entries', '_bx_courses_menu_item_title_manage_my_entries', 'page.php?i=joined-courses&profile_id={member_id}', '', '_self', 'book-reader col-blue3-dark', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
+('sys_profile_stats', 'bx_courses', 'profile-stats-my-courses', '_bx_courses_menu_item_title_system_manage_my_entries', '_bx_courses_menu_item_title_manage_my_entries', 'page.php?i=joined-courses&profile_id={member_id}', '', '_self', 'book-reader', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
 
 -- MENU: profile followings
 SET @iFollowingsMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name`='sys_profile_followings' LIMIT 1);
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `collapsed`, `active`, `copyable`, `order`) VALUES 
-('sys_profile_followings', 'bx_courses', 'courses', '_bx_courses_menu_item_title_system_followings', '_bx_courses_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'book-reader col-blue3-dark', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
+('sys_profile_followings', 'bx_courses', 'courses', '_bx_courses_menu_item_title_system_followings', '_bx_courses_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'book-reader', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -452,8 +452,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_courses', 'joined-courses', '_bx_courses_menu_item_title_system_view_joined_entries', '_bx_courses_menu_item_title_view_joined_entries', 'page.php?i=joined-courses&profile_id={profile_id}', '', '', 'book-reader col-blue3-dark', '', 2147483647, '', 1, 0, 0),
-('trigger_group_view_submenu', 'bx_courses', 'courses-context', '_bx_courses_menu_item_title_system_view_entries_in_context', '_bx_courses_menu_item_title_view_entries_in_context', 'page.php?i=courses-context&profile_id={profile_id}', '', '', 'book-reader col-blue3-dark', '', 2147483647, 'a:3:{s:6:"module";s:10:"bx_courses";s:6:"method";s:21:"is_enable_for_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 0);
+('trigger_profile_view_submenu', 'bx_courses', 'joined-courses', '_bx_courses_menu_item_title_system_view_joined_entries', '_bx_courses_menu_item_title_view_joined_entries', 'page.php?i=joined-courses&profile_id={profile_id}', '', '', 'book-reader', '', 2147483647, '', 1, 0, 0),
+('trigger_group_view_submenu', 'bx_courses', 'courses-context', '_bx_courses_menu_item_title_system_view_entries_in_context', '_bx_courses_menu_item_title_view_entries_in_context', 'page.php?i=courses-context&profile_id={profile_id}', '', '', 'book-reader', '', 2147483647, 'a:3:{s:6:"module";s:10:"bx_courses";s:6:"method";s:21:"is_enable_for_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 0);
 
 -- ACL
 INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
@@ -562,7 +562,7 @@ INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `p
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_courses', 'bx_courses', '_bx_courses', 'page.php?i=courses-home', 'book-reader col-blue3-dark', 'SELECT COUNT(*) FROM `bx_courses_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_courses'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
+('bx_courses', 'bx_courses', '_bx_courses', 'page.php?i=courses-home', 'book-reader', 'SELECT COUNT(*) FROM `bx_courses_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_courses'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);
