@@ -132,19 +132,15 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             $aTrackTextFieldsChanges = array ();
         }
 
-        if(isset($CNF['FIELD_BIRTHDAY']) && isset($aContentInfo[$CNF['FIELD_BIRTHDAY']]))
-            $oForm->addTrackFields($CNF['FIELD_BIRTHDAY'], $aContentInfo);
-        if(isset($CNF['FIELD_TITLE']) && isset($aContentInfo[$CNF['FIELD_TITLE']]))
-            $oForm->addTrackFields($CNF['FIELD_TITLE'], $aContentInfo);
-        if(isset($CNF['FIELD_PICTURE']) && isset($aContentInfo[$CNF['FIELD_PICTURE']]))
-            $oForm->addTrackFields($CNF['FIELD_PICTURE'], $aContentInfo);
+        foreach(['TITLE', 'BIRTHDAY', 'PICTURE', 'COVER', 'BADGE'] as $sIt)
+            if(($sField = 'FIELD_' . $sIt) && isset($CNF[$sField], $aContentInfo[$CNF[$sField]]))
+                $oForm->addTrackFields($CNF[$sField], $aContentInfo);
     }
 
     public function onDataEditAfter ($iContentId, $aContentInfo, $aTrackTextFieldsChanges, $oProfile, $oForm)
     {
-        if ($s = parent::onDataEditAfter($iContentId, $aContentInfo, $aTrackTextFieldsChanges, $oProfile, $oForm)){
+        if($s = parent::onDataEditAfter($iContentId, $aContentInfo, $aTrackTextFieldsChanges, $oProfile, $oForm))
             return $s;
-        }
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -157,16 +153,20 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
         $oEditedProfile = BxDolProfile::getInstanceMagic($aContentInfo['profile_id']);
         $sStatus = $oEditedProfile->getStatus();
 
-        if (!$this->isAutoApproval(BX_DOL_PROFILE_ACTIVATE_EDIT) && BX_PROFILE_STATUS_ACTIVE == $sStatus && !empty($aTrackTextFieldsChanges['changed_fields']))
+        if(!$this->isAutoApproval(BX_DOL_PROFILE_ACTIVATE_EDIT) && BX_PROFILE_STATUS_ACTIVE == $sStatus && !empty($aTrackTextFieldsChanges['changed_fields']))
             $oEditedProfile->disapprove(BX_PROFILE_ACTION_AUTO, 0, $this->_oModule->serviceActAsProfile());
 
         // process uploaded files
-        if (isset($CNF['FIELD_PICTURE']))
-            $oForm->processFiles($CNF['FIELD_PICTURE'], $iContentId, false);
-        if (isset($CNF['FIELD_COVER']))
-            $oForm->processFiles($CNF['FIELD_COVER'], $iContentId, false);
-        if (isset($CNF['FIELD_BADGE']))
-            $oForm->processFiles($CNF['FIELD_BADGE'], $iContentId, false);
+        foreach(['PICTURE', 'COVER', 'BADGE'] as $sIt) {
+            $sField = 'FIELD_' . $sIt;
+            if(!isset($CNF[$sField]))
+                continue;
+
+            $oForm->processFiles($CNF[$sField], $iContentId, false);
+
+            if(($aChanged = $oForm->isTrackFieldChanged($CNF[$sField], true)) !== false)
+                $oForm->processFileDeletion($CNF[$sField], $aChanged['old']);
+        }
 
         if(isset($CNF['FIELD_ALLOW_POST_TO']) && !empty($aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_POST'])) !== false)
             $oPrivacy->reassociateGroupCustomWithContent($oProfile->id(), $iContentId, (int)$aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]);
@@ -226,6 +226,8 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             $oForm->processFiles($CNF['FIELD_PICTURE'], $iContentId, true);
         if (isset($CNF['FIELD_COVER']))
             $oForm->processFiles($CNF['FIELD_COVER'], $iContentId, true);
+        if (isset($CNF['FIELD_BADGE']))
+            $oForm->processFiles($CNF['FIELD_BADGE'], $iContentId, true);
 
         if(isset($CNF['FIELD_ALLOW_POST_TO']) && !empty($aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_POST'])) !== false)
             $oPrivacy->associateGroupCustomWithContent($oProfile->id(), $iContentId, (int)$aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]);

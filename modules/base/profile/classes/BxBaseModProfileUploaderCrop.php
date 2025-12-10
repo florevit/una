@@ -41,8 +41,8 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
 
         $aGhosts = $oStorage->getGhosts($iProfileId, $mixedContent, $iContentId ? true : false);
         foreach ($aGhosts as $aFile) {
-            // for requested image type delete only unassigned ghosts and currently set images
-            if ($aFile['id'] == $aContentInfo[$this->_sImage] || !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {
+            // for requested image type delete only unassigned ghosts and currently set image will be deleted while saving
+            if($aFile['id'] != $aContentInfo[$this->_sImage] && !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {
                 return $aContentInfo[$sField];
             }, $this->_aOtherImages)))
                 $iCount += $oStorage->deleteFile($aFile['id']);
@@ -54,38 +54,61 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
     public function getGhosts($iProfileId, $sFormat, $sImagesTranscoder = false, $iContentId = false)
     {
         $s = parent::getGhosts($iProfileId, $sFormat, $sImagesTranscoder, $iContentId);
-        if (!$s || !$iContentId) // if we're creating new profile return all ghosts
+        if(!$s || !$iContentId) // if we're creating new profile return all ghosts
             return $s;
 
-        $a = array();
-        if ($sFormat == 'array')
+        $a = [];
+        if($sFormat == 'array')
             $a = $s;
-        else if ($sFormat == 'json')
+        else if($sFormat == 'json')
             $a = json_decode($s, true);
-
-        if (!$a)
+        if(!$a)
             return $s;
 
         // filter out thumbnails
+        $iThreshold = 0;
+        if(($iLifetime = BxDolStorage::getGhostLifetime()) != 0)
+            $iThreshold = time() - $iLifetime;
+
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
 
         $aResult = [];
         foreach ($a as $aFile) {
             // for requested image type show only (1) currently set images and (2) unassigned ghosts by uploader
-            if ($aFile['file_id'] == $aContentInfo[$this->_sImage] || (!in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
+            if(($bCurrent = $aFile['file_id'] == $aContentInfo[$this->_sImage]) || (!in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
                 return $aContentInfo[$sField];
-            }, $this->_aOtherImages)) && $aFile['uploader_id'] == $this->_iId))
-                $aResult[$aFile['file_id']] = $aFile;
+            }, $this->_aOtherImages)) && $aFile['uploader_id'] == $this->_iId)) {
+                // delete outdated ghost if ghost lifetime is set
+                if(!$bCurrent && $iThreshold && $aFile['file_created'] < $iThreshold) {
+                    if(($oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject)) !== false)
+                        $oStorage->deleteFile($aFile['file_id']);
+
+                    continue;
+                }
+
+                // put only the newest file in results in case of non-multiple mode and all files otherwise
+                if(!$this->isMultiple()) {
+                    if(!$aResult || $aFile['file_created'] > reset($aResult)['file_created'])
+                        $aResult = [
+                            $aFile['file_id'] => $aFile
+                        ];
+                }
+                else
+                    $aResult[$aFile['file_id']] = $aFile;
+            }
         }
 
-        if ('array' == $sFormat) {
-            return $aResult;
+        switch($sFormat) {
+            case 'array':
+               break;
+            case 'json':
+                $aResult = json_encode($aResult);
+                break;
+            default:
+                $aResult = false; // html format is not suported for this data type
         }
-        else if ('json' == $sFormat) {
-            return json_encode($aResult);
-        } else { // html format is not suported for this data type
-            return false;
-        }
+
+        return $aResult;
     }
 
     protected function isAdmin ($iContentId = 0)

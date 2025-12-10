@@ -685,7 +685,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_storage_s3_amz_iam_role', '_adm_stg_cpt_option_sys_storage_s3_amz_iam_role', '', 'checkbox', '', '', '', 10),
 (@iCategoryId, 'sys_storage_s3_acl_enable', '_adm_stg_cpt_option_sys_storage_s3_acl_enable', 'on', 'checkbox', '', '', '', 12),
 (@iCategoryId, 'sys_storage_s3_force_auth_urls', '_adm_stg_cpt_option_sys_storage_s3_force_auth_urls', '', 'digit', '', '', '', 14), 
-(@iCategoryId, 'sys_storage_ghost_lifetime', '_adm_stg_cpt_option_sys_storage_ghost_lifetime', '5', 'digit', '', '', '', 20);
+(@iCategoryId, 'sys_storage_ghost_lifetime', '_adm_stg_cpt_option_sys_storage_ghost_lifetime', '60', 'digit', '', '', '', 20);
 
 --
 -- CATEGORY: Account

@@ -1746,6 +1746,7 @@ BLAH;
             return '';
 
         $sUniqId = !empty($aInput['uploaders_id']) ? $aInput['uploaders_id'] : genRndPwd (8, false);
+        $bMultiple = $aInput['multiple'] ?? true;
         $bInitGhosts = isset($aInput['init_ghosts']) && !$aInput['init_ghosts'] ? 0 : 1;
         $bInitReordering = empty($aInput['init_reordering']) ? 0 : 1;
 
@@ -1755,6 +1756,8 @@ BLAH;
             $oUploader = BxDolUploader::getObjectInstance($sUploaderObject, $aInput['storage_object'], $sUniqId, $this->oTemplate);
             if(!$oUploader)
                 continue;
+
+            $oUploader->setMultiple($bMultiple);
 
             //--- Get Button code.
             $aAttrs = !empty($aInput['attrs']) ? $aInput['attrs'] : array();
@@ -1785,7 +1788,7 @@ BLAH;
             if(isset($aInput['images_transcoder']) && $aInput['images_transcoder'])
                 $aParamsJs['images_transcoder'] = bx_js_string($aInput['images_transcoder']);
 
-            $sUploadersJs .= $oUploader->getUploaderJs($sGhostTemplate, isset($aInput['multiple']) ? $aInput['multiple'] : true, $aParamsJs, $this->_bDynamicMode);
+            $sUploadersJs .= $oUploader->getUploaderJs($sGhostTemplate, $bMultiple, $aParamsJs, $this->_bDynamicMode);
         }
 
         if(!$oUploader)

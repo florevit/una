@@ -391,7 +391,7 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
      */
     public function isTrackFieldChanged($sField, $bReturnValues = false)
     {
-        if(!isset($this->_aTrackFieldsChanges[$sField]) || $this->_aTrackFieldsChanges[$sField] === false)
+        if(!isset($this->_aTrackFieldsChanges[$sField]) || $this->_aTrackFieldsChanges[$sField]['result'] === false)
             return false;
 
         return $bReturnValues ? $this->_aTrackFieldsChanges[$sField] : true;
@@ -841,9 +841,7 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
 
     public function processFiles ($sFieldFile, $iContentId = 0, $isAssociateWithContent = false)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if (!isset($this->aInputs[$sFieldFile]))
+        if(!isset($this->aInputs[$sFieldFile]))
             return true;
 
         $mixedFileIds = $this->getCleanValue($sFieldFile);
@@ -884,7 +882,18 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
                 }
         }
 
+        if($iContentId)
+            $this->_processTrackFields($iContentId);
+
         return true;
+    }
+
+    public function processFileDeletion ($sFieldFile, $iFileId)
+    {
+        if(!isset($this->aInputs[$sFieldFile], $this->aInputs[$sFieldFile]['storage_object']))
+            return false;
+
+        return $this->_deleteFile($iFileId, $this->aInputs[$sFieldFile]['storage_object']);
     }
 
     public function processPolls ($sFieldPoll, $iContentId = 0)
@@ -919,15 +928,14 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        if (!$iFileId)
+        if(!$iFileId)
             return true;
 
-		$sStorage = !empty($sStorage) ? $sStorage : $CNF['OBJECT_STORAGE'];
-		$oStorage = BxDolStorage::getObjectInstance($sStorage);
-        if (!$oStorage)
+        $oStorage = BxDolStorage::getObjectInstance($sStorage ?: $CNF['OBJECT_STORAGE']);
+        if(!$oStorage)
             return false;
 
-        if (!$oStorage->getFile($iFileId))
+        if(!$oStorage->getFile($iFileId))
             return true;
 
         $iProfileId = bx_get_logged_profile_id();
@@ -1007,16 +1015,20 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
             return;
 
         if(!is_array($mixedContent)) {
-            $mixedContent = $this->_oModule->_oDb->getContentInfoById((int)$mixedContent);
+            $mixedContent = $this->_oModule->_oDb->getEntriesBy(['type' => 'id', 'id' => (int)$mixedContent]);
             if(empty($mixedContent) || !is_array($mixedContent))
                 return;
         }
 
         foreach($this->_aTrackFieldsChanges as $sField => $aValues)
-            if($mixedContent[$sField] == $aValues['old'])
-                $this->_aTrackFieldsChanges[$sField] = false;
+            if($mixedContent[$sField] != $aValues['old'])
+                $this->_aTrackFieldsChanges[$sField] = array_merge($this->_aTrackFieldsChanges[$sField], [
+                    'new' => $mixedContent[$sField],
+                    'result' => true
+                ]);
             else
-                $this->_aTrackFieldsChanges[$sField]['new'] = $mixedContent[$sField];
+                $this->_aTrackFieldsChanges[$sField]['result'] = false;
+                
     }
 
     protected function _processMetas(&$aValsToAdd)

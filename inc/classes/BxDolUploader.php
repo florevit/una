@@ -107,6 +107,7 @@ abstract class BxDolUploader extends BxDolFactory
     protected $_iId; ///< object ID
     protected $_aObject; ///< object properties
     protected $_sStorageObject; ///< storage object name
+    protected $_bMultiple;
 
     protected $_sUniqId; ///< uniq id used to generate UploaderJsInstance, ResultContainerId, UploadInProgressContainerId and PopupContainerId
     protected $_sUploaderJsInstance; ///< uplooader js object instance name
@@ -138,6 +139,7 @@ abstract class BxDolUploader extends BxDolFactory
         $this->_iId = (int)$aObject['id'];
         $this->_aObject = $aObject;
         $this->_sStorageObject = $sStorageObject;
+        $this->_bMultiple = true;
 
         $this->_sUniqId = $sUniqId;
 
@@ -187,6 +189,16 @@ abstract class BxDolUploader extends BxDolFactory
     public function isInstalled()
     {
         return true;
+    }
+
+    public function isMultiple()
+    {
+        return $this->_bMultiple;
+    }
+
+    public function setMultiple($bMultiple)
+    {
+        $this->_bMultiple = (bool)$bMultiple;
     }
 
     public function getNameJsInstanceUploader()
@@ -414,6 +426,7 @@ abstract class BxDolUploader extends BxDolFactory
                 'file_icon' => $sFileIcon,
                 'file_url' => $oStorage->getFileUrlById($aFile['id']),
                 'file_remote_id' => $aFile['remote_id'],
+                'file_created' => $aFile['created'],
                 'js_instance_name' => $this->_sUploaderJsInstance,
             ], $this->getGhostTemplateVars($aFile, $iProfileId, $iContent, $oStorage, $oImagesTranscoder));
         }

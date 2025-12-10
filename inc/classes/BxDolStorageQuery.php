@@ -354,7 +354,7 @@ class BxDolStorageQuery extends BxDolDb
                 $sOnProfile = " AND `g`.`profile_id` = :profile_id ";                
             }
 
-            $sSelect .= ", `g`.`uploader_id`";
+            $sSelect .= ", `g`.`uploader_id`, `g`.`created`";
             $sJoin .= " INNER JOIN `sys_storage_ghosts` AS `g` ON (`f`.`id` = `g`.`id` AND `g`.`object` = :object " . $sOnProfile;
             if ($mixedContent !== false) {
                 if(!is_array($mixedContent)) {

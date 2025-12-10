@@ -246,6 +246,11 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
         return ($GLOBALS['bxDolClasses']['BxDolStorage!'.$sObject] = $o);
     }
 
+    public static function getGhostLifetime()
+    {
+        return ($iLifetime = getParam('sys_storage_ghost_lifetime')) !== false ? (int)$iLifetime * 60 : BX_DOL_STORAGE_GHOST_LIFETIME;
+    }
+
     /**
      * Delete old security tokens from database.
      * It is alutomatically called upin cron execution, usually once in a day.
@@ -279,14 +284,14 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
 
         return $iDeleted;
     }
-    
+
     /**
      * Delete outdated ghosts
      * It is alutomatically called upon cron execution, usually one time per minute.
      */
     public static function pruneGhosts()
     {
-        $iLifetime = ($iLifetime = getParam('sys_storage_ghost_lifetime')) !== false ? (int)$iLifetime * 60 : BX_DOL_STORAGE_GHOST_LIFETIME;
+        $iLifetime = self::getGhostLifetime();
         if($iLifetime == 0)
             return;
 
