@@ -426,6 +426,13 @@ class BxDolStorageQuery extends BxDolDb
         $sQuery = $oDb->prepare("SELECT COUNT(*) FROM `sys_storage_deletions` WHERE `object` LIKE ?", $sPrefix . '%');
         return $oDb->getOne($sQuery);
     }
+
+    public static function getOutdatedUnusedGhosts($iLifetime)
+    {
+        return BxDolDb::getInstance()->getAll("SELECT * FROM `sys_storage_ghosts` WHERE `content_id` = '0' AND `created` < (UNIX_TIMESTAMP() - :lifetime)", [
+            'lifetime' => $iLifetime
+        ]);
+    }
 }
 
 /** @} */

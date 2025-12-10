@@ -59,6 +59,8 @@ define('BX_DOL_STORAGE_DEFAULT_ICON_FONT', 'far file'); ///< default font icon i
 
 define('BX_DOL_STORAGE_QUEUED_DELETIONS_PER_RUN', 200); ///< max number of file deletions per one cron run, @see BxDolStorage::pruneDeletions
 
+define('BX_DOL_STORAGE_GHOST_LIFETIME', 600); ///< ununsed ghost lifetime, @see BxDolStorage::pruneGhosts
+
 /**
  * This class unify storage.
  * As the result there are many advantages:
@@ -262,7 +264,7 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
 
     /**
      * Delete files queued for deletions
-     * It is alutomatically called upin cron execution, usually one time per minute.
+     * It is alutomatically called upon cron execution, usually one time per minute.
      * Max number of deletetion per time is defined in @see BX_DOL_STORAGE_QUEUED_DELETIONS_PER_RUN
      * @return number of deleted records
      */
@@ -274,6 +276,26 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
             $o = BxDolStorage::getObjectInstance($r['object']);
             $iDeleted += ($o && $o->deleteFile($r['file_id']) ? 1 : 0);
         }
+
+        return $iDeleted;
+    }
+    
+    /**
+     * Delete outdated ghosts
+     * It is alutomatically called upon cron execution, usually one time per minute.
+     */
+    public static function pruneGhosts()
+    {
+        $iLifetime = ($iLifetime = getParam('sys_storage_ghost_lifetime')) !== false ? (int)$iLifetime * 60 : BX_DOL_STORAGE_GHOST_LIFETIME;
+        if($iLifetime == 0)
+            return;
+
+        $iDeleted = 0;
+
+        $aGhosts = BxDolStorageQuery::getOutdatedUnusedGhosts($iLifetime);
+        foreach($aGhosts as $aGhost)
+            if(($oStorage = BxDolStorage::getObjectInstance($aGhost['object'])) !== false)
+                $iDeleted += $oStorage->deleteFile($aGhost['id']);
 
         return $iDeleted;
     }
