@@ -334,11 +334,10 @@ class BxDolStorageQuery extends BxDolDb
 
     public function getFiles($mixedProfileId, $isGhostsOnly = false, $mixedContent = false, $isAdmin = false)
     {
-        $aBindings = array();        
+        $aBindings = [];
 
-        $sWhere = '';
-        $sJoin = '';
-        $sOrder = '';
+        $sSelect = '`f`.*';
+        $sWhere = $sJoin = $sOrder = '';
         if ($isGhostsOnly) {
             $aBindings['object'] = $this->_aObject['object'];
 
@@ -354,7 +353,8 @@ class BxDolStorageQuery extends BxDolDb
                 
                 $sOnProfile = " AND `g`.`profile_id` = :profile_id ";                
             }
-            
+
+            $sSelect .= ", `g`.`uploader_id`";
             $sJoin .= " INNER JOIN `sys_storage_ghosts` AS `g` ON (`f`.`id` = `g`.`id` AND `g`.`object` = :object " . $sOnProfile;
             if ($mixedContent !== false) {
                 if(!is_array($mixedContent)) {
@@ -382,7 +382,7 @@ class BxDolStorageQuery extends BxDolDb
             }
         }
 
-        $sQuery = "SELECT `f`.* FROM " . $this->_sTableFiles . " AS `f` " . $sJoin . $sWhere . $sOrder;
+        $sQuery = "SELECT " . $sSelect . " FROM " . $this->_sTableFiles . " AS `f` " . $sJoin . $sWhere . $sOrder;
         return $this->getAll($sQuery, $aBindings);
     }
 

@@ -36,9 +36,10 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
         if($oStorage === false)
             return $iCount;
 
-        $aContentInfo = $this->_oModule->_oDb->getContentInfoById(is_array($mixedContent) ? reset($mixedContent) : $mixedContent);
+        $iContentId = (int)(is_array($mixedContent) ? reset($mixedContent) : $mixedContent);
+        $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
 
-        $aGhosts = $oStorage->getGhosts($iProfileId, $mixedContent, $mixedContent ? true : false);
+        $aGhosts = $oStorage->getGhosts($iProfileId, $mixedContent, $iContentId ? true : false);
         foreach ($aGhosts as $aFile) {
             // for requested image type delete only unassigned ghosts and currently set images
             if ($aFile['id'] == $aContentInfo[$this->_sImage] || !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {
@@ -66,14 +67,14 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
             return $s;
 
         // filter out thumbnails
-        $CNF = $this->_oModule->_oConfig->CNF;
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
-        $aResult = array();
+
+        $aResult = [];
         foreach ($a as $aFile) {
-            // for requested image type show only unassigned ghosts and currently set images
-            if ($aFile['file_id'] == $aContentInfo[$this->_sImage] || !in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
+            // for requested image type show only (1) currently set images and (2) unassigned ghosts by uploader
+            if ($aFile['file_id'] == $aContentInfo[$this->_sImage] || (!in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
                 return $aContentInfo[$sField];
-            }, $this->_aOtherImages)))
+            }, $this->_aOtherImages)) && $aFile['uploader_id'] == $this->_iId))
                 $aResult[$aFile['file_id']] = $aFile;
         }
 
