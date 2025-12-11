@@ -20,9 +20,11 @@ class BxBaseAcl extends BxDolAcl
 
     public function getProfileMembership ($iProfileId)
     {
-    	$aLevel = $this->getMemberMembershipInfo($iProfileId, 0, true);
-    	if(empty($aLevel) || !is_array($aLevel))
+        $aLevel = $this->getMemberMembershipInfo($iProfileId, 0, true);
+        if(empty($aLevel) || !is_array($aLevel))
             return $this->_bIsApi ? [] : '';
+
+        $oTemplate = BxDolTemplate::getInstance();
 
         $iLoggedProfileId = bx_get_logged_profile_id();
         $aLevelInfo = $this->getMembershipInfo($aLevel['id']);
@@ -30,12 +32,22 @@ class BxBaseAcl extends BxDolAcl
         $aCheck = checkActionModule($iLoggedProfileId, 'show membership private info', 'system', false);
         $oProfile = BxDolProfile::getInstance($iLoggedProfileId);
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            $sIconS = $aLevelInfo['icon'];
+            $sIconD = $oTemplate->getImage($sIconS, ['wrap_in_tag' => false]);
+
             return [
                 'profile' => BxDolProfile::getData($iProfileId),
-                'level' => $aLevel,
-                'level_info' => $aLevelInfo
+                'level' => [
+                    'id' => $aLevel['id'],
+                    'name' => !empty($aLevelInfo['name']) ? _t($aLevelInfo['name']) : '',
+                    'description' => !empty($aLevelInfo['description']) ? _t($aLevelInfo['description']) : '',
+                    'icon' => strcmp($sIconS, $sIconD) != 0 ? $sIconD : BxDolIconset::getObjectInstance()->getIcon($sIconD),
+                    'date_starts' => (int)$aLevel['date_starts'],
+                    'date_expires' => (int)$aLevel['date_expires'],
+                ]
             ];
+        }
 
         $aTmplVarsPrivateInfo = array();
         $bTmplVarsPrivateInfo = ($oProfile && (BxDolProfile::getInstance($iProfileId)->getAccountId() == $oProfile->getAccountId() || $aCheck[CHECK_ACTION_RESULT] === CHECK_ACTION_RESULT_ALLOWED) && !empty($aLevel['date_starts']));
@@ -51,7 +63,6 @@ class BxBaseAcl extends BxDolAcl
                 )
             );
 
-        $oTemplate = BxDolTemplate::getInstance();
         $sContent = $oTemplate->parseHtmlByName('acl_membership.html', array(
             'html_id' => 'sys-acl-profile-' . $iProfileId,
             'level' => _t($aLevel['name']),
@@ -60,7 +71,7 @@ class BxBaseAcl extends BxDolAcl
                 'condition' => $bTmplVarsPrivateInfo,
                 'content' => $aTmplVarsPrivateInfo
             )
-    	));
+        ));
 
         /**
          * @hooks
@@ -80,7 +91,7 @@ class BxBaseAcl extends BxDolAcl
         ]);
 
         $oTemplate->addCss(array('acl.css'));
-    	return $sContent;
+        return $sContent;
     }
 
     /**
