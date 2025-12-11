@@ -29,7 +29,7 @@ class BxTasksConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'tasks col-red3',
+            'ICON' => 'tasks',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'tasks',

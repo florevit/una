@@ -18,6 +18,9 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
         parent::__construct($aModule);
 
         $this->CNF = [
+            // module icon
+            'ICON' => 'star',
+
             // database tables
             'TABLE_EVENTS' => $aModule['db_prefix'] . 'events',
             'TABLE_LEVELS' => $aModule['db_prefix'] . 'levels',

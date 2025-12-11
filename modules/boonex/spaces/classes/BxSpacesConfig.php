@@ -29,7 +29,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'object-group col-red2',
+            'ICON' => 'object-group',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',

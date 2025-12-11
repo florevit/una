@@ -28,7 +28,7 @@ class BxStoriesConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'far image col-blue1',
+            'ICON' => 'far image',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',

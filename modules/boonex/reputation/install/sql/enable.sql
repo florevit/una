@@ -76,7 +76,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', @sName, 'leaderboard', '_bx_reputation_menu_item_title_system_leaderboard', '_bx_reputation_menu_item_title_leaderboard', 'page.php?i=leaderboard', '', '', 'star col-red3', '', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', @sName, 'leaderboard', '_bx_reputation_menu_item_title_system_leaderboard', '_bx_reputation_menu_item_title_leaderboard', 'page.php?i=leaderboard', '', '', 'star', '', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 
 -- GRIDS: administration tools

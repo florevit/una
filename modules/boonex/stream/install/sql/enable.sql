@@ -166,7 +166,7 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system` , `
 
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', 'bx_stream', 'create-stream', '_bx_stream_menu_item_title_system_create_entry', '_bx_stream_menu_item_title_create_entry', 'page.php?i=create-stream', '', '', 'rss col-red3', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', 'bx_stream', 'create-stream', '_bx_stream_menu_item_title_system_create_entry', '_bx_stream_menu_item_title_create_entry', 'page.php?i=create-stream', '', '', 'rss', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 -- MENU: actions menu for view entry 
 
@@ -227,7 +227,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_stream', 'profile-stats-manage-streams', '_bx_stream_menu_item_title_system_manage_my_stream', '_bx_stream_menu_item_title_manage_my_stream', 'page.php?i=streams-manage', '', '_self', 'rss col-red3', 'a:2:{s:6:"module";s:9:"bx_stream";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
+('sys_profile_stats', 'bx_stream', 'profile-stats-manage-streams', '_bx_stream_menu_item_title_system_manage_my_stream', '_bx_stream_menu_item_title_manage_my_stream', 'page.php?i=streams-manage', '', '_self', 'rss', 'a:2:{s:6:"module";s:9:"bx_stream";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -326,7 +326,7 @@ INSERT INTO `sys_objects_category` (`object`, `module`, `search_object`, `form_o
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_stream', 'bx_stream', '_bx_stream', 'page.php?i=streams-home', 'rss col-red3', 'SELECT COUNT(*) FROM `bx_stream_streams` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+('bx_stream', 'bx_stream', '_bx_stream', 'page.php?i=streams-home', 'rss', 'SELECT COUNT(*) FROM `bx_stream_streams` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);

@@ -27,7 +27,7 @@ class BxVideosConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'film col-gray',
+            'ICON' => 'film',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',

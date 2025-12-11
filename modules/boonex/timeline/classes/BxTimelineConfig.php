@@ -103,7 +103,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         parent::__construct($aModule);
 
         $this->CNF = array_merge($this->CNF, [
-            'ICON' => 'far clock col-green1',
+            'ICON' => 'far clock',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'events',

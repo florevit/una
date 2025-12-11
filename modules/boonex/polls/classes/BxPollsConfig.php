@@ -24,7 +24,7 @@ class BxPollsConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'tasks col-green1',
+            'ICON' => 'tasks',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',

@@ -29,7 +29,7 @@ class BxResourcesConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'warehouse col-green2',
+            'ICON' => 'warehouse',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',

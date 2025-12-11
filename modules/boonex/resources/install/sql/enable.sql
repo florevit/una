@@ -168,10 +168,10 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_resources', 'resources-author', '_bx_resources_menu_item_title_system_view_entries_author', '_bx_resources_menu_item_title_view_entries_author', 'page.php?i=resources-author&profile_id={profile_id}', '', '', 'warehouse col-green2', '', 2147483647, 1, 0, 0),
+('trigger_profile_view_submenu', 'bx_resources', 'resources-author', '_bx_resources_menu_item_title_system_view_entries_author', '_bx_resources_menu_item_title_view_entries_author', 'page.php?i=resources-author&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0),
 ('trigger_profile_view_actions', 'bx_resources', 'resources-manage', '_bx_resources_menu_item_title_system_entries_manage', '_bx_resources_menu_item_title_entries_manage', 'page.php?i=resources-manage&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0),
 
-('trigger_group_view_submenu', 'bx_resources', 'resources-context', '_bx_resources_menu_item_title_system_view_entries_in_context', '_bx_resources_menu_item_title_view_entries_in_context', 'page.php?i=resources-context&profile_id={profile_id}', '', '', 'warehouse col-green2', '', 2147483647, 1, 0, 0),
+('trigger_group_view_submenu', 'bx_resources', 'resources-context', '_bx_resources_menu_item_title_system_view_entries_in_context', '_bx_resources_menu_item_title_view_entries_in_context', 'page.php?i=resources-context&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0),
 ('trigger_group_view_actions', 'bx_resources', 'resources-manage', '_bx_resources_menu_item_title_system_entries_manage', '_bx_resources_menu_item_title_entries_manage', 'page.php?i=resources-manage&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0);
 
 
@@ -257,7 +257,7 @@ INSERT INTO `sys_objects_category` (`object`, `module`, `search_object`, `form_o
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_resources', 'bx_resources', '_bx_resources', 'page.php?i=resources-home', 'warehouse col-green2', 'SELECT COUNT(*) FROM `bx_resources_entries` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+('bx_resources', 'bx_resources', '_bx_resources', 'page.php?i=resources-home', 'warehouse', 'SELECT COUNT(*) FROM `bx_resources_entries` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);

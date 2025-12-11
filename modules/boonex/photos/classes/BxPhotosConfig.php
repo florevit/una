@@ -26,7 +26,7 @@ class BxPhotosConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'camera-retro col-blue1',
+            'ICON' => 'camera-retro',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',

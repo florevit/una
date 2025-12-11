@@ -24,7 +24,7 @@ class BxReviewsConfig extends BxBaseModTextConfig
         $this->CNF = array_merge($this->CNF, array (
 
             // module icon
-            'ICON' => 'address-card col-red3',
+            'ICON' => 'address-card',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'reviews',

@@ -248,19 +248,19 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', 'bx_spaces', 'spaces-home', '_bx_spaces_menu_item_title_system_entries_home', '_bx_spaces_menu_item_title_entries_home', 'page.php?i=spaces-home', '', '', 'object-group col-red2', 'bx_spaces_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', 'bx_spaces', 'spaces-home', '_bx_spaces_menu_item_title_system_entries_home', '_bx_spaces_menu_item_title_entries_home', 'page.php?i=spaces-home', '', '', 'object-group', 'bx_spaces_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', 'bx_spaces', 'spaces-home', '_bx_spaces_menu_item_title_system_entries_home', '_bx_spaces_menu_item_title_entries_home', 'page.php?i=spaces-home', '', '', 'object-group col-red2', 'bx_spaces_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', 'bx_spaces', 'spaces-home', '_bx_spaces_menu_item_title_system_entries_home', '_bx_spaces_menu_item_title_entries_home', 'page.php?i=spaces-home', '', '', 'object-group', 'bx_spaces_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: add to "add content" menu
 
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', 'bx_spaces', 'create-space-profile', '_bx_spaces_menu_item_title_system_create_profile', '_bx_spaces_menu_item_title_create_profile', 'page.php?i=create-space-profile', '', '', 'object-group col-red2', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', 'bx_spaces', 'create-space-profile', '_bx_spaces_menu_item_title_system_create_profile', '_bx_spaces_menu_item_title_create_profile', 'page.php?i=create-space-profile', '', '', 'object-group', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 -- MENU: view actions
 
@@ -386,7 +386,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 ('bx_spaces_view_submenu', 'bx_spaces', '_bx_spaces_menu_set_title_view_profile_submenu', 0);
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('bx_spaces_view_submenu', 'bx_spaces', 'view-space-profile', '_bx_spaces_menu_item_title_system_view_profile_view', '_bx_spaces_menu_item_title_view_profile_view', 'page.php?i=view-space-profile&id={content_id}', '', '', 'object-group col-red2', '', '', 0, 2147483647, 1, 0, 1),
+('bx_spaces_view_submenu', 'bx_spaces', 'view-space-profile', '_bx_spaces_menu_item_title_system_view_profile_view', '_bx_spaces_menu_item_title_view_profile_view', 'page.php?i=view-space-profile&id={content_id}', '', '', 'object-group', '', '', 0, 2147483647, 1, 0, 1),
 ('bx_spaces_view_submenu', 'bx_spaces', 'space-profile-info', '_bx_spaces_menu_item_title_system_view_profile_info', '_bx_spaces_menu_item_title_view_profile_info', 'page.php?i=space-profile-info&id={content_id}', '', '', 'info-circle col-gray', '', '', 0, 2147483647, 1, 0, 2),
 ('bx_spaces_view_submenu', 'bx_spaces', 'space-profile-comments', '_bx_spaces_menu_item_title_system_view_profile_comments', '_bx_spaces_menu_item_title_view_profile_comments', 'page.php?i=space-profile-comments&id={content_id}', '', '', '', '', '', 0, 2147483647, 0, 0, 3),
 ('bx_spaces_view_submenu', 'bx_spaces', 'space-fans', '_bx_spaces_menu_item_title_system_view_fans', '_bx_spaces_menu_item_title_view_fans', 'page.php?i=space-fans&profile_id={profile_id}', '', '', 'object-group col-blue3', '', '', 0, 2147483647, 1, 0, 4),
@@ -423,12 +423,12 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_spaces', 'profile-stats-my-spaces', '_bx_spaces_menu_item_title_system_manage_my_spaces', '_bx_spaces_menu_item_title_manage_my_spaces', 'page.php?i=joined-spaces&profile_id={member_id}', '', '_self', 'object-group col-red2', 'a:2:{s:6:"module";s:9:"bx_spaces";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
+('sys_profile_stats', 'bx_spaces', 'profile-stats-my-spaces', '_bx_spaces_menu_item_title_system_manage_my_spaces', '_bx_spaces_menu_item_title_manage_my_spaces', 'page.php?i=joined-spaces&profile_id={member_id}', '', '_self', 'object-group', 'a:2:{s:6:"module";s:9:"bx_spaces";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
 
 -- MENU: profile followings
 SET @iFollowingsMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name`='sys_profile_followings' LIMIT 1);
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `collapsed`, `active`, `copyable`, `order`) VALUES 
-('sys_profile_followings', 'bx_spaces', 'spaces', '_bx_spaces_menu_item_title_system_followings', '_bx_spaces_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'object-group col-red2', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
+('sys_profile_followings', 'bx_spaces', 'spaces', '_bx_spaces_menu_item_title_system_followings', '_bx_spaces_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'object-group', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -450,7 +450,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_spaces', 'joined-spaces', '_bx_spaces_menu_item_title_system_view_joined_spaces', '_bx_spaces_menu_item_title_view_joined_spaces', 'page.php?i=joined-spaces&profile_id={profile_id}', '', '', 'object-group col-red2', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_submenu', 'bx_spaces', 'joined-spaces', '_bx_spaces_menu_item_title_system_view_joined_spaces', '_bx_spaces_menu_item_title_view_joined_spaces', 'page.php?i=joined-spaces&profile_id={profile_id}', '', '', 'object-group', '', 2147483647, 1, 0, 0);
 
 -- ACL
 INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
@@ -569,7 +569,7 @@ INSERT INTO `sys_recommendation_criteria` (`object_id`, `name`, `source_type`, `
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_spaces', 'bx_spaces', '_bx_spaces', 'page.php?i=spaces-home', 'object-group col-red2', 'SELECT COUNT(*) FROM `bx_spaces_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_spaces'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
+('bx_spaces', 'bx_spaces', '_bx_spaces', 'page.php?i=spaces-home', 'object-group', 'SELECT COUNT(*) FROM `bx_spaces_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_spaces'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);
