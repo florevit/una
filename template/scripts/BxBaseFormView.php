@@ -420,6 +420,8 @@ class BxBaseFormView extends BxDolForm
                 $aInput['values_src'] = '';
                 if(!empty($aInput['content_id']) && ($sUpr = reset($aInput['uploaders'])) && ($sStg = $aInput['storage_object'] ?? '') && ($oUploader = BxDolUploader::getObjectInstance($sUpr, $sStg, genRndPwd(8))) !== false) {
                     $oUploader->setMultiple($aInput['multiple'] ?? true);
+                    if(($sMethod = 'setSubmitted') && method_exists($oUploader, $sMethod))
+                        $oUploader->$sMethod($this->isSubmitted());
 
                     $sData = $oUploader->getGhostsWithOrder((int)bx_get_logged_profile_id(), 'json', $aInput['images_transcoder'], $aInput['content_id']);
                     if($sData && ($aData = json_decode($sData, true)) && !empty($aData['g']) && is_array($aData['g'])) {

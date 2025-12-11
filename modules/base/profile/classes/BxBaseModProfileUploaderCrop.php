@@ -14,6 +14,7 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
     protected $_sModule;
     protected $_oModule;
 
+    protected $_bSubmitted;
     protected $_sImage;
     protected $_aOtherImages;
 
@@ -23,6 +24,18 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
             $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate ? $oTemplate : $this->_oModule->_oTemplate);
+
+        $this->_bSubmitted = false;
+    }
+
+    public function isSubmitted()
+    {
+        return $this->_bSubmitted;
+    }
+
+    public function setSubmitted($bSubmitted)
+    {
+        $this->_bSubmitted = (bool)$bSubmitted;
     }
 
     public function deleteGhostsForProfile($iProfileId, $mixedContent = false)
@@ -88,7 +101,15 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
 
                 // put only the newest file in results in case of non-multiple mode and all files otherwise
                 if(!$this->isMultiple()) {
-                    if(!$aResult || $aFile['file_created'] > reset($aResult)['file_created'])
+                    if(!$this->isSubmitted()) {
+                        if($bCurrent)
+                            $aResult = [
+                                $aFile['file_id'] => $aFile
+                            ];
+                        else
+                            continue;
+                    }
+                    else if(!$aResult || $aFile['file_created'] > reset($aResult)['file_created'])
                         $aResult = [
                             $aFile['file_id'] => $aFile
                         ];
