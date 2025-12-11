@@ -101,7 +101,7 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
 
                 // put only the newest file in results in case of non-multiple mode and all files otherwise
                 if(!$this->isMultiple()) {
-                    if(!$this->isSubmitted()) {
+                    if($this->_bIsApi && !$this->isSubmitted()) {
                         if($bCurrent)
                             $aResult = [
                                 $aFile['file_id'] => $aFile
