@@ -1195,6 +1195,8 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
      */
     public function serviceEntitySocialSharing ($mixedContent = false, $aParams = array())
     {
+        $CNF = &$this->_oConfig->CNF;
+
         if(!empty($mixedContent)) {
             if(!is_array($mixedContent))
                $mixedContent = array((int)$mixedContent, array());
@@ -1220,7 +1222,9 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
 
         list($iContentId, $aContentInfo) = $mixedContent;
 
-		return BxDolAcl::getInstance()->getProfileMembership($aContentInfo['profile_id']);
+        $mixedResult = BxDolAcl::getInstance()->getProfileMembership($aContentInfo['profile_id']);
+
+        return $this->_bIsApi ? [bx_api_get_block('entity_membership', $mixedResult)] : $mixedResult;
     }
 
     public function serviceProfileFriends ($iContentId = 0)

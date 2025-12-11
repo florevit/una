@@ -83,6 +83,8 @@ class BxDolAcl extends BxDolFactory implements iBxDolSingleton
 {
     protected static $_aCacheData = array();
 
+    protected $_bIsApi;
+
     protected $oDb;
 
     protected $_aStandardMemberships = array(
@@ -113,6 +115,8 @@ class BxDolAcl extends BxDolFactory implements iBxDolSingleton
             trigger_error ('Multiple instances are not allowed for the class: ' . get_class($this), E_USER_ERROR);
 
         parent::__construct();
+
+        $this->_bIsApi = bx_is_api();
 
         $this->oDb = BxDolAclQuery::getInstance();
     }
