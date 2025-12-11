@@ -2124,26 +2124,27 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $oModule = $this->getModule();
         $bViewItem = isset($aParams['view']) && $aParams['view'] == BX_TIMELINE_VIEW_ITEM;
 
-        $aEvent['author_data'] = BxDolProfile::getData($aEvent['object_owner_id']);
-        $aEvent['author_badges'] = BxDolProfile::getInstance($aEvent['object_owner_id'])->getBadges();
-        $aEvent['author_actions'] = [];
+        $iAuthorId = (int)$aEvent['object_owner_id'];
+        $oAuthor = BxDolProfile::getInstance($iAuthorId);
 
-        $aEvent['context_data'] = (int)$aEvent['object_privacy_view'] < 0 ? BxDolProfile::getData(abs($aEvent['object_privacy_view'])) : [];
+        $aEvent = array_merge($aEvent, [
+            'author_data' => BxDolProfile::getData($iAuthorId),
+            'author_badges' => $oAuthor !== false ? $oAuthor->getBadges() : [],
+            'author_actions' => [],
+            'context_data' => (int)$aEvent['object_privacy_view'] < 0 ? BxDolProfile::getData(abs($aEvent['object_privacy_view'])) : []
+        ]);
 
-        if(($iInitiatorProfile = (int)bx_get_logged_profile_id()) != 0) {
-            $iContentProfile = (int)$aEvent['object_owner_id'];
-            if($iInitiatorProfile != $iContentProfile && ($oContentProfile = BxDolProfile::getInstance($iContentProfile)) !== false) {
-                $mixedCheckResults = bx_srv($oContentProfile->getModule(), 'check_allowed_with_content', ['subscribe_add', $oContentProfile->getContentId()]);
-                if($mixedCheckResults === CHECK_ACTION_RESULT_ALLOWED)
-                    $aEvent['author_actions'][] = [
-                        'type' => 'connections',
-                        'o' => $this->_oConfig->getObject('conn_subscriptions'),
-                        'a' => 'add',
-                        'iid' => $iInitiatorProfile,
-                        'cid' => $iContentProfile,
-                        'title' => _t('_sys_menu_item_title_sm_subscribe'),
-                    ];
-            }
+        if(($iLoggedId = (int)bx_get_logged_profile_id()) != 0 && $iLoggedId != $iAuthorId && $oAuthor !== false) {
+            $mixedCheckResults = bx_srv($oAuthor->getModule(), 'check_allowed_with_content', ['subscribe_add', $oAuthor->getContentId()]);
+            if($mixedCheckResults === CHECK_ACTION_RESULT_ALLOWED)
+                $aEvent['author_actions'][] = [
+                    'type' => 'connections',
+                    'o' => $this->_oConfig->getObject('conn_subscriptions'),
+                    'a' => 'add',
+                    'iid' => $iLoggedId,
+                    'cid' => $iAuthorId,
+                    'title' => _t('_sys_menu_item_title_sm_subscribe'),
+                ];
         }
 
         $aEvent['url'] = '';
@@ -2165,6 +2166,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                 $aEvent['content']['embed'] = bx_linkify_embeded($aEvent['content']['text']);
         }
 
+        //--- Menu: Actions
         if(empty($aEvent['menu_actions'])) {
             $oMenuActions = BxDolMenu::getObjectInstance($this->_oConfig->getObject('menu_item_actions_all'));
             if(!$oMenuActions)
@@ -2175,20 +2177,21 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
         $aEvent['menu_actions'] = $oMenuActions !== false && $oMenuActions->setEvent($aEvent, $aParams) ? $oMenuActions->getCodeAPI() : [];
 
+        //--- Menu: Manage
         if(empty($aEvent['menu_manage']))
             $oMenuManage = BxDolMenu::getObjectInstance($this->_oConfig->getObject('menu_item_manage'));
         else
             $oMenuManage = $aEvent['menu_manage'];
 
-        if(empty($aEvent['menu_counters'])) {
+        $aEvent['menu_manage'] = $oMenuManage !== false && $oMenuManage->setEvent($aEvent) && $oMenuManage->isVisible() ? $oMenuManage->getShortCodeAPI() : [];
+
+        //--- Menu: Counters
+        if(empty($aEvent['menu_counters']))
             $oMenuCounters = BxDolMenu::getObjectInstance($this->_oConfig->getObject('menu_item_counters'));
-        }
         else
             $oMenuCounters = $aEvent['menu_counters'];
 
         $aEvent['menu_counters'] = $oMenuCounters !== false && $oMenuCounters->setEvent($aEvent, $aParams) ? $oMenuCounters->getCodeAPI() : [];
-
-        $aEvent['menu_manage'] = $oMenuManage !== false && $oMenuManage->setEvent($aEvent) && $oMenuManage->isVisible() ? $oMenuManage->getShortCodeAPI() : [];
 
         if(!isset($aParams['type']) || $aParams['type'] != 'owner')
             $aEvent['owners'] = $this->_getTmplVarsTimelineOwner($aEvent);
