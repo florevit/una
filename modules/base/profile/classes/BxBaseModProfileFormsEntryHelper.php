@@ -164,6 +164,9 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
 
             $oForm->processFiles($CNF[$sField], $iContentId, false);
 
+            if($this->_bIsApi)
+                $oForm->processFilesFlagsApi($CNF[$sField], $iContentId);
+
             if(($aChanged = $oForm->isTrackFieldChanged($CNF[$sField], true)) !== false)
                 $oForm->processFileDeletion($CNF[$sField], $aChanged['old']);
         }

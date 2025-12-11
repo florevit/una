@@ -198,6 +198,31 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
         return parent::delete($iContentId, $aContentInfo);
     }
 
+    public function processFilesFlagsApi ($sFieldFile, $iContentId)
+    {
+        if(!isset($this->aInputs[$sFieldFile]) || ($this->aInputs[$sFieldFile]['multiple'] ?? true))
+            return false;
+        
+        $aContentInfo = $this->_oModule->_oDb->getEntriesBy(['type' => 'id', 'id' => $iContentId]);
+        if(empty($aContentInfo) || !is_array($aContentInfo) || !isset($aContentInfo[$sFieldFile]))
+            return false;
+
+        $iFileId = 0;
+        if(($mixedFileIds = $this->getCleanValue($sFieldFile)) === '')
+            $iFileId = 0;
+        else if(is_array($mixedFileIds))
+            $iFileId = (int)reset($mixedFileIds);
+        else
+            return false;
+
+        if($iFileId == $aContentInfo[$sFieldFile] || !$this->_oModule->_oDb->updateContentPictureById($iContentId, 0, $iFileId, $sFieldFile))
+            return false;
+
+        $this->_processTrackFields($iContentId);
+
+        return true;
+    }
+
     protected function genCustomViewRowValueProfileEmail($aInput)
     {
         return $this->genCustomViewRowValueProfileEmailOrIp($aInput);
