@@ -4855,7 +4855,7 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `title_public`, `set_name`, `
 ('sys_wiki', '_sys_menu_title_wiki', '', 'sys_wiki', 'system', 6, 0, 1, 'BxTemplMenuWiki', ''),
 ('sys_favorite_list', '_sys_menu_title_favorite_list', '', 'sys_favorite_list', 'system', 9, 0, 1, '', ''),
 ('sys_con_submenu', '_sys_menu_title_con_submenu', '_sys_menu_title_public_con_submenu', 'sys_con_submenu', 'system', 8, 0, 1, 'BxTemplMenuSubmenuWithAddons', ''),
-('sys_ntfs_submenu', '_sys_menu_title_ntfs_submenu', '', 'sys_ntfs_submenu', 'system', 8, 0, 1, 'BxTemplMenuSubmenuWithAddons', ''),
+('sys_ntfs_submenu', '_sys_menu_title_ntfs_submenu', '_sys_menu_title_public_ntfs_submenu', 'sys_ntfs_submenu', 'system', 8, 0, 1, 'BxTemplMenuSubmenuWithAddons', ''),
 
 ('sys_studio_account_popup', '_sys_menu_title_studio_account_popup', '', 'sys_studio_account_popup', 'system', 4, 0, 1, 'BxTemplStudioMenuAccountPopup', '');
 

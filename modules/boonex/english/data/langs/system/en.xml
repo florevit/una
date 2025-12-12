@@ -3590,6 +3590,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_menu_item_title_recom_friends"><![CDATA[Suggestions]]></string>
     <string name="_sys_menu_item_title_recom_subscriptions"><![CDATA[Who to follow]]></string>    
     <string name="_sys_menu_title_ntfs_submenu"><![CDATA[Notifications]]></string>
+    <string name="_sys_menu_title_public_ntfs_submenu"><![CDATA[Notifications]]></string>
     <string name="_sys_menu_set_title_ntfs_submenu"><![CDATA[Notifications]]></string>
     <string name="_sys_menu_item_title_system_ntfs_context_invitations"><![CDATA[Notifications: Context Invitations]]></string>
     <string name="_sys_menu_item_title_ntfs_context_invitations"><![CDATA[Invitations]]></string>
