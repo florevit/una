@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS `bx_stream_streams` (
   `author` int(11) NOT NULL,
   `added` int(11) NOT NULL,
   `changed` int(11) NOT NULL,
-  `published` int(11) NOT NULL,
   `thumb` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `cat` int(11) NOT NULL,
@@ -348,8 +347,7 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 
 ('bx_stream_entry_view', 'cat', 2147483647, 1, 1),
 ('bx_stream_entry_view', 'added', 2147483647, 1, 2),
-('bx_stream_entry_view', 'changed', 2147483647, 1, 3),
-('bx_stream_entry_view', 'published', 192, 1, 4);
+('bx_stream_entry_view', 'changed', 2147483647, 1, 3);
 
 -- PRE-VALUES
 INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES

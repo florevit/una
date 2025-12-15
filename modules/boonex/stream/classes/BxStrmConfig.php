@@ -189,6 +189,8 @@ class BxStrmConfig extends BxBaseModTextConfig
                 'txt_sample_score_up_single' => '_bx_stream_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_stream_txt_sample_score_down_single',
                 'form_field_author' => '_bx_stream_form_entry_input_author',
+                'form_field_covers_uploader_simple' => '_bx_posts_form_entry_input_covers_uploader_simple_title',
+                'form_field_covers_uploader_html5' => '_bx_posts_form_entry_input_covers_uploader_html5_title',
             	'grid_action_err_delete' => '_bx_stream_grid_action_err_delete',
             	'grid_txt_account_manager' => '_bx_stream_grid_txt_account_manager',
                 'filter_item_active' => '_bx_stream_grid_filter_item_title_adm_active',
