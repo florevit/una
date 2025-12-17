@@ -1218,10 +1218,16 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         $oGrid->setProfileId($iProfileId);
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            $aContentInfo = $this->_oDb->getContentInfoByProfileId($iProfileId);
+
             return [
-                bx_api_get_block('pricing', array_merge_recursive($oGrid->getCodeAPI(true), ['settings' => ['unit' => 'productlist']]))
+                bx_api_get_block('pricing', array_merge_recursive($oGrid->getCodeAPI(true), ['settings' => [
+                    'context_name' => $aContentInfo[$CNF['FIELD_TITLE']],
+                    'unit' => 'productlist'
+                ]]))
             ];
+        }
 
         return $oGrid->getCode();
     }

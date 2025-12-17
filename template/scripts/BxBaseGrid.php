@@ -733,8 +733,16 @@ class BxBaseGrid extends BxDolGrid
 
     protected function _getCellDefault ($mixedValue, $sKey, $aField, $aRow)
     {
-        if($this->_bIsApi)
-            return ['type' => 'text', 'value'=> (int)$aField['translatable'] ? _t($mixedValue) : $mixedValue];    
+        if($this->_bIsApi) {
+            $sType = $mixedValue['type'] ?? 'text';
+            if(isset($mixedValue['type']))
+                unset($mixedValue['type']);
+
+            return [
+                'type' =>  $sType, 
+                'value'=> (int)$aField['translatable'] ? _t($mixedValue) : $mixedValue
+            ];
+        }
 
         $sAttr = $this->_convertAttrs(
             $aField, 'attr_cell',

@@ -65,7 +65,7 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
                 $mixedValue = _t($CNF['T']['txt_n_unit'], $mixedValue, _t($this->_aPeriodUnits[$aRow['period_unit']]));
         }
         else
-            $mixedValue = ['period' => $mixedValue, 'unit' => $aRow['period_unit']];
+            $mixedValue = ['type' => 'period', 'period' => $mixedValue, 'unit' => $aRow['period_unit']];
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
@@ -83,7 +83,7 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
                 $mixedValue = _t('_free');
         }
         else
-            $mixedValue = ['value' => $mixedValue, 'currency' => $aCurrency['code']];
+            $mixedValue = ['type' => 'price', 'value' => $mixedValue, 'currency' => $aCurrency['code']];
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
