@@ -51,6 +51,32 @@ class BxAclModule extends BxBaseModGeneralModule
     	));
     }
 
+    public function actionGetActionsInPopup($iLevelId)
+    {
+        return echoJson([
+            'code' => 0,
+            'popup' => [
+                'html' => $this->_oTemplate->displayActionsPopup($iLevelId), 
+                'options' => ['closeOnOuterClick' => true, 'removeOnClose' => true]
+            ],
+        ]);
+    }
+
+    public function actionGetActions($iLevelId)
+    {
+        if(($iGetStart = bx_get('start')) !== false)
+            $iStart = (int)$iGetStart;
+        if(($iGetPerPage = bx_get('per_page')) !== false)
+            $iLimit = (int)$iGetPerPage;
+        
+        return echoJson([
+            'code' => 0,
+            'level_id' => $iLevelId,
+            'content' => $this->_oTemplate->displayActions($iLevelId, $iStart, $iLimit),
+            'eval' => $this->_oConfig->getJsObject('main').'.onGetActions(oData)'
+        ]);
+    }
+
     /**
      * SERVICE METHODS
      */
@@ -121,8 +147,23 @@ class BxAclModule extends BxBaseModGeneralModule
             ];
 
         $this->_oTemplate->addCss(['view.css']);
+        $this->_oTemplate->addJs(['main.js']);
         return [
-            'content' => $oGrid->getCode()
+            'content' => $this->_oTemplate->getJsCode('main') . $oGrid->getCode()
+        ];
+    }
+
+    public function serviceGetBlockActions($iLevelId, $iStart = 0, $iLimit = 0)
+    {
+        if(($iGetStart = bx_get('start')) !== false)
+            $iStart = (int)$iGetStart;
+        if(($iGetPerPage = bx_get('per_page')) !== false)
+            $iLimit = (int)$iGetPerPage;
+
+        $mixedResult = $this->_oTemplate->displayActionsBlock($iLevelId, $iStart, $iLimit);
+
+        return !$this->_bIsApi ? $mixedResult : [
+            bx_api_get_block('acl_level_actions', $mixedResult)
         ];
     }
 

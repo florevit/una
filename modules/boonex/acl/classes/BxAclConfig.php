@@ -48,6 +48,8 @@ class BxAclConfig extends BxBaseModGeneralConfig
             'PARAM_RECURRING_RESERVE' => 'bx_acl_recurring_reserve',
             'PARAM_RECURRING_PRIORITIZE' => 'bx_acl_recurring_prioritize',
             'PARAM_SHOW_TO_UNAUTHENTICATED' => 'bx_acl_show_to_unauthenticated',
+            'PARAM_ACTIONS_LIMIT_BLOCK' => 20,
+            'PARAM_ACTIONS_LIMIT_POPUP' => 10,
 
             // objects 
             'OBJECT_GRID_ADMINISTRATION' => 'bx_acl_administration',
@@ -83,9 +85,11 @@ class BxAclConfig extends BxBaseModGeneralConfig
         );
 
         $sHtmlPrefix = str_replace('_', '-', $this->_sName);
-        $this->_aHtmlIds = array(
+        $this->_aHtmlIds = [
+            'actions_popup' => $sHtmlPrefix . '-actions-popup-',
+            'actions_list' => $sHtmlPrefix . '-actions-list-',
             'popup_price' => $sHtmlPrefix . '-popup-price'
-        );
+        ];
 
         $this->_iOwner = 0;
         $this->_aCurrency = [];

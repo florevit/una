@@ -127,4 +127,13 @@
     <string name="_bx_acl_txt_none"><![CDATA[none]]></string>
     <string name="_bx_acl_txt_free"><![CDATA[free]]></string>
     <string name="_bx_acl_txt_lifetime"><![CDATA[lifetime]]></string>
+    <string name="_bx_acl_txt_x_actions"><![CDATA['{0}' Membership Level Actions]]></string>
+    <string name="_bx_acl_txt_action_title"><![CDATA[Action]]></string>
+    <string name="_bx_acl_txt_action_limit_count"><![CDATA[Limited in quantity]]></string>
+    <string name="_bx_acl_txt_action_limit_time"><![CDATA[Limited in time]]></string>
+    <string name="_bx_acl_txt_n_times"><![CDATA[{0} times]]></string>
+    <string name="_bx_acl_txt_n_times_m_hours"><![CDATA[{0} times resetting every {1} hours]]></string>
+    <string name="_bx_acl_txt_after_x"><![CDATA[allowed after {0}]]></string>
+    <string name="_bx_acl_txt_until_x"><![CDATA[allowed until {0}]]></string>
+    <string name="_bx_acl_txt_after_x_until_y"><![CDATA[allowed between {0} and {1}]]></string>
 </resources>

@@ -126,6 +126,15 @@ class BxAclGridView extends BxAclGridLevels
     	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
 
+    protected function _getCellLevelName($mixedValue, $sKey, $aField, $aRow)
+    {
+        $mixedValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $mixedValue, [
+            'onclick' => $this->_oModule->_oConfig->getJsObject('main') . '.viewActions(this, ' . $aRow['level_id'] . ')'
+        ]);
+
+    	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+    }
+
     protected function _getActionChoose ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
     {
         if((float)$aRow['price'] != 0 || BxDolAcl::getInstance()->isMemberLevelInSet(array($aRow['level_id'])))
