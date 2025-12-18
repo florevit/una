@@ -185,6 +185,11 @@ class BxBaseModPaymentGridTransactions extends BxTemplGrid
         return parent::_getCellDefault(bx_time_js($mixedValue, BX_FORMAT_DATE_TIME, true), $sKey, $aField, $aRow);
     }
 
+    protected function _getFilterOnChange()
+    {
+        return $this->_sJsObject . '.onChangeFilter(this)';
+    }
+
     protected function _getFilterSelectAll($sName, $aParams = array())
     {
         $sJsObject = !empty($aParams['js_object']) ? $aParams['js_object'] : $this->_sJsObject;
@@ -207,22 +212,6 @@ class BxBaseModPaymentGridTransactions extends BxTemplGrid
             'attrs' => $aAttrs,
             'value' => !empty($aParams['value']) ? $aParams['value'] : '',
             'values' => !empty($aParams['values']) && is_array($aParams['values']) ? $aParams['values'] : array()
-        );
-
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInput);
-    }
-
-    protected function _getSearchInput()
-    {
-        $aInput = array(
-            'type' => 'text',
-            'name' => 'keyword',
-            'attrs' => array(
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup\'); ' . $this->_sJsObject . '.onChangeFilter(this)',
-                'placeholder' => bx_html_attribute(_t('_sys_grid_search'))
-            )
         );
 
         $oForm = new BxTemplFormView(array());
