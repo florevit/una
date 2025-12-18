@@ -326,8 +326,12 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
     public function getViewFilters($aParams)
     {
+        $sStyle = $this->_oConfig->getFiltersStyle();
+        if(($sMethod = '_getViewFilters' . bx_gen_method_name($sStyle)) && method_exists($this, $sMethod))
+            return $this->$sMethod($aParams);
+
         $sStylePrefix = $this->_oConfig->getPrefix('style');
-        $sJsObject = $this->_oConfig->getJsObject('view_filters');
+        $sJsObject = $this->_oConfig->getJsObject('view_filters');       
 
         $iProfile = bx_get_logged_profile_id();
         $oModuleQuery = BxDolModuleQuery::getInstance();
@@ -501,6 +505,135 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
             'js_object' => $sJsObject,
             'content' => $oForm->genRows()
         ));
+
+        return BxTemplFunctions::getInstance()->transBox($sViewFiltersPopupId, $sViewFiltersPopupContent, true);
+    }
+
+    public function _getViewFiltersDisplay($aParams)
+    {
+        $sStylePrefix = $this->_oConfig->getPrefix('style');
+        $sJsObject = $this->_oConfig->getJsObject('view_filters');       
+
+        $iProfile = bx_get_logged_profile_id();
+        $oModuleQuery = BxDolModuleQuery::getInstance();
+
+        $aInputs = [];
+
+        //--- by Module
+        $aHandlers = $this->_oDb->getHandlers(['type' => 'by_type', 'value' => 'insert']);       
+
+        $aModules = [];
+        foreach($aHandlers as $aHandler) {
+            $sModule = $aHandler['alert_unit'];
+            if(isset($aModules[$sModule]))
+                continue;
+
+            if(in_array($sModule, ['timeline_common_post', 'timeline_common_repost'])) {
+                $sTitleValue = _t('_bx_timeline_form_filters_input_modules_' . $sModule);
+            }
+            else if(($aModule = $this->_oDb->getModuleByName($sModule)) && is_array($aModule)) {
+                $sTitleKey = '_' . $sModule;
+                $sTitleValue = _t($sTitleKey);
+                if(strcmp($sTitleKey, $sTitleValue) == 0)
+                    $sTitleValue = $aModule['title'];
+            }
+            else
+                continue;
+
+            $aModules[$sModule] = [
+                'key' => $sModule,
+                'value' => $sTitleValue
+            ];
+        }
+
+        uasort($aModules, function($aV1, $aV2) {
+            return strcmp($aV1['value'], $aV2['value']);
+        });
+
+        if ($this->_bIsApi)
+            $aInputs = array_merge($aInputs, [
+                'modules' => [
+                    'name' => 'modules',
+                    'type' => 'checkbox_set',
+                    'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
+                    'value' => implode(',', array_keys($aModules)),
+                    'values' => array_values($aModules),
+                ]
+            ]);
+        else
+            $aInputs = array_merge($aInputs, [
+                'modules' => [
+                    'name' => 'modules',
+                    'type' => 'checkbox_set',
+                    'value' => array_keys($aModules),
+                    'values' => array_values($aModules),
+                    'attrs' => [
+                        'onchange' => $sJsObject . '.onChangeModulesDisplay(this)'
+                    ]
+                ]
+            ]);
+
+        //--- by Media
+        $aFlagTypes = $this->_oDb->getEventFlagTypes();
+
+        $aMedia = [];
+        foreach($aFlagTypes as $sFt)
+            $aMedia[$sFt] = [
+                'key' => $sFt, 
+                'value' => _t('_bx_timeline_form_filters_input_by_media_' . $sFt)
+            ];
+
+        if ($this->_bIsApi)
+            $aInputs = array_merge($aInputs, [
+                'media' => [
+                    'name' => 'media',
+                    'type' => 'checkbox_set',
+                    'caption' => _t('_bx_timeline_form_filters_input_by_media'),
+                    'value' => implode(',', array_keys($aMedia)),
+                    'values' => array_values($aMedia),
+                ]
+            ]);
+        else
+            $aInputs = array_merge($aInputs, [
+                'media' => [
+                    'name' => 'media',
+                    'type' => 'checkbox_set',
+                    'value' => array_keys($aMedia),
+                    'values' => array_values($aMedia),
+                    'attrs' => [
+                        'onchange' => $sJsObject . '.onChangeMediaDisplay(this)'
+                    ]
+                ]
+            ]);
+
+        $sForm = $this->_oConfig->getName() . '_filters';
+        $aForm = [
+            'form_attrs' => [
+                'name' => $sForm
+            ],
+            'params' => [
+                'display' => $sForm
+            ],
+            'inputs' => array_merge($aInputs, [                
+                'apply' => [
+                    'name' => 'apply',
+                    'type' => 'button',
+                    'value' => _t('_bx_timeline_form_filters_input_do_apply'),
+                    'attrs' => ['onclick' => $sJsObject . '.onFilterApplyDisplay(this)']
+                ]
+            ])
+        ];
+        $oForm = new BxTemplFormView($aForm);
+
+        if($this->_bIsApi)
+            return $oForm->getCodeApi();
+
+        $sViewFiltersPopupId = $this->_oConfig->getHtmlIdView('filters_popup', array_merge($aParams, ['name' => '']));
+        $sViewFiltersPopupContent = $this->parseHtmlByName('block_view_filters.html', [
+            'style_prefix' => $sStylePrefix,
+            'js_object' => $sJsObject,
+            'content' => $oForm->genRows()
+        ]);
 
         return BxTemplFunctions::getInstance()->transBox($sViewFiltersPopupId, $sViewFiltersPopupContent, true);
     }

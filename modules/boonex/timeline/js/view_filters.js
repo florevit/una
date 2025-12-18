@@ -121,6 +121,18 @@ BxTimelineViewFilters.prototype.changeFeedFilters = function(oLink, oRequestPara
     );
 };
 
+BxTimelineViewFilters.prototype.onChangeModulesDisplay = function(oCheckbox)
+{
+    if($(oCheckbox).parents('.bx-tl-view-filters:first').find("input[name='modules[]']:checked").length == 0)
+        $(oCheckbox).prop('checked', true);
+};
+
+BxTimelineViewFilters.prototype.onChangeMediaDisplay = function(oCheckbox)
+{
+    if($(oCheckbox).parents('.bx-tl-view-filters:first').find("input[name='media[]']:checked").length == 0)
+        $(oCheckbox).prop('checked', true);
+};
+
 BxTimelineViewFilters.prototype.toggleMenuItemFeeds = function(oSource, sMenuItem)
 {
     bx_menu_toggle(oSource, this._sObjNameMenuFeeds, sMenuItem);
@@ -183,6 +195,54 @@ BxTimelineViewFilters.prototype.onFilterApply = function(oSource)
         oFilters.find("input[name='media[]']:checked").each(function() {
             oRequestParams.media.push($(this).val());
         });
+
+    var oData = this._getDefaultData(oSource);
+    if(oRequestParams != undefined)
+        oData = jQuery.extend({}, oData, oRequestParams);
+
+    this.loadingIn(oSource, true);
+
+    jQuery.get (
+        this._sActionsUrl + 'get_view',
+        oData,
+        function(oResponse) {
+            if(oSource)
+                $this.loadingIn(oSource, false);
+
+            if(!oResponse.content)
+                return;
+
+            $('.bx-popup-applied:visible').dolPopupHide();
+
+            $(sView).replaceWith(oResponse.content);
+            $(sView).bxProcessHtml();
+        },
+        'json'
+    );
+};
+
+BxTimelineViewFilters.prototype.onFilterApplyDisplay = function(oSource)
+{
+    var $this = this;
+
+    oRequestParams = jQuery.extend({}, this._oRequestParams, {
+        name: '',
+        start: 0
+    });
+
+    var sView = this._getHtmlId('main', oRequestParams); 
+    var oFilters = $(oSource).parents('.bx-tl-view-filters:first');
+
+    //--- Apply feed Filters
+    oRequestParams.modules = [];
+    oFilters.find("input[name='modules[]']:checked").each(function() {
+        oRequestParams.modules.push($(this).val());
+    });
+
+    oRequestParams.media = [];
+    oFilters.find("input[name='media[]']:checked").each(function() {
+        oRequestParams.media.push($(this).val());
+    });
 
     var oData = this._getDefaultData(oSource);
     if(oRequestParams != undefined)

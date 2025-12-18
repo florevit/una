@@ -1044,17 +1044,19 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         $sWhereClauseMedias = "";
         if(!empty($aParams['media'])) {
             if(is_array($aParams['media'])) {
-                $sWhereSubclauseMedias = "0";
                 $aMediaTypes = $aParams['media'];
-                foreach($aMediaTypes as $sMediaType) {
-                    if(!isset($this->_aTablesEventFlags[$sMediaType]))
-                        continue;
+                if($aMediaTypes !== array_keys($this->_aTablesEventFlags)) {
+                    $sWhereSubclauseMedias = "0";
+                    foreach($aMediaTypes as $sMediaType) {
+                        if(!isset($this->_aTablesEventFlags[$sMediaType]))
+                            continue;
 
-                    $sTableAliasFlag = 't' . substr($sMediaType, 0, 2);
-                    $mixedJoinClause .= " LEFT JOIN `" . $this->_aTablesEventFlags[$sMediaType] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
-                    $sWhereSubclauseMedias .= " OR NOT ISNULL(`{$sTableAliasFlag}`.`event_id`)";
+                        $sTableAliasFlag = 't' . substr($sMediaType, 0, 2);
+                        $mixedJoinClause .= " LEFT JOIN `" . $this->_aTablesEventFlags[$sMediaType] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
+                        $sWhereSubclauseMedias .= " OR NOT ISNULL(`{$sTableAliasFlag}`.`event_id`)";
+                    }
+                    $sWhereClauseMedias .= "AND ({$sWhereSubclauseMedias}) ";
                 }
-                $sWhereClauseMedias .= "AND ({$sWhereSubclauseMedias}) ";
             }
             else {
                 $sMediaType = $aParams['media'];

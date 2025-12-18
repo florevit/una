@@ -348,7 +348,8 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_timeline_extenals_every_hot_preload', '0', @iCategId, '_bx_timeline_option_extenals_every_hot_preload', 'digit', '', '', '', '', 48),
 ('bx_timeline_extenals_every_feed_and_hot_preload', '0', @iCategId, '_bx_timeline_option_extenals_every_feed_and_hot_preload', 'digit', '', '', '', '', 49),
 
-('bx_timeline_filters_contexts_hide', '', @iCategId, '_bx_timeline_option_filters_contexts_hide', 'rlist', '', '', '', 'a:2:{s:6:"module";s:11:"bx_timeline";s:6:"method";s:28:"get_options_filters_contexts";}', 70);
+('bx_timeline_filters_style', 'default', @iCategId, '_bx_timeline_option_filters_style', 'select', '', '', '', 'a:2:{s:6:"module";s:11:"bx_timeline";s:6:"method";s:25:"get_options_filters_style";}', 70),
+('bx_timeline_filters_contexts_hide', '', @iCategId, '_bx_timeline_option_filters_contexts_hide', 'rlist', '', '', '', 'a:2:{s:6:"module";s:11:"bx_timeline";s:6:"method";s:28:"get_options_filters_contexts";}', 75);
 
 
 -- Category: Card

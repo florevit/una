@@ -3410,11 +3410,42 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      * @page service Service Calls
      * @section bx_timeline Timeline
      * @subsection bx_timeline-other Other
+     * @subsubsection bx_timeline-get_options_filters_style get_options_filters_style
+     * 
+     * @code bx_srv('bx_timeline', 'get_options_filters_style', [...]); @endcode
+     * 
+     * Get an array with available options for 'Filters: Styles' setting.
+     *
+     * @return an array with available options represented as key => value pairs.
+     * 
+     * @see BxTimelineModule::serviceGetOptionsFiltersStyle
+     */
+    /** 
+     * @ref bx_timeline-get_options_filters_style "get_options_filters_style"
+     */
+    public function serviceGetOptionsFiltersStyle()
+    {
+        $aStyles = $this->_oConfig->getFiltersStyles();
+
+        $aResult = [];
+        foreach($aStyles as $sFilter)
+            $aResult[] = [
+                'key' => $sFilter, 
+                'value' => _t('_bx_timeline_option_filters_style_' . $sFilter)
+            ];
+
+        return $aResult;
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_timeline Timeline
+     * @subsection bx_timeline-other Other
      * @subsubsection bx_timeline-get_options_filters_contexts get_options_filters_contexts
      * 
      * @code bx_srv('bx_timeline', 'get_options_filters_contexts', [...]); @endcode
      * 
-     * Get an array with available options for '' setting.
+     * Get an array with available options for 'Filters: By contexts' setting.
      *
      * @return an array with available options represented as key => value pairs.
      * 
