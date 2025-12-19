@@ -355,7 +355,7 @@ class BxBaseModGroupsDb extends BxBaseModProfileDb
                 break;
 
             case 'by_profile_id':
-            	$aMethod['params'][1] = array(
+                $aMethod['params'][1] = array(
                     'profile_id' => $aParams['profile_id']
                 );
 
@@ -365,6 +365,12 @@ class BxBaseModGroupsDb extends BxBaseModProfileDb
                     $aMethod['name'] = 'getRow';
 
                     $sWhereClause .= " AND `tp`.`default`='1'";
+                }
+
+                if(!empty($aParams['active'])) {
+                    $aMethod['params'][1]['active'] = $aParams['active'];
+
+                    $sWhereClause .= " AND `tp`.`active`=:active";
                 }
                 break;
 
