@@ -18,6 +18,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
         $this->_aMenuItems2MethodsActions = array_merge($this->_aMenuItems2MethodsActions, array(
             'view-space-profile' => 'checkAllowedView',
             'edit-space-profile' => 'checkAllowedEdit',
+            'space-manage' => 'checkAllowedEdit',
             'edit-space-cover' => 'checkAllowedChangeCover',
             'edit-space-settings' => 'checkAllowedChangeSettings',
             'invite-to-space' => 'checkAllowedInvite',
