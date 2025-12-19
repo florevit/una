@@ -668,28 +668,26 @@ class BxBasePage extends BxDolPage
                     foreach($aInvitations as $aInvitation)
                         $aInvitedTo[] = BxDolProfile::getData($aInvitation['group_profile_id']);
 
-                $aInfo = [];
+                $aCurrent = [];
                 if(($iId = bx_get('id')) !== false) {
                     $aInfo = bx_srv($sModule, 'get_info', [(int)$iId, false]);
-                }
-                else if(($iPid = bx_get('profile_id')) !== false) {
-                    $aInfo = bx_srv($sModule, 'get_content_info_by_profile_id', [(int)$iPid]);
-                }
 
-                $aCurrent = [];
-                if($aInfo && ((($sKey = 'allow_view_to') && isset($aInfo[$sKey]) && ($iValue = (int)$aInfo[$sKey])) || (($sKey = 'object_privacy_view') && isset($aInfo[$sKey]) && ($iValue = (int)$aInfo[$sKey])))) {
-                    $mixedContext = false;
-                    if($iValue < 0) {
-                        $aContext = BxDolProfileQuery::getInstance()->getInfoById(abs($iValue));
-                        if($aContext && $aContext['type'] == $sContextSwitcher)
-                            $mixedContext = (int)$aContext['id'];
+                    if($aInfo && (($iValue = (int)($aInfo['allow_view_to'] ?? 0)) || ($iValue = (int)($aInfo['object_privacy_view'] ?? 0)))) {
+                        $mixedContext = false;
+                        if($iValue < 0) {
+                            $aContext = BxDolProfileQuery::getInstance()->getInfoById(abs($iValue));
+                            if($aContext && $aContext['type'] == $sContextSwitcher)
+                                $mixedContext = (int)$aContext['id'];
+                        }
+                        else if($sModule == $sContextSwitcher)
+                            $mixedContext = BxDolProfile::getInstanceByContentAndType((int)$aInfo['id'], $sModule);
+
+                        if($mixedContext !== false)
+                            $aCurrent = BxDolProfile::getData($mixedContext);
                     }
-                    else if($sModule == $sContextSwitcher)
-                        $mixedContext = BxDolProfile::getInstanceByContentAndType((int)$aInfo['id'], $sModule);
-
-                    if($mixedContext !== false)
-                        $aCurrent = BxDolProfile::getData($mixedContext);
                 }
+                else if(($iContextPid = bx_get('profile_id')) !== false && ($oContext = BxDolProfile::getInstance($iContextPid)) !== false)
+                    $aCurrent = BxDolProfile::getData($oContext);
 
                 $_sSample = '_' . $sContextSwitcher . '_txt_sample_single';
                 $sSample = _t($_sSample);
