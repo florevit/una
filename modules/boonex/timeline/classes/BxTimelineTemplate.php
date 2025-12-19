@@ -556,7 +556,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     'name' => 'modules',
                     'type' => 'checkbox_set',
                     'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
-                    'value' => implode(',', array_keys($aModules)),
+                    'value' => array_keys($aModules),
                     'values' => array_values($aModules),
                 ]
             ]);
@@ -589,7 +589,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     'name' => 'media',
                     'type' => 'checkbox_set',
                     'caption' => _t('_bx_timeline_form_filters_input_by_media'),
-                    'value' => implode(',', array_keys($aMedia)),
+                    'value' => array_keys($aMedia),
                     'values' => array_values($aMedia),
                 ]
             ]);
