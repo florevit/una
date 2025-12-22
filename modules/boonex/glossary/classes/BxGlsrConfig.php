@@ -49,10 +49,7 @@ class BxGlsrConfig extends BxBaseModTextConfig
             'FIELD_STATUS_ADMIN' => 'status_admin',
             'FIELD_LABELS' => 'labels',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
-
-            // some params
-            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_glossary_per_page_for_favorites_lists',
-            
+           
             // page URIs
             'URI_VIEW_ENTRY' => 'view-glossary',
             'URI_AUTHOR_ENTRIES' => 'glossary-author',

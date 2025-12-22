@@ -59,9 +59,6 @@ class BxFilesConfig extends BxBaseModTextConfig
             'FIELD_BOOKMARKS_ID' => 'object_id',
             'FIELD_BOOKMARKS_PROFILE' => 'profile_id',
             'FIELD_MIME_TYPE' => 'mime_type',
-			
-            // some params
-            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_files_per_page_for_favorites_lists',
             
             // page URIs
             'URI_VIEW_ENTRY' => 'view-file',
@@ -86,6 +83,8 @@ class BxFilesConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => '',
             'PARAM_NUM_RSS' => 'bx_files_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_files_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_files_per_page_browse_showcase',
+            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_files_per_page_for_favorites_lists',
             'PARAM_LINK_TO_PREVIEW' => 'bx_files_show_link_to_preview',
             'PARAM_MAX_NESTING_LEVEL' => 'bx_files_max_nesting_level',
             'PARAM_MAX_BULK_DOWNLOAD_SIZE' => 'bx_files_max_bulk_download_size',
