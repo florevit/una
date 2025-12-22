@@ -967,15 +967,39 @@ class BxBaseServiceProfiles extends BxDol
                 $oProfileQuery = BxDolProfileQuery::getInstance();
                 foreach($aItems as $aItem) 
                     if(($iContextPid = (int)$aItem['id']) && ($aContextProfileInfo = $oProfileQuery->getInfoById($iContextPid))) {
-                        $sContextModule = $aContextProfileInfo['type'];
+                        $sContext = $aContextProfileInfo['type'];
+                        $oContext = BxDolModule::getInstance($sContext);
+                        if(!$oContext)
+                            continue;
 
-                        $sKey = bx_srv($sContextModule, 'get_invited_key', [$iContextPid, $iProfileId]);
-                        $sCallback = '/api.php?r=' . $aContextProfileInfo['type'] . '/process_invite/&params[]=' . $sKey . '&params[]=' . $iContextPid . '&params[]=';
+                        $CNF_CONTEXT = &$oContext->_oConfig->CNF;
 
-                        $aDataApi[] = array_merge(bx_srv($aContextProfileInfo['type'], 'get_search_result_unit', [$aContextProfileInfo['content_id']]), [
+                        $iContextId = (int)$aContextProfileInfo['content_id'];
+                        $aContentInfo = $oContext->serviceGetInfo($iContextId, false);
+
+                        $sKey = $oContext->serviceGetInvitedKey($iContextPid, $iProfileId);
+                        $sCallback = '/api.php?r=' . $sContext . '/process_invite/&params[]=' . $sKey . '&params[]=' . $iContextPid . '&params[]=';
+
+                        $aDataAdd = [
                             'callback_accept' => $sCallback . '1',
                             'callback_decline' => $sCallback . '0',
-                        ]);
+                        ];
+                        $aDataAddView = [
+                            'redirect_url' => $oContext->serviceGetLink($iContextId),
+                            'redirect_title' => _t('_View_and_Join')
+                        ];
+
+                        if($oContext->serviceIsPaidJoinAvaliable($iContextPid)) {
+                            $aDataAdd = $aDataAddView;
+                        }
+                        else if(($iPtContextPid = $aContentInfo[$CNF_CONTEXT['FIELD_ALLOW_VIEW_TO']]) < 0) {
+                            $iPtContextPid = abs($iPtContextPid);
+                            $aPtContextProfileInfo = $oProfileQuery->getInfoById($iPtContextPid);
+                            if($aPtContextProfileInfo && bx_srv($aPtContextProfileInfo['type'], 'is_paid_join_avaliable', [$iPtContextPid]))
+                                $aDataAdd = $aDataAddView;
+                        }
+
+                        $aDataApi[] = array_merge(bx_srv($aContextProfileInfo['type'], 'get_search_result_unit', [$iContextId]), $aDataAdd);
                     }
             }
             
