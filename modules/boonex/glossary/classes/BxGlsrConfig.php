@@ -24,7 +24,7 @@ class BxGlsrConfig extends BxBaseModTextConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'fa-book col-red3',
+            'ICON' => 'fa-book',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'terms',

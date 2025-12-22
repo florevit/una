@@ -201,19 +201,19 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system` , `
 
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', 'bx_glossary', 'glossary-home', '_bx_glossary_menu_item_title_system_entries_home', '_bx_glossary_menu_item_title_entries_home', 'page.php?i=glossary-home', '', '', 'fa-book col-red3', 'bx_glossary_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', 'bx_glossary', 'glossary-home', '_bx_glossary_menu_item_title_system_entries_home', '_bx_glossary_menu_item_title_entries_home', 'page.php?i=glossary-home', '', '', 'fa-book', 'bx_glossary_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', 'bx_glossary', 'glossary-home', '_bx_glossary_menu_item_title_system_entries_home', '_bx_glossary_menu_item_title_entries_home', 'page.php?i=glossary-home', '', '', 'fa-book col-red3', 'bx_glossary_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', 'bx_glossary', 'glossary-home', '_bx_glossary_menu_item_title_system_entries_home', '_bx_glossary_menu_item_title_entries_home', 'page.php?i=glossary-home', '', '', 'fa-book', 'bx_glossary_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: add to "add content" menu
 
 SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_add_content_links' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_add_content_links', 'bx_glossary', 'create-glossary', '_bx_glossary_menu_item_title_system_create_entry', '_bx_glossary_menu_item_title_create_entry', 'page.php?i=create-glossary', '', '', 'fa-book col-red3', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
+('sys_add_content_links', 'bx_glossary', 'create-glossary', '_bx_glossary_menu_item_title_system_create_entry', '_bx_glossary_menu_item_title_create_entry', 'page.php?i=create-glossary', '', '', 'fa-book', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
 
 -- MENU: actions menu for view entry 
@@ -313,7 +313,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_profile_stats', 'bx_glossary', 'profile-stats-my-glossary', '_bx_glossary_menu_item_title_system_manage_my_glossary', '_bx_glossary_menu_item_title_manage_my_glossary', 'page.php?i=glossary-author&profile_id={member_id}', '', '_self', 'fa-book col-red3', 'a:2:{s:6:"module";s:11:"bx_glossary";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
+('sys_profile_stats', 'bx_glossary', 'profile-stats-my-glossary', '_bx_glossary_menu_item_title_system_manage_my_glossary', '_bx_glossary_menu_item_title_manage_my_glossary', 'page.php?i=glossary-author&profile_id={member_id}', '', '_self', 'fa-book', 'a:2:{s:6:"module";s:11:"bx_glossary";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -333,8 +333,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_glossary', 'glossary-author', '_bx_glossary_menu_item_title_system_view_entries_author', '_bx_glossary_menu_item_title_view_entries_author', 'page.php?i=glossary-author&profile_id={profile_id}', '', '', 'fa-book col-red3', '', 2147483647, 1, 0, 0),
-('trigger_group_view_submenu', 'bx_glossary', 'glossary-context', '_bx_glossary_menu_item_title_system_view_entries_in_context', '_bx_glossary_menu_item_title_view_entries_in_context', 'page.php?i=glossary-context&profile_id={profile_id}', '', '', 'fa-book col-red3', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_submenu', 'bx_glossary', 'glossary-author', '_bx_glossary_menu_item_title_system_view_entries_author', '_bx_glossary_menu_item_title_view_entries_author', 'page.php?i=glossary-author&profile_id={profile_id}', '', '', 'fa-book', '', 2147483647, 1, 0, 0),
+('trigger_group_view_submenu', 'bx_glossary', 'glossary-context', '_bx_glossary_menu_item_title_system_view_entries_in_context', '_bx_glossary_menu_item_title_view_entries_in_context', 'page.php?i=glossary-context&profile_id={profile_id}', '', '', 'fa-book', '', 2147483647, 1, 0, 0);
 
 -- PRIVACY 
 
@@ -430,7 +430,7 @@ INSERT INTO `sys_objects_category` (`object`, `module`, `search_object`, `form_o
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_glossary', 'bx_glossary', '_bx_glossary', 'page.php?i=glossary-home', 'fa-book col-red3', 'SELECT COUNT(*) FROM `bx_glossary_terms` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
+('bx_glossary', 'bx_glossary', '_bx_glossary', 'page.php?i=glossary-home', 'fa-book', 'SELECT COUNT(*) FROM `bx_glossary_terms` WHERE 1 AND `status` = ''active'' AND `status_admin` = ''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);
