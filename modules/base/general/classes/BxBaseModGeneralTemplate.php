@@ -182,12 +182,22 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
 
     public function getUnitTitle ($aData, $aParams = [])
     {
-        return $this->getTitle($aData, $aParams['process_output'] ?? null);
+        $sMethodName = 'getTitle';
+        $aMethodParams = [$aData];
+        if(($sKey = 'process_output') && isset($aParams[$sKey]))
+            $aMethodParams[] = $aParams[$sKey];
+
+        return call_user_func_array([$this, $sMethodName], $aMethodParams);
     }
 
     public function getUnitText ($aData, $aParams = [])
     {
-        return $this->getText($aData, $aParams['process_output'] ?? null);
+        $sMethodName = 'getText';
+        $aMethodParams = [$aData];
+        if(($sKey = 'process_output') && isset($aParams[$sKey]))
+            $aMethodParams[] = $aParams[$sKey];
+
+        return call_user_func_array([$this, $sMethodName], $aMethodParams);
     }
 
     public function getUnitSummary ($aData, $sTitle = '', $sText = '', $sUrl = '')
