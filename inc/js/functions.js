@@ -1779,14 +1779,14 @@ function bx_clicked_stack_register()
 
         window.glClickedStack.push(this);
 
-        if(window.glClickedStack.length > iStackMaxLenth)
+        if(window.glClickedStack && window.glClickedStack.length > iStackMaxLenth)
             window.glClickedStack = window.glClickedStack.slice(-iStackMaxLenth);
     });
 }
 
 function bx_clicked_stack_lenth()
 {
-    return window.glClickedStack.length;
+    return window.glClickedStack ? window.glClickedStack.length : 0;
 }
 
 function bx_clicked_stack_get()
@@ -1797,7 +1797,7 @@ function bx_clicked_stack_get()
 
 function bx_clicked_stack_pop()
 {
-    return window.glClickedStack.length > 0 ? window.glClickedStack.pop() : false;
+    return window.glClickedStack && window.glClickedStack.length > 0 ? window.glClickedStack.pop() : false;
 }
 
 /** @} */
