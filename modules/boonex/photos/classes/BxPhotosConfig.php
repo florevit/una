@@ -83,6 +83,8 @@ class BxPhotosConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => 'bx_photos_plain_summary_chars',
             'PARAM_NUM_RSS' => 'bx_photos_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_photos_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_photos_per_page_browse_showcase',
+            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_photos_per_page_for_favorites_lists',
 
             // objects
             'OBJECT_STORAGE' => 'bx_photos_photos',

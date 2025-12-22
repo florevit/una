@@ -76,6 +76,7 @@ class BxGlsrConfig extends BxBaseModTextConfig
             'PARAM_NUM_RSS' => 'bx_glossary_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_glossary_searchable_fields',
             'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_glossary_per_page_browse_showcase',
+            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_glossary_per_page_for_favorites_lists',
 
             // objects
             'OBJECT_STORAGE' => 'bx_glossary_files',

@@ -83,9 +83,12 @@ class BxVideosConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => 'bx_videos_plain_summary_chars',
             'PARAM_NUM_RSS' => 'bx_videos_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_videos_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_videos_per_page_browse_showcase',
+            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_videos_per_page_for_favorites_lists',
+
             'PARAM_MULTICAT_ENABLED' => true,
             'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES' => 'bx_videos_auto_activation_for_categories',
-            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_videos_per_page_for_favorites_lists',
+            
 
             // objects
             'OBJECT_STORAGE' => 'bx_videos_photos',

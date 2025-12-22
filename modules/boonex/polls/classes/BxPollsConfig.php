@@ -83,6 +83,8 @@ class BxPollsConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => '',
             'PARAM_NUM_RSS' => 'bx_polls_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_polls_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_polls_per_page_browse_showcase',
+            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_polls_per_page_for_favorites_lists',
 
             // objects
             'OBJECT_STORAGE' => 'bx_polls_files',

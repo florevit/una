@@ -89,7 +89,6 @@ class BxStrmConfig extends BxBaseModTextConfig
             'PARAM_NUM_RSS' => 'bx_stream_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_stream_searchable_fields',
             'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_stream_per_page_browse_showcase',
-            'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_stream_per_page_for_favorites_lists',
 
             'PARAM_MULTICAT_ENABLED' => true,
             'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES' => 'bx_stream_auto_activation_for_categories',

@@ -75,6 +75,7 @@ class BxSnipcartConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => 'bx_snipcart_plain_summary_chars',
             'PARAM_NUM_RSS' => 'bx_snipcart_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_snipcart_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_snipcart_per_page_browse_showcase',
 
             // objects
             'OBJECT_STORAGE' => 'bx_snipcart_files',
