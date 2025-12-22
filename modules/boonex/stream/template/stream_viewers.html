@@ -2,7 +2,7 @@
 <script>
     var fFunc = function () {
         let playerInstance = typeof(OvenPlayer) === 'undefined' ? false : OvenPlayer.getPlayerByContainerId("bx-stream-player-__suffix__");
-        if ((!playerInstance || 'playing' == playerInstance.getState()) && ('undefined' !== typeof(document.hidden) && !document.hidden)) {
+        if ((!playerInstance || 'playing' == playerInstance.getState() || 'idle' == playerInstance.getState()) && ('undefined' !== typeof(document.hidden) && !document.hidden)) {
             $.getJSON('__url__', function (oData) {
                 if ('undefined' !== typeof(oData.viewers)) {
                     $('#bx-stream-viewers-__suffix__').html(oData.viewers);
@@ -15,11 +15,11 @@
                     $('.bx-stream-badge').hide();
                 }
             }).always(function() {
-                setTimeout(fFunc, 10000);
+                setTimeout(fFunc, 3000);
             });
         }
         else {
-            setTimeout(fFunc, 10000);
+            setTimeout(fFunc, 3000);
         }
     }
     fFunc();

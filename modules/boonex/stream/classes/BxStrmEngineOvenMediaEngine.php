@@ -27,7 +27,14 @@ class BxStrmEngineOvenMediaEngine extends BxDol
         if (!$a)
             return false;
 
-        return $a['totalConnections'];
+        if (isset($a['totalConnections'])) // old API
+            return $a['totalConnections'];
+
+        $i = 0;
+        foreach ($a['connections'] as $k => $v) {
+            $i += $v;
+        }
+        return $i;
     }
 
     public function getStreamStats($sStreamKey)
