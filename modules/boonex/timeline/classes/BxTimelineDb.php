@@ -1139,7 +1139,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                 $mixedWhereSubclause = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = ?)", $aParams['owner_id']);
 
                 //--- Select Own Public (Direct) posts from Home Page Timeline (Public Feed).
-                $mixedWhereSubclause .= $this->prepareAsString(" OR (`{$sTableAlias}`.`owner_id` = '0' AND IF(`{$sTableAlias}`.`system`='0', `{$sTableAlias}`.`object_id` = ?, 1))", $aParams['owner_id']);
+                $mixedWhereSubclause .= $this->prepareAsString(" OR (`{$sTableAlias}`.`owner_id` = '0' AND `{$sTableAlias}`.`system`='0' AND `{$sTableAlias}`.`object_id` = ?)", $aParams['owner_id']);
                 break;
 
             //--- Feed: All Profile Connections 
@@ -1254,7 +1254,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                     $sWhereSubclauseOwnProfile = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = ?)", $aParams['owner_id']);
 
                     //--- Select Own Public (Direct) posts from Home Page Timeline (Public Feed).
-                    $sWhereSubclauseOwnPublic = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = '0' AND IF(`{$sTableAlias}`.`system`='0', `{$sTableAlias}`.`object_id` = ?, 1))", $aParams['owner_id']);
+                    $sWhereSubclauseOwnPublic = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = '0' AND `{$sTableAlias}`.`system`='0' AND `{$sTableAlias}`.`object_id` = ?)", $aParams['owner_id']);
 
                     $mixedJoinSubclause['p1'] = "";
                     $mixedWhereSubclause['p1'] = "(" . $sWhereSubclauseOwnProfile . " OR " . $sWhereSubclauseOwnPublic . ")";
@@ -1355,7 +1355,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                 $sWhereSubclauseOwnProfile = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = ?)", $aParams['owner_id']);
 
                 //--- Select Own Public (Direct) posts from Home Page Timeline (Public Feed).
-                $sWhereSubclauseOwnPublic = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = '0' AND IF(`{$sTableAlias}`.`system`='0', `{$sTableAlias}`.`object_id` = ?, 1))", $aParams['owner_id']);
+                $sWhereSubclauseOwnPublic = $this->prepareAsString("(`{$sTableAlias}`.`owner_id` = '0' AND `{$sTableAlias}`.`system`='0' AND `{$sTableAlias}`.`object_id` = ?)", $aParams['owner_id']);
 
                 $mixedJoinSubclause['p1'] = "";
                 $mixedWhereSubclause['p1'] = "(" . $sWhereSubclauseOwnProfile . " OR " . $sWhereSubclauseOwnPublic . ")";
