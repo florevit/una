@@ -163,14 +163,17 @@ class BxTimelineDb extends BxBaseModNotificationsDb
 
     public function getReposted($sType, $sAction, $iObjectId)
     {
+        if(!$this->isHandler($sType, $sAction))
+            return [];
+
     	$bSystem = $this->_oConfig->isSystem($sType, $sAction);
 
-        if($bSystem)
-            $aParams = array('browse' => 'descriptor', 'type' => $sType, 'action' => $sAction, 'object_id' => $iObjectId);
-        else
-            $aParams = array('browse' => 'id', 'value' => $iObjectId);
+        $aReposted = $this->getEvents($bSystem ? [
+            'browse' => 'descriptor', 'type' => $sType, 'action' => $sAction, 'object_id' => $iObjectId
+        ] : [
+            'browse' => 'id', 'value' => $iObjectId
+        ]);
 
-        $aReposted = $this->getEvents($aParams);
         if($bSystem && (empty($aReposted) || !is_array($aReposted))) {
             $iOwnerId = 0;
             $iDate = 0;
@@ -184,7 +187,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                     $sStatus = BX_TIMELINE_STATUS_ACTIVE;
             }
 
-            $iId = $this->insertEvent(array(
+            $iId = $this->insertEvent([
                 'owner_id' => $iOwnerId,
                 'type' => $sType,
                 'action' => $sAction,
@@ -197,9 +200,9 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                 'date' => $iDate,
                 'reacted' => $iDate,
                 'status' => $sStatus
-            ));
+            ]);
 
-            $aReposted = $this->getEvents(array('browse' => 'id', 'value' => $iId));
+            $aReposted = $this->getEvents(['browse' => 'id', 'value' => $iId]);
         }
 
         return $aReposted;

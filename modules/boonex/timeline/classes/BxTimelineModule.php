@@ -424,8 +424,11 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(!empty($aResult) && is_array($aResult))
             return echoJson($aResult);
 
-        $aParams = $this->_oConfig->getRepostDefaults();
         $aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
+        if(empty($aReposted) || !is_array($aReposted))
+            return echoJson(['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')]);
+
+        $aParams = $this->_oConfig->getRepostDefaults();
 
         echoJson([
             'code' => 0, 
@@ -452,33 +455,36 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         $iObjectId = bx_process_input(bx_get('object_id'), BX_DATA_INT);
 
         $oForm = BxDolForm::getObjectInstance($this->_oConfig->getObject('form_repost'), $this->_oConfig->getObject('form_display_repost_with'));
-        $oForm->initChecker(array(
+        $oForm->initChecker([
             'reposter_id' => $iReposterId,
             'owner_id' => $iOwnerId,
             'type' => $sType,
             'action' => $sAction, 
             'object_id' => $iObjectId
-        ));
+        ]);
 
         if($oForm->isSubmitted()) {
             if(!$oForm->isValid())
-                return echoJson(array('popup' => array(
+                return echoJson(['popup' => [
                     'html' => BxTemplFunctions::getInstance()->transBox($this->_oConfig->getHtmlIds('repost', 'with_popup'), $this->_oTemplate->getRepostWith($oForm)), 
-                    'options' => array('closeOnOuterClick' => false, 'removeOnClose' => true)
-                )));
+                    'options' => ['closeOnOuterClick' => false, 'removeOnClose' => true]
+                ]]);
 
-            $this->repost($iReposterId, $iOwnerId, $sType, $sAction, $iObjectId, ['text' => $oForm->getCleanValue('text')]);
+            $aResult = $this->repost($iReposterId, $iOwnerId, $sType, $sAction, $iObjectId, ['text' => $oForm->getCleanValue('text')]);
+            if(!empty($aResult) && is_array($aResult))
+                return echoJson($aResult);
 
             $aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
-            $sCounter = $this->_oTemplate->getRepostCounter($aReposted);
+            if(empty($aReposted) || !is_array($aReposted))
+                return echoJson(['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')]);
 
-            return echoJson(array(
+            return echoJson([
                 'code' => 0, 
                 'message' => _t('_bx_timeline_txt_msg_success_repost'), 
                 'count' => $aReposted['reposts'], 
                 'countf' => (int)$aReposted['reposts'] > 0 ? $this->_oTemplate->getRepostCounterLabel($aReposted['reposts']) : '',
-                'counter' => $sCounter,
-            ));
+                'counter' => $this->_oTemplate->getRepostCounter($aReposted),
+            ]);
         }
 
         echo $this->_oTemplate->getRepostTo($oForm);
@@ -495,21 +501,21 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         $iObjectId = bx_process_input(bx_get('object_id'), BX_DATA_INT);
 
         $oForm = BxDolForm::getObjectInstance($this->_oConfig->getObject('form_repost'), $this->_oConfig->getObject('form_display_repost_to'));
-        $oForm->initChecker(array(
+        $oForm->initChecker([
             'reposter_id' => $iReposterId,
             'type' => $sType,
             'action' => $sAction, 
             'object_id' => $iObjectId
-        ));
+        ]);
 
         if($oForm->isSubmitted()) {
             if(!$oForm->isValid())
-                return echoJson(array('popup' => array(
+                return echoJson(['popup' => [
                     'html' => BxTemplFunctions::getInstance()->transBox($this->_oConfig->getHtmlIds('repost', 'to_popup'), $this->_oTemplate->getRepostTo($oForm)), 
-                    'options' => array('closeOnOuterClick' => false, 'removeOnClose' => true)
-                )));
+                    'options' => ['closeOnOuterClick' => false, 'removeOnClose' => true]
+                ]]);
 
-            $aContexts = array();
+            $aContexts = [];
             if(($aContextsSearch = $oForm->getCleanValue('search')) !== false)
                 $aContexts = array_merge($aContexts, $aContextsSearch);
 
@@ -518,21 +524,27 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
             $aContexts = array_unique($aContexts);
             if(empty($aContexts) || !is_array($aContexts))
-                return echoJson(array());
+                return echoJson([]);
 
+            $iResult = 0;
             foreach($aContexts as $iContextId)
-                $this->repost($iReposterId, $iContextId, $sType, $sAction, $iObjectId);
+                if(($mixedResult = $this->repost($iReposterId, $iContextId, $sType, $sAction, $iObjectId)) && !is_array($mixedResult))
+                    $iResult++;
+
+            if(!$iResult)
+                return echoJson(['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')]);
 
             $aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
-            $sCounter = $this->_oTemplate->getRepostCounter($aReposted);
+            if(empty($aReposted) || !is_array($aReposted))
+                return echoJson(['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')]);
 
-            return echoJson(array(
+            return echoJson([
                 'code' => 0, 
                 'message' => _t('_bx_timeline_txt_msg_success_repost'), 
                 'count' => $aReposted['reposts'], 
                 'countf' => (int)$aReposted['reposts'] > 0 ? $this->_oTemplate->getRepostCounterLabel($aReposted['reposts']) : '',
-                'counter' => $sCounter,
-            ));
+                'counter' => $this->_oTemplate->getRepostCounter($aReposted),
+            ]);
         }
 
         echo $this->_oTemplate->getRepostTo($oForm);
@@ -2988,6 +3000,8 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             return '';
 
         $aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
+        if(empty($aReposted) || !is_array($aReposted))
+            return '';
 
         $aParams = array_merge($this->_oConfig->getRepostDefaults(), $aParams);
         return $this->_oTemplate->getRepostCounter($aReposted, $aParams);
@@ -3240,17 +3254,20 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
     public function repost($iAuthorId, $iOwnerId, $sType, $sAction, $iObjectId, $mixedData = false, $bForce = false)
     {
+        if(!$this->_oDb->isHandler($sType, $sAction))
+            return ['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')];
+
         $aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
         if(empty($aReposted) || !is_array($aReposted))
-            return array('code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost'));
+            return ['code' => 1, 'message' => _t('_bx_timeline_txt_err_cannot_repost')];
 
         $mixedAllowed = $this->isAllowedRepost($aReposted, true);
         if(!$bForce && $mixedAllowed !== true)
-            return array('code' => 2, 'message' => strip_tags($mixedAllowed));
+            return ['code' => 2, 'message' => strip_tags($mixedAllowed)];
 
         $bReposted = $this->_oDb->isReposted($aReposted['id'], $iOwnerId, $iAuthorId);
         if($bReposted)
-            return array('code' => 3, 'message' => _t('_bx_timeline_txt_err_already_reposted'));
+            return ['code' => 3, 'message' => _t('_bx_timeline_txt_err_already_reposted')];
 
         $iDate = time();
         $iId = $this->_oDb->insertEvent([
@@ -3275,7 +3292,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         ]);
 
         if(empty($iId))
-            return array('code' => 4, 'message' => _t('_bx_timeline_txt_err_cannot_repost'));
+            return ['code' => 4, 'message' => _t('_bx_timeline_txt_err_cannot_repost')];
 
         $this->_oDb->updateEvent([
             'source' => $this->getName() . '_' . $iAuthorId . '_' . $iId
