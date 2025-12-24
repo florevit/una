@@ -582,6 +582,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
                         ]
                     ],
                     'summary_plain' => $sSummaryPlain,
+                    'summary_attr' => bx_html_attribute($sSummaryPlain),
                     'strecher' => mb_strlen($sSummaryPlain) > 240 ? '' : str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ', round((240 - mb_strlen($sSummaryPlain)) / 6)),
                 ),
             ),
