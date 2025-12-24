@@ -558,10 +558,40 @@
   resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.31.tgz#9c84e85aa15da4099b1dfb4807bf009663f1eee0"
   integrity sha512-vjsZbatveSMoceOKZHt4eImmlBQla112OV9+enxcZUC1dGziTl2J2E3iH3n01yx9nu9ziesMJnSh/Y2d62TA/Q==
 
-"@svta/common-media-library@^0.17.1":
-  version "0.17.4"
-  resolved "https://registry.yarnpkg.com/@svta/common-media-library/-/common-media-library-0.17.4.tgz#2723a86f2e3f7991c9aa82a4ee44e12a2ea4c48e"
-  integrity sha512-nP/KThzQW5FZKdc9V7ICTa9/A7xGw66VQoLPYOEwwMZTTrISp1zIQAX4KAYJw2PN/VPnxJQJXIYbzZTXgMHctw==
+"@svta/cml-608@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-608/-/cml-608-1.0.1.tgz#57f16c6c973fc36f0ddb379b8b02803f062e62fc"
+  integrity sha512-Y/Ier9VPUSOBnf0bJqdDyTlPrt4dDB+jk5mYHa1bnD2kcRl8qn7KkW3PRuj4w1aVN+BS2eHmsLxodt7P2hylUg==
+
+"@svta/cml-cmcd@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-cmcd/-/cml-cmcd-1.0.1.tgz#430e43ec5ec173befaa06044ce5d235a1312e515"
+  integrity sha512-eox305g+QUJgXqOLVrbgxeQHCgl90ewwQ9O2bIoo7m+hanR8Xswu5CknFnT5qqIbLOHfw80ug+raycoAFHTQ+w==
+
+"@svta/cml-cmsd@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-cmsd/-/cml-cmsd-1.0.1.tgz#f5a70ddbae413fd6cb898af8dce8f1303691bc46"
+  integrity sha512-+nIB8PuSfb/qw+xGaArPhNqPm84tBJUbe3H1DnPL5QUsjSUI7mUIUQwAtRV1ZdEu0+80g9i0op79woB0OIwr/g==
+
+"@svta/cml-dash@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-dash/-/cml-dash-1.0.1.tgz#644124536223a80083e142e881f5342ec85552e8"
+  integrity sha512-lYnD1I7FUbbQND+xICI+kcRaRXuT+whKk27R8m8me5VMVu2sMsAMc7Yui6l9sxw2cBKt8pSETPYRm/1+n4LZkw==
+
+"@svta/cml-id3@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-id3/-/cml-id3-1.0.1.tgz#c1e79a3abb299e81931f49b8a5289b4dbbe4bd0d"
+  integrity sha512-90fGlL1qRI88CcaB89k6NG6cC3kky4Eu2jwqU4HefqK+S5k2OASUxf8JXkGz+DsdaiY7sh51vGPYdolfBZS7ug==
+
+"@svta/cml-request@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-request/-/cml-request-1.0.1.tgz#49eb488a00fc7a8309b4cc6b10ee6007fe2001db"
+  integrity sha512-enL19BuXUjFkDDDF9jdNwUclMNPRsagnjGAetVC7xcmpDMpEx+ZLgsDip6BFNg5p6izSEk/OyujTWW1r8bDNiA==
+
+"@svta/cml-xml@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@svta/cml-xml/-/cml-xml-1.0.1.tgz#a19cc692ba166ff1651a1d23ccd1b2a2d2530986"
+  integrity sha512-11LkJa5kDEcsRMWkVI1ABH3KLCxGoiSVe4kQ293ItVj8ncTTQ7htmCGiJDjS+Cmy35UgF3e/vc0ysJIiWRTx2g==
 
 "@tailwindcss/aspect-ratio@^0.4.2":
   version "0.4.2"
@@ -1044,12 +1074,18 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
-dashjs@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-5.1.0.tgz#4552570eae24e439a2482fc57057e683ece61c6b"
-  integrity sha512-FilZfs+0pj9NB7q2VMT4zahG+V2JoleVl6K9kWunvndICdclw/jLAfLImcmCr1WqxH4hsgsFXvaVgea9XGkgVQ==
+dashjs@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-5.1.1.tgz#bdc5f597b77838fbcba2aaeec9dc587b7814be7b"
+  integrity sha512-BzNXlUgzEjhuZ5M5hlSp1qIyQHZ7NpXAR0loP9DAAFVZj/ntL1DHeZ7qp/L3bvI4rq50X5indkAZQ3zEHWJoCA==
   dependencies:
-    "@svta/common-media-library" "^0.17.1"
+    "@svta/cml-608" "1.0.1"
+    "@svta/cml-cmcd" "1.0.1"
+    "@svta/cml-cmsd" "1.0.1"
+    "@svta/cml-dash" "1.0.1"
+    "@svta/cml-id3" "1.0.1"
+    "@svta/cml-request" "1.0.1"
+    "@svta/cml-xml" "1.0.1"
     bcp-47-match "^2.0.3"
     bcp-47-normalize "^2.3.0"
     codem-isoboxer "0.3.10"
