@@ -33,9 +33,8 @@ class BxBaseModGeneralPageBrowse extends BxTemplPage
                 $oMenuSubmenu->setObjectSubmenu($this->_oModule->_oConfig->CNF['OBJECT_MENU_SUBMENU']);
         }
 
+        $aMarkers = ['category_name' => ''];
         if(($mixedCategory = bx_get('category')) !== false) {
-            $aMarkers = [];
-
             if(!empty($CNF['OBJECT_CATEGORY']) && is_numeric($mixedCategory)) {
                 $mixedCategory = bx_process_input($mixedCategory, BX_DATA_INT);
 
@@ -46,9 +45,9 @@ class BxBaseModGeneralPageBrowse extends BxTemplPage
             }
             else
                 $aMarkers['category_name'] = _t($mixedCategory);
-
-            $this->addMarkers($aMarkers);
         }
+        
+        $this->addMarkers($aMarkers);
     }
 
 }
