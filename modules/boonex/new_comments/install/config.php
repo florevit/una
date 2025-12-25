@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'New Comments',
     'note' => 'This module add ability to mark new commentaries',
     'version' => '9.0.0',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.boonex.com/?section={module_name}',
 
     'compatible_with' => array(

@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'Drupal connect',
     'note' => 'Join the site using Drupal account.',
     'version' => '9.0.0.DEV',
-    'vendor' => 'Boonex',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

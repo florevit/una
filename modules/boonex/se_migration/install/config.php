@@ -18,8 +18,8 @@ $aConfig = array(
     'title' => 'SocialEngine Migration',
     'note' => 'Migration Tool',
     'version' => '9.0.0',
-    'vendor' => 'Boonex',
-	'help_url' => 'http://feed.una.io/?section={module_name}',
+    'vendor' => 'UNA INC',
+    'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
         '9.0.x'

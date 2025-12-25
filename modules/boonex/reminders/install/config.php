@@ -19,7 +19,7 @@ $aConfig = array(
     'title' => 'Reminders',
     'note' => 'Reminders module.',
     'version' => '11.0.0',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

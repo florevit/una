@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'Azure AD Connect',
     'note' => 'Join the site using Azure AD account.',
     'version' => '13.0.0.DEV',
-    'vendor' => 'Boonex',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

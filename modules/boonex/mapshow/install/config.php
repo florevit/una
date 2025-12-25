@@ -19,7 +19,7 @@ $aConfig = array(
     'title' => 'Map Show',
     'note' => 'Map Show module.',
     'version' => '1.0.0.DEV',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

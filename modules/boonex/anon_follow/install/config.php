@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'Anonymous Follow',
     'note' => 'This module add ability to follow anonymousy',
     'version' => '9.0.0',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.boonex.com/?section={module_name}',
 
     'compatible_with' => array(
