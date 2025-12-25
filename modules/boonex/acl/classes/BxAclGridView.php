@@ -128,9 +128,10 @@ class BxAclGridView extends BxAclGridLevels
 
     protected function _getCellLevelName($mixedValue, $sKey, $aField, $aRow)
     {
-        $mixedValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $mixedValue, [
-            'onclick' => $this->_oModule->_oConfig->getJsObject('main') . '.viewActions(this, ' . $aRow['level_id'] . ')'
-        ]);
+        if(!$this->_bIsApi)
+            $mixedValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $mixedValue, [
+                'onclick' => $this->_oModule->_oConfig->getJsObject('main') . '.viewActions(this, ' . $aRow['level_id'] . ')'
+            ]);
 
     	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
