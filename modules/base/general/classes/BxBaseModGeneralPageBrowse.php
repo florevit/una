@@ -39,16 +39,12 @@ class BxBaseModGeneralPageBrowse extends BxTemplPage
                 $mixedCategory = bx_process_input($mixedCategory, BX_DATA_INT);
 
                 $aMarkers = [
-                    'category_id' => $mixedCategory,
-                    'category_name' => BxDolCategory::getObjectInstance($CNF['OBJECT_CATEGORY'])->getCategoryTitle($mixedCategory),
+                    'category_id' => bx_process_output($mixedCategory, BX_DATA_INT),
+                    'category_name' => bx_process_output(BxDolCategory::getObjectInstance($CNF['OBJECT_CATEGORY'])->getCategoryTitle($mixedCategory), BX_DATA_TEXT),
                 ];
             }
-            else {
-                //TODO: Test it with Leonid!
-                $mixedCategory = bx_process_input($mixedCategory, BX_DATA_TEXT);
-
-                $aMarkers['category_name'] = _t($mixedCategory);
-            }
+            else
+                $aMarkers['category_name'] = bx_process_output(_t($mixedCategory), BX_DATA_TEXT);
         }
         
         $this->addMarkers($aMarkers);
