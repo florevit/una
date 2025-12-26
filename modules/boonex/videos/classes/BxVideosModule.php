@@ -177,7 +177,34 @@ class BxVideosModule extends BxBaseModFilesModule
             'src_mp4_hd' => $sVideoUrlHd
         ];
     }
+
+    public function serviceGetTimelinePost($aEvent, $aBrowseParams = [])
+    {
+        $mixedResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
+
+        if($this->_bIsApi && $mixedResult && is_array($mixedResult)) {
+            $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
             
+            switch($aContentInfo['video_source']) {
+                case 'embed':
+                    if(($sKey = 'video_embed') && !empty($aContentInfo[$sKey]))
+                        $mixedResult['content'] = array_merge($mixedResult['content'], [
+                            'embed' => $aContentInfo[$sKey],
+                            'images' => []
+                        ]);
+                    break;
+
+                case 'upload':
+                    $aCnt = $mixedResult['content'];
+                    if($aCnt['videos'] && is_array($aCnt['videos']))
+                        $mixedResult['content']['images'] = [];
+                    break;
+            }
+        }
+        
+        return $mixedResult;
+    }
+
     protected function _getContentForTimelinePost($aEvent, $aContentInfo, $aBrowseParams = array())
     {
         $aResult = parent::_getContentForTimelinePost($aEvent, $aContentInfo, $aBrowseParams);
