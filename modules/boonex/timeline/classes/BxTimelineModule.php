@@ -2613,7 +2613,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_summary' => $sEntrySummary,
             'entry_author' => $iEntryAuthor,
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-            'modal_view' => $this->getName()            
         ];
     }
 
@@ -2677,7 +2676,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-            'modal_view' => $this->getName()
         ];
     }
 
@@ -2701,9 +2699,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      */
     public function serviceGetNotificationsReply($aEvent)
     {
-        return array_merge(parent::serviceGetNotificationsReply($aEvent), [
-            'modal_view' => $this->getName()
-        ]);
+        return parent::serviceGetNotificationsReply($aEvent);
     }
 
     /**
@@ -2748,7 +2744,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_author' => $aContent['owner_id'],
             'subentry_sample' => $CNF['T']['txt_sample_vote_single'],
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-            'modal_view' => $this->getName()
         ];
     }
 
@@ -2791,7 +2786,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'subentry_sample' => $CNF['T']['txt_sample_reaction_single'],
             'subentry_sample_params' => $aSubentrySampleParams,
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-            'modal_view' => $this->getName()
         ];
     }
 
@@ -2866,7 +2860,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_author' => $aContent['owner_id'],
             'subentry_sample' => $CNF['T']['txt_sample_score_' . $sType . '_single'],
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-            'modal_view' => $this->getName()
         ];
     }
 

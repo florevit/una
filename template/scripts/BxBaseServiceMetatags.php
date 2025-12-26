@@ -113,7 +113,6 @@ class BxBaseServiceMetatags extends BxDol
         if(!$oProfile)
             return [];
 
-        $sModalView = 'default';
         $sEntryUrl = $sEntryUrlApi = '';
         if (isset($aEvent['content']['module']) && isset($aEvent['content']['content_id'])) {
             if ('sys_cmts' == $aEvent['content']['module']) {
@@ -122,7 +121,6 @@ class BxBaseServiceMetatags extends BxDol
                 if ($oCmts && $aCmt) {
                     $sEntryUrl = $oCmts->getItemUrl($aCmt['cmt_id'], '{bx_url_root}');
                     $sEntryUrlApi = $oCmts->getItemUrlApi($aCmt['cmt_id'], '{bx_url_root}');
-                    $sModalView = $oCmts->geModalViewApi();
                 }
             }
             elseif (BxDolRequest::serviceExists($aEvent['content']['module'], 'get_link'))
@@ -139,7 +137,6 @@ class BxBaseServiceMetatags extends BxDol
             'entry_caption' => $oProfile->getDisplayName(),
             'entry_author' => $iProfile,
             'lang_key' => '_sys_metatags_mention_added',
-            'modal_view' => $sModalView
         ];
     }
 }

@@ -290,7 +290,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
 
             $aEvent['content'] = array_merge($aEvent['content'], $aLinks);
             $aEvent['content'] = array_intersect_key($aEvent['content'], array_flip([
-                'entry_url', 'entry_url_api', 'subentry_url', 'subentry_url_api', 'modal_view'
+                'entry_url', 'entry_url_api', 'subentry_url', 'subentry_url_api'
             ]));
 
             if(($sKey = 'content_parsed') && is_array($aEvent[$sKey])) {
@@ -301,7 +301,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
                 $aEvent[$sKey] = html_entity_decode($aEvent[$sKey]);
 
             return array_intersect_key($aEvent, array_flip([
-                'id', 'owner_id', 'content', 'content_parsed', 'date', 'author_data'
+                'id', 'owner_id', 'type', 'content', 'content_parsed', 'date', 'author_data'
             ]));
         }
 
