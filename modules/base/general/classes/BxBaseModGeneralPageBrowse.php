@@ -43,8 +43,12 @@ class BxBaseModGeneralPageBrowse extends BxTemplPage
                     'category_name' => BxDolCategory::getObjectInstance($CNF['OBJECT_CATEGORY'])->getCategoryTitle($mixedCategory),
                 ];
             }
-            else
+            else {
+                //TODO: Test it with Leonid!
+                $mixedCategory = bx_process_input($mixedCategory, BX_DATA_TEXT);
+
                 $aMarkers['category_name'] = _t($mixedCategory);
+            }
         }
         
         $this->addMarkers($aMarkers);
