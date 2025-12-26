@@ -1326,9 +1326,10 @@ class BxBaseModGeneralModule extends BxDolModule
 
     public function serviceGetObjectBrowse($sMode, $aParams = false, $sClassSearchResult = 'SearchResult')
     {
-        bx_import($sClassSearchResult, $this->_aModule);
-        $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
-        return new $sClass($sMode, array_merge(['mode' => $sMode], $aParams));
+        if(empty($aParams) || !is_array($aParams))
+            $aParams = [];
+
+        return $this->getObjectBrowse($sMode, array_merge(['mode' => $sMode], $aParams), $sClassSearchResult);
     }
 
     /**
@@ -2506,74 +2507,68 @@ class BxBaseModGeneralModule extends BxDolModule
     public function serviceBrowseByLabel()
     {   
         $CNF = &$this->_oConfig->CNF;
-        if (empty($CNF['OBJECT_METATAGS']))
-            return '';
-        
-		$sMode = 'recent';
-		if(bx_srv('system', 'is_module_content', [$this->_aModule['name']]))
-		   $sMode = 'public';
-		   
-		$sClassSearchResult ='SearchResult';
-		
-		bx_import($sClassSearchResult, $this->_aModule['name']);
-        $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
-		
-        $o = new $sClass($sMode, false);
-		$o->setDesignBoxTemplateId(BX_DB_PADDING_DEF);
-        $o->setDisplayEmptyMsg(true);
-        $o->setAjaxPaginate(false);
-        $o->setUnitParams(array('context' => $sMode));
-		
-		if (bx_get('label')){
-			$iLabelId = (int)bx_get('label');
-			$oLabel = BxDolLabel::getInstance();
-			$aLabel = $oLabel->getLabels(array('type' => 'id', 'id' => $iLabelId));
-			$oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-			$sTmp =$oMetatags->keywordsSetSearchCondition($o, $aLabel['value']);
-		}
-		
-        if ($o->isError)
+        if(empty($CNF['OBJECT_METATAGS']))
             return '';
 
-        if ($s = $o->processing())
+        $sMode = 'recent';
+        if(bx_srv('system', 'is_module_content', [$this->_aModule['name']]))
+           $sMode = 'public';
+
+        $o = $this->getObjectBrowse($sMode);
+        $o->setDesignBoxTemplateId(BX_DB_PADDING_DEF);
+        $o->setDisplayEmptyMsg(true);
+        $o->setAjaxPaginate(false);
+        $o->setUnitParams(['context' => $sMode]);
+
+        if(($iLabelId = bx_get('label')) !== false) {
+            $aLabel = BxDolLabel::getInstance()->getLabels(['type' => 'id', 'id' => (int)$iLabelId]);
+            BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS'])->keywordsSetSearchCondition($o, $aLabel['value']);
+        }
+
+        if($o->isError)
+            return '';
+
+        if($s = $o->processing())
             return $s;
         else
             return '';
-	}
+    }
     
     public function serviceBrowseByCategories($sUnitView, $bEmptyMessage, $bAjaxPaginate, $sMode, $iPerPage)
     {   
-        $CNF = &$this->_oConfig->CNF;
-        $sClassSearchResult ='SearchResult';
-		
-		bx_import($sClassSearchResult, $this->_aModule['name']);
-        $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
-        $o = new $sClass($sMode, array('unit_view' => $sUnitView, 'paginate' => array('perPage' => 10, 'start' => 0, 'num' => 11)));
-		$o->setDesignBoxTemplateId(BX_DB_PADDING_DEF);
+        $o = $this->getObjectBrowse($sMode, ['unit_view' => $sUnitView]);
+        $o->setDesignBoxTemplateId(BX_DB_PADDING_DEF);
+        $o->setDisplayEmptyMsg($bEmptyMessage);
         $o->setAjaxPaginate($bAjaxPaginate);
         $o->setCategoryObject('multi');
-        
-        $aCategoriesOutput = array();
-		$aCategories = BxDolCategories::getInstance()->getData(array('type' => 'by_module_with_num', 'module' => $this->_aModule['name']));
-        
-        foreach($aCategories as $aCategory){
-            if ($aCategory['num'] > 0){
-                $o->setCustomSearchCondition(array('keyword' => $aCategory['value']));
-                $o->setPaginatePerPage(2);
-                if (!$o->isError){
+
+        $aCategories = BxDolCategories::getInstance()->getData([
+            'type' => 'by_module_with_num', 
+            'module' => $this->_aModule['name']
+        ]);
+
+        $aCategoriesOutput = [];
+        foreach($aCategories as $aCategory) {
+            if($aCategory['num'] > 0) {
+                $o->setCustomSearchCondition(['keyword' => $aCategory['value']]);
+                $o->setPaginatePerPage($iPerPage);
+                if(!$o->isError){
                     $aResult = $o->processing();
-                    if ($aResult && $aResult['content'] != '')
-                        $aCategoriesOutput[] =  array('name' => _t($aCategory['value']), 'url' => '', 'content' => $aResult['content']);
+                    if($aResult && $aResult['content'] != '')
+                        $aCategoriesOutput[] = [
+                            'name' => _t($aCategory['value']), 
+                            'url' => '', 
+                            'content' => $aResult['content']
+                        ];
                 }
             }
         }
 
-        return $this->_oTemplate->parseHtmlByName('browse_by_categories.html', array(
+        return $this->_oTemplate->parseHtmlByName('browse_by_categories.html', [
             'bx_repeat:categories' => $aCategoriesOutput,
-        ));
+        ]);
+    }
 
-	}
-    
     /**
      * @page service Service Calls
      * @section bx_base_general Base General
@@ -3727,16 +3722,33 @@ class BxBaseModGeneralModule extends BxDolModule
 
         return $mixedRet;
     }
+    
+    public function getObjectBrowse ($sMode, $aParams = false, $sClass = 'SearchResult')
+    {
+        $oObject = null;
+
+        bx_alert('system', 'get_object_browse', 0, 0, [
+            'module' => $this->getName(),
+            'mode' => &$sMode,
+            'params' => &$aParams,
+            'class' => &$sClass,
+            'object' => &$oObject
+        ]);
+
+        if($oObject !== null) 
+            return $oObject;
+
+        bx_import($sClass, $this->_aModule);
+        $sClass = $this->_aModule['class_prefix'] . $sClass;
+        return new $sClass($sMode, $aParams);
+    }
 
     public function _serviceBrowse ($sMode, $aParams = false, $iDesignBox = BX_DB_PADDING_DEF, $bDisplayEmptyMsg = false, $bAjaxPaginate = true, $sClassSearchResult = 'SearchResult')
     {
         if(CHECK_ACTION_RESULT_ALLOWED !== ($sMsg = $this->checkAllowedBrowse()))
             return $this->_bIsApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
-        bx_import($sClassSearchResult, $this->_aModule);
-        $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
-        $o = new $sClass($sMode, $aParams);
-
+        $o = $this->getObjectBrowse($sMode, $aParams, $sClassSearchResult);
         $o->setDesignBoxTemplateId($iDesignBox);
         $o->setDisplayEmptyMsg($bDisplayEmptyMsg);
         $o->setAjaxPaginate($bAjaxPaginate);
@@ -4517,19 +4529,15 @@ class BxBaseModGeneralModule extends BxDolModule
 
     protected function _rss ($aArgs, $sClass = 'SearchResult')
     {
-        $sMode = array_shift($aArgs);
-
         if (CHECK_ACTION_RESULT_ALLOWED !== ($sMsg = $this->checkAllowedBrowse())) {
             $this->_oTemplate->displayAccessDenied ($sMsg);
             exit;
         }
 
+        $sMode = array_shift($aArgs);
         $aParams = $this->_buildRssParams($sMode, $aArgs);
 
-        bx_import ($sClass, $this->_aModule);
-        $sClass = $this->_aModule['class_prefix'] . $sClass;
-        $o = new $sClass($sMode, $aParams);
-
+        $o = $this->getObjectBrowse($sMode, $aParams, $sClass);
         if ($o->isError)
             $this->_oTemplate->displayPageNotFound ();
         else
