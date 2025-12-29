@@ -318,43 +318,23 @@ class BxBaseStudioFormsCategories extends BxDolStudioFormsCategories
         parent::_getFilterControls();
 
         $aInputModules = $this->getModulesSelectOneArray('getCategories', false, false);
-		foreach($aInputModules['values'] as $sKey => $sValue){
-			$bEnable = false;
-			$oModule = BxDolModule::getInstance($sKey);
-			if (isset($oModule->_oConfig) && isset($oModule->_oConfig->CNF)){
-				$CNF = $oModule->_oConfig->CNF;
-				if (isset($CNF['PARAM_MULTICAT_ENABLED']) && $CNF['PARAM_MULTICAT_ENABLED'] == true){
-					$bEnable = true;
-				}
-			}
-			if (!$bEnable)
-				unset($aInputModules['values'][$sKey]);
-		}
-		$aInputModules['values'] = array_merge(array('' => _t('_adm_txt_select_module')), $aInputModules['values']);
-		$oForm = new BxTemplStudioFormView(array());
-        $sContent = $oForm->genRow($aInputModules);
-        $oForm = new BxTemplStudioFormView(array());
 
-        $aInputSearch = array(
-            'type' => 'text',
-            'name' => 'keyword',
-            'attrs' => array(
-                'id' => 'bx-grid-search-' . $this->_sObject,
-            ),
-            'tr_attrs' => array(
-                'style' => 'display:none;'
-            )
-        );
-        $sContent .= $oForm->genRow($aInputSearch);
+        $aValues = [['key' => '', 'value' => _t('_adm_txt_select_module')]];
+        foreach($aInputModules['values'] as $sName => $sTitle)
+            if(($sKey = 'PARAM_MULTICAT_ENABLED') && ($oModule = BxDolModule::getInstance($sName)) && ($CNF = $oModule->_oConfig->CNF ?? false) && isset($CNF[$sKey]) && $CNF[$sKey])
+                $aValues[] = ['key' => $sName, 'value' => $sTitle];
 
-        return  $sContent;
+        $aInputModules['values'] = $aValues;
+
+        $oForm = new BxTemplStudioFormView([]);
+        return $oForm->genRow($aInputModules) . parent::_getSearchInput();
     }
-    
+
     function getJsObject()
     {
         return 'oBxDolStudioFormsCategories';
     }
-    
+
     function getCode($isDisplayHeader = true)
     {
         return $this->_oTemplate->parseHtmlByName('forms_categories.html', array(
