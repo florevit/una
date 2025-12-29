@@ -2290,13 +2290,15 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                 $sMethodPrepare .= 'BriefCard';
 
             $aEvent['content']['text'] = $this->$sMethodPrepare($aEvent['content']['text'], $aEvent['id']);
-            if(!empty($aEvent['content']['links']) && is_array($aEvent['content']['links'])) {
-                bx_import('BxDolEmbed');
-                if(($oEmbed = BxDolEmbed::getObjectInstance('sys_system')) !== false)
-                    $aEvent['content']['embed'] = $oEmbed->getLinkHTML(current($aEvent['content']['links'])['url']);
+            if(empty($aEvent['content']['embed']) || !is_array($aEvent['content']['embed'])) {
+                if(!empty($aEvent['content']['links']) && is_array($aEvent['content']['links'])) {
+                    bx_import('BxDolEmbed');
+                    if(($oEmbed = BxDolEmbed::getObjectInstance('sys_system')) !== false)
+                        $aEvent['content']['embed'] = $oEmbed->getLinkHTML(current($aEvent['content']['links'])['url']);
+                }
+                else
+                    $aEvent['content']['embed'] = bx_linkify_embeded($aEvent['content']['text']);
             }
-            else
-                $aEvent['content']['embed'] = bx_linkify_embeded($aEvent['content']['text']);
         }
 
         //--- Menu: Actions
