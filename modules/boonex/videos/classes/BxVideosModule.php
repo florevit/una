@@ -184,14 +184,18 @@ class BxVideosModule extends BxBaseModFilesModule
 
         if($this->_bIsApi && $mixedResult && is_array($mixedResult)) {
             $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
-            
+
             switch($aContentInfo['video_source']) {
                 case 'embed':
-                    if(($sKey = 'video_embed') && !empty($aContentInfo[$sKey]))
+                    if(($sKey = 'video_embed') && !empty($aContentInfo[$sKey])) {
+                        bx_import('BxDolEmbed');
+                        $aEmbed = ($oEmbed = BxDolEmbed::getObjectInstance('sys_system')) !== false ? $oEmbed->getLinkHTML($aContentInfo[$sKey]) : ['url' => $aContentInfo[$sKey]];
+
                         $mixedResult['content'] = array_merge($mixedResult['content'], [
-                            'embed' => $aContentInfo[$sKey],
+                            'embed' => $aEmbed,
                             'images' => []
                         ]);
+                    }
                     break;
 
                 case 'upload':
@@ -201,7 +205,7 @@ class BxVideosModule extends BxBaseModFilesModule
                     break;
             }
         }
-        
+
         return $mixedResult;
     }
 
