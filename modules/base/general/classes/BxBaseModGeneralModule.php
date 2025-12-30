@@ -2520,9 +2520,15 @@ class BxBaseModGeneralModule extends BxDolModule
         $o->setAjaxPaginate(false);
         $o->setUnitParams(['context' => $sMode]);
 
-        if(($iLabelId = bx_get('label')) !== false) {
-            $aLabel = BxDolLabel::getInstance()->getLabels(['type' => 'id', 'id' => (int)$iLabelId]);
-            BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS'])->keywordsSetSearchCondition($o, $aLabel['value']);
+        if(($mixedLabel = bx_get('label')) !== false) {
+            $sLabel = '';
+            if(is_numeric($mixedLabel) && ($aLabel = BxDolLabel::getInstance()->getLabels(['type' => 'id', 'id' => (int)$mixedLabel])) && is_array($aLabel))
+                $sLabel = $aLabel['value'];
+            else
+                $sLabel = bx_process_url_param($mixedLabel, "/^[\d\w\s_-]+$/");
+
+            if($sLabel)
+                BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS'])->keywordsSetSearchCondition($o, $sLabel);
         }
 
         if($o->isError)
