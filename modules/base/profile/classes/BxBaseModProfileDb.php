@@ -19,13 +19,20 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
         parent::__construct($oConfig);
     }
 
-    public function getContentInfoById ($iContentId)
+    public function getContentInfoById ($iContentId, $bForceGet = false)
     {
-        $aInfo = $this->fromMemory("profile_content_info_" . $this->_oConfig->getName() . $iContentId, 'getRow', "SELECT `c`.*, `p`.`account_id`, `p`.`id` AS `profile_id`, `a`.`email` AS `profile_email`, `a`.`active` AS `profile_last_active`, `a`.`ip` AS `profile_ip`, `p`.`status` AS `profile_status` FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` INNER JOIN `sys_profiles` AS `p` ON (`p`.`content_id` = `c`.`id` AND `p`.`type` = :type) INNER JOIN `sys_accounts` AS `a` ON (`p`.`account_id` = `a`.`id`) WHERE `c`.`id` = :id", [
+        $sQuery = "SELECT `c`.*, `p`.`account_id`, `p`.`id` AS `profile_id`, `a`.`email` AS `profile_email`, `a`.`active` AS `profile_last_active`, `a`.`ip` AS `profile_ip`, `p`.`status` AS `profile_status` FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` INNER JOIN `sys_profiles` AS `p` ON (`p`.`content_id` = `c`.`id` AND `p`.`type` = :type) INNER JOIN `sys_accounts` AS `a` ON (`p`.`account_id` = `a`.`id`) WHERE `c`.`id` = :id";
+        $aBindings = [
             'type' => $this->_oConfig->getName(),
             'id' => $iContentId
-        ]);
-        
+        ];
+
+        $aInfo = [];
+        if($bForceGet)
+            $aInfo = $this->getRow($sQuery, $aBindings);
+        else
+            $aInfo = $this->fromMemory("profile_content_info_" . $this->_oConfig->getName() . $iContentId, 'getRow', $sQuery, $aBindings);
+
         /**
          * @hooks
          * @hookdef hook-profile-content_info_by_id 'profile', 'content_info_by_id' - hook to modify profile info retrieved by content id
@@ -42,6 +49,7 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
             'module' => $this->_oConfig->getName(), 
             'info' => &$aInfo
         ]);
+
         return $aInfo;
     }
 

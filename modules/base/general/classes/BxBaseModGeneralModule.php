@@ -3918,7 +3918,7 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($CNF['OBJECT_METATAGS']))
             return false;
 
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId, true);
 
         $bFldStatus = !empty($CNF['FIELD_STATUS']);
         $bFldStatusAdmin = !empty($CNF['FIELD_STATUS_ADMIN']);

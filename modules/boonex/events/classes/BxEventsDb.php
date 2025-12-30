@@ -29,7 +29,7 @@ class BxEventsDb extends BxBaseModGroupsDb
         return $this->getContentInfoById ($iContentId);
     }
 
-    public function getContentInfoById ($iContentId)
+    public function getContentInfoById ($iContentId, $bForceGet = false)
     {
         $sQuery = $this->prepare ("SELECT `c`.*, `p`.`account_id`, `p`.`id` AS `profile_id`, `p`.`status` AS `profile_status`, MAX(`i`.`repeat_stop`) AS `repeat_stop` FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` 
             INNER JOIN `sys_profiles` AS `p` ON (`p`.`content_id` = `c`.`id` AND `p`.`type` = ?) 

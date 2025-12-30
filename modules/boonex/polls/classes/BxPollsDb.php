@@ -19,9 +19,9 @@ class BxPollsDb extends BxBaseModTextDb
         parent::__construct($oConfig);
     }
 
-    public function getContentInfoById ($iContentId)
+    public function getContentInfoById ($iContentId, $bForceGet = false)
     {
-        $aContentInfo = parent::getContentInfoById($iContentId);
+        $aContentInfo = parent::getContentInfoById($iContentId, $bForceGet);
         if(!empty($aContentInfo) && is_array($aContentInfo))
             $aContentInfo['salt'] = $this->_oConfig->getSalt();
 
