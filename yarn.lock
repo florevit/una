@@ -2170,10 +2170,10 @@ jquery-form@^4.3.0:
   version "0.0.0"
   resolved "https://github.com/jfhovinne/jFeed#0d411f761c26013fb8f960d5a0a20f848706fdc5"
 
-jquery-migrate@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-3.5.2.tgz#c9631702e1a5c93c5e7a0bbba54b82883c4ac47d"
-  integrity sha512-GGvcVWK3aei2/98r7pA4UkOYvs4xVeCGvquNXADFUp9+Sr6VeOw0ktlQ9z4YlBbEFpsXBlRioAgpH/fLWinj4Q==
+jquery-migrate@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-3.6.0.tgz#9bbad8e222cef02091b3842568dde261f517a77a"
+  integrity sha512-2k3GMQXXEellCOkj8tczgCd/Y0KMm7LErz4rE6CkHIZV1JTUDlgs7XFN+GpwGKXDQtw/HsjtJuE+CS8IfEOnPg==
 
 jquery-resize-benalman@^1.3.0:
   version "1.3.0"
