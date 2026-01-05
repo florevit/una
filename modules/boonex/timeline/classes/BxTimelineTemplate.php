@@ -382,12 +382,13 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         }
 
         //--- by Module
-        $aHandlers = $this->_oDb->getHandlers(['type' => 'by_type', 'value' => 'insert']);       
+        $aHandlers = $this->_oDb->getHandlers(['type' => 'by_type', 'value' => 'insert']);
+        $aHandlersHidden = $this->_oModule->_oConfig->getHandlersHidden();
 
         $aModules = [];
         foreach($aHandlers as $aHandler) {
             $sModule = $aHandler['alert_unit'];
-            if(isset($aModules[$sModule]))
+            if(isset($aModules[$sModule]) || in_array($aHandler['id'], $aHandlersHidden))
                 continue;
 
             $aModule = $this->_oDb->getModuleByName($sModule);
@@ -520,12 +521,13 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $aInputs = [];
 
         //--- by Module
-        $aHandlers = $this->_oDb->getHandlers(['type' => 'by_type', 'value' => 'insert']);       
+        $aHandlers = $this->_oDb->getHandlers(['type' => 'by_type', 'value' => 'insert']);
+        $aHandlersHidden = $this->_oModule->_oConfig->getHandlersHidden();
 
         $aModules = [];
         foreach($aHandlers as $aHandler) {
             $sModule = $aHandler['alert_unit'];
-            if(isset($aModules[$sModule]))
+            if(isset($aModules[$sModule]) || in_array($aHandler['id'], $aHandlersHidden))
                 continue;
 
             if(in_array($sModule, ['timeline_common_post', 'timeline_common_repost'])) {
