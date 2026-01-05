@@ -2286,20 +2286,25 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         if(!empty($aEvent['content']['url']))
             $aEvent['url'] = bx_ltrim_str($aEvent['content']['url'], BX_DOL_URL_ROOT);
 
-        if(!empty($aEvent['content']) && !empty($aEvent['content']['text'])) {
-            $sMethodPrepare = '_prepareTextForOutput';
-            if($this->_oConfig->isBriefCards() && !$bViewItem)
-                $sMethodPrepare .= 'BriefCard';
+        if(($sKc = 'content') && !empty($aEvent[$sKc]) && is_array($aEvent[$sKc])) {
+            $aCnt = &$aEvent[$sKc];
 
-            $aEvent['content']['text'] = $this->$sMethodPrepare($aEvent['content']['text'], $aEvent['id']);
-            if(empty($aEvent['content']['embed']) || !is_array($aEvent['content']['embed'])) {
-                if(!empty($aEvent['content']['links']) && is_array($aEvent['content']['links'])) {
+            if(($sKt = 'text') && !empty($aCnt[$sKt])) {
+                $sMethodPrepare = '_prepareTextForOutput';
+                if($this->_oConfig->isBriefCards() && !$bViewItem)
+                    $sMethodPrepare .= 'BriefCard';
+
+                $aCnt[$sKt] = $this->$sMethodPrepare($aCnt[$sKt], $aEvent['id']);
+            }
+
+            if(($sKe = 'embed') && empty($aCnt[$sKe]) || !is_array($aCnt[$sKe])) {
+                if(($sKl = 'links') && !empty($aCnt[$sKl]) && is_array($aCnt[$sKl])) {
                     bx_import('BxDolEmbed');
                     if(($oEmbed = BxDolEmbed::getObjectInstance('sys_system')) !== false)
-                        $aEvent['content']['embed'] = $oEmbed->getLinkHTML(current($aEvent['content']['links'])['url']);
+                        $aCnt[$sKe] = $oEmbed->getLinkHTML(current($aCnt[$sKl])['url']);
                 }
-                else
-                    $aEvent['content']['embed'] = bx_linkify_embeded($aEvent['content']['text']);
+                else if(($sKt = 'text') && !empty($aCnt[$sKt]))
+                    $aCnt[$sKe] = bx_linkify_embeded($aCnt[$sKt]);
             }
         }
 
