@@ -474,7 +474,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                 ]
             ]);
 
-        $aFlagTypes = $this->_oDb->getEventFlagTypes();
+        $aFlagTypes = $this->_oConfig->getFiltersMedia();
         foreach($aFlagTypes as $sFt)
             $aInputs['media']['values'][] = ['key' => $sFt, 'value' => _t('_bx_timeline_form_filters_input_by_media_' . $sFt)];
 
@@ -576,7 +576,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
             ]);
 
         //--- by Media
-        $aFlagTypes = $this->_oDb->getEventFlagTypes();
+        $aFlagTypes = $this->_oConfig->getFiltersMedia();
 
         $aMedia = [];
         foreach($aFlagTypes as $sFt)
@@ -1846,7 +1846,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
         //--- Update Flags ---//
         $aContent = &$aResult['content'];
-        $aFlagTypes = $this->_oDb->getEventFlagTypes();
+        $aFlagTypes = $this->_oConfig->getFiltersMedia();
         foreach($aFlagTypes as $sFt)
             if((!empty($aContent[$sFt]) && is_array($aContent[$sFt])) || (!empty($aContent[$sFt . '_attach']) && is_array($aContent[$sFt .'_attach'])))
                 $this->_oDb->updateEventFlagsByType($sFt, $aEvent['id']);

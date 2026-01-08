@@ -13,7 +13,6 @@ class BxTimelineDb extends BxBaseModNotificationsDb
 {
     protected $_sTableSlice;
     protected $_sTableEvent2User;
-    protected $_aTablesEventFlags;
 
     protected $_sTableRepostsTrack;
     protected $_sTableHotTrack;
@@ -24,7 +23,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
     /*
      * Constructor.
      */
-    function __construct(&$oConfig)
+    public function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
 
@@ -33,13 +32,6 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         $this->_sTableAlias = 'te';
         $this->_sTableSlice = $this->_sPrefix . 'events_slice';
         $this->_sTableEvent2User = $this->_sPrefix . 'events2users';
-        $this->_aTablesEventFlags = [
-            'links' => $this->_sPrefix . 'ef_links',
-            'images' => $this->_sPrefix . 'ef_photos',
-            'videos' => $this->_sPrefix . 'ef_videos',
-            'files' => $this->_sPrefix . 'ef_files',
-            'polls' => $this->_sPrefix . 'ef_polls',
-        ];
 
         $this->_sTableRepostsTrack = $this->_sPrefix . 'reposts_track';
         $this->_sTableHotTrack = $this->_sPrefix . 'hot_track';
@@ -785,34 +777,31 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         return $this->$sMethod($sSql);
     }
 
-    public function getEventFlagTypes()
-    {
-        return array_keys($this->_aTablesEventFlags);
-    }
-
     public function updateEventFlagsByType($sType, $iEventId)
     {
-        if(!isset($this->_aTablesEventFlags[$sType]))
+        $aTablesEventFlags = $this->_oConfig->getFiltersMedia(false);
+        if(empty($aTablesEventFlags[$sType]))
             return false;
 
-        return $this->query("INSERT IGNORE INTO `" . $this->_aTablesEventFlags[$sType] . "` (`event_id`) VALUES (:event_id)", [
+        return $this->query("INSERT IGNORE INTO `" . $aTablesEventFlags[$sType] . "` (`event_id`) VALUES (:event_id)", [
             'event_id' => $iEventId,
         ]) !== false;
     }
 
     public function deleteEventFlagsByType($sType, $iEventId)
     {
-        if(!isset($this->_aTablesEventFlags[$sType]))
+        $aTablesEventFlags = $this->_oConfig->getFiltersMedia(false);
+        if(empty($aTablesEventFlags[$sType]))
             return false;
 
-        return $this->query("DELETE FROM `" . $this->_aTablesEventFlags[$sType] . "` WHERE `event_id`=:event_id", [
+        return $this->query("DELETE FROM `" . $aTablesEventFlags[$sType] . "` WHERE `event_id`=:event_id", [
             'event_id' => $iEventId
         ]) !== false;
     }
 
     public function deleteEventFlags($iEventId)
     {
-        $aTypes = $this->getEventFlagTypes();
+        $aTypes = $this->_oConfig->getFiltersMedia();
         foreach($aTypes as $sType)
             $this->deleteEventFlagsByType($sType, $iEventId);
     }
@@ -1045,28 +1034,23 @@ class BxTimelineDb extends BxBaseModNotificationsDb
 
         //--- Apply media filter
         $sWhereClauseMedias = "";
-        if(!empty($aParams['media'])) {
-            if(is_array($aParams['media'])) {
-                $aMediaTypes = $aParams['media'];
-                if($aMediaTypes !== array_keys($this->_aTablesEventFlags)) {
-                    $sWhereSubclauseMedias = "0";
-                    foreach($aMediaTypes as $sMediaType) {
-                        if(!isset($this->_aTablesEventFlags[$sMediaType]))
-                            continue;
+        if(($sKm = 'media') && !empty($aParams[$sKm])) {
+            $aTablesEventFlags = $this->_oConfig->getFiltersMedia(false);
+            if(is_array($aParams[$sKm]) && ($aMts = $aParams[$sKm]) && !(count($aMts) == 1 && empty($aTablesEventFlags[reset($aMts)])) && $aMts !== array_keys($aTablesEventFlags)) {
+                $sWhereSubclauseMedias = "0";
+                foreach($aMts as $sMt) {
+                    if(empty($aTablesEventFlags[$sMt]))
+                        continue;
 
-                        $sTableAliasFlag = 't' . substr($sMediaType, 0, 2);
-                        $mixedJoinClause .= " LEFT JOIN `" . $this->_aTablesEventFlags[$sMediaType] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
-                        $sWhereSubclauseMedias .= " OR NOT ISNULL(`{$sTableAliasFlag}`.`event_id`)";
-                    }
-                    $sWhereClauseMedias .= "AND ({$sWhereSubclauseMedias}) ";
+                    $sTableAliasFlag = 't' . substr($sMt, 0, 2);
+                    $mixedJoinClause .= " LEFT JOIN `" . $aTablesEventFlags[$sMt] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
+                    $sWhereSubclauseMedias .= " OR NOT ISNULL(`{$sTableAliasFlag}`.`event_id`)";
                 }
+                $sWhereClauseMedias .= "AND ({$sWhereSubclauseMedias}) ";
             }
-            else {
-                $sMediaType = $aParams['media'];
-                if(isset($this->_aTablesEventFlags[$sMediaType])) {
-                    $sTableAliasFlag = 't' . substr($sMediaType, 0, 2);
-                    $mixedJoinClause .= " INNER JOIN `" . $this->_aTablesEventFlags[$sMediaType] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
-                }
+            else if(is_string($aParams[$sKm]) && ($sMt = $aParams[$sKm]) && !empty($aTablesEventFlags[$sMt])) {
+                $sTableAliasFlag = 't' . substr($sMt, 0, 2);
+                $mixedJoinClause .= " INNER JOIN `" . $aTablesEventFlags[$sMt] . "` AS `{$sTableAliasFlag}` ON `{$sTableAlias}`.`id`=`{$sTableAliasFlag}`.`event_id`";
             }
         }
 

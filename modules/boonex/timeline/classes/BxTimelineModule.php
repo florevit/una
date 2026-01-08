@@ -3466,14 +3466,40 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      */
     public function serviceGetOptionsFiltersContexts()
     {
-        $CNF = &$this->_oConfig->CNF;
-
         $aContexts = bx_srv('system', 'get_modules_by_type', ['context']);
         
-        $aResult = array();
+        $aResult = [];
         foreach($aContexts as $aContext)
             if(($sContext = $aContext['name']) && BxDolModuleQuery::getInstance()->isEnabledByName($sContext))
                 $aResult[$aContext['name']] = ($sLk = '_' . $sContext) && ($_sLk = _t($sLk)) && strcmp($sLk, $_sLk) != 0 ? $_sLk : $aContext['title'];
+
+        return $aResult;
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_timeline Timeline
+     * @subsection bx_timeline-other Other
+     * @subsubsection bx_timeline-get_options_filters_media get_options_filters_media
+     * 
+     * @code bx_srv('bx_timeline', 'get_options_filters_media', [...]); @endcode
+     * 
+     * Get an array with available options for 'Filters: By media' setting.
+     *
+     * @return an array with available options represented as key => value pairs.
+     * 
+     * @see BxTimelineModule::serviceGetOptionsFiltersMedia
+     */
+    /** 
+     * @ref bx_timeline-get_options_filters_media "get_options_filters_media"
+     */
+    public function serviceGetOptionsFiltersMedia()
+    {
+        $aMedia = $this->_oConfig->getFiltersMediaAvailable();
+        
+        $aResult = [];
+        foreach($aMedia as $sMedia)
+            $aResult[$sMedia] = _t('_bx_timeline_form_filters_input_by_media_' . $sMedia);
 
         return $aResult;
     }

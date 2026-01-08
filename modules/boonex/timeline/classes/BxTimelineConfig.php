@@ -37,6 +37,9 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     protected $_aFiltersStyles;
     protected $_sFiltersStyle;
     protected $_aFiltersContextsHide;
+    protected $_aFiltersMediaAvailable;
+    protected $_aFiltersMediaHide;
+    protected $_aFiltersMedia;
 
     protected $_iRssLength;
     protected $_iLiveUpdateLength;
@@ -465,6 +468,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     {
     	parent::init($oDb);
 
+        $sDbPrefix = $this->getDbPrefix();
     	$sOptionPrefix = $this->getPrefix('option');
     	$this->_bAllowEdit = getParam($sOptionPrefix . 'enable_edit') == 'on';
         $this->_bAllowDelete = getParam($sOptionPrefix . 'enable_delete') == 'on';
@@ -507,6 +511,16 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         $this->_aFiltersStyles = ['default', 'display'];
         $this->_sFiltersStyle = getParam($sOptionPrefix . 'filters_style');
         $this->_aFiltersContextsHide = ($sValue = getParam($sOptionPrefix . 'filters_contexts_hide')) ? explode(',', $sValue) : [];        
+        $this->_aFiltersMediaAvailable = [
+            'text' => '',
+            'links' => $sDbPrefix . 'ef_links',
+            'images' => $sDbPrefix . 'ef_photos',
+            'videos' => $sDbPrefix . 'ef_videos',
+            'files' => $sDbPrefix . 'ef_files',
+            'polls' => $sDbPrefix . 'ef_polls'
+        ];
+        $this->_aFiltersMediaHide = ($sValue = getParam($sOptionPrefix . 'filters_media_hide')) ? explode(',', $sValue) : [];
+        $this->_aFiltersMedia = array_diff_key($this->_aFiltersMediaAvailable, array_flip($this->_aFiltersMediaHide));
 
         $this->_iRssLength = (int)getParam($sOptionPrefix . 'rss_length');
         $this->_iLiveUpdateLength = (int)getParam($sOptionPrefix . 'live_updates_length');
@@ -890,6 +904,21 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     public function getFiltersContextsHide()
     {
         return $this->_aFiltersContextsHide;
+    }
+
+    public function getFiltersMediaAvailable($bListOnly = true)
+    {
+        return $bListOnly ? array_keys($this->_aFiltersMediaAvailable) : $this->_aFiltersMediaAvailable;
+    }
+
+    public function getFiltersMediaHide()
+    {
+        return $this->_aFiltersMediaHide;
+    }
+
+    public function getFiltersMedia($bListOnly = true)
+    {
+        return $bListOnly ? array_keys($this->_aFiltersMedia) : $this->_aFiltersMedia;
     }
 
     public function getRssLength()
