@@ -278,19 +278,35 @@ class BxBaseModProfileMenuSnippetMeta extends BxBaseModGeneralMenuSnippetMeta
         $iContentProfile = $this->_oContentProfile->id();
 
         if($this->_bIsApi) {
-            $sTitle = $this->_oModule->getMenuItemTitleByConnection($sConnection, $sAction, $iContentProfile);
-            if(empty($sTitle))
+            $mixedTitle = $this->_oModule->getMenuItemTitleByConnection($sConnection, $sAction, $iContentProfile);
+            if(empty($mixedTitle))
+                return false;
+
+            $sApiAction = $sAction;
+            $sApiTitle = '';
+            if(is_array($mixedTitle)) {
+                foreach($mixedTitle as $_sAction => $_sTitle)
+                    if(!empty($_sTitle)) {
+                        $sApiAction = $_sAction;
+                        $sApiTitle = $_sTitle;
+                        break;
+                    }
+            }
+            else
+                $sApiTitle = $mixedTitle;
+
+            if(!$sApiAction || !$sApiTitle)
                 return false;
 
             return $this->_getMenuItemAPI($aItem, ['display' => 'element'], [
-                'title' => $sTitle,
+                'title' => $sApiTitle,
                 'data' => [
                     'type' => 'connections',
                     'o' => $sConnection,
-                    'a' => $sAction,
+                    'a' => $sApiAction,
                     'iid' => bx_get_logged_profile_id(),
                     'cid' => $iContentProfile,
-                    'title' => $sTitle,
+                    'title' => $sApiTitle,
                     'primary' => !empty($aItem['primary']),
                 ]
             ]);
