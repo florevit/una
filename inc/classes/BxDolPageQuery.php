@@ -203,7 +203,15 @@ class BxDolPageQuery extends BxDolDb
     static public function getSeoLink($sModule, $sPageUri, $aCond = [])
     {
         $oDb = BxDolDb::getInstance();
-        $sWhere = " 1 ";
+        $sWhere = " 1 "; 
+        
+        foreach ($aCond as $k => $v) {
+            if (($k === 'param_name' || $k === 'param_value') && get_mb_len($v) > 32) {
+                $v = get_mb_substr($v, 0, 32);
+                $aCond[$k] = $v;
+            }
+        }
+
         if ($aCond)
             $sWhere = $oDb->arrayToSQL($aCond, " AND ");
         return $oDb->getRow("SELECT `uri`, `param_name`, `param_value` FROM `sys_seo_links` WHERE " . $sWhere . " AND `module` = :module AND `page_uri` = :page_uri", [
