@@ -510,19 +510,30 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
             if ($aPage) {
                 $sPageModule = $aPage['module'];
                 $sContentInfo = !empty($aPage['content_info']) ? $aPage['content_info'] : $aPage['module'];
+                $bNotFound = false;
                 if ('id' == $sSeoParamName) {
                     $oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfo);
-                    $sSeoTitle = $oContentInfo ? $oContentInfo->getContentTitle($sSeoParamValue) : '';
+                    $sSeoTitle = $oContentInfo->getContentTitle($sSeoParamValue);
                     if (!$sSeoTitle) 
-                        $sSeoTitle = self::getSeoHash($sSeoParamValue);
+                        $bNotFound = true;
+                    
                 }
                 elseif ('profile_id' == $sSeoParamName) {
                     $oProfile = BxDolProfile::getInstance($sSeoParamValue);
-                    $sSeoTitle = $oProfile ? $oProfile->getDisplayName() : self::getSeoHash($sSeoParamValue);
+                    if (!$oProfile) {
+                        $bNotFound = true;
+                    } else {
+                        $sSeoTitle = $oProfile->getDisplayName();
+                    }
                 }
                 
-                $r = BxDolPageQuery::getSeoLink($sPageModule, $sPageUri, ['param_value' => $sSeoParamValue]);
-                if (!$r) {
+                $r = false;
+                if ($bNotFound) {
+                    $sSeoPageUri = false;
+                } else {
+                    $r = BxDolPageQuery::getSeoLink($sPageModule, $sPageUri, ['param_value' => $sSeoParamValue]);
+                }
+                if (!$bNotFound && !$r) {
                     $sSeoTitleLimited = BxTemplFunctions::getInstance()->getStringWithLimitedLength($sSeoTitle, 45);
                     $sUri = uriGenerate ($sSeoTitleLimited, 'sys_seo_links', 'uri', ['cond' => ['module' => $sPageModule, 'page_uri' => $sPageUri]]);
 
@@ -553,7 +564,7 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
 
                     BxDolPageQuery::insertSeoLink($sPageModule, $sPageUri, $sSeoParamName, $sSeoParamValue, $sUri);
                 }
-                elseif ($r['param_name'] == $sSeoParamName) {
+                elseif ($r && $r['param_name'] == $sSeoParamName) {
                     $sUri = $r['uri'];
                 } 
                 else {
