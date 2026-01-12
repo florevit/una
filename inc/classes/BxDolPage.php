@@ -680,8 +680,10 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
             if(($oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfo))) {
                 $sTitle = $oContentInfo->getContentTitle($aParams['id']);
                 $iAuthor = $oContentInfo->getContentAuthor($aParams['id']);
-                $sAuthorName = BxDolProfile::getInstance($iAuthor)->getDisplayName();
-                $sAuthorUrl = BxDolProfile::getInstance($iAuthor)->getUrl();
+                if(($oAuthor = BxDolProfile::getInstance($iAuthor)) !== false) {
+                    $sAuthorName = $oAuthor->getDisplayName();
+                    $sAuthorUrl = $oAuthor->getUrl();
+                }
                 $sThumb = $oContentInfo->getContentThumb($aParams['id']);
                 $sHtml = $oContentInfo->getContentEmbed($aParams['id']);
             }
