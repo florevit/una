@@ -469,10 +469,13 @@ class BxBaseFormView extends BxDolForm
                     $aInput['value'] = strip_tags($aInput['value']);
             }
 
-            if (isset($aInput['type'], $aInput['values_src']) && in_array($aInput['type'], ['select', 'select_multiple', 'checkbox_set', 'radio_set']) && strncmp(BX_DATA_LISTS_KEY_PREFIX, $aInput['values_src'], 2) === 0) {
-                $aInput['values'] = array_map(function($sKey) use($aInput) {
-                    return ['key' => $sKey, 'value' => $aInput['values'][$sKey]];
-                }, array_keys($aInput['values']));
+            /**
+             * Everytime when [key => value] is used it should be converted to [key => ..., value => ...]
+             */
+            if (($sVt = $aInput['type'] ?? false) && in_array($sVt, ['select', 'select_multiple', 'checkbox_set', 'radio_set']) && is_array(($aVv = $aInput[($sKv = 'values')] ?? false)) && !(is_array(($aVv1 = reset($aVv))) && isset($aVv1['key'], $aVv1['value']))) {
+                $aInput[$sKv] = array_map(function($sKey) use($aInput, $sKv) {
+                    return ['key' => $sKey, 'value' => $aInput[$sKv][$sKey]];
+                }, array_keys($aInput[$sKv]));
             }
 
             if(isset($aInput['name']) && in_array($aInput['name'], ['allow_view_to', 'object_privacy_view'])) {
