@@ -1707,6 +1707,8 @@
     <string name="_adm_stg_inf_option_sys_per_page_search_keyword_single"><![CDATA[Set the maximum number of results displayed per page in Keyword Search]]></string>
     <string name="_adm_stg_cpt_option_sys_per_page_search_keyword_plural"><![CDATA[Site Search Results]]></string>
     <string name="_adm_stg_inf_option_sys_per_page_search_keyword_plural"><![CDATA[Set the maximum number of results displayed per page in Site Search]]></string>
+    <string name="_adm_stg_cpt_option_sys_per_page_search_extended"><![CDATA[Extended Search Results]]></string>
+    <string name="_adm_stg_inf_option_sys_per_page_search_extended"><![CDATA[Set the maximum number of results displayed per page in Extended Search]]></string>
     <string name="_adm_stg_cpt_option_sys_push_default"><![CDATA[Provider]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_app_id"><![CDATA[OneSignal: App ID]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_rest_api"><![CDATA[OneSignal: REST API Key]]></string>

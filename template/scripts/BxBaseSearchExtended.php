@@ -76,8 +76,12 @@ class BxBaseSearchExtended extends BxDolSearchExtended
         $bJsMode = isset($aParams['js_mode']) ? (bool)$aParams['js_mode'] : $this->_bJsMode;
         $bCondition = !empty($aParams['cond']) && is_array($aParams['cond']);
 
-        $iStart = !empty($aParams['start']) ? $aParams['start'] : 0;
-        $iPerPage = !empty($aParams['per_page']) ? $aParams['per_page'] : 0;
+        $iStart = !empty($aParams['start']) ? (int)$aParams['start'] : 0;
+        $iPerPage = !empty($aParams['per_page']) ? (int)$aParams['per_page'] : (int)getParam('sys_per_page_search_extended');
+        if(!$iPerPage) {
+            bx_import('BxDolSearch');
+            $iPerPage = BX_DOL_SEARCH_RESULTS_PER_PAGE_DEFAULT;
+        }
         unset($aParams['start'], $aParams['per_page']);
 
         $sUnitTemplate = !empty($aParams['template']) ? $aParams['template'] : '';
@@ -92,15 +96,15 @@ class BxBaseSearchExtended extends BxDolSearchExtended
             $oForm->aFormAttrs['method'] = BX_DOL_FORM_METHOD_SPECIFIC;
             $oForm->aParams['csrf']['disable'] = true;
 
-            $oForm->initChecker(array(), $aParams['cond']);
+            $oForm->initChecker([], $aParams['cond']);
         }
 
         if(!$oForm->isSubmittedAndValid() && !$this->_bFilterMode  && (!$this->_bIsApi || !isset($aParams['search_params'])))
-            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage)] : '';
+            return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage)] : '';
 
         $oContentInfo = BxDolContentInfo::getObjectInstance($this->_aObject['object_content_info']);
         if(!$oContentInfo)
-            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage)] : '';
+            return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage)] : '';
 
         $aParamsSearch = [];
         if(empty($aParams['search_params'])) {
@@ -109,11 +113,11 @@ class BxBaseSearchExtended extends BxDolSearchExtended
                 if(empty($mixedValue) || (is_array($mixedValue) && bx_is_empty_array($mixedValue)))
                     continue;
 
-                $aParamsSearch[$aField['name']] = array(
+                $aParamsSearch[$aField['name']] = [
                     'type' => $aField['search_type'],
                     'value' => $mixedValue,
                     'operator' => $aField['search_operator']
-                );
+                ];
 
                 if(!$bCondition) {
                     if(!isset($aParams['cond']))
@@ -141,20 +145,13 @@ class BxBaseSearchExtended extends BxDolSearchExtended
             $aParamsSearch = $aParams['search_params'];
 
         if((empty($aParamsSearch) || !is_array($aParamsSearch)) && !$this->_bFilterMode)
-            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)] : '';
+            return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage, $aParamsSearch)] : '';
 
-        if (!$iPerPage) {
-            bx_import('BxDolSearch');
-            $iPerPage = BX_DOL_SEARCH_RESULTS_PER_PAGE_DEFAULT;
-        }
+        if(($mixedSort = bx_get('sort')) !== false && ($aSort = explode(':', $mixedSort)))
+            $aParamsSearch['order'] = [['field' => $aSort[0], 'direction' => $aSort[1]]];
 
         $aResults = false;
-        
-        if (bx_get('sort')){
-            $aTmp = explode(':', bx_get('sort'));
-            $aParamsSearch['order'] = [['field' => $aTmp[0], 'direction' => $aTmp[1]]];
-        }
-        
+
         /**
          * @hooks
          * @hookdef hook-search-get_data 'search', 'get_data' - hook in get data for serach
@@ -168,43 +165,23 @@ class BxBaseSearchExtended extends BxDolSearchExtended
          *      - `search_results` - [string] by ref, html for block, can be overridden in hook processing
          * @hook @ref hook-search-get_data
          */
-        bx_alert('search', 'get_data', 0, false, array('object' => $this->_aObject, 'search_params' => &$aParamsSearch, 'search_results' => &$aResults));
+        bx_alert('search', 'get_data', 0, false, [
+            'object' => $this->_aObject, 
+            'search_params' => &$aParamsSearch, 
+            'search_results' => &$aResults
+        ]);
 
     	if($aResults === false)
     	    $aResults = $oContentInfo->getSearchResultExtended($aParamsSearch, $iStart, $iPerPage + 1, $this->_bFilterMode);
 
         if(empty($aResults) || !is_array($aResults))
-            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)] : _t('Nothing found');
+            return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage, $aParamsSearch)] : _t('Nothing found');
 
-        if(!empty($aParams['cond']) && is_array($aParams['cond']))
-            $aParams['cond'] = self::encodeConditions($aParams['cond']);
+        $iResults = count($aResults);
+        if($iResults > $iPerPage)
+            array_pop($aResults);
 
-        $aPaginate = ['start' => $iStart, 'per_page' => $iPerPage];
-        if(!empty($aParams['total'])) {
-            if(is_numeric($aParams['total']))
-                $aPaginate['total'] = (int)$aParams['total'];
-            else
-                $aPaginate['total'] = count($oContentInfo->getSearchResultExtended($aParamsSearch, 0, 0, $this->_bFilterMode));
-        }
-
-        if(!$bJsMode) {
-            $aParams['start'] = '{start}';
-            $aParams['per_page'] = '{per_page}';
-
-            list($sPageLink, $aPageParams) = bx_get_base_url_inline($aParams);
-            if(!$this->_bIsApi)
-                $aPaginate['page_url'] = BxDolPermalinks::getInstance()->permalink(bx_append_url_params($sPageLink, $aPageParams, true, ['{start}', '{per_page}']));
-        }
-        else
-            $aPaginate['on_change_page'] = "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}', " . bx_js_string(json_encode($aParams)) . ");";            
-
-        $oPaginate = new BxTemplPaginate($aPaginate);
-        $oPaginate->setNumFromDataArray($aResults);
-
-        $bTmplVarsPaginate = $iStart || $oPaginate->getNum() > $iPerPage;
-        $aTmplVarsPaginate = $bTmplVarsPaginate ? array('paginate' => $oPaginate->getSimplePaginate()) : array();
-
-    	$mixedResults = $this->_bIsApi ? [] : '';
+        $mixedResults = $this->_bIsApi ? [] : '';
     	foreach($aResults as $iId) {
             $mixedResult = $oContentInfo->getContentSearchResultUnit($iId, $sUnitTemplate);
 
@@ -216,6 +193,37 @@ class BxBaseSearchExtended extends BxDolSearchExtended
 
         if($this->_bIsApi)
             return [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)];
+
+        //-- Paginate
+        $bTmplVarsPaginate = false;
+        $aTmplVarsPaginate = [];
+        if(($bTmplVarsPaginate = $iStart || $iResults > $iPerPage) !== false) {
+            if(!empty($aParams['cond']) && is_array($aParams['cond']))
+                $aParams['cond'] = self::encodeConditions($aParams['cond']);
+
+            $aPaginate = ['num' => $iResults, 'start' => $iStart, 'per_page' => $iPerPage];
+            if(($sKt = 'total') && ($mixedTotal = $aParams[$sKt] ?? false)) {
+                if(is_numeric($mixedTotal))
+                    $aPaginate[$sKt] = (int)$mixedTotal;
+                else
+                    $aPaginate[$sKt] = count($oContentInfo->getSearchResultExtended($aParamsSearch, 0, 0, $this->_bFilterMode));
+            }
+
+            if(!$bJsMode) {
+                $aParams['start'] = '{start}';
+                $aParams['per_page'] = '{per_page}';
+
+                list($sPageLink, $aPageParams) = bx_get_base_url_inline($aParams);
+                $aPaginate['page_url'] = BxDolPermalinks::getInstance()->permalink(bx_append_url_params($sPageLink, $aPageParams, true, ['{start}', '{per_page}']));
+            }
+            else
+                $aPaginate['on_change_page'] = "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}', " . bx_js_string(json_encode($aParams)) . ");"; 
+
+            $oPaginate = new BxTemplPaginate($aPaginate);
+            $aTmplVarsPaginate = [
+                'paginate' => $oPaginate->getSimplePaginate()
+            ];
+        }
 
         return $this->_oTemplate->parseHtmlByName('search_extended_results.html', [
             'class' => str_replace('_', '-', $this->_sObject),
