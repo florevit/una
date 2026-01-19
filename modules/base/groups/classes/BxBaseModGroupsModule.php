@@ -2583,6 +2583,9 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
     {
         $CNF = &$this->_oConfig->CNF;
 
+        if(!$this->_oConfig->isMultiRoles() && is_array($mixedRole))
+            $mixedRole = reset($mixedRole);
+
         if(!isset($CNF['OBJECT_CONNECTIONS']))
             return false;
 

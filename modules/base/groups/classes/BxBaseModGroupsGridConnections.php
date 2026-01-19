@@ -139,15 +139,19 @@ class BxBaseModGroupsGridConnections extends BxDolGridConnections
         if(empty($this->_aRoles) || !is_array($this->_aRoles))
             return $this->_getActionResult(['msg' => _t('_sys_txt_error_occured')]);
 
+        $bMultiRoles = $this->_oModule->_oConfig->isMultiRoles();
         $iRole = $this->_oModule->_oDb->getRole($this->_iGroupProfileId, $iId);
 
-        if(!$this->_oModule->_oConfig->isMultiRoles()) {
+        if(!$bMultiRoles) {
             $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
             $sHtmlIdPrefix = str_replace('_', '-', $this->_sContentModule) . '-set-role-';
 
             $aMenuItems = [];
             foreach($this->_aRoles as $iRoleId => $sRoleTitle)
-                $aMenuItems[] = array(
+                $aMenuItems[] = $this->_bIsApi ? [
+                    'value' => $iRoleId,
+                    'label' => $sRoleTitle
+                ] : [
                     'id' => $sHtmlIdPrefix . $iRoleId, 
                     'name' => $sHtmlIdPrefix . $iRoleId, 
                     'class' => '', 
@@ -156,25 +160,32 @@ class BxBaseModGroupsGridConnections extends BxDolGridConnections
                     'target' => '_self', 
                     'title' => $sRoleTitle, 
                     'active' => 1
-                );            
+                ];
 
             $oMenu = new BxTemplMenu(array('template' => 'menu_vertical.html', 'menu_id'=> $sHtmlIdPrefix . 'menu', 'menu_items' => $aMenuItems));
             if(!empty($iRole))
                 $oMenu->setSelected('', $sHtmlIdPrefix . $iRole);
             if($this->_bIsApi)
-                $sPopupContent = $aMenuItems;
+                $sPopupContent = [
+                    'values' => $aMenuItems,
+                    'value' => $iRole
+                ];
             else
                 $sPopupContent = $oMenu->getCode();
         }
         else
             $sPopupContent = $this->_oModule->_oTemplate->getPopupSetRole($this->_aRoles, $iId, $iRole);
 
-        if($this->_bIsApi){
-            $sPopupContent['callback'] = '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=set_role_submit&profile_id=' . $this->_iGroupProfileId . '&content_module=' .  $this->_sContentModule .'&ids[]=' . $iId . '&';
-            $sPopupContent['title'] = _t('_' . $this->_sContentModule . '_txt_set_role');
+        if($this->_bIsApi) {
+            $sPopupContent = array_merge($sPopupContent, [
+                'multi' => (int)$bMultiRoles,
+                'title' => _t('_' . $this->_sContentModule . '_txt_set_role'),
+                'callback' => '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=set_role_submit&profile_id=' . $this->_iGroupProfileId . '&content_module=' .  $this->_sContentModule .'&ids[]=' . $iId . '&'
+            ]);
+
             return [bx_api_get_block('membership', $sPopupContent)];
         }
-        
+
         $oFunctions = BxTemplFunctions::getInstance();
         return $this->_getActionResult(['popup' => $oFunctions->transBox(str_replace('_', '-', $this->_sContentModule) . '-set-role-popup', $oFunctions->simpleBoxContent($sPopupContent))]);
     }
