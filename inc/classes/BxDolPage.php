@@ -510,30 +510,33 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
             if ($aPage) {
                 $sPageModule = $aPage['module'];
                 $sContentInfo = !empty($aPage['content_info']) ? $aPage['content_info'] : $aPage['module'];
-                $bNotFound = false;
-                if ('id' == $sSeoParamName) {
+                $bSeoUrlFound = true;
+                if ('sys_cmts_view' == $sPageName) { // `id` (nor `cmt_id`) param in comment URL isn't uniq, so we can't generate SEO link for it 
+                    $bSeoUrlFound = false;
+                }
+                elseif ('id' == $sSeoParamName) {
                     $oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfo);
-                    $sSeoTitle = $oContentInfo->getContentTitle($sSeoParamValue);
-                    if (!$sSeoTitle) 
-                        $bNotFound = true;
+                    $sSeoTitle = $oContentInfo ? $oContentInfo->getContentTitle($sSeoParamValue) : '';
+                    if (!$sSeoTitle)
+                        $bSeoUrlFound = false;
                     
                 }
                 elseif ('profile_id' == $sSeoParamName) {
                     $oProfile = BxDolProfile::getInstance($sSeoParamValue);
                     if (!$oProfile) {
-                        $bNotFound = true;
+                        $bSeoUrlFound = false;
                     } else {
                         $sSeoTitle = $oProfile->getDisplayName();
                     }
                 }
                 
                 $r = false;
-                if ($bNotFound) {
+                if (!$bSeoUrlFound) {
                     $sSeoPageUri = false;
                 } else {
                     $r = BxDolPageQuery::getSeoLink($sPageModule, $sPageUri, ['param_value' => $sSeoParamValue]);
                 }
-                if (!$bNotFound && !$r) {
+                if ($bSeoUrlFound && !$r) {
                     $sSeoTitleLimited = BxTemplFunctions::getInstance()->getStringWithLimitedLength($sSeoTitle, 45);
                     $sUri = uriGenerate ($sSeoTitleLimited, 'sys_seo_links', 'uri', ['cond' => ['module' => $sPageModule, 'page_uri' => $sPageUri]]);
 
