@@ -27,53 +27,7 @@ class BxAlbumsFormEntry extends BxBaseModTextFormEntry
 
     public function processFiles ($sFieldFile, $iContentId = 0, $isAssociateWithContent = false)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if($isAssociateWithContent)
-            return parent::processFiles ($sFieldFile, $iContentId, $isAssociateWithContent);
-
-        $aMediasOld = $this->_oModule->_oDb->getMediaListByContentId($iContentId);                
-
-        if(!parent::processFiles ($sFieldFile, $iContentId, $isAssociateWithContent)) 
-            return false;
-
-        $aMediasNew = $this->_oModule->_oDb->getMediaListByContentId($iContentId);
-
-        $aIdsOld = array_column($aMediasOld, 'id');
-        $aIdsNew = array_column($aMediasNew, 'id');
-        $aIdsAdded = array_diff($aIdsNew, $aIdsOld);
-
-        if(!empty($aIdsAdded)) {
-            $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
-            $iProfileId = $this->getContentOwnerProfileId($iContentId);
-
-             /**
-             * @hooks
-             * @hookdef hook-bx_albums-medias_added 'bx_albums', 'medias_added' - hook on new medias added in album
-             * - $unit_name - equals `bx_albums`
-             * - $action - equals `medias_added` 
-             * - $object_id - album_id
-             * - $sender_id - author's profile_id
-             * - $extra_params - array of additional params with the following array keys:
-             *      - `object_author_id` - [int] confirmation type can be none/phone/email/email_and_phone/email_or_phone
-             *      - `subobjects_ids` - [array] array of ids for added media's
-             *      - `medias_added` - [array] array of ids for added media's
-             *      - `privacy_view` - [string] privacy view value for current album
-             *      - `cf` - [int] content filter id
-             * @hook @ref hook-bx_albums-medias_added
-             */
-            bx_alert($this->_oModule->getName(), 'medias_added', $iContentId, $iProfileId, [
-                'object_author_id' => $iProfileId,
-
-                'subobjects_ids' => $aIdsAdded,
-                'medias_added' => $aIdsAdded,
-
-                'privacy_view' => $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']],
-                'cf' => $aContentInfo[$CNF['FIELD_CF']]
-            ]);
-        }
-
-        return true;
+        return parent::_processFilesInAlbumsAndStories($sFieldFile, $iContentId, $isAssociateWithContent);
     }
     
     protected function _associalFileWithContent($oStorage, $iFileId, $iProfileId, $iContentId, $sPictureField = '')
