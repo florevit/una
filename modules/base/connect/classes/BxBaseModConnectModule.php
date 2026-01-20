@@ -505,6 +505,48 @@ class BxBaseModConnectModule extends BxBaseModGeneralModule
             $this->_oTemplate->getPage(_t('_Error'), MsgBox(_t('_sys_connect_profile_error_info')));
         }
     }
+
+    /**
+     * Make friends (for using in some selected modules only)
+     *
+     * @param $iProfileId integer
+     * @return void
+     */
+    protected function __makeFriends($iProfileId)
+    {
+        if (!$this->_oConfig->bAutoFriends)
+            return;
+
+        $oConnFrinds = BxDolConnection::getObjectInstance('sys_profiles_friends');
+        if (!$oConnFrinds)
+            return;
+
+        // request info about profile
+        if (!($iRemoteProfileId = $this->_oDb->getRemoteProfileId($iProfileId)))
+            return;
+        $oSession = BxDolSession::getInstance();
+        if (!($sAccessToken = $oSession->getValue($this->getName() . '_access_token')))
+            return;
+        $s = bx_file_get_contents($this->_oConfig->sApiUrl . 'api/friends?id=' . $iRemoteProfileId, array(), 'get', array(
+            'Authorization: Bearer ' . $sAccessToken,
+        ));
+
+        // handle error
+        if (!$s || NULL === ($aResponse = json_decode($s, true)) || !$aResponse || isset($aResponse['error']) || !isset($aResponse['friends'])) {
+            $sErrorDescription = isset($aResponse['error_description']) ? $aResponse['error_description'] : _t('_error occured');
+            return;
+        }
+
+        // add friends & followers
+        foreach ($aResponse['friends'] as $key => $value) {
+            $iRemoteProfileId = is_array($value) ? $key : $value;
+            
+            if (!($iLocalProfileId = $this->_oDb->getProfileId($iRemoteProfileId)))
+                continue;
+            $oConnFrinds->actionAdd($iProfileId, $iLocalProfileId);
+            $oConnFrinds->actionAdd($iLocalProfileId, $iProfileId);
+        }
+    }
 }
 
 /** @} */
