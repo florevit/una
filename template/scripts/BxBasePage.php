@@ -660,8 +660,13 @@ class BxBasePage extends BxDolPage
                 $aCpIds = bx_srv($sContextSwitcher, 'get_participating_profiles', [$iLogged, ($sContextConnection != 'participants' ? $sContextConnection : false)]);
 
                 $aContexts = [];
-                foreach($aCpIds as $iCpId)
-                    $aContexts[] = BxDolProfile::getData($iCpId);
+                foreach($aCpIds as $iCpId) {
+                    $aProfileData = BxDolProfile::getData($iCpId); 
+                    if($aProfileData['display_name'] === false && $aProfileData['url'] === false )
+                        continue;
+
+                    $aContexts[] = $aProfileData;
+                }
 
                 $aInvitedTo = [];
                 if(($aInvitations = bx_srv($sContextSwitcher, 'invitations', [$iLogged, true])) && is_array($aInvitations))
