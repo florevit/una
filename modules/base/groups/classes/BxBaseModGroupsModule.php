@@ -1341,7 +1341,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         if(!$this->_oConfig->isPaidJoin())
             return false;
 
-        $aPrices = $this->_oDb->getPrices(array('type' => 'by_profile_id', 'profile_id' => $iGroupProfileId));
+        $aPrices = $this->_oDb->getPrices(['type' => 'by_profile_id', 'profile_id' => $iGroupProfileId, 'active' => 1]);
         if(empty($aPrices) || !is_array($aPrices))
             return false;
 
