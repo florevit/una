@@ -1319,15 +1319,70 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         if(!empty($this->aPage['keywords']) && is_array($this->aPage['keywords']))
             $sRet .= '<meta name="keywords" content="' . bx_html_attribute(implode(',', $this->aPage['keywords'])) . '" />';
 
+        $sUrl = $sUri = '';
+        if(($sKu = 'url') && !empty($this->aPage[$sKu])) {
+            $sUrl = bx_absolute_url(BxDolPermalinks::getInstance()->permalink($this->aPage[$sKu]));
+
+            list(, $aPageParams) = bx_get_base_url($this->aPage[$sKu]);
+            $sUri = $aPageParams['i'] ?? '';
+        }
+            
+        
+        // Process header
+        $sHeader = '';
+        if(($sKh = 'header') && !empty($this->aPage[$sKh]) && is_string($this->aPage[$sKh]))
+            $sHeader = $this->aPage[$sKh];
+        $bHeader = !empty($sHeader);
+
+        if($bHeader) {
+            $sHeader = strip_tags($sHeader);
+
+            // Collapse spaces/newlines and fix run-on words
+            $sHeader = preg_replace('/\s+/', ' ', $sHeader);                     
+            $sHeader = preg_replace('/([a-z0-9])([A-Z])/', '$1 $2', $sHeader);
+            $sHeader = trim($sHeader);
+
+            $bHeader = !empty($sHeader);
+        }
+
+        $sHeaderAttr = $bHeader ? bx_html_attribute($sHeader) : '';
+
+        // Process description
         $sDescription = '';
-        if(!empty($this->aPage['description']) && is_string($this->aPage['description']))
-            $sDescription = $this->aPage['description'];
+        if(($sKd = 'description') && !empty($this->aPage[$sKd]) && is_string($this->aPage[$sKd]))
+            $sDescription = $this->aPage[$sKd];
         if(!$sDescription && $bPage)
             $sDescription = $oPage->getMetaDescription();
         $bDescription = !empty($sDescription);
 
-        if($bDescription)
-            $sRet .= '<meta name="description" content="' . bx_html_attribute($sDescription) . '" />';
+        if($bDescription) {
+            // Convert HTML breaks/lists to spaces before stripping tags
+            $sDescription = preg_replace('#<(?:br\s*/?|/p|/li)>#i', ' ', $sDescription);
+            $sDescription = strip_tags($sDescription);
+
+            // Normalize whitespace
+            $sDescription = preg_replace('/\s+/u', ' ', $sDescription);
+
+            // Ensure space after punctuation if missing (".This" → ". This")
+            $sDescription = preg_replace('/([.,;:])([^\s])/u', '$1 $2', $sDescription);
+            $sDescription = trim($sDescription);
+
+            if(($iDescriptionMaxLen = 300) && mb_strlen($sDescription) > $iDescriptionMaxLen) {
+                $sDescription = mb_substr($sDescription, 0, $iDescriptionMaxLen);
+
+                // Trim partial word and remove dangling punctuation
+                $sDescription = preg_replace('/\s+\S*$/u', '', $sDescription);
+                $sDescription = rtrim($sDescription, " ,;:-");
+
+                $sDescription .= '...';
+            }
+            
+            $bDescription = !empty($sDescription);
+        }
+
+        $sDescriptionAttr = '';
+        if($bDescription && ($sDescriptionAttr = bx_html_attribute($sDescription)))
+            $sRet .= '<meta name="description" content="' . $sDescriptionAttr . '" />';
 
         // location
         if(!empty($this->aPage['location']) && isset($this->aPage['location']['lat']) && isset($this->aPage['location']['lng']) && isset($this->aPage['location']['country']))
@@ -1356,14 +1411,30 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         // facebook / twitter
         $bPageImage = !empty($this->aPage['image']);
         $sRet .= '<meta name="twitter:card" content="' . ($bPageImage ? 'summary_large_image' : 'summary') . '" />';
-        if ($bPageImage)
+
+        $sOgType = 'website';
+        if(preg_match("/(discussion|glossary|item|post)/", $sUri))
+            $sOgType = 'article';
+        else if(preg_match("/(ad|product|shopify\-entry|snipcart\-entry)/", $sUri))
+            $sOgType = 'product';
+        else if(preg_match("/(album|album\-media)/", $sUri))
+            $sOgType = 'album';
+        else if(strpos($sUri, 'profile') !== false)
+            $sOgType = 'profile';
+        else if(strpos($sUri, 'photo') !== false)
+            $sOgType = 'image';
+        else if(strpos($sUri, 'video') !== false)
+            $sOgType = 'video.other';
+
+        $sRet .= '<meta property="og:type" content="' . $sOgType . '" />';
+        $sRet .= '<meta property="og:title" content="' . $sHeaderAttr . '" />';
+        $sRet .= '<meta property="og:description" content="' . $sDescriptionAttr . '" />';
+        if($bPageImage)
             $sRet .= '<meta property="og:image" content="' . $this->aPage['image'] . '" />';
-        $sRet .= '<meta property="og:title" content="' . (isset($this->aPage['header']) ? bx_html_attribute(strip_tags($this->aPage['header'])) : '') . '" />';
-        $sRet .= '<meta property="og:description" content="' . ($bDescription ? bx_html_attribute($sDescription) : '') . '" />';
 
         // Smart App Banner
-        if (getParam('smart_app_banner') && false === strpos($_SERVER['HTTP_USER_AGENT'], 'UNAMobileApp')) {
-            if ($sAppIdIOS = getParam('smart_app_banner_ios_app_id'))
+        if(getParam('smart_app_banner') && false === strpos($_SERVER['HTTP_USER_AGENT'], 'UNAMobileApp')) {
+            if($sAppIdIOS = getParam('smart_app_banner_ios_app_id'))
                 $sRet .= '<meta name="apple-itunes-app" content="app-id=' . $sAppIdIOS . '" />';
         }
 
@@ -1372,15 +1443,13 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $sRet .= $oFunctions->getManifests();
         $sRet .= $oFunctions->getMetaIcons();
         
-        if (!empty($this->aPage['rss']) && !empty($this->aPage['rss']['url']))
-            $sRet .= '<link rel="alternate" type="application/rss+xml" title="' . bx_html_attribute($this->aPage['rss']['title'], BX_ESCAPE_STR_QUOTE) . '" href="' . $this->aPage['rss']['url'] . '" />';
-        
-        $sRet .= "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" . BX_DOL_URL_ROOT ."em.php?url=" . urlencode($_SERVER["REQUEST_URI"]) . "&format=json\" title=\"". (isset($this->aPage['header']) ? bx_html_attribute(strip_tags($this->aPage['header'])) : '') . "\" />";
-        
-        if (!empty($this->aPage['url'])){
-            $sRet .= '<link rel="canonical" href="' . bx_absolute_url(BxDolPermalinks::getInstance()->permalink($this->aPage['url'])) . '" />';
-        }
-        
+        if(!empty($this->aPage['rss']) && !empty($this->aPage['rss']['url']))
+            $sRet .= '<link rel="alternate" type="application/rss+xml" href="' . $this->aPage['rss']['url'] . '" title="' . bx_html_attribute($this->aPage['rss']['title'], BX_ESCAPE_STR_QUOTE) . '" />';
+        $sRet .= '<link rel="alternate" type="application/json+oembed" href="' . BX_DOL_URL_ROOT . 'em.php?url=' . urlencode($_SERVER["REQUEST_URI"]) . '&format=json" title="' . $sHeaderAttr . '" />';
+
+        if($sUrl)
+            $sRet .= '<link rel="canonical" href="' . $sUrl . '" />';
+
         return $sRet;
     }
     /**
