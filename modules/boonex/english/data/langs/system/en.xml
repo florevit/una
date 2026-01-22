@@ -1649,6 +1649,8 @@
     <string name="_adm_stg_inf_option_sys_autoupdate"><![CDATA[Try to update core  system and modules automatically.]]></string>
     <string name="_adm_stg_cpt_option_sys_cache_memcache_host"><![CDATA[Memcached server host]]></string>
     <string name="_adm_stg_cpt_option_sys_cache_memcache_port"><![CDATA[Memcached server port]]></string>
+    <string name="_adm_stg_cpt_option_sys_cache_redis_connection_string"><![CDATA[Redis server connection string]]></string>
+    <string name="_adm_stg_cpt_option_sys_cache_redis_connection_string_info"><![CDATA[For example: redis://pwdhere@localhost:6379/2, where 2 is database number (0 by default)]]></string>
     <string name="_adm_stg_cpt_option_sys_captcha_default"><![CDATA[Default Сaptcha]]></string>
     <string name="_adm_stg_cpt_option_sys_cf_enable"><![CDATA[Enable content filters]]></string>
     <string name="_adm_stg_cpt_option_sys_cf_enable_comments"><![CDATA[Enable content filters for comments]]></string>
