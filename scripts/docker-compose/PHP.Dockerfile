@@ -20,10 +20,11 @@ RUN apt-get update && apt-get install -y \
 # Configure & install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql mysqli zip exif opcache iconv mbstring \
-    && pecl install xdebug imagick-3.8.0 \
-    && pecl install igbinary && docker-php-ext-enable igbinary \
-    && yes '' | pecl install redis && docker-php-ext-enable redis \
-    && docker-php-ext-enable xdebug imagick
+    && pecl install xdebug \
+    && pecl install imagick-3.8.0 \
+    && pecl install igbinary \
+    && pecl install --configureoptions 'enable-redis-igbinary="yes" enable-redis-lzf="no" enable-redis-zstd="no" enable-redis-msgpack="no" enable-redis-lz4="no" with-liblz4="yes"' redis \
+    && docker-php-ext-enable xdebug imagick igbinary redis
 
 # ============================
 # Stage 2: Production runtime
@@ -31,7 +32,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 FROM php:8.3-fpm
 
 # Install only runtime packages
-RUN apt-get update && apt-get install -y --no-install-recommends msmtp-mta \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    msmtp-mta \
+    libpng-tools \
+    libjpeg62-turbo \
+    libfreetype6 \
+    libmagickwand-7.q16-10 \
+    libzip5 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy compiled PHP extensions and config from builder
