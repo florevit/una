@@ -1624,6 +1624,8 @@
     <string name="_adm_stg_inf_option_sys_autoupdate"><![CDATA[Автоматически обновлять (если это возможно) основную систему и модули.]]></string>
     <string name="_adm_stg_cpt_option_sys_cache_memcache_host"><![CDATA[Memcached - адрес сервера]]></string>
     <string name="_adm_stg_cpt_option_sys_cache_memcache_port"><![CDATA[Memcached - порт сервера]]></string>
+    <string name="_adm_stg_cpt_option_sys_cache_redis_connection_string"><![CDATA[Redis - строка реквизитов доступа]]></string>
+    <string name="_adm_stg_cpt_option_sys_cache_redis_connection_string_info"><![CDATA[Например: redis://pwdhere@localhost:6379/2, где 2 это номер базы данных (0 по умолчанию)]]></string>
     <string name="_adm_stg_cpt_option_sys_captcha_default"><![CDATA[CAPTCHA по умолчанию]]></string>
     <string name="_adm_stg_cpt_option_sys_cf_enable"><![CDATA[Включить контентные фильтры]]></string>
     <string name="_adm_stg_cpt_option_sys_cf_enable_comments"><![CDATA[Включить контентные фильтры для комментариев]]></string>

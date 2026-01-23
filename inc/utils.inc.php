@@ -2854,7 +2854,7 @@ function bx_content_cache_key(string $sKey, bool $bPrefixOnly = false): string
 {
     if ($bPrefixOnly)
         return 'content_' . $sKey;
-    return 'content_' . $sKey . '_' . bx_lang_name() . '_' . bx_site_hash() . '.php';
+    return 'content_' . $sKey . '_' . bx_lang_name() . '_' . BxDolTemplate::getInstance()->getCode() . '_' . bx_site_hash() . '.php';
 }
 
 function bx_content_cache_obj(): object

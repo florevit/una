@@ -79,6 +79,7 @@ RUN apt update && apt install -y --no-install-recommends \
     php8.2-mbstring \
     php8.2-mysql \
     php8.2-imagick \
+    php8.2-redis \
     php8.2-intl \
     libjpeg-turbo8 \
     libpng16-16 \
