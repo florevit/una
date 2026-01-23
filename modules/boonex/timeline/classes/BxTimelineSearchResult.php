@@ -80,6 +80,34 @@ class BxTimelineSearchResult extends BxBaseModNotificationsSearchResult
         }
         return $aSql;
     }
+
+    function decodeLsDataAPI ($aItems)
+    {
+        if(empty($aItems) || !is_array($aItems))
+            return $aItems;
+
+        $oMenuActions = false;
+        if(!($oMenuActions = BxDolMenu::getObjectInstance($this->oModule->_oConfig->getObject('menu_item_actions_all'))))
+            $oMenuActions = BxDolMenu::getObjectInstance($this->oModule->_oConfig->getObject('menu_item_actions'));
+
+        $oMenuManage = BxDolMenu::getObjectInstance($this->oModule->_oConfig->getObject('menu_item_manage'));
+
+        $aResults = [];
+        foreach($aItems as $aItem) {
+            $sItem = $this->oModule->_oTemplate->getPost($aItem);
+            if(empty($sItem))
+                continue;
+                
+            $aItem = array_merge($aItem, [
+                'menu_actions' => $oMenuActions,
+                'menu_manage' => $oMenuManage
+            ]);
+
+            $aResults[] = $this->oModule->_oTemplate->getPostApi($aItem);
+        }
+
+        return $aResults;
+    }
 }
 
 /** @} */

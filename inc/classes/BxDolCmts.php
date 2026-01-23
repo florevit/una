@@ -1920,7 +1920,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function serviceGetAuthor ($iContentId)
     {
         $aComment = $this->_oQuery->getCommentsBy(array('type' => 'id', 'id' => $iContentId));
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return $aComment['cmt_author_id'];
     }
@@ -1928,7 +1928,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function serviceGetDateAdded ($iContentId)
     {
         $aComment = $this->_oQuery->getCommentsBy(array('type' => 'id', 'id' => $iContentId));
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return $aComment['cmt_time'];
     }
@@ -1940,7 +1940,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function serviceGetLink ($iContentId)
     {
         $aComment = $this->_oQuery->getCommentsBy(array('type' => 'id', 'id' => $iContentId));
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return $this->getViewUrl($iContentId);
     }
@@ -1953,7 +1953,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function serviceGetText ($iContentId)
     {
         $aComment = $this->_oQuery->getCommentsBy(array('type' => 'id', 'id' => $iContentId));
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return $aComment['cmt_text'];
     }
@@ -1966,7 +1966,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function serviceGetInfo ($iContentId, $bSearchableFieldsOnly = true)
     {
         $aComment = $this->_oQuery->getCommentsBy(array('type' => 'id', 'id' => $iContentId));
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return BxDolContentInfo::formatFields($aComment);
     }
@@ -1986,7 +1986,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
         if(empty($aComment) || !is_array($aComment))
             return '';
 
-        $this->setId($aComment['cmt_object_id']);
+        $this->init($aComment['cmt_object_id']);
 
         return $this->getComment($aComment, array(), array('type' => BX_CMT_DISPLAY_FLAT, 'view_only' => true));
     }

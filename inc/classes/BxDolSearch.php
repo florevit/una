@@ -127,8 +127,13 @@ class BxDolSearch extends BxDol
 
             if($this->_bDataProcessing) {
                 if($this->_bIsApi) {
-                    if($bSingle)
-                        $sCode = $oEx->{'decode' . ( $this->_bLiveSearch ? 'Ls' : '') . 'DataAPI'}($oEx->getSearchData());
+                    if($bSingle) {
+                        $sMethod = 'decodeDataAPI';
+                        if($this->_bLiveSearch && ($sMethodLs = 'decodeLsDataAPI') && method_exists($oEx, $sMethodLs))
+                            $sMethod = $sMethodLs;
+
+                        $sCode = $oEx->$sMethod($oEx->getSearchData());
+                    }
                     else
                         $sCode[$sKey] = $oEx->getSearchQuery($sKey);
                 }
@@ -619,32 +624,6 @@ class BxDolSearchResult implements iBxDolReplaceable
     function decodeDataAPI ($a)
     {
         return $a;
-    }
-    
-    function decodeLsDataAPI ($aItems)
-    {
-        if(empty($aItems) || !is_array($aItems))
-            return $aItems;
-
-        var_dump($this->getModuleName() . ' --- ' . $this->getContentInfoName());
-
-        $aResult = [];
-        foreach($aItems as $aItem) {
-            $iItemId = $aItem['id'] ?? false;
-            if(!$iItemId)
-                continue;
-
-            $aItemData = $this->_getLsItemDataAPI($iItemId);
-            if($aItemData && is_array($aItemData) && ($aIdContent = ($aItemData['content'] ?? false)))
-                $aResult[] = $aIdContent;
-        }
-
-        return $aResult;
-    }
-
-    protected function _getLsItemDataAPI($iItemId)
-    {
-        return [];
     }
 
     /**

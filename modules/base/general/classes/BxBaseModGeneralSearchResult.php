@@ -297,11 +297,6 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         return $a;
     }
 
-    protected function _getLsItemDataAPI($iItemId)
-    {
-        return bx_srv($this->getModuleName(), 'get_timeline_post', [['object_id' => $iItemId]]);
-    }
-
     protected function _updateCurrentForFollowedContexts($sMode, $aParams, &$oProfileContext)
     {
         $CNF = &$this->oModule->_oConfig->CNF;
