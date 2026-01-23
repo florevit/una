@@ -508,9 +508,13 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
                         continue;
                 }
 
-                $aAttrs = array();
-                if(!empty($aButton['onclick']))
+                $aAttrs = [];
+                if(!empty($aButton['href']))
+                    $aAttrs['href'] = $aButton['href'];
+                if(!empty($aButton['onclick'])) {
+                    $aAttrs['href'] = "javascript:void(0);";
                     $aAttrs['onclick'] = $aButton['onclick'];
+                }
                 
                 $aAttrs['class'] = 'bx-btn bx-btn-small';
                 if(!empty($aButton['class']))
