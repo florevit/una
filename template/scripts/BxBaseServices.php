@@ -1463,7 +1463,12 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
             closedir($oHandle);
         }
 
-        $aResults['cdn'] = _t('_adm_stg_cpt_option_sys_css_tailwind_default_cdn');
+        /**
+         * Disabled for now, because CDN and custom compiled build with own styles 
+         * don't work correctly together.
+         * 
+         * $aResults['cdn'] = _t('_adm_stg_cpt_option_sys_css_tailwind_default_cdn');
+         */
 
         return $aResults;
     }
