@@ -525,17 +525,13 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
     }
 	
     public function keywordsGetHashTagUrl($sKeyword, $iId, $mixedSection = false) 
-    {   
-        $sSectionPart = '';
-        if (!empty($mixedSection)) {
-            if (is_array($mixedSection))
-                $sSectionPart = '&section[]=' . implode('&section[]=', $mixedSection);
-            elseif (is_string($mixedSection))
-                $sSectionPart = '&section[]=' . $mixedSection;
-        }
-        
-        $sUrl = BX_DOL_URL_ROOT . 'searchKeyword.php?type=keyword&keyword=' . rawurlencode($sKeyword) . $sSectionPart;
-        
+    {
+        $aUrlParams = ['type' => 'keyword', 'keyword' => rawurlencode($sKeyword)];
+        if(!empty($mixedSection))
+            $aUrlParams['section'] = $mixedSection;
+
+        $sUrl = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=search-keyword', $aUrlParams);
+
         /**
          * @hooks
          * @hookdef hook-meta_keyword-url 'meta_keyword', 'url' - hook to override meta keyword URL

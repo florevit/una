@@ -286,6 +286,7 @@ class BxBaseCmtsServices extends BxDol
             return false;
 
         $sCmtUrl = $oCmts->getViewUrl($iCmtId);
+        $sCmtUrlApi = $oCmts->getItemUrlApi($iCmtId);
 
         $sSample = '_cmt_txt_sample_comment_single_with_article';
         $sSampleWoArticle = '_cmt_txt_sample_comment_single';
@@ -351,11 +352,13 @@ class BxBaseCmtsServices extends BxDol
                 'markers' => $aActionCustomMarkers
             ),
             'url' => $sCmtUrl,
+            'url_api' => $sCmtUrlApi,
             'content' => array(
                 'sample' => $sSample,
                 'sample_wo_article' => $sSampleWoArticle,
                 'sample_action' => $sAction,
                 'url' => $sCmtUrl,
+                'url_api' => $sCmtUrlApi,
                 'title' => '',
                 'text' => $oCmts->getViewText($aCmt),
                 'images' => array(),

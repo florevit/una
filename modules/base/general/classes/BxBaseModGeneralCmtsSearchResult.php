@@ -96,6 +96,15 @@ class BxBaseModGeneralCmtsSearchResult extends BxBaseModGeneralSearchResult
         return $a;
     }
 
+    protected function _getLsItemDataAPI($iItemId)
+    {
+        $oCmts = BxDolCmts::getObjectInstance($this->sModuleObjectComments, 0, false);
+        if(!$oCmts)
+            return [];
+         
+        return bx_srv('system', 'get_timeline_post', [['object_id' => $oCmts->getCommentUniqId($iItemId)]], 'TemplCmtsServices');
+    }
+    
     function _getPseud ()
     {
         return array(

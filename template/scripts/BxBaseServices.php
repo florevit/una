@@ -1078,16 +1078,17 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
      */
     public function serviceSearchKeywordResult ()
     {
+        $sType = bx_process_input(bx_get('type'));
         $sKeyword = bx_process_input(bx_get('keyword'));
         $bKeyword = $sKeyword !== false;
 
         if(bx_is_api())
             return $this->serviceGetDataSearchApi(['params' => [
-                    'keyword' => $sKeyword,
-                    'section' => bx_process_input(bx_get('section')),
-                    'cat' => bx_process_input(bx_get('cat'))
-                ]
-            ]);
+                'type' => $sType,
+                'keyword' => $sKeyword,
+                'section' => bx_process_input(bx_get('section')),
+                'cat' => bx_process_input(bx_get('cat'))
+            ]]);
 
         $sCode = '';
         if($bKeyword) {
@@ -1124,9 +1125,11 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
             return false;
 
         if(is_string($aParams))
-            $aParams = json_decode($aParams, true);
+            $aParams = bx_api_get_browse_params($aParams);
 
-        $aSections = [];
+        $bForceAll = ($aParams['params']['type'] ?? '') == 'keyword';
+
+        $aSectionsAvail = explode(',', getParam('sys_api_search_sections'));
         $aSectionsAll = BxDolDb::getInstance()->fromCache(
             'sys_global_search_pairs', 
             'getPairs', 
@@ -1134,16 +1137,13 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
             'name', 'title'
         );
 
-        $aSectionNames = explode(',', getParam('sys_api_search_sections'));
-        foreach($aSectionNames as $sSectionName) {
-            if(!isset($aSectionsAll[$sSectionName]))
-                continue;
-
-            $aSections[$sSectionName] = [
-                'name' => $sSectionName,
-                'title' => _t($aSectionsAll[$sSectionName])
-            ];
-        }
+        $aSections = [];
+        foreach($aSectionsAll as $sSectionName => $sSectionTitle)
+            if(in_array($sSectionName, $aSectionsAvail) || $bForceAll)
+                $aSections[$sSectionName] = [
+                    'name' => $sSectionName,
+                    'title' => _t($sSectionTitle)
+                ];
 
         $aParamsBrowse = array_merge([
             'keyword' => '',
