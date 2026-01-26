@@ -2284,7 +2284,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
         $aEvent['url'] = '';
         if(!empty($aEvent['content']['url']))
-            $aEvent['url'] = bx_ltrim_str($aEvent['content']['url'], BX_DOL_URL_ROOT);
+            $aEvent['url'] = $aEvent['content']['url'] = bx_api_get_relative_url($aEvent['content']['url']);
 
         if(($sKc = 'content') && !empty($aEvent[$sKc]) && is_array($aEvent[$sKc])) {
             $aCnt = &$aEvent[$sKc];
