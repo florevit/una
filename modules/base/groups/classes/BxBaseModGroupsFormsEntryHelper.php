@@ -255,13 +255,18 @@ class BxBaseModGroupsFormsEntryHelper extends BxBaseModProfileFormsEntryHelper
      */ 
     protected function makeAuthorAdmin ($oGroupProfile, $aInitialProfiles)
     {
-        $iAdminProfileId = bx_get_logged_profile_id();
+        $iAuthorProfileId = 0;
+        if($oGroupProfile && ($sModule = $oGroupProfile->getModule()) && ($sMethod = 'get_author') && bx_is_srv($sModule, $sMethod))
+            $iAuthorProfileId = bx_srv($sModule, $sMethod, [$oGroupProfile->getContentId()]);
+        if(!$iAuthorProfileId)
+            return;
+
         if(!is_array($aInitialProfiles))
             $aInitialProfiles = [];
-        if(!in_array($iAdminProfileId, $aInitialProfiles))
-            $aInitialProfiles[] = $iAdminProfileId;
+        if(!in_array($iAuthorProfileId, $aInitialProfiles))
+            $aInitialProfiles[] = $iAuthorProfileId;
 
-        $this->makeAdmin($iAdminProfileId, $oGroupProfile, $aInitialProfiles);
+        $this->makeAdmin($iAuthorProfileId, $oGroupProfile, $aInitialProfiles);
     }
 
     /**
