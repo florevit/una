@@ -32,7 +32,7 @@ class BxCoursesConfig extends BxBaseModGroupsConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'book-reader col-blue3-dark',
+            'ICON' => 'book-reader',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',
