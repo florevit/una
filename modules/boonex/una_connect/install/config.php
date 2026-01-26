@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'UNA connect',
     'note' => 'Join the site using another UNA site account credentials.',
     'version' => '13.0.2.DEV',
-    'vendor' => 'Boonex',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
