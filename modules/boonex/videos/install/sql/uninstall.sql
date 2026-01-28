@@ -27,7 +27,7 @@ DELETE FROM `sys_form_pre_values` WHERE `Key` IN('bx_videos_cats', 'bx_videos_so
 
 
 -- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_videos';
+DELETE FROM `sys_objects_cmts` WHERE `Name` IN ('bx_videos', 'bx_videos_notes');
 
 
 -- VOTES
