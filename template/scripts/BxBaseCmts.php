@@ -37,16 +37,17 @@ class BxBaseCmts extends BxDolCmts
         $this->_sTmplNameItem = 'comment.html';
         $this->_sTmplNameItemContent = 'comment_content.html';
 
+        $this->_sStylePrefix = $this->_aSystem['root_style_prefix'] ?? 'cmt';
+
         $this->_sJsObjClass = 'BxDolCmts';
-        $this->_sJsObjName = 'oCmts' . bx_gen_method_name($sSystem, array('_' , '-')) . '_' .str_replace('-', 'n', $iId);
-        $this->_sStylePrefix = isset($this->_aSystem['root_style_prefix']) ? $this->_aSystem['root_style_prefix'] : 'cmt';
+        $this->_sJsObjName = 'oCmts' . bx_gen_method_name($sSystem, ['_' , '-']) . '_' . ($iId ?? 0);
 
-        $sHtmlId = str_replace(array('_' , ' '), array('-', '-'), $sSystem) . '-' . $iId;
+        $sHtmlId = str_replace(['_' , ' '], ['-', '-'], $sSystem) . '-' . ($iId ?? 0);
 
-        $this->_aHtmlIds = array(
+        $this->_aHtmlIds = [
             'main' => 'bx-cmt-' . $sHtmlId,
             'counter' => 'bx-cmt-counter-' . $sHtmlId
-        );
+        ];
 
         $this->_aElementDefaults = [
             'show_do_comment_as_button' => false,
