@@ -343,6 +343,9 @@ Criteria:
 8. separate_schema: database schema changes must be in separate piece of code. 
 9. structure_in_blocks: separate output in blicks with comments, blocks should be separated by table names or groups os simmilar tables (like `sys_options` and `sys_options_categories`)
 10. no_order_update_for_forms_inputs: don't update order field for forms, just set closest one for the updated field.
+11. assume data exists in the db, don't create data that already exists (like pages, blocks, settins, menus, storages, transcoders, etc).
+12. don't split SQL querys into multiple lines.
+13. for icon field in menu add checking for exact old value before updating it.
 
 List of uniq table fields, as table => uniq (or set of fields with plus sign) field pairs:
 sys_acl_actions => ID+Module
@@ -406,7 +409,7 @@ sys_std_roles => name
 sys_std_roles_members => account_id
 sys_std_widgets_bookmarks => widget_id+profile_id
 
-Write minimal necessary code.
+Write minimal necessary code. 
 
 OLD install.sql:
 ```sql
@@ -425,7 +428,7 @@ PROMPT;
             $response = $this->callDeepSeek($prompt);
         } else {
             $response = $this->callOpenAI([
-                ['role' => 'system', 'content' => 'You are MySQL expert validator. Respond only with valid JSON.'],
+                ['role' => 'system', 'content' => 'You are MySQL expert validator. Respond only with valid JSON. Main key is "sql" with generated SQL update script as value. Other keys are optional and used to report check results.'],
                 ['role' => 'user', 'content' => $prompt]
             ]);
         }
@@ -464,7 +467,7 @@ PROMPT;
     }
 
     private function displayResults($results, $title) {
-        print_r($results);
+        // print_r($results);
         if (isset($results['sql'])) {
             echo "\nGenerated SQL Update Script:\n";
             echo "----------------------------------------\n";
@@ -472,7 +475,7 @@ PROMPT;
             echo "----------------------------------------\n";
             unset($results['sql']);
         }
-        if (!empty($results['sql'])) {
+        if (!empty($results)) {
             echo "\nOther notes:\n";
             echo "----------------------------------------\n";        
             print_r($results);
