@@ -58,6 +58,9 @@
 
     <string name="_bx_reputation_form_input_err"><![CDATA[Поле обязательно. Пожалуйста, заполните его.]]></string>
 
+    <!-- ACL -->
+    <string name="_bx_reputation_acl_action_edit_any_entry"><![CDATA[Управлять любой таблицей лидеров]]></string>
+
     <!-- Pages -->
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Таблица лидеров]]></string>
@@ -65,6 +68,9 @@
     <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[7 дней]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[30 дней]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[За все время)]]></string>
+    <string name="_bx_reputation_page_title_sys_manage"><![CDATA[Управление]]></string>
+    <string name="_bx_reputation_page_title_manage"><![CDATA[Управление таблицей лидеров]]></string>
+    <string name="_bx_reputation_page_block_title_manage"><![CDATA[Управление таблицей лидеров]]></string>
     <string name="_bx_reputation_page_title_sys_history"><![CDATA[История баллов]]></string>
     <string name="_bx_reputation_page_title_history"><![CDATA[Мои баллы]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Сводка]]></string>
@@ -113,6 +119,9 @@
     <string name="_bx_reputation_grid_action_title_lvl_edit"><![CDATA[Редактировать уровень]]></string>
     <string name="_bx_reputation_grid_action_title_lvl_delete"><![CDATA[Удалить уровень]]></string>
 
+    <string name="_bx_reputation_grid_column_title_mng_lb_profile_id"><![CDATA[Профиль]]></string>
+    <string name="_bx_reputation_grid_column_title_mng_lb_points"><![CDATA[Баллы]]></string>
+
     <string name="_bx_reputation_grid_action_err_perform"><![CDATA[Невозможно выполнить действие для выбранного(ых) элементов.]]></string>
 
     <!-- Errors, Warnings, Messages -->
@@ -121,6 +130,7 @@
 
     <!-- Other -->
     <string name="_bx_reputation_txt_filters"><![CDATA[Фильтры]]></string>
+    <string name="_bx_reputation_txt_manage"><![CDATA[Управление]]></string>
     <string name="_bx_reputation_txt_level_newcomer"><![CDATA[Новичок]]></string>
     <string name="_bx_reputation_txt_level_explorer"><![CDATA[Исследователь]]></string>
     <string name="_bx_reputation_txt_level_contributor"><![CDATA[Помощник]]></string>

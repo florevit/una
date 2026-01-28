@@ -252,6 +252,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
 
         $sName = $aParams['name'] ?? $iContextId . '-' . $iDays;
         $bFilters = $aParams['filters'] ?? false;
+        $bManage = $aParams['manage'] ?? false;
 
         if($bGrowth) 
             $aItems = $this->_oDb->getEventsStats([
@@ -309,10 +310,17 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 'oRequestParams' => ['days' => $iDays]
             ]);
 
-            $aResult['buttons'] = [
-                ['title' => _t('_bx_reputation_txt_filters'), 'href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $this->_oConfig->getJsObject('leaderboard') . '.changeLeaderboardFilters(this)']
-            ];
+            if(!isset($aResult['buttons']))
+                $aResult['buttons'] = [];
+
+            $aResult['buttons'][] = ['title' => _t('_bx_reputation_txt_filters'), 'href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $this->_oConfig->getJsObject('leaderboard') . '.changeLeaderboardFilters(this)'];
         }
+
+        if($bManage && $this->getModule()->checkAllowedManage($iContextId) === CHECK_ACTION_RESULT_ALLOWED)
+            $aResult['buttons'][] = [
+                'title' => _t('_bx_reputation_txt_manage'), 
+                'href' => BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink($CNF['URL_MANAGE'], ['context_id' => $iContextId])
+            ];
 
         $this->addCss(['main.css']);
         return $aResult;
