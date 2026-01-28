@@ -30,7 +30,7 @@ DELETE FROM `sys_form_pre_lists` WHERE `module` = 'bx_courses';
 DELETE FROM `sys_form_pre_values` WHERE `Key` LIKE 'bx_courses%';
 
 -- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_courses';
+DELETE FROM `sys_objects_cmts` WHERE `Name` IN ('bx_courses', 'bx_courses_notes');
 
 -- VIEWS
 DELETE FROM `sys_objects_view` WHERE `name` = 'bx_courses';

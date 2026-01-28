@@ -27,7 +27,7 @@ DELETE FROM `sys_form_pre_values` WHERE `Key` IN ('bx_forum_cats');
 
 
 -- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = @sName;
+DELETE FROM `sys_objects_cmts` WHERE `Name` IN (@sName, 'bx_forum_notes');
 
 
 -- VIEWS
