@@ -4389,6 +4389,19 @@ class BxBaseModGeneralModule extends BxDolModule
         return $aData;
     }
 
+    protected function decodeDataAPICommonFields(&$aResult, $aData, $aParams) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if (!empty($CNF['FIELD_LABELS'])) {
+            $aResult[$CNF['FIELD_LABELS']] = empty($aData[$CNF['FIELD_LABELS']]) ? [] : unserialize($aData[$CNF['FIELD_LABELS']]);
+        }
+
+        if (!empty($CNF['FIELD_LOCATION'])) {
+            $aResult[$CNF['FIELD_LOCATION']] = empty($aData[$CNF['FIELD_LOCATION']]) ? [] : unserialize($aData[$CNF['FIELD_LOCATION']]);
+        }
+    }
+
     // ====== PROTECTED METHODS
 
     protected function _serviceEntityForm ($sFormMethod, $iContentId = 0, $sDisplay = false, $sCheckFunction = false, $bErrorMsg = true)
