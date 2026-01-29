@@ -17,12 +17,12 @@ $aConfig = array(
     'name' => 'bx_dolcon',
     'title' => 'Dolphin connect',
     'note' => 'Join the site using Dolphin site account credentials.',
-    'version' => '12.0.1.DEV',
+    'version' => '15.0.1.DEV',
     'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '12.0.x'
+        '15.0.x'
     ),
 
     /**
