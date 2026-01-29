@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `bx_reputation_profiles` (
   `profile_id` int(11) NOT NULL DEFAULT '0',
   `context_id` int(11) NOT NULL default '0',
   `points` int(11) NOT NULL DEFAULT '0',
+  `visible` tinyint(4) NOT NULL default '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `profile` (`profile_id`, `context_id`)
 );

@@ -22,7 +22,7 @@ DELETE FROM `sys_form_pre_lists` WHERE `module` = 'bx_glossary';
 DELETE FROM `sys_form_pre_values` WHERE `Key` IN('bx_glossary_cats');
 
 -- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_glossary';
+DELETE FROM `sys_objects_cmts` WHERE `Name` IN ('bx_glossary', 'bx_glossary_notes');
 
 -- VOTES
 DELETE FROM `sys_objects_vote` WHERE `Name` IN ('bx_glossary', 'bx_glossary_reactions');

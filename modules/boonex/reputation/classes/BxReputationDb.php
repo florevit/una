@@ -112,18 +112,18 @@ class BxReputationDb extends BxBaseModNotificationsDb
         if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
             $aBindings['context_id'] = $aParams['context_id'];
 
-            $sWhereSubClause .= ' AND `context_id` = :context_id';
+            $sWhereSubClause .= ' AND `te`.`context_id` = :context_id';
         }
 
         if(!empty($aParams['days'])) {
             $aBindings['days'] = (int)$aParams['days'];
 
-            $sWhereSubClause .= ' AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
+            $sWhereSubClause .= ' AND `te`.`date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
         }
 
         $sGroupSubClause = 'GROUP BY `owner_id`';
 
-        $sTableClause = '(SELECT `owner_id` AS `profile_id`, SUM(`points`) AS `points` FROM `' . $CNF['TABLE_EVENTS'] . '` WHERE 1 ' . $sWhereSubClause . ' ' . $sGroupSubClause . ')';
+        $sTableClause = '(SELECT `te`.`owner_id` AS `profile_id`, SUM(`te`.`points`) AS `points` FROM `' . $CNF['TABLE_EVENTS'] . '` AS `te` INNER JOIN `' . $CNF['TABLE_PROFILES'] . '` AS `tp` ON `te`.`owner_id`=`tp`.`profile_id` AND `te`.`context_id`=`tp`.`context_id` AND `tp`.`visible`<>0 WHERE 1 ' . $sWhereSubClause . ' ' . $sGroupSubClause . ')';
 
         $sSelectPosition = 'SELECT COUNT(DISTINCT `tre2`.`points`) FROM ' . $sTableClause . ' AS `tre2` WHERE `tre2`.`points` >= `tre`.`points`';
 
@@ -254,7 +254,7 @@ class BxReputationDb extends BxBaseModNotificationsDb
                 $aMethod['params'][1] = 'profile_id';
                 $aMethod['params'][2] = [];
 
-                $sSelectPosition = 'SELECT COUNT(DISTINCT `trp2`.`points`) FROM `' . $CNF['TABLE_PROFILES'] . '` AS `trp2` WHERE `trp2`.`points` >= `trp`.`points`';
+                $sSelectPosition = 'SELECT COUNT(DISTINCT `trp2`.`points`) FROM `' . $CNF['TABLE_PROFILES'] . '` AS `trp2` WHERE `visible`<>0 AND `trp2`.`points` >= `trp`.`points`';
 
                 if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
                     $aMethod['params'][2]['context_id'] = $aParams['context_id'];
@@ -269,6 +269,7 @@ class BxReputationDb extends BxBaseModNotificationsDb
                 }
 
                 $sSelectClause .= ', (' . $sSelectPosition . ') AS `position`';
+                $sWhereClause .= ' AND `trp`.`visible`<>0';
                 $sOrderClause = '`trp`.`points` DESC';
                 $sLimitClause = '0, ' . (int)$aParams['limit'];
                 break;

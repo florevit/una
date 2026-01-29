@@ -58,6 +58,9 @@
 
     <string name="_bx_reputation_form_input_err"><![CDATA[The field is essential. Please, fill it in.]]></string>
 
+    <!-- ACL -->
+    <string name="_bx_reputation_acl_action_edit_any_entry"><![CDATA[Manage Any Leaderboard]]></string>
+
     <!-- Pages -->
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Leaderboard]]></string>
@@ -65,6 +68,9 @@
     <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[7 days]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[30 days]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[All-time]]></string>
+    <string name="_bx_reputation_page_title_sys_manage"><![CDATA[Manage]]></string>
+    <string name="_bx_reputation_page_title_manage"><![CDATA[Manage Leaderboard]]></string>
+    <string name="_bx_reputation_page_block_title_manage"><![CDATA[Manage Leaderboard]]></string>
     <string name="_bx_reputation_page_title_sys_history"><![CDATA[Points history]]></string>
     <string name="_bx_reputation_page_title_history"><![CDATA[My Points]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Summary]]></string>
@@ -113,6 +119,9 @@
     <string name="_bx_reputation_grid_action_title_lvl_edit"><![CDATA[Edit level]]></string>
     <string name="_bx_reputation_grid_action_title_lvl_delete"><![CDATA[Delete level]]></string>
 
+    <string name="_bx_reputation_grid_column_title_mng_lb_profile_id"><![CDATA[Profile]]></string>
+    <string name="_bx_reputation_grid_column_title_mng_lb_points"><![CDATA[Points]]></string>
+
     <string name="_bx_reputation_grid_action_err_perform"><![CDATA[Cannot perform the action for selected items(s).]]></string>
 
     <!-- Errors, Warnings, Messages -->
@@ -121,6 +130,7 @@
 
     <!-- Other -->
     <string name="_bx_reputation_txt_filters"><![CDATA[Filters]]></string>
+    <string name="_bx_reputation_txt_manage"><![CDATA[Manage]]></string>
     <string name="_bx_reputation_txt_level_newcomer"><![CDATA[Newcomer]]></string>
     <string name="_bx_reputation_txt_level_explorer"><![CDATA[Explorer]]></string>
     <string name="_bx_reputation_txt_level_contributor"><![CDATA[Contributor]]></string>

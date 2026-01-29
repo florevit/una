@@ -33,6 +33,7 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
 
             // page URIs
             'URL_LEADERBOARD' => 'page.php?i=leaderboard',
+            'URL_MANAGE' => 'page.php?i=reputation-manage',
             'URL_HISTORY' => 'page.php?i=points-history',
 
             // some params
@@ -50,6 +51,7 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
             'OBJECT_MENU_SUBMENU' => 'bx_reputation_submenu',
             'OBJECT_GRID_HANDLERS' => 'bx_reputation_handlers',
             'OBJECT_GRID_LEVELS' => 'bx_reputation_levels',
+            'OBJECT_GRID_MANAGE_LEADERBOARD' => 'bx_reputation_manage_leaderboard',
 
             // some language keys
             'T' => [

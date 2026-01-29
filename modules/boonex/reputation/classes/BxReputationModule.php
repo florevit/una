@@ -162,17 +162,42 @@ class BxReputationModule extends BxBaseModNotificationsModule
         return $this->_oTemplate->getBlockHistory($iProfileId, $iContextId, $iStart, $iLimit);
     }
 
-    public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0, $bFilters = false)
+    public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0, $bFilters = false, $bManage = false)
     {
         $mixedResult = $this->_oTemplate->getBlockLeaderboard([
             'context_id' => (int)$iContextId, 
             'days' => (int)$iDays,
-            'filters' => (bool)$bFilters
+            'filters' => (bool)$bFilters,
+            'manage' => (bool)$bManage
         ]);
 
         return !$this->_bIsApi ? $mixedResult : [
             bx_api_get_block('reputation_leaderboard', $mixedResult)
         ];
+    }
+
+    public function serviceGetBlockManage($iContextId = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(!$iContextId && ($_iContextId = bx_get('context_id')) !== false)
+            $iContextId = (int)$_iContextId;
+
+        if(($mixedResult = $this->checkAllowedManage($iContextId)) !== CHECK_ACTION_RESULT_ALLOWED)
+            return $this->_bIsApi ? [bx_api_get_msg($mixedResult)] : MsgBox($mixedResult);
+
+        $oGrid = BxDolGrid::getObjectInstance($CNF['OBJECT_GRID_MANAGE_LEADERBOARD']);
+        if(!$oGrid)
+            return '';
+
+        $oGrid->setContextId($iContextId);
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
+
+        return $oGrid->getCode();
     }
 
     public function serviceGetBlockWidget($iProfileId = 0, $iContextId = 0, $aParams = [])
@@ -257,6 +282,39 @@ class BxReputationModule extends BxBaseModNotificationsModule
     private function _getTabDataSummary($iProfileId, $iContextId)
     {
         return $this->_oTemplate->getBlockSummary($iProfileId, $iContextId);
+    }
+
+    /**
+     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make strict(===) checking.
+     */
+    public function checkAllowedManage ($iContextId = 0, $isPerformAction = false)
+    {
+        // moderator have access
+        if($this->_isModerator($isPerformAction))
+            return CHECK_ACTION_RESULT_ALLOWED;
+
+        // check for context's admins 
+        if($iContextId && ($oContext = BxDolProfile::getInstance($iContextId)) !== false) {
+            $sModule = $oContext->getModule();
+            $oModule = BxDolModule::getInstance($sModule);
+
+            // check for context's extra roles with rights
+            if (method_exists($oModule, 'isAllowedModuleActionByProfile')) {
+                $bResult = $oModule->isAllowedModuleActionByProfile($oContext->getContentId(), $this->getName(), 'edit_any');
+                if($bResult !== NULL) 
+                    return $bResult;
+            }
+
+            $aEntity = [];
+            if(($sMethod = 'get_all') && bx_is_srv($sModule, $sMethod))
+                $aEntity = bx_srv($sModule, $sMethod, [['type' => 'id', 'id' => $oContext->getContentId()]]);
+
+            // if allowed edit a group then allowed to edit anything inside its context
+            if(!empty($aEntity) && $oModule->checkAllowedEdit($aEntity) === CHECK_ACTION_RESULT_ALLOWED)
+                return CHECK_ACTION_RESULT_ALLOWED;
+        }
+
+        return _t('_sys_txt_access_denied');
     }
 
     /**
