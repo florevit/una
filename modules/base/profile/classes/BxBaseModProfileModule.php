@@ -2532,6 +2532,8 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
             $aResult['meta'] = $oMetaMenu->getCodeAPI();
         }
 
+        $this->decodeDataAPICommonFields($aResult, $aData, $aParams);
+        
         return $aResult;
     }
 
