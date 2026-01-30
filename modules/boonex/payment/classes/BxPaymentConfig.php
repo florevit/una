@@ -11,6 +11,7 @@
 
 class BxPaymentConfig extends BxBaseModPaymentConfig
 {
+    protected $_bExtendedMode;
     protected $_bCreditsOnly;
 
     protected $_iPayAttemptsMax;
@@ -151,6 +152,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
             'stripe_v3' => 'oPaymentProviderStripeV3'
         );
 
+        $this->_bExtendedMode = false;
         $this->_bCreditsOnly = false;
 
         $this->_iPayAttemptsMax = 3;
@@ -163,7 +165,13 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
         $sPrefix = $this->getPrefix('options');
 
+        $this->_bExtendedMode = $this->_oDb->getParam($sPrefix . 'extended_mode') == 'on';
         $this->_bCreditsOnly = $this->_oDb->getParam($sPrefix . 'credits_only') == 'on';
+    }
+
+    public function isExtendedMode()
+    {
+        return $this->_bExtendedMode;
     }
 
     public function isCreditsOnly()

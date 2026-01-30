@@ -68,6 +68,7 @@ class BxPaymentFormDetails extends BxTemplFormView
             return false;
 
         $bSiteAdmin = $this->_oModule->_oConfig->isSiteAdmin();
+        $bExtendedMode = $this->_oModule->_oConfig->isExtendedMode();
         $bSingleSeller = $this->_oModule->_oConfig->isSingleSeller();
 
         $bCollapsed = $this->_bCollapseFirst;
@@ -98,24 +99,36 @@ class BxPaymentFormDetails extends BxTemplFormView
                 $bCollapsed = true;
             }
 
-            $this->aInputs[$aInput['name']] = array(
-                'type' => $aInput['type'],
-                'name' => $aInput['name'],
-                'caption' => _t($aInput['caption']),
-                'value' => $oProvider->getOption($aInput['name']),
-                'info' => _t($aInput['description']),
-            	'attrs' => array(
-                    'bx-data-provider' => $iProvider
-            	),
-                'checker' => array (
-                    'func' => $aInput['check_type'],
-                    'params' => $aInput['check_params'],
-                    'error' => _t($aInput['check_error']),
-                )
-            );
+            $mixedValue = $oProvider->getOption($aInput['name']);
+            if(!$bExtendedMode && ($iInpExt = (int)$aInput['extended']) != BX_PAYMENT_POPT_EXT_NONE)
+                $this->aInputs[$aInput['name']] = [
+                    'type' => 'hidden',
+                    'name' => $aInput['name'],
+                    'value' => $mixedValue !== false && $iInpExt == BX_PAYMENT_POPT_EXT_SAVE ? $mixedValue : $aInput['value'],
+                    'attrs' => [
+                        'bx-data-provider' => $iProvider
+                    ]
+                ];
+            else
+                $this->aInputs[$aInput['name']] = [
+                    'type' => $aInput['type'],
+                    'name' => $aInput['name'],
+                    'caption' => _t($aInput['caption']),
+                    'value' => $mixedValue !== false ? $mixedValue : '',
+                    'info' => _t($aInput['description']),
+                    'attrs' => [
+                        'bx-data-provider' => $iProvider
+                    ],
+                    'checker' => [
+                        'func' => $aInput['check_type'],
+                        'params' => $aInput['check_params'],
+                        'error' => _t($aInput['check_error']),
+                    ]
+                ];
 
             //--- Make some field dependent actions ---//
-            switch($aInput['type']) {
+            $aAddon = [];
+            switch($this->aInputs[$aInput['name']]['type']) {
                 case 'select':
                     if(empty($aInput['extra']))
                        break;
@@ -134,8 +147,10 @@ class BxPaymentFormDetails extends BxTemplFormView
                     break;
 
                 case 'checkbox':
+                    if($this->aInputs[$aInput['name']]['value'] == 'on')
+                        $aAddon = ['checked' => true];
+
                     $this->aInputs[$aInput['name']]['value'] = 'on';
-                    $aAddon = array('checked' => $oProvider->getOption($aInput['name']) == 'on');
                     break;
 
                 case 'value':

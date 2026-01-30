@@ -44,6 +44,12 @@ define('BX_PAYMENT_INV_STATUS_UNPAID', 'unpaid');
 define('BX_PAYMENT_INV_STATUS_PAID', 'paid');
 define('BX_PAYMENT_INV_STATUS_OVERDUE', 'overdue');
 
+/*
+ * Provider options: extended mode.
+ */
+define('BX_PAYMENT_POPT_EXT_NONE', 0);
+define('BX_PAYMENT_POPT_EXT_SAVE', 1);
+define('BX_PAYMENT_POPT_EXT_RESET', 2);
 
 /**
  * Payment module by BoonEx

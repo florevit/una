@@ -101,10 +101,10 @@ class BxBaseModPaymentProvider extends BxDol
 
     public function getOption($sName)
     {
-    	if(substr($sName, 0, strlen($this->_sPrefix)) != $this->_sPrefix)
+        if(substr($sName, 0, strlen($this->_sPrefix)) != $this->_sPrefix)
             $sName = $this->_sPrefix . $sName;
 
-        return isset($this->_aOptions[$sName]) ? $this->_aOptions[$sName]['value'] : '';
+        return isset($this->_aOptions[$sName]) ? $this->_aOptions[$sName]['value'] : false;
     }
 
     public function setOption($sName, $mixedValue, $bSave = false)

@@ -34,12 +34,14 @@ CREATE TABLE IF NOT EXISTS `bx_payment_providers_options` (
   `provider_id` varchar(64) NOT NULL default '',
   `name` varchar(64) NOT NULL default '',
   `type` varchar(64) NOT NULL default 'text',
+  `value` varchar(255) NOT NULL default '',
   `caption` varchar(255) NOT NULL default '',
   `description` text NOT NULL default '',
   `extra` varchar(255) NOT NULL default '',
   `check_type` varchar(64) NOT NULL default '',
   `check_params` varchar(128) NOT NULL default '',
   `check_error` varchar(128) NOT NULL default '',
+  `extended` tinyint(4) NOT NULL default '0',
   `order` tinyint(4) NOT NULL default '0',
   PRIMARY KEY(`id`),
   UNIQUE KEY `name`(`name`)
@@ -306,19 +308,19 @@ INSERT INTO `bx_payment_providers`(`name`, `caption`, `description`, `option_pre
 ('stripe_v3', '_bx_payment_strp_v3_cpt', '_bx_payment_strp_v3_dsc', 'strp_v3_', 1, 1, 1, 1, 61, 'BxPaymentProviderStripeV3');
 SET @iProviderId = LAST_INSERT_ID();
 
-INSERT INTO `bx_payment_providers_options`(`provider_id`, `name`, `type`, `caption`, `description`, `extra`, `check_type`, `check_params`, `check_error`, `order`) VALUES
-(@iProviderId, 'strp_v3_active', 'checkbox', '_bx_payment_strp_active_cpt', '_bx_payment_strp_active_dsc', '', '', '', '', 1),
-(@iProviderId, 'strp_v3_hidden', 'checkbox', '_bx_payment_strp_hidden_cpt', '_bx_payment_strp_hidden_dsc', '', '', '', '', 2),
-(@iProviderId, 'strp_v3_mode', 'select', '_bx_payment_strp_mode_cpt', '_bx_payment_strp_mode_dsc', '1|_bx_payment_strp_mode_live,2|_bx_payment_strp_mode_test', '', '', '', 3),
-(@iProviderId, 'strp_v3_live_pub_key', 'text', '_bx_payment_strp_live_pub_key_cpt', '_bx_payment_strp_live_pub_key_dsc', '', '', '', '', 4),
-(@iProviderId, 'strp_v3_live_sec_key', 'text', '_bx_payment_strp_live_sec_key_cpt', '_bx_payment_strp_live_sec_key_dsc', '', '', '', '', 5),
-(@iProviderId, 'strp_v3_test_pub_key', 'text', '_bx_payment_strp_test_pub_key_cpt', '_bx_payment_strp_test_pub_key_dsc', '', '', '', '', 6),
-(@iProviderId, 'strp_v3_test_sec_key', 'text', '_bx_payment_strp_test_sec_key_cpt', '_bx_payment_strp_test_sec_key_dsc', '', '', '', '', 7),
-(@iProviderId, 'strp_v3_check_amount', 'checkbox', '_bx_payment_strp_check_amount_cpt', '_bx_payment_strp_check_amount_dsc', '', '', '', '', 8),
-(@iProviderId, 'strp_v3_ssl', 'checkbox', '_bx_payment_strp_ssl_cpt', '_bx_payment_strp_ssl_dsc', '', '', '', '', 9),
-(@iProviderId, 'strp_v3_cancellation_email', 'text', '_bx_payment_strp_cancellation_email_cpt', '', '', 'EmailOrEmpty', '', '_bx_payment_form_input_email_err_cor_or_emp', 10),
-(@iProviderId, 'strp_v3_expiration_email', 'text', '_bx_payment_strp_expiration_email_cpt', '', '', 'EmailOrEmpty', '', '_bx_payment_form_input_email_err_cor_or_emp', 11),
-(@iProviderId, 'strp_v3_notify_url', 'value', '_bx_payment_strp_notify_url_cpt', '', '', '', '', '', 12);
+INSERT INTO `bx_payment_providers_options`(`provider_id`, `name`, `type`, `value`, `caption`, `description`, `extra`, `check_type`, `check_params`, `check_error`, `extended`, `order`) VALUES
+(@iProviderId, 'strp_v3_active', 'checkbox', 'on', '_bx_payment_strp_active_cpt', '_bx_payment_strp_active_dsc', '', '', '', '', 2, 1),
+(@iProviderId, 'strp_v3_hidden', 'checkbox', '', '_bx_payment_strp_hidden_cpt', '_bx_payment_strp_hidden_dsc', '', '', '', '', 1, 2),
+(@iProviderId, 'strp_v3_mode', 'select', '1', '_bx_payment_strp_mode_cpt', '_bx_payment_strp_mode_dsc', '1|_bx_payment_strp_mode_live,2|_bx_payment_strp_mode_test', '', '', '', 2, 3),
+(@iProviderId, 'strp_v3_live_pub_key', 'text', '', '_bx_payment_strp_live_pub_key_cpt', '_bx_payment_strp_live_pub_key_dsc', '', '', '', '', 0, 4),
+(@iProviderId, 'strp_v3_live_sec_key', 'text', '', '_bx_payment_strp_live_sec_key_cpt', '_bx_payment_strp_live_sec_key_dsc', '', '', '', '', 0, 5),
+(@iProviderId, 'strp_v3_test_pub_key', 'text', '', '_bx_payment_strp_test_pub_key_cpt', '_bx_payment_strp_test_pub_key_dsc', '', '', '', '', 1, 6),
+(@iProviderId, 'strp_v3_test_sec_key', 'text', '', '_bx_payment_strp_test_sec_key_cpt', '_bx_payment_strp_test_sec_key_dsc', '', '', '', '', 1, 7),
+(@iProviderId, 'strp_v3_check_amount', 'checkbox', '', '_bx_payment_strp_check_amount_cpt', '_bx_payment_strp_check_amount_dsc', '', '', '', '', 1, 8),
+(@iProviderId, 'strp_v3_ssl', 'checkbox', 'on', '_bx_payment_strp_ssl_cpt', '_bx_payment_strp_ssl_dsc', '', '', '', '', 1, 9),
+(@iProviderId, 'strp_v3_cancellation_email', 'text', '', '_bx_payment_strp_cancellation_email_cpt', '', '', 'EmailOrEmpty', '', '_bx_payment_form_input_email_err_cor_or_emp', 0, 10),
+(@iProviderId, 'strp_v3_expiration_email', 'text', '', '_bx_payment_strp_expiration_email_cpt', '', '', 'EmailOrEmpty', '', '_bx_payment_form_input_email_err_cor_or_emp', 1, 11),
+(@iProviderId, 'strp_v3_notify_url', 'value', '', '_bx_payment_strp_notify_url_cpt', '', '', '', '', '', 0, 12);
 
 -- Stripe Connect payment provider
 INSERT INTO `bx_payment_providers`(`name`, `caption`, `description`, `option_prefix`, `for_visitor`, `for_single`, `for_recurring`, `active`, `order`, `class_name`) VALUES

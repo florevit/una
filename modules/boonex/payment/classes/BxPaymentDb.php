@@ -43,12 +43,14 @@ class BxPaymentDb extends BxBaseModPaymentDb
                 `tpo`.`id` AS `id`,
                 `tpo`.`name` AS `name`,
                 `tpo`.`type` AS `type`,
+                `tpo`.`value` AS `value`,
                 `tpo`.`caption` AS `caption`,
                 `tpo`.`description` AS `description`,
                 `tpo`.`extra` AS `extra`,
                 `tpo`.`check_type` AS `check_type`,
                 `tpo`.`check_params` AS `check_params`,
-                `tpo`.`check_error` AS `check_error`
+                `tpo`.`check_error` AS `check_error`,
+                `tpo`.`extended` AS `extended`
             FROM `" . $this->_sPrefix . "providers` AS `tp`
             LEFT JOIN `" . $this->_sPrefix . "providers_options` AS `tpo` ON `tp`.`id`=`tpo`.`provider_id`
             WHERE `tp`.`active`='1'" . $sWhereClause . "
