@@ -658,7 +658,7 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
             'title' => $aData[$CNF['FIELD_TITLE']],
             'url' => bx_api_get_relative_url($this->serviceGetLink($iId)),
             'image' => $this->serviceGetThumb($iId),
-            'summary_plain' => $sSummary
+            'summary_plain' => $sSummary,
         ];
 
         if(isset($aParams['extended']) && $aParams['extended'] === true)
@@ -669,6 +669,8 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
 
             $aResult['meta'] = $oMetaMenu->getCodeAPI();
         }
+
+        $this->decodeDataAPICommonFields($aResult, $aData, $aParams);
 
         return $aResult;
     }
