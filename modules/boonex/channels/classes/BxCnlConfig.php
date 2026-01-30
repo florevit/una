@@ -26,7 +26,7 @@ class BxCnlConfig extends BxBaseModGroupsConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'hashtag col-red2',
+            'ICON' => 'hashtag',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'data',

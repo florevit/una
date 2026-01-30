@@ -153,13 +153,13 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designb
 
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', 'bx_channels', 'channels-home', '_bx_channels_menu_item_title_system_entries_home', '_bx_channels_menu_item_title_entries_home', 'page.php?i=channels-home', '', '', 'hashtag col-red2', 'bx_channels_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', 'bx_channels', 'channels-home', '_bx_channels_menu_item_title_system_entries_home', '_bx_channels_menu_item_title_entries_home', 'page.php?i=channels-home', '', '', 'hashtag', 'bx_channels_submenu', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', 'bx_channels', 'channels-home', '_bx_channels_menu_item_title_system_entries_home', '_bx_channels_menu_item_title_entries_home', 'page.php?i=channels-home', '', '', 'hashtag col-red2', 'bx_channels_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', 'bx_channels', 'channels-home', '_bx_channels_menu_item_title_system_entries_home', '_bx_channels_menu_item_title_entries_home', 'page.php?i=channels-home', '', '', 'hashtag', 'bx_channels_submenu', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: view actions
 
@@ -288,11 +288,11 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: profile followings
 SET @iFollowingsMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name`='sys_profile_followings' LIMIT 1);
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `collapsed`, `active`, `copyable`, `order`) VALUES 
-('sys_profile_followings', 'bx_channels', 'channels', '_bx_channels_menu_item_title_system_followings', '_bx_channels_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'hashtag col-red2', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
+('sys_profile_followings', 'bx_channels', 'channels', '_bx_channels_menu_item_title_system_followings', '_bx_channels_menu_item_title_followings', 'javascript:void(0)', '', '_self', 'hashtag', '', '', 2147483647, 0, 1, 0, @iFollowingsMenuOrder + 1);
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('trigger_profile_view_submenu', 'bx_channels', 'channels-author', '_bx_channels_menu_item_title_system_view_entries_author', '_bx_channels_menu_item_title_view_entries_author', 'page.php?i=channels-author&profile_id={profile_id}', '', '', 'hashtag col-red2', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_submenu', 'bx_channels', 'channels-author', '_bx_channels_menu_item_title_system_view_entries_author', '_bx_channels_menu_item_title_view_entries_author', 'page.php?i=channels-author&profile_id={profile_id}', '', '', 'hashtag', '', 2147483647, 1, 0, 0);
 
 
 -- ACL
@@ -371,7 +371,7 @@ INSERT INTO `sys_objects_search` (`ObjectName`, `Title`, `Order`, `ClassName`, `
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
 INSERT INTO `sys_statistics` (`module`, `name`, `title`, `link`, `icon`, `query`, `order`) VALUES 
-('bx_channels', 'bx_channels', '_bx_channels', 'page.php?i=channels-home', 'hashtag col-red2', 'SELECT COUNT(*) FROM `bx_cnl_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_channels'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
+('bx_channels', 'bx_channels', '_bx_channels', 'page.php?i=channels-home', 'hashtag', 'SELECT COUNT(*) FROM `bx_cnl_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id` = `tp`.`content_id` AND `tp`.`type`=''bx_channels'' WHERE 1 AND `tp`.`status`=''active''', @iMaxOrderStats + 1);
 
 -- CHARTS
 SET @iMaxOrderCharts = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_objects_chart`);
