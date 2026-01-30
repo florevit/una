@@ -24,7 +24,7 @@ DELETE FROM `sys_form_inputs` WHERE `module` = 'bx_channels';
 DELETE FROM `sys_form_display_inputs` WHERE `display_name` IN('bx_channel_add', 'bx_channel_delete', 'bx_channel_edit', 'bx_channel_edit_cover', 'bx_channel_view', 'bx_channel_view_full');
 
 -- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_channels';
+DELETE FROM `sys_objects_cmts` WHERE `Name` IN ('bx_channels', 'bx_cnl_notes');
 
 -- VIEWS
 DELETE FROM `sys_objects_view` WHERE `name` = 'bx_channels';
