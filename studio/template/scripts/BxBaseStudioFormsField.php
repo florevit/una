@@ -332,6 +332,7 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
                                 unset($aForm['inputs']['checker_params_length_min']['attrs']['disabled'], $aForm['inputs']['checker_params_length_max']['attrs']['disabled'], $aForm['inputs']['checker_params_required']['attrs']['disabled']);
                                 break;
                             case 'preg':
+                            case 'password':
                                 if(!$bHidden)
                                     unset($aForm['inputs']['checker_params_preg']['tr_attrs']['style']);
                                 unset($aForm['inputs']['checker_params_preg']['attrs']['disabled']);
@@ -760,6 +761,7 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
                         break;
 
                     case 'preg':
+                    case 'password':
                         unset($oForm->aInputs['checker_params_preg']['tr_attrs']['style']);
                         unset($oForm->aInputs['checker_params_preg']['attrs']['disabled']);
                         $this->unsetCheckerFields($oForm, 'date_range');
@@ -836,6 +838,7 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
                 break;
 
             case 'preg':
+            case 'password':
                 unset($oForm->aInputs['checker_params_preg']);
                 break;
 
@@ -1311,14 +1314,14 @@ class BxBaseStudioFormsFieldText extends BxBaseStudioFormsFieldBlockHeader
 class BxBaseStudioFormsFieldPassword extends BxBaseStudioFormsFieldText
 {
     protected $sType = 'password';
-    protected $aCheckFunctions = array('avail', 'length', 'preg');
-    
-    public function init()
-	{
-		parent::init();
+    protected $aCheckFunctions = array('avail', 'length', 'preg', 'password');
 
-		unset($this->aForm['inputs']['unique']);
-	}
+    public function init()
+    {
+        parent::init();
+
+        unset($this->aForm['inputs']['unique']);
+    }
 }
 
 class BxBaseStudioFormsFieldTextarea extends BxBaseStudioFormsFieldText
@@ -1327,8 +1330,8 @@ class BxBaseStudioFormsFieldTextarea extends BxBaseStudioFormsFieldText
     protected $aCheckFunctions = array('avail', 'length', 'preg');
 
     public function init()
-	{
-		parent::init();
+    {
+        parent::init();
 
         $this->aParams['table_field_type'] = 'text';
 

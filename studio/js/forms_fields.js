@@ -124,6 +124,7 @@ BxDolStudioFormsFields.prototype.onSelectChecker = function(oSelect, bClear) {
             break;
 
         case 'preg':
+        case 'password':
             $('#bx-form-element-checker_params_preg').show().find('input').removeAttr('disabled');
             break;
     }
