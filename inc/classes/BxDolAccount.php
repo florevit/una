@@ -11,6 +11,8 @@ bx_import('BxDolAcl');
 
 class BxDolAccount extends BxDolFactory implements iBxDolSingleton
 {
+    protected $_bIsApi;
+
     protected $_iAccountID;
     protected $_aInfo;
     protected $_oQuery;
@@ -29,6 +31,8 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
             trigger_error ('Multiple instances are not allowed for the class: ' . get_class($this), E_USER_ERROR);
 
         parent::__construct();
+
+        $this->_bIsApi = bx_is_api();
 
         $this->_iAccountID = $iAccountId; // since constructor is protected $iAccountId is always valid
         $this->_oQuery = BxDolAccountQuery::getInstance();
@@ -636,6 +640,9 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
      */
     public function getPicture($iAccountId = false)
     {
+        if($this->_bIsApi)
+            return '';
+
         $sImageUrl = $this->_getImageUrl('picture', $iAccountId);
         if(!$sImageUrl)
             $sImageUrl = BxDolTemplate::getInstance()->getImageUrl('account.svg');
@@ -648,6 +655,9 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
      */
     public function getAvatarBig($iAccountId = false)
     {
+        if($this->_bIsApi)
+            return '';
+
         $sImageUrl = $this->_getImageUrl('ava_big', $iAccountId);
         if(!$sImageUrl)
             $sImageUrl = BxDolTemplate::getInstance()->getImageUrl('account.svg');
@@ -660,6 +670,9 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
      */
     public function getAvatar($iAccountId = false)
     {
+        if($this->_bIsApi)
+            return '';
+
         $sImageUrl = $this->_getImageUrl('ava', $iAccountId);
         if(!$sImageUrl)
             $sImageUrl = BxDolTemplate::getInstance()->getImageUrl('account.svg');
@@ -672,6 +685,9 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
      */
     public function getThumb($iAccountId = false)
     {
+        if($this->_bIsApi)
+            return '';
+
         $sImageUrl = $this->_getImageUrl('thumb', $iAccountId);
         if(!$sImageUrl)
             $sImageUrl = BxDolTemplate::getInstance()->getImageUrl('account.svg');
@@ -684,6 +700,9 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
      */
     public function getIcon($iAccountId = false)
     {
+        if($this->_bIsApi)
+            return '';
+
         $sImageUrl = $this->_getImageUrl('icon', $iAccountId);
         if(!$sImageUrl)
             $sImageUrl = BxDolTemplate::getInstance()->getImageUrl('account.svg');
