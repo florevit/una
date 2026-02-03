@@ -87,8 +87,14 @@ class BxBaseMenuCustom extends BxTemplMenuMoreAuto
     	if(empty($mixedItem))
             return false;
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            if(is_array($mixedItem))
+                $mixedItem = array_merge($mixedItem, [
+                    'primary' => isset($aItem['primary']) ? $aItem['primary'] : 0,
+                ]);
+
             return $mixedItem;
+        }
 
         $sItem = $sClass = '';
         if(is_array($mixedItem)) 
