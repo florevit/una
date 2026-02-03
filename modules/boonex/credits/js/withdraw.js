@@ -21,7 +21,7 @@ BxCreditsWithdraw.prototype.getResult = function(oElement) {
     var fRate = parseFloat($('#' + this._aHtmlIds['withdraw_field_rate']).val());
     var fAmount = parseFloat($(oElement).val())
 
-    $('#' + this._aHtmlIds['withdraw_field_result']).val(fRate * fAmount);
+    $('#' + this._aHtmlIds['withdraw_field_result']).val(this._round(fRate * fAmount, 2));
 };
 
 BxCreditsWithdraw.prototype.loadingInButton = function(e, bShow) {
@@ -45,5 +45,11 @@ BxCreditsWithdraw.prototype._getDefaultData = function() {
     var oDate = new Date();
     return jQuery.extend({}, this._oRequestParams, {_t:oDate.getTime()});
 };
+
+BxCreditsWithdraw.prototype._round = function(fNum, iPrecision = 0) {
+    var iMux = Math.pow(10, iPrecision);
+    var iNum = (fNum * iMux) * (1 + Number.EPSILON);
+    return Math.round(iNum) / iMux;
+}
 
 /** @} */
