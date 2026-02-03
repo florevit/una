@@ -892,7 +892,7 @@ class BxCreditsModule extends BxBaseModGeneralModule
         $fCleared = (float)$this->_oDb->getHistory(['type' => 'cleared', 'profile' => $iProfileId]);
         $fSpent = (float)$this->_oDb->getHistory(['type' => 'spent', 'profile' => $iProfileId]);
 
-        return $fCleared > $fSpent ? $fCleared - $fSpent : 0;
+        return $fCleared > $fSpent ? round($fCleared - $fSpent, 2) : 0;
     }
 
     public function updateProfileBalance($iFirstPid, $iSecondPid, $fAmount, $sType, $sOrder = '', $sInfo = '', $sData = '')
