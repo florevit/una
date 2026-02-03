@@ -23,7 +23,7 @@ class BxCreditsConfig extends BxBaseModGeneralConfig
         $this->CNF = array (
 
             // module icon
-            'ICON' => 'copyright col-green3',
+            'ICON' => 'copyright',
 
             // database tables
             'TABLE_BUNDLES' => $aModule['db_prefix'] . 'bundles',
