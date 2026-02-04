@@ -17,12 +17,12 @@ $aConfig = [
     'name' => 'bx_reputation',
     'title' => 'Reputation',
     'note' => 'Reputation module.',
-    'version' => '14.0.0',
-    'vendor' => 'BoonEx',
+    'version' => '15.0.0',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => [
-        '14.0.x'
+        '15.0.x'
     ],
 
     /**
