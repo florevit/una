@@ -53,17 +53,17 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_site', @sName, 'donations-make', '_bx_donations_menu_item_title_system_make', '_bx_donations_menu_item_title_make', 'page.php?i=donations-make', '', '', 'donate col-blue3', '', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
+('sys_site', @sName, 'donations-make', '_bx_donations_menu_item_title_system_make', '_bx_donations_menu_item_title_make', 'page.php?i=donations-make', '', '', 'donate', '', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: add to homepage menu
 SET @iHomepageMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_homepage' AND `active` = 1 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_homepage', @sName, 'donations-make', '_bx_donations_menu_item_title_system_make', '_bx_donations_menu_item_title_make', 'page.php?i=donations-make', '', '', 'donate col-blue3', '', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
+('sys_homepage', @sName, 'donations-make', '_bx_donations_menu_item_title_system_make', '_bx_donations_menu_item_title_make', 'page.php?i=donations-make', '', '', 'donate', '', 2147483647, 1, 1, IFNULL(@iHomepageMenuOrder, 0) + 1);
 
 -- MENU: account dashboard
 SET @iDashboardMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name`='sys_account_dashboard' LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES
-('sys_account_dashboard', @sName, 'dashboard-donations-list', '_bx_donations_menu_item_title_system_list', '_bx_donations_menu_item_title_list', 'page.php?i=donations-list', '', '', 'donate col-blue3', '', '', 2147483646, 1, 0, 1, @iDashboardMenuOrder + 1);
+('sys_account_dashboard', @sName, 'dashboard-donations-list', '_bx_donations_menu_item_title_system_list', '_bx_donations_menu_item_title_list', 'page.php?i=donations-list', '', '', 'donate', '', '', 2147483646, 1, 0, 1, @iDashboardMenuOrder + 1);
 
 
 -- GRIDS: types

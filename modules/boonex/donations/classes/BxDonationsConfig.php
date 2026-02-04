@@ -26,7 +26,7 @@ class BxDonationsConfig extends BxBaseModGeneralConfig
 
         $this->CNF = array (
             // module icon
-            'ICON' => 'donate col-blue3',
+            'ICON' => 'donate',
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'entries',
