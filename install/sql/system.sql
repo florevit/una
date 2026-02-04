@@ -294,6 +294,7 @@ CREATE TABLE IF NOT EXISTS `sys_email_templates` (
 INSERT INTO `sys_email_templates` (`Module`, `NameSystem`, `Name`, `Subject`, `Body`) VALUES
 ('system', '_sys_et_txt_name_system_admin_email', 't_AdminEmail', '_sys_et_txt_subject_admin_email', '_sys_et_txt_body_admin_email'),
 ('system', '_sys_et_txt_name_system_confirmation', 't_Confirmation', '_sys_et_txt_subject_confirmation', '_sys_et_txt_body_confirmation'),
+('system', '_sys_et_txt_name_system_welcome', 't_Welcome', '_sys_et_txt_subject_welcome', '_sys_et_txt_body_welcome'),
 ('system', '_sys_et_txt_name_system_forgot', 't_Forgot', '_sys_et_txt_subject_forgot', '_sys_et_txt_body_forgot'),
 ('system', '_sys_et_txt_name_system_mem_expiration', 't_MemExpiration', '_sys_et_txt_subject_mem_expiration', '_sys_et_txt_body_mem_expiration'),
 ('system', '_sys_et_txt_name_system_mem_changed', 't_MemChanged', '_sys_et_txt_subject_mem_changed', '_sys_et_txt_body_mem_changed'),
@@ -423,8 +424,6 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_transcoder_queue_storage', '_adm_stg_cpt_option_sys_transcoder_queue_storage', '', 'checkbox', '', '', '', '', 105),
 (@iCategoryId, 'sys_session_lifetime_in_min', '_adm_stg_cpt_option_sys_session_lifetime_in_min', '129600', 'digit', '', '', '', '', 110),
 (@iCategoryId, 'sys_session_auth', '_adm_stg_cpt_option_sys_session_auth', 'on', 'checkbox', '', '', '', '', 112),
-
-(@iCategoryId, 'sys_account_activation_letter', '_adm_stg_cpt_option_sys_account_activation_letter', '', 'checkbox', '', '', '', '', 120),
 
 (@iCategoryId, 'sys_logs_storage_default', '_adm_stg_cpt_option_sys_logs_storage_default', 'Folder', 'select', 'Folder,PHPLog,STDErr', '', '', '', 130),
 (@iCategoryId, 'sys_logs_level', '_adm_stg_cpt_option_sys_logs_level', 'DEBUG', 'select', 'ERROR,WARNING,INFO,DEBUG', '', '', '', 132),
@@ -698,7 +697,8 @@ SET @iCategoryId = LAST_INSERT_ID();
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 (@iCategoryId, 'sys_account_online_time', '_adm_stg_cpt_option_sys_account_online_time', '5', 'digit', '', 'Avail', '_adm_stg_err_option_sys_account_online_time', 1),
 (@iCategoryId, 'sys_account_autoapproval', '_adm_stg_cpt_option_sys_account_autoapproval', 'on', 'checkbox', '', '', '', 10),
-(@iCategoryId, 'sys_account_confirmation_type', '_adm_stg_cpt_option_sys_account_confirmation_type', 'email', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:22:"get_confirmation_types";s:5:"class";s:18:"BaseServiceAccount";}', '', '', 12),
+(@iCategoryId, 'sys_account_confirmation_type', '_adm_stg_cpt_option_sys_account_confirmation_type', 'email', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:22:"get_confirmation_types";s:5:"class";s:18:"BaseServiceAccount";}', '', '', 11),
+(@iCategoryId, 'sys_account_welcome_letter', '_adm_stg_cpt_option_sys_account_welcome_letter', '', 'checkbox', '', '', '', '', 12),
 (@iCategoryId, 'sys_account_activation_2fa_enable', '_adm_stg_cpt_option_sys_account_2fa_enable', '', 'checkbox', '', '', '', 13),
 (@iCategoryId, 'sys_account_activation_2fa_lifetime', '_adm_stg_cpt_option_sys_account_2fa_lifetime', '0', 'digit', '', '', '', 14),
 (@iCategoryId, 'sys_account_auto_profile_creation', '_adm_stg_cpt_option_sys_account_auto_profile_creation', 'on', 'checkbox', '', '', '', 15),
@@ -1452,6 +1452,7 @@ CREATE TABLE `sys_accounts` (
   `email_confirmed` tinyint(4) NOT NULL DEFAULT '0',
   `phone` varchar(255) NOT NULL,
   `phone_confirmed` tinyint(4) NOT NULL DEFAULT '0',
+  `welcome_sent` tinyint(4) NOT NULL DEFAULT '0',
   `receive_updates` tinyint(4) NOT NULL DEFAULT '1',
   `receive_news` tinyint(4) NOT NULL DEFAULT '1',
   `password` varchar(40) NOT NULL,

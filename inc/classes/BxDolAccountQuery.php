@@ -302,6 +302,17 @@ class BxDolAccountQuery extends BxDolDb implements iBxDolSingleton
     }
     
     /**
+     * Update 'welcome_sent' field.
+     * @param  int    $isSent   - 0: mark as sent, 1: as not sent
+     * @param  int    $iID      - account id
+     * @return number of affected rows
+     */
+    public function updateWelcomeSent($isSent, $iID)
+    {
+        return $this->_updateField ($iID, 'welcome_sent', $isSent ? 1 : 0);
+    }
+
+    /**
      * Update 'phone' field.
      * @param  int    $sPhone - phone number
      * @param  int    $iID         - account id

@@ -1573,7 +1573,7 @@
     <string name="_adm_stg_inf_option_smart_app_banner"><![CDATA[]]></string>
     <string name="_adm_stg_cpt_option_smart_app_banner_ios_app_id"><![CDATA[Идентификатор iOS прилижения для Smart App Banner]]></string>
     <string name="_adm_stg_inf_option_smart_app_banner_ios_app_id"><![CDATA[]]></string>
-    <string name="_adm_stg_cpt_option_sys_account_activation_letter"><![CDATA[Включить сообщение об активации аккаунта]]></string>
+    <string name="_adm_stg_cpt_option_sys_account_welcome_letter"><![CDATA[Включить приветственное письмо]]></string>
     <string name="_adm_stg_cpt_option_sys_account_confirmation_type"><![CDATA[Аккаунт подтвержден когда]]></string>
     <string name="_adm_stg_cpt_option_sys_account_hide_unconfirmed_accounts"><![CDATA[Скрывать профили у неподтвержденных аккаунтов]]></string>
     <string name="_adm_stg_cpt_option_sys_account_2fa_enable"><![CDATA[Включить двухфакторную аутентификацию]]></string>
@@ -2565,6 +2565,14 @@
 <p><span class="h3">{conf_code}</span></p>
 <p> </p>
 {email_footer}]]></string>
+    <string name="_sys_et_txt_body_welcome"><![CDATA[{email_header}
+<p>Привет, {name} ({email}).</p>
+<p>Добро пожаловать в {site_name}</p>
+<p> </p>
+<p>Вы подтвердили свой профиль и готовы пользоваться нашим сайтом.</p>
+<p>Не стесняйтесь обращаться к нам, если вам понадобится помощь.</p>
+<p> </p>
+{email_footer}]]></string>
     <string name="_sys_et_txt_body_delayed_module_uninstall"><![CDATA[{email_header}
 <p>Модуль: <b>{Module}</b></p>
 <p>Результат демонтажа: {Result}</p>
@@ -2672,6 +2680,7 @@
 	<string name="_sys_et_txt_name_system_comment_replied"><![CDATA[Сообщение для посылки пользователям, чьи комментарии были отвечены]]></string>
 	<string name="_sys_et_txt_name_system_reported"><![CDATA[Уведомление о новой жалобе]]></string>
 	<string name="_sys_et_txt_name_system_confirmation"><![CDATA[Сообщение для подтверждения эл. адреса профиля]]></string>
+        <string name="_sys_et_txt_name_system_welcome"><![CDATA[Приветственное сообщение]]></string>
 	<string name="_sys_et_txt_name_system_delayed_module_uninstall"><![CDATA[Уведомление об отложенном демонтировании модуля]]></string>
 	<string name="_sys_et_txt_name_system_forgot"><![CDATA[Сообщение о сбросе пароля]]></string>
 	<string name="_sys_et_txt_name_system_mem_changed"><![CDATA[Сообщение для посылки пользователям, чей уровень членства был изменён]]></string>
@@ -2695,6 +2704,7 @@
 	<string name="_sys_et_txt_subject_comment_replied"><![CDATA[{sender_display_name} ответил на Ваш комментарий]]></string>
 	<string name="_sys_et_txt_subject_system_reported"><![CDATA[Уведомление о новой жалобе]]></string>
 	<string name="_sys_et_txt_subject_confirmation"><![CDATA[Пожалуйста, подтвердите свой email. (ОБЯЗАТЕЛЬНО)]]></string>
+        <string name="_sys_et_txt_subject_welcome"><![CDATA[Добро пожаловать в {site_name}]]></string>
 	<string name="_sys_et_txt_subject_delayed_module_uninstall"><![CDATA[Отложенный демонтаж модуля {Module}: {Result}]]></string>
 	<string name="_sys_et_txt_subject_forgot"><![CDATA[Сбросьте свой пароль]]></string>
 	<string name="_sys_et_txt_subject_mem_changed"><![CDATA[Уровень Вашего членства был изменён]]></string>

@@ -471,7 +471,38 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
 
         return $bResult;
     }
-    
+
+    /**
+     * Send "welcome" email
+     */
+    public function sendWelcomeEmail($iAccountId = false)
+    {
+        if(getParam('sys_account_welcome_letter') != 'on')
+            return false;
+
+        $iAccountId = (int)$iAccountId;
+        if(!$iAccountId)
+            $iAccountId = $this->_iAccountID;
+
+        $aAccountInfo = $this->getInfo($iAccountId);
+        if(empty($aAccountInfo) || !is_array($aAccountInfo))
+            return false;
+
+        if((int)$aAccountInfo['welcome_sent'] != 0)
+            return true;
+
+        $sEmailTemplate = 't_Welcome';
+        $aEmailReplaceVars = [
+            'name' => $this->getDisplayName($iAccountId),
+        ];
+
+        $bResult = sendMailTemplate($sEmailTemplate, $iAccountId, (int)$aAccountInfo['profile_id'], $aEmailReplaceVars, BX_EMAIL_SYSTEM);
+        if($bResult)
+            $this->_oQuery->updateWelcomeSent(1, $iAccountId);
+
+        return $bResult;
+    }
+
     public function sendResetPasswordEmail($iAccountId = false)
     {
         $iAccountId = (int)$iAccountId;

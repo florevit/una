@@ -944,6 +944,8 @@ class BxBaseServiceAccount extends BxDol
         // login to user's account automatically
         bx_login($aData['account_id'], bx_is_remember_me());
 
+        $oAccount->sendWelcomeEmail();
+
         return (int)$aData['account_id'];
     }
 }

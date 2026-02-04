@@ -228,7 +228,7 @@ class BxBaseAccountForms extends BxDolProfileForms
         $sStatus = $oProfile->getStatus();
         $isAutoApprove = !$isSetPendingApproval;
         if ($sStatus == BX_PROFILE_STATUS_PENDING && $isAutoApprove)
-            $oProfile->approve(BX_PROFILE_ACTION_AUTO, $iProfileId, getParam('sys_account_activation_letter') == 'on');
+            $oProfile->approve(BX_PROFILE_ACTION_AUTO, $iProfileId, false);
 
         /**
          * @hooks
