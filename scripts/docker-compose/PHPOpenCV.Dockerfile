@@ -81,6 +81,7 @@ RUN apt update && apt install -y --no-install-recommends \
     php8.2-imagick \
     php8.2-redis \
     php8.2-intl \
+    php8.2-xdebug \
     libjpeg-turbo8 \
     libpng16-16 \
     libstdc++6 \
