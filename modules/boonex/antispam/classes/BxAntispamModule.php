@@ -421,7 +421,6 @@ class BxAntispamModule extends BxDolModule
     public function serviceCheckJoin ($sEmail, &$bApproval, $sIp = '')
     {
         $bJoinBlock = ('block' == $this->_oConfig->getAntispamOption('dnsbl_behaviour_join'));
-        $bApproval = false;
         $sErrorMsg = '';
         $sNote = $bJoinBlock ? 'join block' : 'join approval';
 
