@@ -728,7 +728,7 @@ class BxProfiler extends BxDol
 
     function _isProfilerDisabled()
     {
-        if (isset($GLOBALS['bx_profiler_disable']) || isset($_GET['bx_profiler_disable']))
+        if (isset($GLOBALS['bx_profiler_disable']) || isset($_GET['bx_profiler_disable']) || defined('BX_API'))
             return true;
 
         return false;
