@@ -549,6 +549,8 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `ty
 (@iCategoryId, 'sys_profiles_search_limit', '_adm_stg_cpt_option_sys_profiles_search_limit', '_adm_stg_inf_option_sys_profiles_search_limit', '20', 'digit', '', '', '', 23),
 (@iCategoryId, 'sys_per_page_browse_showcase', '_adm_stg_cpt_option_sys_per_page_browse_showcase', '_adm_stg_inf_option_sys_per_page_browse_showcase', '32', 'digit', '', '', '', 24),
 (@iCategoryId, 'sys_per_page_search_extended', '_adm_stg_cpt_option_sys_per_page_search_extended', '_adm_stg_inf_option_sys_per_page_search_extended', '12', 'digit', '', '', '', 25),
+(@iCategoryId, 'sys_per_page_recommendations', '_adm_stg_cpt_option_sys_per_page_recommendations', '_adm_stg_inf_option_sys_per_page_recommendations', '12', 'digit', '', '', '', 26),
+(@iCategoryId, 'sys_per_page_recommendations_showcase', '_adm_stg_cpt_option_sys_per_page_recommendations_showcase', '_adm_stg_inf_option_sys_per_page_recommendations_showcase', '24', 'digit', '', '', '', 27),
 
 (@iCategoryId, 'sys_metatags_hashtags_only', '_adm_stg_cpt_option_sys_metatags_hashtags_only', '', '', 'checkbox', '', '', '', 30),
 (@iCategoryId, 'sys_metatags_hashtags_max', '_adm_stg_cpt_option_sys_metatags_hashtags_max', '', '9', 'digit', '', '', '', 31),

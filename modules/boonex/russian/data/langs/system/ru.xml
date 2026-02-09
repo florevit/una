@@ -1687,6 +1687,10 @@
     <string name="_adm_stg_inf_option_sys_per_page_search_keyword_plural"><![CDATA[Установите максимальное количество результатов, отображаемых на странице поиска по сайту.]]></string>
     <string name="_adm_stg_cpt_option_sys_per_page_search_extended"><![CDATA[Результаты расширенного поиска]]></string>
     <string name="_adm_stg_inf_option_sys_per_page_search_extended"><![CDATA[Установите максимальное количество результатов, отображаемых на странице расширенного поиска.]]></string>
+    <string name="_adm_stg_cpt_option_sys_per_page_recommendations"><![CDATA[Просмотр рекомендаций]]></string>
+    <string name="_adm_stg_inf_option_sys_per_page_recommendations"><![CDATA[Установите максимальное количество результатов, отображаемых на странице.]]></string>
+    <string name="_adm_stg_cpt_option_sys_per_page_recommendations_showcase"><![CDATA[Просмотр рекомендаций в режиме витрины]]></string>
+    <string name="_adm_stg_inf_option_sys_per_page_recommendations_showcase"><![CDATA[Установите максимальное количество результатов, отображаемых на странице в режиме витрины.]]></string>
     <string name="_adm_stg_cpt_option_sys_push_default"><![CDATA[Поставщик]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_app_id"><![CDATA[OneSignal: App ID]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_rest_api"><![CDATA[OneSignal: REST API Key]]></string>

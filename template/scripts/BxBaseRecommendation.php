@@ -41,7 +41,7 @@ class BxBaseRecommendation extends BxDolRecommendation
         $iStart = !empty($aParams['start']) ? (int)$aParams['start'] : 0;
         $iPerPage = !empty($aParams['per_page']) ? (int)$aParams['per_page'] : $this->{'_iPerPageDefault' . ($bShowcaseView ? 'Showcase' : '')};
 
-        $aItems = $this->_oDb->get($iProfileId, $this->_aObject['id'], array_merge($aParams, ['per_page' => $iPerPage + ($bShowcaseView ? 0 : 1)]));
+        $aItems = $this->_oDb->get($iProfileId, $this->_aObject['id'], array_merge($aParams, ['start' => $iStart, 'per_page' => $iPerPage + ($bShowcaseView ? 0 : 1)]));
         if(empty($aItems) || !is_array($aItems))
             return $sResult;
 
