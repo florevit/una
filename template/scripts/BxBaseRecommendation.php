@@ -94,8 +94,10 @@ class BxBaseRecommendation extends BxDolRecommendation
         if(!$iProfileId)
             $iProfileId = $this->_iProfileId;
 
-        $iStart = !empty($aParams['start']) ? (int)$aParams['start'] : 0;
-        $iPerPage = !empty($aParams['per_page']) ? (int)$aParams['per_page'] : $this->_iPerPageDefault;
+        $bShowcaseView = (bool)($aParams['showcase'] ?? false);
+
+        $aParams['start'] = (int)($aParams['start'] ??= 0);
+        $aParams['per_page'] = (int)($aParams['per_page'] ??= 0) ?: $this->{'_iPerPageDefault' . ($bShowcaseView ? 'Showcase' : '')};
 
         $bForceGetData = false;
         if(($sK = 'force_get_data') && isset($aParams[$sK])) {
@@ -119,8 +121,9 @@ class BxBaseRecommendation extends BxDolRecommendation
             'request_url' => '',
             'data' => $aData,
             'params' => [
-                'start' => $iStart,
-                'per_page' => $iPerPage,
+                'showcase' => (int)$bShowcaseView,
+                'start' => $aParams['start'],
+                'per_page' => $aParams['per_page'],
             ],
         ];
     }

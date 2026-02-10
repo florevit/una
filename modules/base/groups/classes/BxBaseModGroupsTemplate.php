@@ -143,7 +143,7 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
 
         if($this->_bIsApi) {
             $aResult = [];
-            if(($aCode = $oRecommendation->getCodeAPI($iProfileId)) && is_array($aCode))
+            if(($aCode = $oRecommendation->getCodeAPI($iProfileId, ['showcase' => true])) && is_array($aCode))
                 $aResult = [
                     'id' => $sId,
                     'type' => 'timeline_recommendations',
