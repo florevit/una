@@ -1689,6 +1689,7 @@
     <string name="_adm_stg_cpt_option_sys_location_normalize_names"><![CDATA[Normalize geographic names]]></string>
     <string name="_adm_stg_cpt_option_sys_maps_api_key"><![CDATA[Google Maps API key]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_default"><![CDATA[Embeds provider]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_lifetime"><![CDATA[Generated embed lifetime in days (0 - do not track time)]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_system"><![CDATA[System]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_microlink"><![CDATA[Microlink]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_peekalink"><![CDATA[Peekalink]]></string>

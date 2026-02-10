@@ -53,7 +53,7 @@ class BxBaseEmbedSystem extends BxDolEmbed
             if($sLogo && is_numeric($sLogo))
                 $sLogo = $oStorage->getFileUrlById($sLogo);
         }
-        $sImage = $sImage ?: $sLogo;
+        $sImage = $sImage ?: ($sLogo ?: $this->_oTemplate->getImageUrl('embed.svg'));
 
         return $this->_oTemplate->parseHtmlByName('embed_system_link.html', [
             'link' => $aData['url'],

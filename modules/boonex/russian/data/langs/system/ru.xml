@@ -1664,6 +1664,7 @@
     <string name="_adm_stg_cpt_option_sys_location_normalize_names"><![CDATA[Нормализация географических названий]]></string>
     <string name="_adm_stg_cpt_option_sys_maps_api_key"><![CDATA[Ключ Google Maps API]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_default"><![CDATA[Поставщик встраиваемого кода]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_lifetime"><![CDATA[Срок действия сгенерированного встраивания в днях (0 - время не отслеживать)]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_system"><![CDATA[Системный]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_microlink"><![CDATA[Microlink]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_peekalink"><![CDATA[Peekalink]]></string>

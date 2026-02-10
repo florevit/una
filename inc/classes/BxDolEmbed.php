@@ -43,6 +43,8 @@ class BxDolEmbed extends BxDolFactoryObject
 
     protected $_sTableData = '';
 
+    protected $_iLifetime;
+
     protected $_bCssJsAdded = false;
         
     public function __construct ($aObject, $oTemplate = null)
@@ -52,6 +54,8 @@ class BxDolEmbed extends BxDolFactoryObject
         $this->_oDb->setParams([
             'table_data' => $this->_sTableData
         ]);
+
+        $this->_iLifetime = 86400 * (int)getParam('sys_embed_lifetime');
     }
 
     /**
@@ -99,8 +103,20 @@ class BxDolEmbed extends BxDolFactoryObject
     {
         $sUrl = $this->cleanYoutubeUrl($sUrl);
 
-        $sData = $this->_oDb->getLocal($sUrl, $sTheme);
-        if(!$sData)
+        $aLocal = $this->_oDb->getLocalInfo($sUrl, $sTheme);
+        
+        $bRevalidate = false;
+        if($this->_iLifetime && (int)$aLocal['added'] + $this->_iLifetime < time()) {
+            $this->_oDb->deleteLocal([
+                'url' => $sUrl,
+                'theme' => $sTheme
+            ]);
+
+            $bRevalidate = true;
+        }
+
+        $sData = false;
+        if($bRevalidate || (($sKey = 'data') && !($sData = $aLocal[$sKey] ?? false)))
             $sData = $this->{'_getData' . ($sData !== false ? 'Empty' : ($this->_bAsync ? 'Async' : ''))}($sUrl, $sTheme);
 
         return json_decode($sData, true);

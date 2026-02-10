@@ -38,6 +38,14 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
         ]);
     }
 
+    public function getLocalInfo ($sUrl, $sTheme)
+    {
+        return $this->getRow("SELECT * FROM `" . $this->_sTableData . "` WHERE `url` = :url AND  `theme` = :theme", [
+            'url' => $sUrl, 
+            'theme' => $sTheme
+        ]);
+    }
+
     public function getLocalUnprocessed ()
     {
         return $this->getAll("SELECT * FROM `" . $this->_sTableData . "` WHERE `data` = ''");
@@ -59,6 +67,14 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
             return false;
 
         return $this->query("UPDATE `{$this->_sTableData}` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
+    }
+    
+    public function deleteLocal($aParamsWhere)
+    {
+        if(empty($aParamsWhere))
+            return false;
+
+        return $this->query("DELETE FROM `{$this->_sTableData}` WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
     }
 }
 
