@@ -22,13 +22,32 @@ class BxSpacesFormEntry extends BxBaseModGroupsFormEntry
     
     protected function genCustomInputParentSpace($aInput)
     {
-        $iCurrent = bx_get('id');
-        if ($iCurrent === false)
-            $iCurrent = - 1;
-        $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_parent_space&id=" . $iCurrent;
+        $iCurrent = ($iCurrent = bx_get('id')) !== false ? (int)$iCurrent : - 1;
+
+        if($this->_bIsApi) {
+            $aInput = array_merge($aInput, [
+                'title' => $aInput['caption'], 
+                'ajax_get_suggestions' => $this->_oModule->_oConfig->getName() . "/ajax_get_parent_space&params[]=" . $iCurrent . "&params[]=",
+                'value_data' => []
+            ]);
+
+            if(!empty($aInput['value']) && is_array($aInput['value']))
+                foreach($aInput['value'] as $iProfileId)
+                    if(($oProfile = BxDolProfile::getInstance($iProfileId)) !== false) {
+                        $aProfile = $oProfile->getUnitAPI();
+                        $aInput['value_data'][] = $aProfile['author_data'];
+                    }
+        }
+        else {
+            $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_parent_space&id=" . $iCurrent;
+            if (isset($aInput['value']) && !is_array($aInput['value']))
+                $aInput['value'] = array($aInput['value']);
+        }
+
+        if(($sK = 'custom') && (empty($aInput[$sK]) || !is_array($aInput[$sK])))
+            $aInput[$sK] = [];
         $aInput['custom']['only_once'] = 1;
-        if (isset($aInput['value']) && !is_array($aInput['value']))
-            $aInput['value'] = array($aInput['value']);
+
         return $this->genCustomInputUsernamesSuggestions($aInput);
     }
     

@@ -27,6 +27,7 @@ class BxSpacesModule extends BxBaseModGroupsModule
     {
         $a = parent::serviceGetSafeServices();
         return array_merge($a, array (
+            'AjaxGetParentSpace' => '',
             'BrowseTopLevel' => '',
         ));
     }
@@ -105,7 +106,19 @@ class BxSpacesModule extends BxBaseModGroupsModule
         header('Content-Type:text/javascript; charset=utf-8');
         echo(json_encode($a));
     }
-    
+
+    public function serviceAjaxGetParentSpace ($iContentId, $mixedParams)
+    {
+        if(!$mixedParams)
+            return [];
+
+        $aParams = is_array($mixedParams) ? $mixedParams : json_decode($mixedParams, true);
+        if(!isset($aParams['term']))
+            return [];
+
+        return $this->getListSpacesForParent($aParams['term'], $iContentId, 10);
+    }
+
     public function getListSpacesForParent ($sTerm, $iContentId, $iLimit)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -121,14 +134,21 @@ class BxSpacesModule extends BxBaseModGroupsModule
         $aTmp = $this->_oDb->searchByTermForParentSpace(bx_get_logged_profile_id(), $iContentId, $iLevelsLimit, $sTerm, $iLimit);
         foreach ($aTmp as $aSpace) {
             $oProfile = BxDolProfile::getInstance($aSpace['profile_id']);
+            if(!$oProfile)
+                continue;
 
-            $aRv[] = array (
-                'label' => $this->serviceProfileName($aSpace['content_id']),
-                'value' => $aSpace['profile_id'],
-                'url' => $oProfile->getUrl(),
-                'thumb' => $oProfile->getThumb(),
-                'unit' => $oProfile->getUnit(0, array('template' => 'unit_wo_info'))
-            );
+            if ($this->_bIsApi)
+                $aRv[] = array_merge(BxDolProfile::getData($oProfile), [
+                    'label' => $oProfile->getDisplayName()
+                ]);
+            else
+                $aRv[] = array (
+                    'label' => $this->serviceProfileName($aSpace['content_id']),
+                    'value' => $aSpace['profile_id'],
+                    'url' => $oProfile->getUrl(),
+                    'thumb' => $oProfile->getThumb(),
+                    'unit' => $oProfile->getUnit(0, array('template' => 'unit_wo_info'))
+                );
         }
         return $aRv;
     }
