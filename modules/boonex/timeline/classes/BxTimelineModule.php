@@ -310,7 +310,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         bx_audit(
             $iId, 
             $this->getName(), 
-            '_sys_audit_action_' . ((int)$aEvent['promoted'] == 0 ? 'promote' : 'unpromote'),  
+            '_sys_audit_action_' . $sAction,  
             $this->_prepareAuditParams($aEvent, false)
         );
 
