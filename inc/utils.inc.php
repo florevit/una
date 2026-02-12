@@ -2699,8 +2699,7 @@ function bx_api_get_image($mixedStorage, $iId)
         $sStorage = $mixedStorage;
 
     $sUrl = '';
-    $iWidth = 500;
-    $iHeight = 500;
+    $iWidth = $iHeight = 0;
     if($sTranscoder && ($oTranscoder = BxDolTranscoder::getObjectInstance($sTranscoder))) {
         $sUrl = $oTranscoder->getFileUrl($iId);
 
@@ -2709,7 +2708,7 @@ function bx_api_get_image($mixedStorage, $iId)
             $iHeight = (int)$aSize['h'];
         }
     }
-    
+
     if(!$sUrl && ($oS = BxDolStorage::getObjectInstance($sStorage))) {
         $sUrl = $oS->getFileUrlById($iId);
 
@@ -2718,6 +2717,17 @@ function bx_api_get_image($mixedStorage, $iId)
             $iWidth = (int)$aTmp[0];
             $iHeight = (int)$aTmp[1];
         }
+    }
+
+    if(!$iWidth && !$iHeight && $sUrl) {
+        $aSize = BxDolImageResize::getInstance()->getImageSize($sUrl);
+        $iWidth = (int)$aSize['w'];
+        $iHeight = (int)$aSize['h'];
+    }
+
+    if(!$iWidth && !$iHeight) {
+        $iWidth = 500;
+        $iHeight = 500;
     }
 
     return !empty($sUrl) ? [
