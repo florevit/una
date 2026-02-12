@@ -31,12 +31,15 @@ class BxSpacesFormEntry extends BxBaseModGroupsFormEntry
                 'value_data' => []
             ]);
 
-            if(!empty($aInput['value']) && is_array($aInput['value']))
+            $aInput['value_data'] = [];
+            if(!empty($aInput['value'])) {
+                if(!is_array($aInput['value']))
+                    $aInput['value'] = [$aInput['value']];
+
                 foreach($aInput['value'] as $iProfileId)
-                    if(($oProfile = BxDolProfile::getInstance($iProfileId)) !== false) {
-                        $aProfile = $oProfile->getUnitAPI();
-                        $aInput['value_data'][] = $aProfile['author_data'];
-                    }
+                    if(($oProfile = BxDolProfile::getInstance($iProfileId)) !== false)
+                        $aInput['value_data'][] = BxDolProfile::getData($oProfile);
+            }
         }
         else {
             $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_parent_space&id=" . $iCurrent;
