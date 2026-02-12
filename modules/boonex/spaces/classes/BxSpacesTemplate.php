@@ -69,6 +69,63 @@ class BxSpacesTemplate extends BxBaseModGroupsTemplate
         return $sVotes; 
     }
 
+    protected function _getBrowsingFiltersContent($aParams)
+    {
+        $sModule = $this->_oConfig->getName();
+        $sJsObject = $this->_oConfig->getJsObject('main');
+
+        $aForm = [
+            'form_attrs' => [
+                'id' => $sModule . '_filters_' . $aParams['mode'],
+                'action' => ''
+            ],
+            'params' => [
+                'db' => [
+                    'table' => '',
+                    'key' => '',
+                    'uri' => '',
+                    'uri_title' => '',
+                    'submit_name' => ''
+                ],
+                'module' => $sModule,
+                'object' => $sModule . '_filters',
+                'display' => $sModule . '_filters_apply',
+                'view_mode' => 0,
+            ],
+            'inputs' => [
+                'controls' => [
+                    'name' => 'controls',
+                    'type' => 'input_set',
+                    [
+                        'name' => 'apply',
+                        'type' => 'button',
+                        'value' => _t('_bx_spaces_form_filters_input_do_apply'),
+                        'attrs' => ['onclick' => $sJsObject . '.applyBrowsingFilter(this, ' . json_encode($aParams) . ')']
+                    ], [
+                        'name' => 'cancel',
+                        'type' => 'button',
+                        'value' => _t('_Cancel'),
+                        'attrs' => [
+                            'class' => 'bx-def-margin-sec-left',
+                            'onclick' => "$('.bx-popup-applied:visible').dolPopupHide()"
+                        ]
+                    ],
+                    
+                ],
+                
+            ]
+        ];
+
+        $oForm = new BxTemplFormView($aForm);
+        if($this->_bIsApi)
+            return $oForm->getCodeAPI();
+
+        $sIncludes = '';
+        $sIncludes .= $this->addCss(['filters.css'], true);
+
+        return $sIncludes . $oForm->getCode(true);
+    }
+
     private function getBrowseQuick($aProfiles, $sTemplate = 'unit_wo_cover')
     {
         $sRv = '';

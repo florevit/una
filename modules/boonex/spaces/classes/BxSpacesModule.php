@@ -94,7 +94,12 @@ class BxSpacesModule extends BxBaseModGroupsModule
     {
         return $this->_serviceBrowse ('top_level', false, BX_DB_PADDING_DEF, $bDisplayEmptyMsg);
     }
-    
+
+    public function serviceGetChildrenByParent($iProfileId)
+    {
+        return $this->_oDb->getChildEntriesIdByProfileId($iProfileId);
+    }
+
     /**
      * Get possible recipients for start conversation form
      */
