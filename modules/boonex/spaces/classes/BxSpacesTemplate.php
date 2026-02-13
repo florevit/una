@@ -74,9 +74,11 @@ class BxSpacesTemplate extends BxBaseModGroupsTemplate
         $sModule = $this->_oConfig->getName();
         $sJsObject = $this->_oConfig->getJsObject('main');
 
+        $sForm = $sModule . '_filters_' . $aParams['mode'];
         $aForm = [
             'form_attrs' => [
-                'id' => $sModule . '_filters_' . $aParams['mode'],
+                'id' => $sForm,
+                'name' => $sForm,
                 'action' => ''
             ],
             'params' => [
@@ -117,8 +119,11 @@ class BxSpacesTemplate extends BxBaseModGroupsTemplate
         ];
 
         $oForm = new BxTemplFormView($aForm);
-        if($this->_bIsApi)
-            return $oForm->getCodeAPI();
+        if($this->_bIsApi) 
+            return [
+                'name' => $oForm->getName(), 
+                'data' => $oForm->getCodeAPI()
+            ];
 
         $sIncludes = '';
         $sIncludes .= $this->addCss(['filters.css'], true);
