@@ -55,13 +55,13 @@
                 __informer__
                 <div class="bx-page-wrapper bx-def-centered bx-def-padding-sec-leftright bx-def-page-width bx-def-box-sizing">
                     <div id="bx-content-container" class="bx-def-padding-sec-leftright">
-                        <div id="bx-content-main" class="bx-def-margin-sec-topbottom">
+                        <main role="main" id="bx-content-main" class="bx-def-margin-sec-topbottom">
                             <bx_injection:injection_content_before />
                             __page_main_code__
                             <bx_injection:injection_content_after />
                             <div class="bx-clear"></div>
                             <bx_injection:banner_bottom />
-                        </div> <!-- #bx-content-main -->
+                        </main> <!-- #bx-content-main -->
                         <bx_injection:injection_between_content_footer />
                     </div> <!-- #bx-content-container -->
                 </div>
@@ -70,13 +70,13 @@
     </div> <!-- .bx-main-content -->
     <div id="bx-footer-wrapper">
         <div class="bx-def-centered bx-def-padding-topbottom bx-def-padding-sec-leftright bx-def-page-width bx-def-box-sizing">
-            <div id="bx-footer" class="bx-def-padding-sec-left bx-def-padding-sec-right bx-clearfix">
+            <footer id="bx-footer" class="bx-def-padding-sec-left bx-def-padding-sec-right bx-clearfix">
                 <bx_injection:injection_footer_before />
                 <div id="bx-menu-bottom">
                     <bx_menu:sys_footer />
                 </div>
                 <bx_injection:injection_footer_after />
-            </div>
+            </footer>
         </div>
     </div>
     <bx_menu:sys_site_action />
