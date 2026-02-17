@@ -89,6 +89,7 @@ class BxSpacesTemplate extends BxBaseModGroupsTemplate
                     'uri_title' => '',
                     'submit_name' => ''
                 ],
+                'browse' => $aParams,
                 'module' => $sModule,
                 'object' => $sModule . '_filters',
                 'display' => $sModule . '_filters_apply',

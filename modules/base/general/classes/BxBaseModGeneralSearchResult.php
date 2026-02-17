@@ -101,7 +101,7 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
             if(!empty($this->_aParams['filters']['values']) && is_array($this->_aParams['filters']['values']))
                 $aResult['params']['filters'] = $this->_aParams['filters']['values'];
 
-            $aResult['filters'] = $oModule->_oTemplate->getBrowsingFilters(['mode' => $this->_sMode]);
+            $aResult['filters'] = $oModule->_oTemplate->getBrowsingFilters(array_merge(['mode' => $this->_sMode], $this->_aParams));
         }
 
         return $aResult;
