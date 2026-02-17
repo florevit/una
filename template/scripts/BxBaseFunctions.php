@@ -728,7 +728,7 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
         $sRet = '';
         if($sImageUrlFav)
             $sRet .= '<link rel="icon" href="' . $sImageUrlFav . '" sizes="any" />';
-        if($sImageUrlFav)
+        if($sImageUrlSvg)
             $sRet .= '<link rel="icon" href="' . $sImageUrlSvg . '" type="image/svg+xml" />';
         $sRet .= '<link rel="apple-touch-icon" href="' . $sImageUrlApl . '" />';
 
