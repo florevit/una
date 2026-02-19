@@ -8,6 +8,8 @@
  * @{
  */
 
+bx_import('BxDolAIAssistant');
+
 class BxBaseStudioAgentsAsstChats extends BxDolStudioAgentsAsstChats
 {
     protected $_sUrlPage;
