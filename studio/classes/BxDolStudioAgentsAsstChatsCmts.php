@@ -12,7 +12,10 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
     protected static $_sPrefixLoad = '#-#';
     protected static $_sPrefixRetrieve = '|-|';
     protected static $_sParamAllowDelete = 'allow_delete';
-       
+
+    protected $_aChat;
+
+    protected $_aAssistant;
     protected $_iAssistantId;
     protected $_sAssistantUrl;
 
@@ -22,15 +25,37 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
 
         parent::__construct($sSystem, $iId, $iInit, $oTemplate);
 
+        $this->_aChat = $this->_oQueryAgents->getChatsBy([
+            'sample' => 'id', 
+            'id' => (int)$iId
+        ]);
+
         $this->_iAssistantId = 0;
-        if(($iAssistantId = bx_get('aid')) !== false) {
-            $this->_iAssistantId = bx_process_input($iAssistantId, BX_DATA_INT);
-            $this->_aMarkers['assistant_id'] = $this->_iAssistantId;
-        }
-        $this->_sAssistantUrl = BX_DOL_URL_STUDIO . bx_append_url_params('agents.php', ['page' => 'assistants', 'spage' => 'chats', 'aid' => $this->_iAssistantId]);
+        $this->_sAssistantUrl = BX_DOL_URL_STUDIO . bx_append_url_params('agents.php', ['page' => 'assistants', 'spage' => 'chats']);
+
+        if(($iAssistantId = bx_get('aid')) !== false)
+            $this->setAssistantId(bx_process_input($iAssistantId, BX_DATA_INT));
+        else if(($iAssistantId = $this->_aChat['assistant_id'] ?? false))
+            $this->setAssistantId($iAssistantId);
 
         if(!$this->isParam(self::$_sParamAllowDelete))
             $this->setAllowDelete(true);
+    }
+
+    public function setAssistantId($iAssistantId)
+    {
+        $this->_iAssistantId = (int)$iAssistantId;
+        $this->_sAssistantUrl = BX_DOL_URL_STUDIO . bx_append_url_params('agents.php', ['page' => 'assistants', 'spage' => 'chats', 'aid' => $this->_iAssistantId]);
+
+        $this->_aAssistant = $this->_oQueryAgents->getAssistantsBy([
+            'sample' => 'id', 
+            'id' => $this->_iAssistantId
+        ]);
+
+        if(!empty($this->_aAssistant) && is_array($this->_aAssistant) && ($iAssistantPid = $this->_aAssistant['profile_id'] ?: false))
+            $this->_iProfileIdAi = (int)$iAssistantPid;
+
+        $this->_aMarkers['assistant_id'] = $this->_iAssistantId;
     }
 
     public function getPageJsObject()
@@ -44,12 +69,10 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
         if(empty($aComments['content']))
             return MsgBox(_t('_error occured'));
 
-        $aChat = $this->_oQueryAgents->getChatsBy(['sample' => 'id', 'id' => (int)$this->getId()]);
-        if(empty($aChat) || !is_array($aChat))
+        if(empty($this->_aChat) || !is_array($this->_aChat))
             return MsgBox(_t('_error occured'));
         
-        $aAssistant = $this->_oQueryAgents->getAssistantsBy(['sample' => 'id', 'id' => (int)$aChat['assistant_id']]);
-        if(empty($aAssistant) || !is_array($aAssistant))
+        if(empty($this->_aAssistant) || !is_array($this->_aAssistant))
             return MsgBox(_t('_error occured'));
 
         return $aComments['content'];
