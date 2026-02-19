@@ -220,7 +220,7 @@ class BxBaseStudioPage extends BxDolStudioPage
 
         $oTemplate = BxDolStudioTemplate::getInstance();
 
-        $sContent = $oAssistant->getAskChat($this->iPageAssistantChatName, '', $oTemplate);
+        $sContent = $oAssistant->getAskChat($this->sPageAssistantChatName, $this->sPageAssistantChatDescription, '', $oTemplate);
         if(!$sContent)
             return '';
 

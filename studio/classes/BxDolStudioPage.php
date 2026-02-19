@@ -29,7 +29,8 @@ class BxDolStudioPage extends BxDol
     protected $sPageRssHelpId;
 
     protected $iPageAssistantId;
-    protected $iPageAssistantChatName;
+    protected $sPageAssistantChatName;
+    protected $sPageAssistantChatDescription;
 
     protected $_sTypesPreList;
 
@@ -58,7 +59,8 @@ class BxDolStudioPage extends BxDol
         $this->iPageRssHelpLength = 5;
 
         $this->iPageAssistantId = BxDolAI::getAssistantForStudio();
-        $this->iPageAssistantChatName = 'sys_studio_page_assistant';
+        $this->sPageAssistantChatName = 'sys_studio_page_assistant';
+        $this->sPageAssistantChatDescription = '_sys_agents_assistants_chat_dsc_studio';
 
         $this->_sTypesPreList = 'sys_studio_widget_types';
 

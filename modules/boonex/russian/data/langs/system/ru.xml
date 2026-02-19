@@ -2325,6 +2325,9 @@
         <string name="_sys_agents_assistants_field_result"><![CDATA[Результат]]></string>
         <string name="_sys_agents_assistants_popup_add"><![CDATA[Добавить ассистента]]></string>
         <string name="_sys_agents_assistants_popup_edit"><![CDATA[Редактировать ассистента]]></string>
+        <string name="_sys_agents_assistants_chat_dsc_studio"><![CDATA[Помощник в студии]]></string>
+        <string name="_sys_agents_assistants_chat_dsc_block"><![CDATA[Помощник «Спроси ИИ»]]></string>
+        <string name="_sys_agents_assistants_chat_dsc_live_search"><![CDATA[Помощник в интерактивном поиске]]></string>
         <string name="_sys_agents_assistants_chats_txt_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_assistants_chats_txt_type"><![CDATA[Тип]]></string>
         <string name="_sys_agents_assistants_chats_txt_type_1"><![CDATA[Постоянный]]></string>
