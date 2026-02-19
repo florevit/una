@@ -569,10 +569,10 @@
     "@sigstore/core" "^3.0.0"
     "@sigstore/protobuf-specs" "^0.5.0"
 
-"@stripe/connect-js@^3.3.33":
-  version "3.3.33"
-  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.33.tgz#e20805ed4ae867a203cd939887493e9cab3701cb"
-  integrity sha512-zI+efV1RFYw/wKHW5uaKzXnmK7j3AYaMRL4S7Tb48BegB/ouRArkxwONxbO8t46+D9NDF7BJ0GarJQwvMVjXCg==
+"@stripe/connect-js@^3.3.34":
+  version "3.3.34"
+  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.34.tgz#85a535b0691d2ae9dc1def0583e089357cfc39b3"
+  integrity sha512-yVvlRbAPE1QqIGp+1lJmUtAm4LNlZh7FZPifsYqsuJ6EuDj4kMFkLo12wzEgWNVfNivSUALFSYn5ndEbwc7URg==
 
 "@svta/cml-608@1.0.1":
   version "1.0.1"
@@ -3742,9 +3742,9 @@ tailwindcss@^3.4.17:
     sucrase "^3.35.0"
 
 tar@^7.4.3, tar@^7.5.1, tar@^7.5.4, tar@^7.5.7:
-  version "7.5.7"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-7.5.7.tgz#adf99774008ba1c89819f15dbd6019c630539405"
-  integrity sha512-fov56fJiRuThVFXD6o6/Q354S7pnWMJIVlDBYijsTNx6jKSE4pvrDTs6lUnmGvNyfJwFQQwWy3owKz1ucIhveQ==
+  version "7.5.9"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-7.5.9.tgz#817ac12a54bc4362c51340875b8985d7dc9724b8"
+  integrity sha512-BTLcK0xsDh2+PUe9F6c2TlRp4zOOBMTkoQHQIWSIzI0R7KG46uEwq4OPk2W7bZcprBMsuaeFsqwYr7pjh6CuHg==
   dependencies:
     "@isaacs/fs-minipass" "^4.0.0"
     chownr "^3.0.0"
