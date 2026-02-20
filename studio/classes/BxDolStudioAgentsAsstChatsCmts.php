@@ -245,10 +245,8 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
     {
         $oForm = parent::_getForm($sAction, $iId, $aDp);
 
-        if(isset($oForm->aInputs['cmt_text'])) {
+        if(isset($oForm->aInputs['cmt_text']))
             $oForm->aInputs['cmt_text']['caption'] = '';
-            $oForm->aInputs['cmt_text']['db']['pass'] = 'xss';
-        }           
 
         if(isset($oForm->aInputs['cmt_submit']))
             $oForm->aInputs['cmt_submit']['value'] = $this->_oTemplate->parseIcon('arrow-right');
