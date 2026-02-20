@@ -147,6 +147,9 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
                             $sResponse = $oAIModel->getErrorMessage();
 
                         if($sResponse) {
+                            $oParsedown = new Parsedown();
+                            $sResponse = $oParsedown->text($sResponse);
+
                             $this->_oQuery->updateComments(['cmt_text' => $sResponse], ['cmt_id' => $iCmtId]);
 
                             $aCmt['cmt_text'] = $sResponse;
@@ -276,7 +279,7 @@ class BxDolStudioAgentsAsstChatsCmts extends BxDolStudioAgentsCmts
         $iId = (int)$aCmt['cmt_id'];
         $sText = $aCmt['cmt_text'];
         if(!$bLoad && !$bRetrieve)
-            $sText = nl2br($this->_prepareTextForOutput($sText, $iId));
+            $sText = $this->_prepareTextForOutput($sText, $iId);
 
         if($bLoad)
             $sText = $this->_oTemplate->parseHtmlByName('agents_comment_loading.html', [
