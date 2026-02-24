@@ -2824,10 +2824,10 @@ outlayer@^2.1.0:
     fizzy-ui-utils "^2.0.0"
     get-size "^2.0.2"
 
-ovenplayer@^0.10.47:
-  version "0.10.47"
-  resolved "https://registry.yarnpkg.com/ovenplayer/-/ovenplayer-0.10.47.tgz#8a782cd02370fc83e397ab9efc3a0d7db96b700f"
-  integrity sha512-7uN8GeUPUaPjg+tBLMSqKcL8MOWsFPwn5mujG7VhW40HZ9f5/RiNYXrZMieMnCazUN6+zFmKchHxjy3lKYyL+A==
+ovenplayer@^0.10.48:
+  version "0.10.48"
+  resolved "https://registry.yarnpkg.com/ovenplayer/-/ovenplayer-0.10.48.tgz#c8023c5f7bff0be70d858b8c97cb761b26754ccb"
+  integrity sha512-3kxfIcYwnE2IFYCTMlXg7XsgR8Ej/X03EsD4BryOL+X9W9Ignifg0Uula51QjgAaNLI1w7on8oQEjyorp/wpSw==
   dependencies:
     core-js "^3.16.3"
     whatwg-fetch "^3.6.2"
