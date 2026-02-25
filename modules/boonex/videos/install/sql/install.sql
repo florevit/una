@@ -390,7 +390,7 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_videos_entry_add', 'pictures', 2147483647, 1, 7),
 ('bx_videos_entry_add', 'allow_view_to', 2147483647, 1, 8),
 ('bx_videos_entry_add', 'cf', 2147483647, 1, 9),
-('bx_videos_entry_add', 'location', 2147483647, 1, 10),
+('bx_videos_entry_add', 'location', 2147483647, 0, 10),
 ('bx_videos_entry_add', 'do_publish', 2147483647, 1, 11),
 
 ('bx_videos_entry_delete', 'delete_confirm', 2147483647, 1, 1),
@@ -405,7 +405,7 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_videos_entry_edit', 'pictures', 2147483647, 1, 7),
 ('bx_videos_entry_edit', 'allow_view_to', 2147483647, 1, 8),
 ('bx_videos_entry_edit', 'cf', 2147483647, 1, 9),
-('bx_videos_entry_edit', 'location', 2147483647, 1, 10),
+('bx_videos_entry_edit', 'location', 2147483647, 0, 10),
 ('bx_videos_entry_edit', 'controls', 2147483647, 1, 11),
 ('bx_videos_entry_edit', 'do_submit', 2147483647, 1, 12),
 ('bx_videos_entry_edit', 'do_cancel', 2147483647, 1, 13),
