@@ -615,7 +615,7 @@ class BxNtfsModule extends BxBaseModNotificationsModule
 
         $sEmail = BxDolProfileQuery::getInstance()->getEmailById($iProfile);
         $sSubject = !empty($aSettings['subject']) ? $aSettings['subject'] : $aTemplate['Subject'];
-        return sendMail($sEmail, $sSubject, $aTemplate['Body'], 0, array(), BX_EMAIL_NOTIFY, 'html', false, array(), true);
+        return sendMail($sEmail, $sSubject, $aTemplate['Body'], $iProfile, array(), BX_EMAIL_NOTIFY, 'html', false, array(), true);
     }
 
     public function sendNotificationPush($iProfile, $aNotification)
