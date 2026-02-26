@@ -136,15 +136,27 @@ class BxAntispamDNSBlacklists extends BxDol
 
         foreach ($servers as $r) {
             $resultaddr = gethostbyname ($key . "." . $r['zonedomain']);
-
             if ($resultaddr && $resultaddr != $key . "." . $r['zonedomain']) {
+
+                bx_log('bx_antispam_dnsbl', $key . "." . $r['zonedomain'] . " => " . $resultaddr);
+
                 // we got some result from the DNS query, not NXDOMAIN. should we consider 'positive'?
                 $postvresp = $r['postvresp'];	// check positive match criteria
-                if (
-                    BX_DOL_DNSBL_MATCH_ANY == $postvresp ||
-                    (preg_match("/^\d+\.\d+\.\d+\.\d+$/", $postvresp) && $resultaddr == $postvresp) ||
-                    (is_numeric($postvresp) && (ip2long($resultaddr) & $postvresp))
-                ) {
+                $bPositive = false;
+                if (strpos($postvresp, ',') !== false) {
+                    $postvresp = explode(',', $postvresp);
+                    if (in_array($resultaddr, $postvresp)) {
+                        $bPositive = true;
+                    }
+                }
+                else {
+                    $bPositive = (
+                        BX_DOL_DNSBL_MATCH_ANY === $postvresp ||
+                        (preg_match("/^\d+\.\d+\.\d+\.\d+$/", $postvresp) && $resultaddr == $postvresp) ||
+                        (is_numeric($postvresp) && (ip2long($resultaddr) & $postvresp))
+                    );
+                }
+                if ($bPositive) {
                     $numpositive++;
                     if ($querymode == BX_DOL_DNSBL_ANYPOSTV_RETFIRST)
                         return BX_DOL_DNSBL_POSITIVE;	// found one positive, returning single
