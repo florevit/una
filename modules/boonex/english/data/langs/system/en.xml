@@ -2234,6 +2234,7 @@
 	<string name="_sys_acl_expire_never"><![CDATA[never]]></string>
     <string name="_sys_acl_state"><![CDATA[State: ]]></string>
     <string name="_sys_acl_state_trial"><![CDATA[Trial]]></string>
+    <string name="_sys_acl_downgrade"><![CDATA[Downgrade]]></string>
 
     <string name="_sys_agents_form_field_err_enter"><![CDATA[This field is essential. Please enter something here.]]></string>
     <string name="_sys_agents_form_field_err_select"><![CDATA[This field is essential. Please select something here.]]></string>

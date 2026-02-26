@@ -26,11 +26,15 @@ class BxBaseAcl extends BxDolAcl
 
         $oTemplate = BxDolTemplate::getInstance();
 
-        $iLoggedProfileId = bx_get_logged_profile_id();
         $aLevelInfo = $this->getMembershipInfo($aLevel['id']);
 
-        $aCheck = checkActionModule($iLoggedProfileId, 'show membership private info', 'system', false);
-        $oProfile = BxDolProfile::getInstance($iLoggedProfileId);
+        $bOwner = $bCanView = false;
+        if(($iLoggedPid = bx_get_logged_profile_id()) && ($oLogged = BxDolProfile::getInstance($iLoggedPid)) !== false) {
+            $bOwner = BxDolProfile::getInstance($iProfileId)->getAccountId() == $oLogged->getAccountId();
+
+            $aCheck = checkActionModule($iLoggedPid, 'show membership private info', 'system', false);
+            $bCanView = $aCheck[CHECK_ACTION_RESULT] === CHECK_ACTION_RESULT_ALLOWED;
+        }
 
         if($this->_bIsApi) {
             $sIconS = $aLevelInfo['icon'];
@@ -49,8 +53,8 @@ class BxBaseAcl extends BxDolAcl
             ];
         }
 
-        $aTmplVarsPrivateInfo = array();
-        $bTmplVarsPrivateInfo = ($oProfile && (BxDolProfile::getInstance($iProfileId)->getAccountId() == $oProfile->getAccountId() || $aCheck[CHECK_ACTION_RESULT] === CHECK_ACTION_RESULT_ALLOWED) && !empty($aLevel['date_starts']));
+        $aTmplVarsPrivateInfo = [];
+        $bTmplVarsPrivateInfo = (($bOwner || $bCanView) && !empty($aLevel['date_starts']));
         if($bTmplVarsPrivateInfo)
             $aTmplVarsPrivateInfo = array(
                 'date_start' => bx_time_js($aLevel['date_starts']),
@@ -61,17 +65,44 @@ class BxBaseAcl extends BxDolAcl
                         'state' => _t('_sys_acl_state_' . $aLevel['state'])
                     )
                 )
-            );
+            );        
 
-        $sContent = $oTemplate->parseHtmlByName('acl_membership.html', array(
+        $aTmplVarsActions = [];
+        if($bOwner) {
+            $aDowngradable = $this->getMemberships(false, true, true, true);
+            unset($aDowngradable[MEMBERSHIP_ID_STANDARD]);
+
+            if(in_array($aLevel['id'], array_keys($aDowngradable)))
+                $aTmplVarsActions[] = [
+                    'href' => 'javascript:void(0)',
+                    'bx_if:show_onclick' => [
+                        'condition' => true,
+                        'content' => [
+                            'onclick' => 'javascript:bx_reset_acl_level(' . $iProfileId . ', this)'
+                        ]
+                    ],
+                    'content' => _t('_sys_acl_downgrade')
+                ];
+        }
+
+        $sTmplName = 'acl_membership.html';
+        $aTmplVars = [
             'html_id' => 'sys-acl-profile-' . $iProfileId,
             'level' => _t($aLevel['name']),
-            'thumbnail' => $oTemplate->getImage($aLevelInfo['icon'], array('class' => 'bx-acl-m-thumbnail')),
-            'bx_if:show_private_info' => array(
+            'thumbnail' => $oTemplate->getImage($aLevelInfo['icon'], ['class' => 'bx-acl-m-thumbnail']),
+            'bx_if:show_private_info' => [
                 'condition' => $bTmplVarsPrivateInfo,
                 'content' => $aTmplVarsPrivateInfo
-            )
-        ));
+            ],
+            'bx_if:show_actions' => [
+                'condition' => !empty($aTmplVarsActions),
+                'content' => [
+                    'bx_repeat:actions' => $aTmplVarsActions
+                ]
+            ]
+        ];
+
+        $sContent = $oTemplate->parseHtmlByName($sTmplName, $aTmplVars);
 
         /**
          * @hooks
@@ -87,10 +118,12 @@ class BxBaseAcl extends BxDolAcl
          */
         bx_alert('system', 'page_output_block_acl_level', 0, false, [
             'block_owner' => $iProfileId,
+            'block_tmpl_name' => $sTmplName,
+            'block_tmpl_vars' => $aTmplVars,
             'block_code' => &$sContent
         ]);
 
-        $oTemplate->addCss(array('acl.css'));
+        $oTemplate->addCss(['acl.css']);
         return $sContent;
     }
 

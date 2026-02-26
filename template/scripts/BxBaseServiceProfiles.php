@@ -1206,6 +1206,25 @@ class BxBaseServiceProfiles extends BxDol
         return true;//$aResult;
     }
 
+    public function serviceResetMembership($mixedProfileId)
+    {
+        if(!is_array($mixedProfileId))
+            $mixedProfileId = [$mixedProfileId];
+
+        $oAcl = BxDolAcl::getInstance();
+        $iAclLevelId = MEMBERSHIP_ID_STANDARD;
+
+        $iReset = 0;
+        foreach($mixedProfileId as $iProfileId) {
+            if(!$oAcl->setMembership($iProfileId, $iAclLevelId, 0, true))
+                continue;
+
+            $iReset += 1;
+        }
+
+        return $iReset != 0;
+    }
+
     public function serviceAccountProfileSwitcher ($iAccountId = false, $iActiveProfileId = null, $sUrlProfileAction = '', $bShowAll = 0, $sButtonTitle = '', $sProfileTemplate = '')
     {
         if (!$iAccountId)

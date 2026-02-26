@@ -793,6 +793,27 @@ function bx_set_acl_level (iProfileId, iAclLevel, mixedLoadingElement) {
     }, 'json');
 }
 
+/**
+ * Reset ACL level for specified profile to Standard.
+ * @param iProfileId - profile id to reset acl level for
+ */
+function bx_reset_acl_level (iProfileId, mixedLoadingElement) {
+    var bBulk = !$.isNumeric(iProfileId);
+    var iAclCard = !bBulk && $('#sys-acl-profile-' + iProfileId).length > 0 ? 1 : 0;
+
+    var fPerform = function() {
+        var bLoading = typeof(mixedLoadingElement) != 'undefined';
+        if(bLoading)
+            bx_loading($(mixedLoadingElement), true);
+
+        $.post(sUrlRoot + 'menu.php', {o:'sys_set_acl_level', profile_id: iProfileId, level_id: 3, card: iAclCard}, function(oData) {
+            bx_on_set_acl_level(oData, mixedLoadingElement);
+        }, 'json');
+    };
+
+    bx_confirm(_t('_Are_you_sure'), fPerform);
+}
+
 function bx_on_set_acl_level(oData, oLoadingElement) {
     if(typeof(oLoadingElement) != 'undefined')
         bx_loading($(oLoadingElement), false);

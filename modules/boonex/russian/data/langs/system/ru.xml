@@ -2209,6 +2209,7 @@
 	<string name="_sys_acl_expire_never"><![CDATA[никогда]]></string>
         <string name="_sys_acl_state"><![CDATA[Состояние: ]]></string>
         <string name="_sys_acl_state_trial"><![CDATA[Пробный]]></string>
+        <string name="_sys_acl_downgrade"><![CDATA[Понизить]]></string>
 
         <string name="_sys_agents_form_field_err_enter"><![CDATA[Это поле имеет важное значение. Пожалуйста, напишите что-нибудь здесь.]]></string>
         <string name="_sys_agents_form_field_err_select"><![CDATA[Это поле имеет важное значение. Пожалуйста, выберите что-нибудь здесь.]]></string>

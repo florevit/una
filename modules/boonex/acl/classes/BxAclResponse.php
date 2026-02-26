@@ -38,7 +38,21 @@ class BxAclResponse extends BxDolAlertsResponse
 
     protected function _processSystemPageOutputBlockAclLevel($oAlert)
     {
-        $oAlert->aExtras['block_code'] .= $this->_oModule->serviceGetMembershipActions((int)$oAlert->aExtras['block_owner']);
+        if((int)$oAlert->aExtras['block_owner'] != $this->_oModule->getUserId())
+            return;
+
+        $oAlert->aExtras['block_tmpl_vars']['bx_if:show_actions']['content']['bx_repeat:actions'][] = [
+            'href' => BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink($this->_oModule->_oConfig->CNF['URL_VIEW']),
+            'bx_if:show_onclick' => [
+                'condition' => false,
+                'content' => [
+                    'onclick' => ''
+                ]
+            ],
+            'content' => _t('_bx_acl_txt_upgrade')
+        ];
+
+        $oAlert->aExtras['block_code'] = BxDolTemplate::getInstance()->parseHtmlByName($oAlert->aExtras['block_tmpl_name'], $oAlert->aExtras['block_tmpl_vars']);
     }
 
     protected function _processAclDeleted($oAlert)
