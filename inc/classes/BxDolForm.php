@@ -1551,8 +1551,8 @@ class BxDolFormChecker
         }
 
         // add error message near submit button
-        if ($iErrors && $sSubmitName)
-            $aInputs[$sSubmitName]['error'] = _t('_sys_txt_form_submission_error');
+        if ($iErrors && $sSubmitName && !($this->_aFormParams['checker_errors']['summary']['disabled'] ?? false))
+            $aInputs[$sSubmitName]['error'] = _t($this->_aFormParams['checker_errors']['summary']['text'] ?? '_sys_txt_form_submission_error');
     
         return $iErrors ? false : true;
     }

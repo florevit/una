@@ -135,6 +135,8 @@ class BxBaseFormAccount extends BxTemplFormView
         
         $this->_bSetPendingApproval = !(bool)getParam('sys_account_autoapproval');
 
+        $this->aParams['checker_errors']['summary']['disabled'] = true;
+
         if(($sField = 'picture') && isset($this->aInputs[$sField])) {
             /**
              * Note. For now Account Picture is available in edit form only. 
