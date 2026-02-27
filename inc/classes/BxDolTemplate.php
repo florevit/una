@@ -1401,8 +1401,8 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             if(empty($this->aPage['image'])) {
                 $oImgStorage = BxDolStorage::getObjectInstance(BX_DOL_STORAGE_OBJ_IMAGES);
                 foreach(['icon_android_splash', 'icon_android', 'icon_apple'] as $sIcon)
-                    if(($iIcon = (int)getParam('sys_site_' . $sIcon)) != 0 && ($sUrl = $oImgStorage->getFileUrlById($iIcon))) {
-                        $this->aPage['image'] = $sUrl;
+                    if(($iIcon = (int)getParam('sys_site_' . $sIcon)) != 0 && ($sImageUrl = $oImgStorage->getFileUrlById($iIcon))) {
+                        $this->aPage['image'] = $sImageUrl;
                         break;
                     }
             }
