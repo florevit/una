@@ -1397,15 +1397,15 @@ CREATE TABLE `sys_acl_levels` (
 );
 
 INSERT INTO `sys_acl_levels` (`ID`, `Name`, `Icon`, `Description`, `Active`, `Purchasable`, `Removable`, `QuotaSize`, `QuotaNumber`, `QuotaMaxFileSize`, `Order`) VALUES
-(1, '_adm_prm_txt_level_unauthenticated', 'user bx-def-font-color', '', 'yes', 'no', 'no', 0, 0, 0, 1),
-(2, '_adm_prm_txt_level_account', 'user col-green1', '', 'yes', 'no', 'no', 0, 0, 0, 2),
-(3, '_adm_prm_txt_level_standard', 'user col-red1', '', 'yes', 'no', 'no', 0, 0, 0, 3),
-(4, '_adm_prm_txt_level_unconfirmed', 'user bx-def-font-color', '', 'yes', 'no', 'no', 0, 0, 0, 4),
-(5, '_adm_prm_txt_level_pending', 'user bx-def-font-color', '', 'yes', 'no', 'no', 0, 0, 0, 5),
-(6, '_adm_prm_txt_level_suspended', 'user bx-def-font-color', '', 'yes', 'no', 'no', 0, 0, 0, 6),
-(7, '_adm_prm_txt_level_moderator', 'user-secret col-blue3', '', 'yes', 'no', 'no', 0, 0, 0, 7),
-(8, '_adm_prm_txt_level_administrator', 'user-secret col-blue3', '', 'yes', 'no', 'no', 0, 0, 0, 8),
-(9, '_adm_prm_txt_level_premium', 'user col-red3', '', 'yes', 'yes', 'no', 0, 0, 0, 9);
+(1, '_adm_prm_txt_level_unauthenticated', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 1),
+(2, '_adm_prm_txt_level_account', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 2),
+(3, '_adm_prm_txt_level_standard', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 3),
+(4, '_adm_prm_txt_level_unconfirmed', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 4),
+(5, '_adm_prm_txt_level_pending', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 5),
+(6, '_adm_prm_txt_level_suspended', 'user', '', 'yes', 'no', 'no', 0, 0, 0, 6),
+(7, '_adm_prm_txt_level_moderator', 'user-secret', '', 'yes', 'no', 'no', 0, 0, 0, 7),
+(8, '_adm_prm_txt_level_administrator', 'user-secret', '', 'yes', 'no', 'no', 0, 0, 0, 8),
+(9, '_adm_prm_txt_level_premium', 'user', '', 'yes', 'yes', 'no', 0, 0, 0, 9);
 
 
 -- --------------------------------------------------------

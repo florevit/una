@@ -117,6 +117,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'user' => 'user-round',
             'user-friends' => 'users',
             'user-plus' => 'user-round-plus',
+            'user-secret' => 'user-key',
             'user-slash' => 'user-x',
             'user-shield' => 'user-round-search',
             'user-check' => 'user-round-check',
