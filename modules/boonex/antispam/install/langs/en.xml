@@ -46,7 +46,7 @@ This antispam method scan submitted content for the URLs and check them if any o
 	<string name="_bx_antispam_chain_spammers"><![CDATA[IP blacklist]]></string>
 	<string name="_bx_antispam_chain_uridns"><![CDATA[Spam text]]></string>
 	<string name="_bx_antispam_rule_note_country"><![CDATA[Country: {0}]]></string>
-	<string name="_bx_antispam_rule_note_spamhaus_org"><![CDATA[Detect spammer IPs]]></string>
+	<string name="_bx_antispam_rule_note_spamhaus_org"><![CDATA[Detect spammy IPs: to use the service for free, your server must use its own private DNS server and have a reverse PTR record for its public IP.]]></string>
 	<string name="_bx_antispam_rule_note_zomgbl_spameatingmonkey_net"><![CDATA[Everything is blacklisted, <u>use it only if something is whitelisted!</u>]]></string>
 	<string name="_bx_antispam_rule_note_surbl_org"><![CDATA[Detect spammer URLs from SURBLs (lists of web sites that have appeared in unsolicited messages)]]></string>
 	<string name="_bx_antispam_rule_note_dnsbl_tornevall_org"><![CDATA[Detect anonymous/elite proxies and abuse IPs]]></string>
