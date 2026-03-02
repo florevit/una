@@ -1,5 +1,5 @@
 {
-    "name": "unaio/una",
+    "name": "unacms/una",
     "description": "UNA - Community Management System",
     "license": "MIT",
     "authors": [
@@ -17,12 +17,12 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/unaio/composer-cleanup-plugin.git",
+            "url": "https://github.com/unacms/composer-cleanup-plugin.git",
             "reference": "dev-master"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/unaio/amazon-s3-php-class.git",
+            "url": "https://github.com/unacms/amazon-s3-php-class.git",
             "reference": "dev-master"
         },
         {
@@ -62,10 +62,10 @@
         {
             "type": "package",
             "package": {
-                "name": "unaio/amazon-s3-php-class-hmac-v2",
+                "name": "unacms/amazon-s3-php-class-hmac-v2",
                 "version": "0.6",
                 "source": {
-                    "url": "https://github.com/unaio/amazon-s3-php-class-hmac-v2",
+                    "url": "https://github.com/unacms/amazon-s3-php-class-hmac-v2",
                     "type": "git",
                     "reference": "3687dec0af7be2cb11f21828aa4b12d20c4c5935"
                 }
@@ -76,7 +76,7 @@
         "php": ">=8.1",
         "akeeba/s3": "dev-development",
         "achingbrain/php5-akismet": "0.5",
-        "unaio/amazon-s3-php-class-hmac-v2": "*",
+        "unacms/amazon-s3-php-class-hmac-v2": "*",
         "tpyo/amazon-s3-php-class": "dev-master",
         "snipe/banbuilder": "dev-master",
         "chargebee/chargebee-php": "^3.0",
@@ -97,7 +97,8 @@
         "mpratt/embera": "~2.0",
         "spatie/calendar-links": "^1.5",
         "pusher/pusher-php-server": "^7.2",
-        "enshrined/svg-sanitize": "^0.22.0"
+        "enshrined/svg-sanitize": "^0.22.0",
+        "neuron-core/neuron-ai": "^3.0"
     },
     "scripts": {
         "post-update-cmd": [
