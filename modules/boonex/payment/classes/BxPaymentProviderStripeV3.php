@@ -423,7 +423,7 @@ class BxPaymentProviderStripeV3 extends BxPaymentProviderStripeBasic implements 
         if(strpos($aSessionParams['return_url'], 'session_id') === false)
             $aSessionParams['return_url'] .= '&session_id={CHECKOUT_SESSION_ID}';
 
-        $mixedSession = $this->_createSession(BX_PAYMENT_TYPE_SINGLE, $aSessionParams, $aClient, $aCartInfo);
+        $mixedSession = $this->_createSession($sType, $aSessionParams, $aClient, $aCartInfo);
         if($mixedSession === false)
             return false;
 

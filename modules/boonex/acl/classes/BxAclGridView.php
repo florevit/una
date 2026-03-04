@@ -165,6 +165,7 @@ class BxAclGridView extends BxAclGridLevels
                 'type' => 'callback', 
                 'on_callback' => 'redirect',
                 'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iOwner)),
+                'payment_type' => BX_PAYMENT_TYPE_SINGLE,
                 'seller_id' => $this->_iOwner,
                 'items' => [$this->_oPayment->getCartItemDescriptor($this->_iOwner, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
@@ -202,6 +203,7 @@ class BxAclGridView extends BxAclGridLevels
                 'name' => $sKey, 
                 'type' => 'object', 
                 'object_name' => 'stripe_v3',
+                'payment_type' => BX_PAYMENT_TYPE_RECURRING,
                 'seller_id' => $this->_iOwner,
                 'items' => [$this->_oPayment->getCartItemDescriptor($this->_iOwner, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);

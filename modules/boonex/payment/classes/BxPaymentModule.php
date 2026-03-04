@@ -1090,7 +1090,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
             }
 
             if(isset($mixedResult['message']))
-                return [bx_api_get_msg($mixedResult)];
+                return [bx_api_get_msg($mixedResult['message'])];
         }
 
         return [];
@@ -2007,7 +2007,8 @@ class BxPaymentModule extends BxBaseModPaymentModule
         $aParams = is_array($mixedParams) ? $mixedParams : json_decode($mixedParams, true);
         if(!isset($aParams['type'], $aParams['seller_id'], $aParams['items']))
             return [bx_api_get_msg(_t($this->_sLangsPrefix . 'err_wrong_data'))];
-            
+
+        $sType = $aParams['type'];
         $sProvider = 'stripe_v3';
         $iClientId = $this->getProfileId();
         $iSellerId = (int)$aParams['seller_id'];
@@ -2018,10 +2019,13 @@ class BxPaymentModule extends BxBaseModPaymentModule
             return [bx_api_get_msg(_t($this->_sLangsPrefix . 'err_incorrect_provider'))];
 
         $aSessionParams = [];
-        if(!empty($aParams['return_url']))
-            $aSessionParams['return_url'] = $aParams['return_url'] . '/api.php?r=' . $this->getName() . '/initialize_checkout_api&params[]=' . implode('&params[]=', [$aParams['type'], $iSellerId, $sProvider, $sItems, $this->_oConfig->urlEncode($this->_oConfig->getUrl('URL_HISTORY'))]);
+        if(!empty($aParams['return_url'])) {
+            $sRedirect = $this->_oConfig->urlEncode($this->_oConfig->getUrl('URL_' . ($sType == BX_PAYMENT_TYPE_RECURRING ? 'SUBSCRIPTIONS' : 'HISTORY')));
+
+            $aSessionParams['return_url'] = $aParams['return_url'] . '/api.php?r=' . $this->getName() . '/initialize_checkout_api&params[]=' . implode('&params[]=', [$sType, $iSellerId, $sProvider, $sItems, $sRedirect]);
+        }
         
-        $minxedSession = $oProvider->createSessionPaymentEmbedded($aParams['type'], $iClientId, $iSellerId, $sItems, $aSessionParams);
+        $minxedSession = $oProvider->createSessionPaymentEmbedded($sType, $iClientId, $iSellerId, $sItems, $aSessionParams);
         if($minxedSession === false)
             return [bx_api_get_msg(_t($this->_sLangsPrefix . 'err_cannot_perform'))];
 
