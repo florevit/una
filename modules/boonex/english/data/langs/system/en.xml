@@ -1124,6 +1124,7 @@
     <string name="_adm_lmi_cpt_assistants"><![CDATA[Assistants]]></string>
     <string name="_adm_lmi_cpt_automators"><![CDATA[Automators]]></string>
     <string name="_adm_lmi_cpt_helpers"><![CDATA[Helpers]]></string>
+    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Vector Store]]></string>
     <string name="_adm_lmi_cpt_badges"><![CDATA[Badges]]></string>
     <string name="_adm_lmi_cpt_categories"><![CDATA[Categories]]></string>
     <string name="_adm_lmi_cpt_checkout"><![CDATA[Checkout {checkout_counter}]]></string>

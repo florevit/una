@@ -37,9 +37,11 @@ class BxBaseStudioAgents extends BxDolStudioAgents
             BX_DOL_STUDIO_AGENTS_TYPE_HELPERS => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => ['icon' => 'mi-agt-assistants.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_AUTOMATORS => ['icon' => 'mi-agt-automators.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => ['icon' => 'mi-agt-automators.svg'],
         ];
 
         $this->aGridObjects = [
+            BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => 'sys_studio_agents_vector_store',
             BX_DOL_STUDIO_AGENTS_TYPE_AUTOMATORS => 'sys_studio_agents_automators',
             BX_DOL_STUDIO_AGENTS_TYPE_PROVIDERS => 'sys_studio_agents_providers',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => 'sys_studio_agents_assistants',
@@ -114,7 +116,16 @@ class BxBaseStudioAgents extends BxDolStudioAgents
 
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_AUTOMATORS]);
     }
-    
+
+    protected function getVectorstore()
+    {
+        $oTemplate = BxDolStudioTemplate::getInstance();
+        
+        $this->aPageJsOptions['sPageUrl'] .= 'vector_store';
+
+        return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE]);
+    }
+
     protected function getHelpers()
     {
         $oTemplate = BxDolStudioTemplate::getInstance();

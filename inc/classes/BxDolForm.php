@@ -1732,6 +1732,15 @@ class BxDolFormCheckerHelper
         }
         return $s ? true : false;
     }
+    static public function checkJson ($mixed, $bAllowEmpty = false )
+    {
+        if (is_array($mixed)) {            
+            foreach ($mixed as $v)
+                if (!self::_isJsonValid($v, $bAllowEmpty))
+                    return false;
+        }
+        return self::_isJsonValid($mixed, $bAllowEmpty);
+    }
     static public function checkProfileName($s)
     {
         if (!self::checkAvail($s))
@@ -2058,6 +2067,15 @@ class BxDolFormCheckerHelper
     static public function _isFullArray ($a)
     {
         return bx_is_full_array($a);
+    }
+
+    static public function _isJsonValid($s, $bAllowEmpty = false)
+    {
+        if ($bAllowEmpty && empty($s))
+            return true;
+
+        json_decode($s);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 }
 

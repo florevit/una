@@ -5759,6 +5759,24 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 ('sys_studio_agents_providers', 'single', 'delete', '_sys_agents_providers_btn_delete', 'remove', 1, 1, 3),
 ('sys_studio_agents_providers', 'bulk', 'delete', '_sys_agents_providers_btn_delete', '', 0, 1, 1);
 
+-- GRID: Agents Vector Store
+INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
+('sys_studio_agents_vector_store', 'Sql', 'SELECT * FROM `sys_agents_vector_store` WHERE 1 ', 'sys_agents_vector_store', 'id', 'id', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStore', '');
+
+INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
+('sys_studio_agents_vector_store', 'checkbox', '', '2%', 0, 0, '', '', 1),
+('sys_studio_agents_vector_store', 'switcher', '_sys_active', '8%', 0, 0, '', '', 2),
+('sys_studio_agents_vector_store', 'title', '_Title', '20%', 0, 0, '', '', 3),
+('sys_studio_agents_vector_store', 'type', '_adm_form_txt_fields_type', '10%', 0, 0, '', '', 5),
+('sys_studio_agents_vector_store', 'topk', '_sys_agents_vector_store_txt_topk', '10%', 0, 0, '', '', 6),
+('sys_studio_agents_vector_store', 'actions', '', '25%', 0, 0, '', '', 9);
+
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
+('sys_studio_agents_vector_store', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 1),
+('sys_studio_agents_vector_store', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 2),
+('sys_studio_agents_vector_store', 'single', 'duplicate', '_Duplicate', 'copy', 1, 1, 1, 3);
+
+
 -- --------------------------------------------------------
 
 
@@ -6898,6 +6916,98 @@ CREATE TABLE IF NOT EXISTS `sys_agents_assistants_chats_files` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `remote_id` (`remote_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `sys_agents_vector_store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,  
+  `type` varchar(128) NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `topk` tinyint(4) DEFAULT 4,
+  `params` text DEFAULT NULL,
+  `params_user` text DEFAULT NULL,
+  `changed` int(11) NOT NULL DEFAULT 0,
+  `active` tinyint(4) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+);
+
+-- 1. File
+SET @j = JSON_OBJECT(
+    'folder', 'vectorstore'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('file', 'File', 4, CAST(@j AS CHAR), 0, 1);
+
+-- 2. Pinecone
+SET @j = JSON_OBJECT(
+    'key', 'PINECONE_API_KEY',
+    'indexUrl', 'PINECONE_INDEX_URL'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('pinecone', 'Pinecone', 4, CAST(@j AS CHAR), 0, 0);
+
+-- 3. Elasticsearch
+SET @j = JSON_OBJECT(
+    'client_params', JSON_OBJECT(
+        'endpoint', 'ELASTICSEARCH-ENDPOINT',
+        'key', 'API-KEY'
+    ),
+    'index', 'vectorstore'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('elasticsearch', 'Elasticsearch', 4, CAST(@j AS CHAR), 0, 0);
+
+-- 4. Opensearch
+SET @j = JSON_OBJECT(
+    'client_params', JSON_OBJECT(
+        'base_uri', 'http://localhost:9200'
+    ),
+    'index', 'vectorstore'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('opensearch', 'Opensearch', 4, CAST(@j AS CHAR), 0, 0);
+
+-- 5. Typesense
+SET @j = JSON_OBJECT(
+    'client_params', JSON_OBJECT(
+        'api_key', 'TYPESENSE_API_KEY',
+        'nodes', JSON_ARRAY(
+            JSON_OBJECT(
+                'host', 'TYPESENSE_NODE_HOST',
+                'port', 'TYPESENSE_NODE_PORT',
+                'protocol', 'TYPESENSE_NODE_PROTOCOL'
+            )
+        )
+    ),
+    'collection', 'vectorstore',
+    'vectorDimension', 1024
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('typesense', 'Typesense', 4, CAST(@j AS CHAR), 0, 0);
+
+-- 6. Qdrant
+SET @j = JSON_OBJECT(
+    'collectionUrl', 'http://localhost:6333/collections/neuron-ai/',
+    'key', 'QDRANT_API_KEY'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('qdrant', 'Qdrant', 4, CAST(@j AS CHAR), 0, 0);
+
+-- 7. ChromaDB
+SET @j = JSON_OBJECT(
+    'collection', 'vectorstore',
+    'host', 'http://localhost:8000'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('chromadb', 'ChromaDB', 5, CAST(@j AS CHAR), 0, 0);
+
+-- 8. Meilisearch
+SET @j = JSON_OBJECT(
+    'indexUid', 'MEILISEARCH_INDEXUID',
+    'host', 'http://localhost:8000',
+    'key', 'MEILISEARCH_API_KEY',
+    'embedder', 'default'
+);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
+VALUES ('meilisearch', 'Meilisearch', 5, CAST(@j AS CHAR), 0, 0);
 
 -- --------------------------------------------------------
 
