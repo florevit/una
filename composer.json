@@ -98,7 +98,9 @@
         "spatie/calendar-links": "^1.5",
         "pusher/pusher-php-server": "^7.2",
         "enshrined/svg-sanitize": "^0.22.0",
-        "neuron-core/neuron-ai": "^3.0"
+        "neuron-core/neuron-ai": "^3.0",
+        "aws/aws-sdk-php": "^3.371",
+        "spatie/fork": "^1.2"
     },
     "scripts": {
         "post-update-cmd": [
