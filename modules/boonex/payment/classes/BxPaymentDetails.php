@@ -109,8 +109,10 @@ class BxPaymentDetails extends BxBaseModPaymentDetails
                     $this->_oModule->_oDb->updateOption($iProfileId, $aOption['id'], bx_process_input($sValue));
                 }
 
-                header('Location: ' . bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details', ['pp' => $sPaymentProvider])));
-                return;
+                if(!$this->_bIsApi) {
+                    header('Location: ' . bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details', ['pp' => $sPaymentProvider])));
+                    return;
+                }
             }
             else
                 foreach($oForm->aInputs as $aInput)

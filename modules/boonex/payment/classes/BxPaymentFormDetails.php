@@ -147,10 +147,12 @@ class BxPaymentFormDetails extends BxTemplFormView
                     break;
 
                 case 'checkbox':
-                    if($this->aInputs[$aInput['name']]['value'] == 'on')
+                    $sOn = $this->_bIsApi ? 1 : 'on';
+
+                    if($this->aInputs[$aInput['name']]['value'] == $sOn)
                         $aAddon = ['checked' => true];
 
-                    $this->aInputs[$aInput['name']]['value'] = 'on';
+                    $this->aInputs[$aInput['name']]['value'] = $sOn;
                     break;
 
                 case 'value':
