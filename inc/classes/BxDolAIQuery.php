@@ -800,6 +800,30 @@ class BxDolAIQuery extends BxDolDb
         $sQuery = "SELECT * FROM `sys_agents_vector_store` WHERE `id` = :id";
         return $this->getRow($sQuery, ['id' => $iId]); 
     }
+
+    public function addVectorStoreData (int $iVectorStoreId, string $sType, string $sName, int $iFileSize, string $sMetadata, string $sSettings, string $sContent): bool
+    {
+        $sQuery = "INSERT INTO `sys_agents_vector_store_data` SET  
+            `vector_store_id` = :vector_store_id,
+            `type` = :type, 
+            `name` = :name, 
+            `size` = :size,
+            `metadata` = :metadata, 
+            `settings` = :settings, 
+            `content` = :content,
+            `added` = :ts
+        ";
+        return $this->query($sQuery, [
+            'vector_store_id' => $iVectorStoreId,
+            'type' => $sType, 
+            'name' => $sName, 
+            'size' => $iFileSize,
+            'metadata' => $sMetadata, 
+            'settings' => $sSettings, 
+            'content' => $sContent,
+            'ts' => time()]) > 0;
+    }
+
 }
 
 /** @} */

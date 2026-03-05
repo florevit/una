@@ -1297,6 +1297,17 @@ function return_bytes($val)
     return $val;
 }
 
+/**
+ * Format bytes to human-readable format
+ * @param $iBytes - number of bytes
+ * @param $iPrecision - decimal places (default 1)
+ * @return formatted string like "2.5M", "512K", "1024B"
+ */
+function bx_format_bytes($iBytes)
+{
+    return _t_format_size($iBytes);
+}
+
 // Generate Random Password
 function genRndPwd($iLength = 8, $bSpecialCharacters = true)
 {

@@ -712,12 +712,7 @@ class BxProfiler extends BxDol
 
     function _formatBytes ($i)
     {
-        if ($i > 1024*1024)
-            return round($i/1024/1024, 1) . 'M';
-        elseif ($i > 1024)
-            return round($i/1024, 1) . 'K';
-        else
-            return $i . 'B';
+        return bx_format_bytes($i);
     }
 
     function _formatKb ($i)

@@ -104,7 +104,8 @@
         "spatie/fork": "^1.2",
         "elasticsearch/elasticsearch": "^9.3",
         "opensearch-project/opensearch-php": "^2.5",
-        "typesense/typesense-php": "*"
+        "typesense/typesense-php": "*",
+        "html2text/html2text": "^4.3"
     },
     "scripts": {
         "post-update-cmd": [
