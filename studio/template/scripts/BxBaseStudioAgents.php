@@ -49,6 +49,8 @@ class BxBaseStudioAgents extends BxDolStudioAgents
 
         $this->aGridObjects = [
             BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS => 'sys_studio_agents_models',
+            BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => 'sys_studio_agents_vector_store',
+
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => 'sys_studio_agents_assistants',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_chats' => 'sys_studio_agents_assistants_chats',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_files' => 'sys_studio_agents_assistants_files',
@@ -127,9 +129,13 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         return MsgBox('Under construction');
     }
 
-    protected function getVectorStore()
+    protected function getVectorstore()
     {
-        return MsgBox('Under construction');
+        $oTemplate = BxDolStudioTemplate::getInstance();
+        
+        $this->aPageJsOptions['sPageUrl'] .= 'vector_store';
+
+        return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE]);
     }
 
     protected function getAssistants()

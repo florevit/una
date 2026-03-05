@@ -794,6 +794,12 @@ class BxDolAIQuery extends BxDolDb
 
         return (int)$this->query("DELETE FROM `sys_agents_assistants_files` WHERE " . $this->arrayToSQL($aParamsWhere, ' AND ')) > 0;
     }
+
+    public function getVectorStoreById (int $iId): mixed
+    {
+        $sQuery = "SELECT * FROM `sys_agents_vector_store` WHERE `id` = :id";
+        return $this->getRow($sQuery, ['id' => $iId]); 
+    }
 }
 
 /** @} */

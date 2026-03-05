@@ -1112,6 +1112,7 @@
     <string name="_adm_lmi_cpt_assistants"><![CDATA[Ассистент]]></string>
     <string name="_adm_lmi_cpt_automators"><![CDATA[Автоматизаторы]]></string>
     <string name="_adm_lmi_cpt_helpers"><![CDATA[Помощники]]></string>
+    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Векторное хранилище]]></string>
     <string name="_adm_lmi_cpt_badges"><![CDATA[Бейджи]]></string>
     <string name="_adm_lmi_cpt_categories"><![CDATA[Категории]]></string>
     <string name="_adm_lmi_cpt_checkout"><![CDATA[Оплата {checkout_counter}]]></string>

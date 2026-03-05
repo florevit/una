@@ -11,7 +11,8 @@
     "config": {
         "vendor-dir": "plugins",
         "allow-plugins": {
-            "avto-dev/composer-cleanup-plugin": true
+            "avto-dev/composer-cleanup-plugin": true,
+            "php-http/discovery": true
         }
     },
     "repositories": [
@@ -100,7 +101,10 @@
         "enshrined/svg-sanitize": "^0.22.0",
         "neuron-core/neuron-ai": "^3.0",
         "aws/aws-sdk-php": "^3.371",
-        "spatie/fork": "^1.2"
+        "spatie/fork": "^1.2",
+        "elasticsearch/elasticsearch": "^9.3",
+        "opensearch-project/opensearch-php": "^2.5",
+        "typesense/typesense-php": "*"
     },
     "scripts": {
         "post-update-cmd": [
