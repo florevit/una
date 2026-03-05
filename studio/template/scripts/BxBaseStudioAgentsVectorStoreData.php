@@ -13,13 +13,14 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
     public function __construct ($aOptions, $oTemplate = false)
     {
         parent::__construct ($aOptions, $oTemplate);
+        $this->addMarkers($this->_aBrowseParams);
     }
 
     protected function _delete ($mixedId)
     {
         // TODO: delete files from vector store
 
-        $mixedResult = parent::_delete($mixedId);        
+        $mixedResult = parent::_delete($mixedId);
         return $mixedResult;
     }
 
@@ -34,6 +35,11 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
         $mixedValue = $mixedValue == 'processing' ? '<span title="Processing">🕚</span>' : '<span title="Completed">✅</span>';
         return parent::_getCellDefault ($mixedValue, $sKey, $aField, $aRow);
     } 
+
+    static public function processPendingData()
+    {
+        // TODO: process pending data, e.g. add to vector store, update status, etc.
+    }
 }
 
 /** @} */

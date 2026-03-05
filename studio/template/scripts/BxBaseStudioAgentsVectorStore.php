@@ -126,6 +126,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         $aVectorStore = $this->_oDb->getVectorStoreById($iId);
 
         $oGrid = BxDolGrid::getObjectInstance('sys_studio_agents_vector_store_data');
+        $oGrid->addMarkers(['vector_store_id' => $iId]);
+        $oGrid->setBrowseParams(['vector_store_id' => $iId]);
         $sGrid = $oGrid->getCode();
 
         $sContent = BxTemplStudioFunctions::getInstance()->popupBox('popup_files_' . $iId, _t('_sys_agents_vector_store_popup_files'), $this->_oTemplate->parseHtmlByName('agents_popup_grid.html', [
