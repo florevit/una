@@ -175,19 +175,22 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
     public function serviceGetSafeServices()
     {
-        $a = parent::serviceGetSafeServices();
-        return array_merge($a, array (
+        return array_merge(parent::serviceGetSafeServices(), [
             'GetBlockJoin' => 'BxPaymentJoin',
+
             'GetBlockCarts' => 'BxPaymentCart',
             'GetBlockCart' => 'BxPaymentCart',
             'GetBlockCartHistory' => 'BxPaymentCart',
+            
             'GetBlockListMy' => 'BxPaymentSubscriptions',
             'GetBlockHistory' => 'BxPaymentSubscriptions',
+            'Cancel' => 'BxPaymentSubscriptions',
+            'CancelByPendingId' => 'BxPaymentSubscriptions',
 
             'GetProviderOptions' => '',
             'InitializeCheckoutApi' => '',
             'StripeV3CreateSessionApi' => ''
-        ));
+        ]);
     }
 
     /**
