@@ -1121,6 +1121,10 @@
     <string name="_adm_lang_cnf_uninstall"><![CDATA[<h3>Uninstall "{0}" language?</h3><p>Uninstalling "{0}" language will also delete all of its data. Do you want to continue?</p>]]></string>
     <string name="_adm_lmi_cpt_actions"><![CDATA[Actions]]></string>
     <string name="_adm_lmi_cpt_api_config"><![CDATA[Configuration]]></string>
+    <string name="_adm_lmi_cpt_ai_providers"><![CDATA[AI Providers]]></string>
+    <string name="_adm_lmi_cpt_embedding_providers"><![CDATA[Embedding Providers]]></string>
+    <string name="_adm_lmi_cpt_tools"><![CDATA[Tools]]></string>
+    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Vector Store]]></string>
     <string name="_adm_lmi_cpt_assistants"><![CDATA[Assistants]]></string>
     <string name="_adm_lmi_cpt_automators"><![CDATA[Automators]]></string>
     <string name="_adm_lmi_cpt_helpers"><![CDATA[Helpers]]></string>
@@ -1561,7 +1565,7 @@
     <string name="_adm_stg_cpt_category_api_general"><![CDATA[General]]></string>
     <string name="_adm_stg_cpt_category_api_layout"><![CDATA[Layout]]></string>
     <string name="_adm_stg_cpt_category_agents_general"><![CDATA[General]]></string>
-    <string name="_adm_stg_cpt_category_agents_usage"><![CDATA[Usage]]></string>
+    <string name="_adm_stg_cpt_category_agents_usage"><![CDATA[Assistants]]></string>
     <string name="_adm_stg_cpt_option_client_image_resize_width"><![CDATA[Image width to resize before upload (0 - disable)]]></string>
     <string name="_adm_stg_cpt_option_client_image_resize_height"><![CDATA[Image height to resize before upload (0 - disable)]]></string>
     <string name="_adm_stg_cpt_option_currency_code"><![CDATA[Currency code (for checkout system)]]></string>
@@ -2326,6 +2330,13 @@
     <string name="_sys_agents_helpers_field_result"><![CDATA[Result]]></string>
     <string name="_sys_agents_helpers_popup_add"><![CDATA[Add helper]]></string>
     <string name="_sys_agents_helpers_popup_edit"><![CDATA[Edit helper]]></string>
+    <string name="_sys_agents_models_txt_active"><![CDATA[Active]]></string>
+    <string name="_sys_agents_models_txt_name"><![CDATA[Name]]></string>
+    <string name="_sys_agents_models_txt_title"><![CDATA[Title]]></string>
+    <string name="_sys_agents_models_txt_key"><![CDATA[API Key]]></string>
+    <string name="_sys_agents_models_txt_params"><![CDATA[Parameters]]></string>
+    <string name="_sys_agents_models_txt_added"><![CDATA[Added]]></string>
+    <string name="_sys_agents_models_btn_add"><![CDATA[Add AI Provider]]></string>
     <string name="_sys_agents_assistants_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_assistants_txt_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_assistants_txt_model_id"><![CDATA[Model]]></string>
