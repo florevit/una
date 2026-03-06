@@ -5633,17 +5633,16 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Models
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'added', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsModels', '');
+('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'changed', 'active', '', 20, NULL, 'start', '', 'type,model,title,capabilities', '', 'like', 'type,model,title,capabilities', '', 2147483647, 1, 1, 'BxTemplStudioAgentsModels', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
-('sys_studio_agents_models', 'checkbox', '', '2%', 0, 0, '', '', 1),
-('sys_studio_agents_models', 'switcher', '_sys_agents_models_txt_active', '8%', 0, 0, '', '', 2),
-('sys_studio_agents_models', 'name', '_sys_agents_models_txt_name', '15%', 0, 0, '', '', 3),
-('sys_studio_agents_models', 'title', '_sys_agents_models_txt_title', '10%', 0, 0, '', '', 4),
-('sys_studio_agents_models', 'key', '_sys_agents_models_txt_key', '10%', 0, 0, '', '', 5),
-('sys_studio_agents_models', 'params', '_sys_agents_models_txt_params', '25%', 0, 32, '', '', 6),
-('sys_studio_agents_models', 'added', '_sys_agents_models_txt_added', '10%', 0, 0, '', '', 7),
-('sys_studio_agents_models', 'actions', '', '20%', 0, 0, '', '', 8);
+('sys_studio_agents_models', 'checkbox', '', '2%', 0, 0, '', '', 10),
+('sys_studio_agents_models', 'switcher', '_sys_agents_models_txt_active', '8%', 0, 0, '', '', 20),
+('sys_studio_agents_models', 'type', '_sys_agents_automators_txt_type', '10%', 0, 0, '', '', 30),
+('sys_studio_agents_models', 'title', '_sys_agents_models_txt_title', '10%', 0, 0, '', '', 40),
+('sys_studio_agents_models', 'model', '_sys_agents_models_txt_model', '10%', 0, 0, '', '', 50),
+('sys_studio_agents_models', 'capabilities', '_sys_agents_models_txt_capabilities', '10%', 0, 0, '', '', 60),
+('sys_studio_agents_models', 'actions', '', '50%', 0, 0, '', '', 70);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
 ('sys_studio_agents_models', 'independent', 'add', '_sys_agents_models_btn_add', '', 0, 0, 1, 1),
@@ -6731,6 +6730,7 @@ CREATE TABLE `sys_agents_models` (
   `params` text NOT NULL,
   `params_user` text DEFAULT NULL,
   `capabilities` enum('chatllm','chatvlm','embeddings') NOT NULL DEFAULT 'chatllm',
+  `duplicate` tinyint(4) NOT NULL DEFAULT 1,
   `active` tinyint(4) NOT NULL DEFAULT 1,
   `changed` int(11) UNSIGNED NOT NULL DEFAULT 0
 );
@@ -6738,49 +6738,49 @@ CREATE TABLE `sys_agents_models` (
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('anthropic', 'claude-sonnet-4-6', 'Anthropic', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('anthropic', 'claude-sonnet-4-6', 'Anthropic', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'endpoint', 'AZURE_ENDPOINT',
     'version', 'AZURE_API_VERSION'
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('azure-openai', 'gpt-5-mini', 'Azure OpenAI', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('azure-openai', 'gpt-5-mini', 'Azure OpenAI', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'baseUri', 'https://api.together.xyz/v1',
     'parameters', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'url', 'OLLAMA_URL',
     'parameters', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('ollama', '', 'Ollama', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('ollama', '', 'Ollama', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('gemini', 'gemini-3-flash-preview', 'Gemini', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('gemini', 'gemini-3-flash-preview', 'Gemini', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('mistral', 'mistral-medium-2508', 'Mistral', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('mistral', 'mistral-medium-2508', 'Mistral', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'inferenceProvider', 'hf-inference/models',
@@ -6789,22 +6789,22 @@ SET @j = JSON_OBJECT(
         'temperature', 0.5
     )
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('deepseek', 'deepseek-chat', 'Deepseek', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('deepseek', 'deepseek-chat', 'Deepseek', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'client', JSON_OBJECT(
@@ -6817,36 +6817,36 @@ SET @j = JSON_OBJECT(
     ),
     'inferenceConfig', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('cohere', 'command-a-03-2025', 'Cohere', '', '', '', NULL, 'chatllm', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('cohere', 'command-a-03-2025', 'Cohere', '', '', '', NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'url', 'http://localhost:11434/api',
     'parameters', JSON_OBJECT()
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('ollama-embeddings', 'all-minilm', 'Ollama', 'With Ollama you can run embedding models locally. Documentation - https://ollama.com/blog/embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('ollama-embeddings', 'all-minilm', 'Ollama', 'With Ollama you can run embedding models locally. Documentation - https://ollama.com/blog/embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'dimensions', 1024
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('voyageai-embeddings', 'voyage-4-large', 'Voyage AI', 'Models - https://docs.voyageai.com/docs/embeddings, pricing - https://docs.voyageai.com/docs/embeddings', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('voyageai-embeddings', 'voyage-4-large', 'Voyage AI', 'Models - https://docs.voyageai.com/docs/embeddings, pricing - https://docs.voyageai.com/docs/embeddings', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'dimensions', 1024
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('openai-embeddings', 'text-embedding-3-small', 'OpenAI', 'Models - https://developers.openai.com/api/docs/guides/embeddings#embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-embeddings', 'text-embedding-3-small', 'OpenAI', 'Models - https://developers.openai.com/api/docs/guides/embeddings#embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'baseUri', 'PRODIDER_URL'
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('openai-like-embeddings', 'MODEL_NAME_HER', 'OpenAI Like Embeddings', 'Use any providers comaptible with OpenAI API format.', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-like-embeddings', 'MODEL_NAME_HER', 'OpenAI Like Embeddings', 'Use any providers comaptible with OpenAI API format.', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'client', JSON_OBJECT(
@@ -6858,8 +6858,8 @@ SET @j = JSON_OBJECT(
         )
     )
 );
-INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
-('aws-bedrock-embeddings', 'amazon.titan-embed-text-v2:0', 'Aws Bedrock', 'https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('aws-bedrock-embeddings', 'amazon.titan-embed-text-v2:0', 'Aws Bedrock', 'https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 
 CREATE TABLE IF NOT EXISTS `sys_agents_automators` (

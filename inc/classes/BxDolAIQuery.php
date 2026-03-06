@@ -94,23 +94,12 @@ class BxDolAIQuery extends BxDolDb
                 $aMethod['params'][2] = 'title';
                 $aMethod['params'][3] = [];
 
-                if(isset($aParams['for_asst'])) {
-                    $aMethod['params'][3]['for_asst'] = $aParams['for_asst'];
-
-                    $sWhereClause .= " AND `for_asst`=:for_asst";
-                }
-
                 if(isset($aParams['active'])) {
                     $aMethod['params'][3]['active'] = $aParams['active'];
 
                     $sWhereClause .= " AND `active`=:active";
                 }
 
-                if(isset($aParams['hidden'])) {
-                    $aMethod['params'][3]['hidden'] = $aParams['hidden'];
-
-                    $sWhereClause .= " AND `hidden`=:hidden";
-                }
                 break;
         }
 
@@ -824,6 +813,19 @@ class BxDolAIQuery extends BxDolDb
             'ts' => time()]) > 0;
     }
 
+    static public function getVectorStorePendingData (int $iLimit = 1): mixed
+    {
+        $oDb = BxDolDb::getInstance();
+        $sQuery = "SELECT * FROM `sys_agents_vector_store_data` ORDER BY `added` ASC LIMIT :limit";
+        return $oDb->getAll($sQuery, ['limit' => $iLimit]);
+    }
+
+    static public function updateVectorStoreDataStatus (int $iId, string $sStatus): mixed
+    {
+        $oDb = BxDolDb::getInstance();
+        $sQuery = "UPDATE `sys_agents_vector_store_data` SET `status` = :status WHERE `id` = :id";
+        return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
+    }
 }
 
 /** @} */

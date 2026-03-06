@@ -121,8 +121,6 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         $aParamsDb = ['sample' => 'all_pairs'];
         if(isset($aParams['active']))
             $aParamsDb['active'] = $aParams['active'] === true ? 1 : 0;
-        if(isset($aParams['hidden']))
-            $aParamsDb['hidden'] = $aParams['hidden'] === true ? 1 : 0;
 
         return $aModel = $this->_oDb->getModelsBy($aParamsDb);
     }
