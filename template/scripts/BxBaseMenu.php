@@ -317,7 +317,9 @@ class BxBaseMenu extends BxDolMenu
 
         if ($this->_bIsApi) {
             list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->_getMenuIcon($a);
-
+if($this->_sObject == 'sys_site') {
+    var_dump($a); exit;
+}
             $aResult = [
                 'id' => $a['id'],
                 'name' => $a['name'],
@@ -328,10 +330,14 @@ class BxBaseMenu extends BxDolMenu
                 'image' => $sIconUrl ? $sIconUrl : '',
                 'submenu' => !empty($a['submenu_object']) ? $a['submenu_object'] : '',
                 'addon' => $this->_bDisplayAddons ? $this->_getMenuAddon($a) : '',
+                'hidden_on' => isset($a['hidden_on']) ? $a['hidden_on'] : false,
+                'hidden_on_col' => isset($a['hidden_on_col']) ? $a['hidden_on_col'] : false,
                 'config' => isset($a['config_api']) ? $a['config_api'] : '',
                 'primary' => isset($a['primary']) ? $a['primary'] : 0,
                 'persistent' => isset($a['persistent']) ? $a['persistent'] : 0,
             ];
+
+            $this->_updateVisibilityParamsAPI($aResult);
 
             if(($aMarkers = $this->_getMenuMarkers($a)) && is_array($aMarkers))
                 $this->addMarkers($aMarkers);

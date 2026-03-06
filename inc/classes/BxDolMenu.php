@@ -530,6 +530,36 @@ class BxDolMenu extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         return $sHiddenOnCssClasses;
     }
 
+    protected function _updateVisibilityParamsAPI(&$a)
+    {
+        $aValues = [
+            'hidden_on' => [
+                pow(2, BX_DB_HIDDEN_PHONE - 1) => 'phone',
+                pow(2, BX_DB_HIDDEN_TABLET - 1) => 'tablet',
+                pow(2, BX_DB_HIDDEN_DESKTOP - 1) => 'desktop',
+                pow(2, BX_DB_HIDDEN_MOBILE - 1) => 'mobile-app'
+            ],
+            'hidden_on_col' => [
+                pow(2, 0) => 'thin-col',
+                pow(2, 1) => 'half-col',
+                pow(2, 2) => 'wide-col',
+                pow(2, 3) => 'full-col'
+            ]
+        ];
+
+        foreach(['hidden_on', 'hidden_on_col'] as $sK)
+            if(!empty($a[$sK])) {
+                $aHoResults = [];
+                foreach($aValues[$sK] as $iHiddenOn => $sHiddenOn)
+                    if((int)$a[$sK] & $iHiddenOn)
+                        $aHoResults[] = $sHiddenOn;
+
+                $a[$sK] = $aHoResults;
+            }
+            else
+                $a[$sK] = false;
+    }
+
     /**
      * Replace provided markers in menu item array, curently markers are replaced in title, link and onclick fields.
      * @param $a menu item array

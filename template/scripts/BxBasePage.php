@@ -741,8 +741,15 @@ class BxBasePage extends BxDolPage
 
     public function getPageBlocksAPI($aBlocks = [])
     {
+        $aHiddenOn = [
+            pow(2, BX_DB_HIDDEN_PHONE - 1) => 'phone',
+            pow(2, BX_DB_HIDDEN_TABLET - 1) => 'tablet',
+            pow(2, BX_DB_HIDDEN_DESKTOP - 1) => 'desktop',
+            pow(2, BX_DB_HIDDEN_MOBILE - 1) => 'mobile-app'
+        ];
+        $aFieldsUnset = ['object', 'cell_id', 'title_system', 'class', 'submenu', 'tabs', 'async', 'visible_for_levels', 'type', 'text', 'text_updated', 'help', 'cache_lifetime', 'active', 'active_api', 'copyable', 'deletable', 'order'];
+
         $bBlocks = !empty($aBlocks) && is_array($aBlocks);
-        $aFieldsUnset = ['object', 'cell_id', 'title_system', 'class', 'submenu', 'tabs', 'async', 'visible_for_levels', 'hidden_on', 'type', 'text', 'text_updated', 'help', 'cache_lifetime', 'active', 'active_api', 'copyable', 'deletable', 'order'];
 
         $aCells = $this->_oQuery->getPageBlocks(true);
         foreach($aCells as $sKey => &$aCell) {
@@ -792,6 +799,18 @@ class BxBasePage extends BxDolPage
                     'menu' => isset($mBlock['menu']) ? $mBlock['menu'] : '',
                     'source' => $sSource
                 ]);
+
+                if(($sK = 'hidden_on') && !empty($aBlock[$sK])) {
+                    $aHoResults = [];
+                    foreach($aHiddenOn as $iHiddenOn => $sHiddenOn)
+                        if((int)$aBlock[$sK] & $iHiddenOn)
+                            $aHoResults[] = $sHiddenOn;
+
+                    $aCells[$sKey][$i][$sK] = $aHoResults;
+                }
+                else 
+                    $aCells[$sKey][$i][$sK] = false;
+                    
 
                 $aCells[$sKey][$i] = array_diff_key($aCells[$sKey][$i], array_flip($aFieldsUnset));
             }
