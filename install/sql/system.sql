@@ -5791,10 +5791,25 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('sys_studio_agents_vector_store', 'actions', '', '25%', 0, 0, '', '', 9);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
-('sys_studio_agents_vector_store', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 1),
-('sys_studio_agents_vector_store', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 2),
-('sys_studio_agents_vector_store', 'single', 'duplicate', '_Duplicate', 'copy', 1, 1, 1, 3);
+('sys_studio_agents_vector_store', 'single', 'add_data', '_sys_uploader_simple_attach_one_more_file', 'plus', 1, 0, 1, 10),
+('sys_studio_agents_vector_store', 'single', 'files', '_adm_lmi_cpt_files', 'folder', 1, 0, 1, 20),
+('sys_studio_agents_vector_store', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 30),
+('sys_studio_agents_vector_store', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 40),
+('sys_studio_agents_vector_store', 'single', 'duplicate', '_Duplicate', 'copy', 1, 1, 1, 50);
 
+-- GRID: Agents Vector Store Data
+INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
+('sys_studio_agents_vector_store_data', 'Sql', 'SELECT * FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = ''{vector_store_id}'' ', 'sys_agents_vector_store_data', 'id', 'id', '', '', 10, NULL, 'start', '', 'name', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStoreData', '');
+
+INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
+('sys_studio_agents_vector_store_data', 'checkbox', '', '2%', 0, 0, '', '', 10),
+('sys_studio_agents_vector_store_data', 'name', '_Name', '70%', 0, 0, '', '', 20),
+('sys_studio_agents_vector_store_data', 'size', '_sys_agents_assistants_files_txt_size', '18%', 0, 0, '', '', 30),
+('sys_studio_agents_vector_store_data', 'status', '_sys_status', '10%', 0, 0, '', '', 40);
+
+
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
+('sys_studio_agents_vector_store_data', 'bulk', 'delete', '_Delete', '', 0, 1, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -6935,6 +6950,20 @@ CREATE TABLE IF NOT EXISTS `sys_agents_assistants_chats_files` (
   `private` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `remote_id` (`remote_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `sys_agents_vector_store_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,  
+  `vector_store_id` int(11) NOT NULL,
+  `type` varchar(128) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `size` int(11) NOT NULL DEFAULT 0,
+  `metadata` text NOT NULL DEFAULT '',
+  `settings` varchar(255) NOT NULL DEFAULT '',
+  `content` longtext NOT NULL DEFAULT '',
+  `status` enum('pending', 'processing','ready') NOT NULL DEFAULT 'pending',
+  `added` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `sys_agents_vector_store` (
