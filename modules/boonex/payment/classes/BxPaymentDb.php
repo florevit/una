@@ -561,7 +561,17 @@ class BxPaymentDb extends BxBaseModPaymentDb
      */
     public function getOrderSubscription($aParams)
     {
-        return $this->getOrderPending($aParams);
+        $aResult = $this->getOrderPending($aParams);
+
+        if(($iPendingId = $aParams['id'] ?? 0)) {
+            $aSubscription = $this->getSubscription(['type' => 'pending_id', 'pending_id' => $iPendingId]);
+            if($aSubscription && is_array($aSubscription))
+                $aResult = array_merge($aResult, [
+                    'customer_id' => $aSubscription['customer_id']
+                ]);
+        }
+
+        return $aResult;
     }
 
     public function getSubscription($aParams)

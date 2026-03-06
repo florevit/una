@@ -69,24 +69,20 @@ class BxBaseModPaymentGridTransactions extends BxTemplGrid
 
     public function performActionViewOrder()
     {
-        $aIds = bx_get('ids');
-        if((!$aIds || !is_array($aIds)) && !bx_is_api()) 
-            return echoJson(array());
-        
-        $iId = (int)$aIds[0];
-        
-        if (bx_is_api()){
-            $iId = bx_get('id');
-        }
+        $iId = 0;
+        if(($aIds = bx_get('ids')) !== false && is_array($aIds)) 
+            $iId = (int)$aIds[0];
+        else if(($iId = bx_get('id')) !== false)
+            $iId = (int)$iId;
+
+        if(!$iId)
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $sKey = 'order_' . $this->_sOrdersType . '_view';
         $sId = $this->_oModule->_oConfig->getHtmlIds($this->_sOrdersType, $sKey);
         $sTitle = _t($this->_sLangsPrefix . 'popup_title_ods_' . $sKey);
         $sContent = $this->_oModule->getObjectOrders()->getOrder($this->_sOrdersType, $iId);
-        if (bx_is_api()){
-            return [bx_api_get_block('simple_list',  $sContent)];
-        }
-        return echoJson(array('popup' => BxTemplFunctions::getInstance()->popupBox($sId, $sTitle, $sContent)));
+        return $this->_bIsApi ? [bx_api_get_block('simple_list',  $sContent)] : echoJson(['popup' => BxTemplFunctions::getInstance()->popupBox($sId, $sTitle, $sContent)]);
     }
 
     protected function _getCellHeaderAuthorId ($sKey, $aField)

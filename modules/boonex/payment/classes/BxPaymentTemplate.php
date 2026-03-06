@@ -327,7 +327,15 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
                 )
             ),
         );
-        
+
+        $aTmplVarsCustom = [];
+        if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION]))
+            $aTmplVarsCustom = [
+                'txt_order' => _t($this->_sLangsPrefix . 'txt_subscription'),
+                'txt_customer_id' => _t($this->_sLangsPrefix . 'txt_customer_id'),
+                'customer_id' => $aOrder['customer_id'],
+            ];
+
         $aResult = array_merge(array(
             'txt_client' => _t($this->_sLangsPrefix . 'txt_client'),
             'txt_order' => _t($this->_sLangsPrefix . 'txt_order'),
@@ -354,7 +362,7 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
                 'content' => $aTmplVarsAuthor
             ),
             'bx_repeat:items' => array()
-        ), $aTmplVarsSeller);
+        ), $aTmplVarsSeller, $aTmplVarsCustom);
 
         if(in_array($sType, array(BX_PAYMENT_ORDERS_TYPE_PENDING, BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION)))
             $aItems = $this->_oConfig->descriptorsM2A($aOrder['items']);
@@ -384,9 +392,6 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
                 );
         }
 
-        if($this->_bIsApi)
-            return $aResult;
-
         return $this->parseHtmlByName('order_' . $sType . '.html', $aResult);
     }
     
@@ -394,11 +399,15 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
     {
         $oModule = $this->getModule();
         $aSeller = $oModule->getVendorInfo((int)$aOrder['seller_id']);
+        $bSubscription = in_array($sType, [BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION]);
 
         $aResult = [
             [_t($this->_sLangsPrefix . 'txt_seller'), $aSeller['name']],
-            [_t($this->_sLangsPrefix . 'txt_order'), $aOrder['order']],           
+            [_t($this->_sLangsPrefix . 'txt_' . ($bSubscription ? 'subscription' : 'order')), $aOrder['order']],           
         ];
+
+        if($bSubscription)
+            $aResult[] = [_t($this->_sLangsPrefix . 'txt_customer_id'), $aOrder['customer_id']];
 
         if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_PROCESSED, BX_PAYMENT_ORDERS_TYPE_HISTORY]))
             $aResult[] = [_t($this->_sLangsPrefix . 'txt_license'), $aOrder['license']];
