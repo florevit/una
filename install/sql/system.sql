@@ -6721,25 +6721,146 @@ CREATE TABLE `sys_api_origins` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `sys_agents_models` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL default '',
-  `title` varchar(64) NOT NULL default '',
-  `key` varchar(64) NOT NULL default '',
+CREATE TABLE `sys_agents_models` (
+  `id` int(11) NOT NULL,
+  `type` varchar(64) NOT NULL,
+  `model` varchar(64) NOT NULL,
+  `title` varchar(64) NOT NULL DEFAULT '',
+  `docs` text NOT NULL,
+  `key` varchar(64) NOT NULL DEFAULT '',
   `params` text NOT NULL,
-  `for_asst` tinyint(4) NOT NULL DEFAULT '0',
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `hidden` tinyint(4) NOT NULL DEFAULT '0',
-  `added` int(11) unsigned NOT NULL DEFAULT '0',
-  `class_name` varchar(128) NOT NULL default '',
-  `class_file` varchar(255) NOT NULL  default '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name`(`name`)
+  `params_user` text DEFAULT NULL,
+  `capabilities` enum('chatllm','chatvlm','embeddings') NOT NULL DEFAULT 'chatllm',
+  `active` tinyint(4) NOT NULL DEFAULT 1,
+  `changed` int(11) UNSIGNED NOT NULL DEFAULT 0
 );
 
-INSERT INTO `sys_agents_models`(`name`, `title`, `key`, `params`, `for_asst`, `active`, `hidden`, `class_name`, `class_file`) VALUES
-('gpt-3.5-turbo', 'GPT-3.5-TURBO', '', '{"call":{"temperature":0.1}}', 0, 1, 0, 'BxDolAIModelGpt35', ''),
-('gpt-4o', 'GPT-4.O', '', '{"call":{},"assistants":{"event_init":"asst_HcEyaghqWZefkAyoEML40joY","event":"asst_wqaXtKjcsBKceMtJ2NxID2LT","scheduler_init":"asst_kEbDH1hUy2Y45nOKk9jaSTB8","scheduler":"asst_M6zOv4osQwZmRItaiYptjjOS","webhook_init":"asst_sSkOblPyXmYovS5IiEiVW17n","webhook":"asst_w7F3RiylJfdDEb9Eaa4RvO1q"}}', 1, 1, 0, 'BxDolAIModelGpt40', '');
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('anthropic', 'claude-sonnet-4-6', 'Anthropic', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'endpoint', 'AZURE_ENDPOINT',
+    'version', 'AZURE_API_VERSION'
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('azure-openai', 'gpt-5-mini', 'Azure OpenAI', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'baseUri', 'https://api.together.xyz/v1',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'url', 'OLLAMA_URL',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('ollama', '', 'Ollama', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('gemini', 'gemini-3-flash-preview', 'Gemini', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('mistral', 'mistral-medium-2508', 'Mistral', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'inferenceProvider', 'hf-inference/models',
+    'parameters', JSON_OBJECT(
+        'max_tokens', 500,
+        'temperature', 0.5
+    )
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('deepseek', 'deepseek-chat', 'Deepseek', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'client', JSON_OBJECT(
+        'version', 'latest',
+        'region', 'us-east-1',
+        'credentials', JSON_OBJECT(
+            'key', '{key}',
+            'secret', 'AWS_BEDROCK_SECRET'
+        )
+    ),
+    'inferenceConfig', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0);
+
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('cohere', 'command-a-03-2025', 'Cohere', '', '', '', NULL, 'chatllm', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'url', 'http://localhost:11434/api',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('ollama-embeddings', 'all-minilm', 'Ollama', 'With Ollama you can run embedding models locally. Documentation - https://ollama.com/blog/embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'dimensions', 1024
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('voyageai-embeddings', 'voyage-4-large', 'Voyage AI', 'Models - https://docs.voyageai.com/docs/embeddings, pricing - https://docs.voyageai.com/docs/embeddings', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'dimensions', 1024
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('openai-embeddings', 'text-embedding-3-small', 'OpenAI', 'Models - https://developers.openai.com/api/docs/guides/embeddings#embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'baseUri', 'PRODIDER_URL'
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('openai-like-embeddings', 'MODEL_NAME_HER', 'OpenAI Like Embeddings', 'Use any providers comaptible with OpenAI API format.', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+
+SET @j = JSON_OBJECT(
+    'client', JSON_OBJECT(
+        'version', 'latest',
+        'region', 'us-east-1',
+        'credentials', JSON_OBJECT(
+            'key', '{key}',
+            'secret', 'AWS_BEDROCK_SECRET'
+        )
+    )
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `active`, `changed`) VALUES
+('aws-bedrock-embeddings', 'amazon.titan-embed-text-v2:0', 'Aws Bedrock', 'https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0);
+
 
 CREATE TABLE IF NOT EXISTS `sys_agents_automators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
