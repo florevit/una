@@ -39,17 +39,11 @@ class BxPaymentGridSbsList extends BxPaymentGridSbsAdministration
         if(($sK = 'items') && !empty($aInfo[$sK]) && is_array($aInfo[$sK]))
         foreach($aInfo[$sK] as $aItem)
             if($this->_bIsApi)
-                $mixedValue[] = [
-                    'title' => $aItem['title'],
-                    'url' => bx_api_get_relative_url($aItem['url'])
-                ];
+                $mixedValue[] = $aItem['title'];
             else
                 $mixedValue[] = $this->_oTemplate->parseLink($aItem['url'], $aItem['title']);
 
-        if(!$this->_bIsApi)
-            $mixedValue = implode(', ', $mixedValue);
-
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+        return parent::_getCellDefault(implode(', ', $mixedValue), $sKey, $aField, $aRow);
     }
 
     protected function _getActionActions ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
