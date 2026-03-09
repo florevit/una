@@ -33,6 +33,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
             $aModel['title'] .= ' (Copy)';
             $aModel['duplicate'] = 1;
             $aModel['changed'] = time();
+            $aModel['active'] = 0;
             $iNewId = $this->_oDb->insertModel($aModel);
             if ($iNewId) {
                 $aRes = ['grid' => $this->getCode(false), 'blink' => $iNewId];
