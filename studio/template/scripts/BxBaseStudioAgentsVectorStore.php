@@ -190,7 +190,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                     'checker' => [
                         'func' => 'Json',
                         'params' => ['allow_empty' => true],
-                        'error' => _t('_sys_agents_vector_store_json_field_err'),
+                        'error' => _t('_sys_agents_json_field_err'),
                     ],
                     'db' => [
                         'pass' => 'All'

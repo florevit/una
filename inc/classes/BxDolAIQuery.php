@@ -73,6 +73,14 @@ class BxDolAIQuery extends BxDolDb
         return $aAssistant;
     }
 
+    public function insertModel($aModel)
+    {
+        if(empty($aModel))
+            return false;
+
+        return (int)$this->query("INSERT INTO `sys_agents_models` SET " . $this->arrayToSQL($aModel));
+    }
+
     public function getModelsBy($aParams = [])
     {
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];

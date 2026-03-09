@@ -5633,7 +5633,7 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Models
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'changed', 'active', '', 20, NULL, 'start', '', 'type,model,title,capabilities', '', 'like', 'type,model,title,capabilities', '', 2147483647, 1, 1, 'BxTemplStudioAgentsModels', '');
+('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'changed', 'active', '', 20, NULL, 'start', '', 'type,model,title,capabilities', '', 'like', 'type,model,title,capabilities', '', 128, 1, 1, 'BxTemplStudioAgentsModels', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
 ('sys_studio_agents_models', 'checkbox', '', '2%', 0, 0, '', '', 10),
@@ -5645,7 +5645,7 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('sys_studio_agents_models', 'actions', '', '50%', 0, 0, '', '', 70);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
-('sys_studio_agents_models', 'independent', 'add', '_sys_agents_models_btn_add', '', 0, 0, 1, 1),
+('sys_studio_agents_models', 'single', 'duplicate', '_Duplicate', 'copy', 1, 0, 1, 1),
 ('sys_studio_agents_models', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 2),
 ('sys_studio_agents_models', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 3),
 ('sys_studio_agents_models', 'bulk', 'delete', '_Delete', '', 0, 1, 1, 1);
@@ -5779,7 +5779,7 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Vector Store
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_vector_store', 'Sql', 'SELECT * FROM `sys_agents_vector_store` WHERE 1 ', 'sys_agents_vector_store', 'id', 'id', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStore', '');
+('sys_studio_agents_vector_store', 'Sql', 'SELECT * FROM `sys_agents_vector_store` WHERE 1 ', 'sys_agents_vector_store', 'id', 'id', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 128, 1, 1, 'BxTemplStudioAgentsVectorStore', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
 ('sys_studio_agents_vector_store', 'checkbox', '', '2%', 0, 0, '', '', 1),
@@ -5798,7 +5798,7 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Vector Store Data
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_vector_store_data', 'Sql', 'SELECT * FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = ''{vector_store_id}'' ', 'sys_agents_vector_store_data', 'id', 'id', '', '', 10, NULL, 'start', '', 'name', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStoreData', '');
+('sys_studio_agents_vector_store_data', 'Sql', 'SELECT * FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = ''{vector_store_id}'' ', 'sys_agents_vector_store_data', 'id', 'id', '', '', 10, NULL, 'start', '', 'name', '', 'like', '', '', 128, 1, 1, 'BxTemplStudioAgentsVectorStoreData', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
 ('sys_studio_agents_vector_store_data', 'checkbox', '', '2%', 0, 0, '', '', 10),
@@ -6721,7 +6721,7 @@ CREATE TABLE `sys_api_origins` (
 -- --------------------------------------------------------
 
 CREATE TABLE `sys_agents_models` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(64) NOT NULL,
   `model` varchar(64) NOT NULL,
   `title` varchar(64) NOT NULL DEFAULT '',
@@ -6732,7 +6732,8 @@ CREATE TABLE `sys_agents_models` (
   `capabilities` enum('chatllm','chatvlm','embeddings') NOT NULL DEFAULT 'chatllm',
   `duplicate` tinyint(4) NOT NULL DEFAULT 1,
   `active` tinyint(4) NOT NULL DEFAULT 1,
-  `changed` int(11) UNSIGNED NOT NULL DEFAULT 0
+  `changed` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 );
 
 SET @j = JSON_OBJECT(
