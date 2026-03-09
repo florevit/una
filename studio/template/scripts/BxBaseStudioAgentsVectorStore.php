@@ -32,6 +32,26 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         return 'oBxDolStudioPageAgents';
     }
     
+    public function performActionDuplicate()
+    {
+        $iId = $this->_getId();
+        $aVectorStore = $this->_oDb->getVectorStoreById($iId);
+        if (!empty($aVectorStore)) {
+            unset($aVectorStore['id']);
+            $aVectorStore['title'] .= ' (Copy)';
+            $aVectorStore['duplicate'] = 1;
+            $aVectorStore['changed'] = time();
+            $aVectorStore['active'] = 0;
+            $iNewId = $this->_oDb->insertVectorStore($aVectorStore);
+            if ($iNewId) {
+                $aRes = ['grid' => $this->getCode(false), 'blink' => $iNewId];
+                return echoJson($aRes);
+            }
+        }
+        $aRes = ['msg' => _t('_sys_txt_error_occured')];
+        return echoJson($aRes);
+    }
+
     public function performActionAddData()
     {
         $sAction = 'add_data';
@@ -102,7 +122,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
-            if($oForm->update($iId) === false)
+            if($oForm->update($iId, ['changed' => time()]) === false)
                 return echoJson(['msg' => _t('_sys_txt_error_occured')]);
 
             return echoJson(['grid' => $this->getCode(false), 'blink' => $iId]);
@@ -135,15 +155,6 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         ]));
 
         return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
-    }
-
-    protected function _delete ($mixedId)
-    {
-        $mixedResult = parent::_delete($mixedId);
-        if($mixedResult)
-            $this->_oDb->deleteAutomatorHelpers(['helper_id' => (int)$mixedId]);
-
-        return $mixedResult;
     }
 
     protected function _getForm($sAction = '', $aVectorStore = [])
@@ -307,6 +318,30 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         $s = file_get_contents($sFilePath);
         $html = new \Html2Text\Html2Text($s);
         return $html->getText();
+    }
+
+    protected function _getCellFilesNum($mixedValue, $sKey, $aField, $aRow)
+    {
+        $mixedValue = $this->_oDb->getVectorStoreDataNum($aRow['id']);
+        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+    }
+    
+    protected function _getActionDelete ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
+    {
+        if ($sType == 'single' && $aRow['duplicate'] == 0)
+            return '';
+        return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
+
+    protected function _delete ($mixedId)
+    {
+        $aModel = $this->_oDb->getVectorStoreById($mixedId);
+        if (empty($aModel) || $aModel['duplicate'] == 0)
+            return false;
+
+        // TODO: delete actual vector store data if needed
+
+        return parent::_delete($mixedId);
     }
 }
 

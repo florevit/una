@@ -798,6 +798,20 @@ class BxDolAIQuery extends BxDolDb
         return $this->getRow($sQuery, ['id' => $iId]); 
     }
 
+    public function insertVectorStore($aVectorStore)
+    {
+        if(empty($aVectorStore) || !is_array($aVectorStore))
+            return false;
+
+        return (int)$this->query("INSERT INTO `sys_agents_vector_store` SET " . $this->arrayToSQL($aVectorStore));
+    }
+
+    public function getVectorStoreDataNum (int $iVectorStoreId): int
+    {
+        $sQuery = "SELECT COUNT(*) FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = :vector_store_id";
+        return (int)$this->getOne($sQuery, ['vector_store_id' => $iVectorStoreId]);
+    }
+
     public function addVectorStoreData (int $iVectorStoreId, string $sType, string $sName, int $iFileSize, string $sMetadata, string $sSettings, string $sContent): bool
     {
         $sQuery = "INSERT INTO `sys_agents_vector_store_data` SET  
