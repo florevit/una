@@ -56,7 +56,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
-            $aValsToAdd = [];
+            $aValsToAdd = ['changed' => time()];
             
             if($oForm->update($iId, $aValsToAdd) !== false)
                 $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
@@ -97,7 +97,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
 
         $oParsedown = new Parsedown();
         $oParsedown->setSafeMode(false);
-        $sDocs = $oParsedown->text($aModel['docs']);
+        $sDocs = $oParsedown->text($aModel['docs']);        
 
         $aForm = array(
             'form_attrs' => array(

@@ -108,6 +108,12 @@ class BxDolAIQuery extends BxDolDb
                     $sWhereClause .= " AND `active`=:active";
                 }
 
+                if(isset($aParams['capabilities'])) {
+                    $aMethod['params'][3]['capabilities'] = $aParams['capabilities'];
+
+                    $sWhereClause .= " AND `capabilities` = :capabilities";
+                }
+
                 break;
         }
 

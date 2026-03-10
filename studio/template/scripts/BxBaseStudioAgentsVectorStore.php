@@ -90,7 +90,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                     $iFilesAdded++;
                 }
             }
-            return echoJson(['msg' => _t('_sys_agents_vector_store_data_queued', $iFilesAdded) . ' / num:' . $iFilesAdded]);
+            return echoJson(['msg' => _t('_sys_agents_vector_store_data_queued', $iFilesAdded)]);
 
             if($oForm->add($iId) === false)
                 return echoJson(['msg' => _t('_sys_txt_error_occured')]);
@@ -168,6 +168,16 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         $data = json_decode($aVectorStore['params_user'], true);
         $aVectorStore['params_user'] = json_encode($data, JSON_PRETTY_PRINT);
 
+        $oParsedown = new Parsedown();
+        $oParsedown->setSafeMode(false);
+        $sDocs = $oParsedown->text($aVectorStore['docs']);
+
+        $aEmbeddingProviders = ['' => _t('_sys_please_select')];
+        $a = BxDolAI::getInstance()->getModels(['capabilities' => 'embeddings', 'active' => true]);
+        foreach ($a as $k => $v) {
+            $aEmbeddingProviders[$k] = $v;
+        }
+
         return [
             'form_attrs' => [
                 'id' => 'bx_std_agents_helpers_' . $sAction,
@@ -182,10 +192,28 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 ),
             ),
             'inputs' => [
+                'docs' => [
+                    'type' => 'custom',
+                    'name' => 'docs',
+                    'caption' => '',
+                    'content' => $sDocs,
+                ],
+                'embedding_provider_id' => [
+                    'type' => 'select',
+                    'name' => 'embedding_provider_id',
+                    'caption' => '_sys_agents_vector_store_field_embedding_provider_id',
+                    'info' => '_sys_agents_vector_store_field_embedding_provider_id_info',
+                    'value' => !empty($aVectorStore['embedding_provider_id']) ? $aVectorStore['embedding_provider_id'] : '',
+                    'values' => $aEmbeddingProviders,
+                    'db' => [
+                        'pass' => 'Int'
+                    ]
+                ],
                 'topk' => [
                     'type' => 'text',
                     'name' => 'topk',
                     'caption' => '_sys_agents_vector_store_field_topk',
+                    'info' => '_sys_agents_vector_store_field_topk_info',
                     'required' => true,
                     'value' => !empty($aVectorStore['topk']) ? $aVectorStore['topk'] : '',
                     'db' => [
@@ -196,6 +224,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                     'type' => 'textarea',
                     'name' => 'params_user',
                     'caption' => '_sys_agents_vector_store_field_params',
+                    'info' => '_sys_agents_vector_store_field_params_info',
                     'required' => false,
                     'value' => !empty($aVectorStore['params_user']) ? $aVectorStore['params_user'] : '',
                     'checker' => [
@@ -320,10 +349,19 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         return $html->getText();
     }
 
+    protected function _getCellEmbeddingProviderId($mixedValue, $sKey, $aField, $aRow) 
+    {
+        $aProvider = $this->_oDb->getModelsBy(['sample' => 'id', 'id' => $mixedValue]);
+        $s = !empty($aProvider) ? $aProvider['title'] : _t('_undefined');
+        return parent::_getCellDefault($s, $sKey, $aField, $aRow);
+    }
+    
     protected function _getCellFilesNum($mixedValue, $sKey, $aField, $aRow)
     {
-        $mixedValue = $this->_oDb->getVectorStoreDataNum($aRow['id']);
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+        $s = $this->_oDb->getVectorStoreDataNum($aRow['id']);
+        if ((int)$s !== 0)
+            $s = '<a href="javascript:void(0)" onclick="glGrids.' . $this->_sObject . '.actionWithId (' . $aRow['id'] . ', \'files\', {}, \'\', false, 0);">' . $s . '</a>';
+        return parent::_getCellDefault($s, $sKey, $aField, $aRow);
     }
     
     protected function _getActionDelete ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
