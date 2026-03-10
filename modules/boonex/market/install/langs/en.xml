@@ -31,7 +31,7 @@
     <string name="_bx_market_form_entry_input_do_publish"><![CDATA[Publish]]></string>
     <string name="_bx_market_form_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_market_form_entry_input_title"><![CDATA[Title]]></string>
-    <string name="_bx_market_form_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_market_form_entry_input_title_err"><![CDATA[Title is essential min 3 max 160.]]></string>
     <string name="_bx_market_form_entry_input_sys_name"><![CDATA[Identifier]]></string>
     <string name="_bx_market_form_entry_input_name"><![CDATA[Identifier]]></string>
     <string name="_bx_market_form_entry_input_name_inf"><![CDATA[Unique name for payment identification.]]></string>

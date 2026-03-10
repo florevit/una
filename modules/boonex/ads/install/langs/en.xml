@@ -83,7 +83,7 @@
     <string name="_bx_ads_form_entry_input_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_ads_form_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_ads_form_entry_input_title"><![CDATA[Title]]></string>
-    <string name="_bx_ads_form_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_ads_form_entry_input_title_err"><![CDATA[Title is essential min 3 max 160.]]></string>
     <string name="_bx_ads_form_entry_input_sys_name"><![CDATA[Name]]></string>
     <string name="_bx_ads_form_entry_input_name"><![CDATA[Name]]></string>
     <string name="_bx_ads_form_entry_input_name_err"><![CDATA[Name should be unique and is needed for internal usage. Please, fill in this field]]></string>
