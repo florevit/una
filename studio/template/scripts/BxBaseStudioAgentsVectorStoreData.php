@@ -18,8 +18,7 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
 
     protected function _delete ($mixedId)
     {
-        // TODO: delete files from vector store
-        $r = $this->getVectorStoreDataById($mixedId);
+        $r = $this->_oDb->getVectorStoreDataById($mixedId);
         $oVectorStore = BxDolAI::getVectorStoreInstance($r['vector_store_id']);
         if ($oVectorStore) {
             $oVectorStore->deleteBySource($r['vector_store_id'], $r['id']);
