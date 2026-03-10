@@ -127,12 +127,10 @@ class BxDonationsModule extends BxBaseModGeneralModule
         $CNF = &$this->_oConfig->CNF;
 
         $oPermalink = BxDolPermalinks::getInstance();
-
-        $aResult = $this->_aModule;
-        $aResult['url_browse_order_common'] = bx_absolute_url($oPermalink->permalink($CNF['URL_LIST'], array('filter' => '{order}')));
-        $aResult['url_browse_order_administration'] = bx_absolute_url($oPermalink->permalink($CNF['URL_LIST_ALL'], array('filter' => '{order}')));
-
-        return $aResult;
+        return array_merge($this->_aModule, [
+            'url_browse_order_common' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_LIST']), ['filter' => '{order}'], false)),
+            'url_browse_order_administration' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_LIST_ALL']), ['filter' => '{order}'], false))
+        ]);
     }
 
     public function serviceGetCartItem($mixedItemId)

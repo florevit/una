@@ -840,12 +840,10 @@ class BxMarketModule extends BxBaseModTextModule
         $CNF = &$this->_oConfig->CNF;
 
         $oPermalink = BxDolPermalinks::getInstance();
-
-        $aResult = $this->_aModule;
-        $aResult['url_browse_order_common'] = bx_absolute_url($oPermalink->permalink($CNF['URL_LICENSES_COMMON'], array('filter' => '{order}')));
-        $aResult['url_browse_order_administration'] = bx_absolute_url($oPermalink->permalink($CNF['URL_LICENSES_ADMINISTRATION'], array('filter' => '{order}')));
-
-        return $aResult;
+        return array_merge($this->_aModule, [
+            'url_browse_order_common' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_LICENSES_COMMON']), ['filter' => '{order}'], false)),
+            'url_browse_order_administration' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_LICENSES_ADMINISTRATION']), ['filter' => '{order}'], false))
+        ]);
     }
 
     /**
