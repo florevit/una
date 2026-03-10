@@ -25,6 +25,17 @@ class BxDolAIQuery extends BxDolDb
         return $aModel;
     }
 
+    static public function getVectorStoreObject($iId)
+    {
+        $oDb = BxDolDb::getInstance();
+
+        $aVectorStore = $oDb->getRow("SELECT * FROM `sys_agents_vector_store` WHERE `id` = :id", ['id' => $iId]);
+        if(!$aVectorStore || !is_array($aVectorStore))
+            return false;
+
+        return $aVectorStore;
+    }
+
     static public function getProviderObject($iId)
     {
         $oDb = BxDolDb::getInstance();
@@ -841,10 +852,16 @@ class BxDolAIQuery extends BxDolDb
             'ts' => time()]) > 0;
     }
 
+    public function getVectorStoreDataById (int $iId): mixed
+    {
+        $sQuery = "SELECT * FROM `sys_agents_vector_store_data` WHERE `id` = :id";
+        return $this->getRow($sQuery, ['id' => $iId]);
+    }
+
     static public function getVectorStorePendingData (int $iLimit = 1): mixed
     {
         $oDb = BxDolDb::getInstance();
-        $sQuery = "SELECT * FROM `sys_agents_vector_store_data` ORDER BY `added` ASC LIMIT :limit";
+        $sQuery = "SELECT * FROM `sys_agents_vector_store_data` WHERE `status` = 'pending' ORDER BY `added` ASC LIMIT :limit";
         return $oDb->getAll($sQuery, ['limit' => $iLimit]);
     }
 

@@ -70,6 +70,104 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $GLOBALS['bxDolClasses'][__CLASS__];
     }
 
+    public static function getAiProviderInstance(int $iId):NeuronAI\Providers\AIProviderInterface
+    {
+        return self::getInstance()->getAiProviderInstance($iId);
+    }   
+
+    public static function getAiEmbeddingsProviderInstance(int $iId):NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
+    {
+        return self::getInstance()->getAiProviderInstance($iId);
+    }   
+
+    public static function getModelInstance(int $iId): NeuronAI\Providers\AIProviderInterface | NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
+    {
+        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId]))
+            return $GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId];
+
+        $aProvidersWithKey = ['anthropic'];
+        $a = BxDolAIQuery::getModelObject($iId);
+        if (!$a) {
+            bx_log('sys_agents', "Agent AI Model with id {$iId} not found", BX_LOG_ERR);
+            throw new Exception("Agent AI Model with id {$iId} not found");
+        }
+        if (in_array($a['type'], $aProvidersWithKey) && empty($a['key'])) {
+            bx_log('sys_agents', "Model with id {$iId} has empty key, can't be used", BX_LOG_ERR);
+            throw new Exception("Model with id {$iId} has empty key, can't be used");
+        }
+
+        if (!$a['active']) {
+            bx_log('sys_agents', "Model with id {$iId} is not active, can't be used", BX_LOG_ERR);
+            throw new Exception("Model with id {$iId} is not active, can't be used");
+        }
+
+        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+
+        switch($a['type']) {
+            // TODO: add more providers
+            case 'anthropic':
+                $o = new NeuronAI\Providers\Anthropic\Anthropic(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                );
+                break;
+            case 'openai-responses':
+                $o = new NeuronAI\Providers\OpenAI\Responses\OpenAIResponses(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: false
+                );
+                break;
+            case 'openai-embeddings':
+                $o = new NeuronAI\RAG\Embeddings\OpenAIEmbeddingsProvider(
+                    key: $a['key'],
+                    model: $a['model'],
+                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : 1024
+                );
+                break;
+            default:
+                bx_log('sys_agents', "Model type {$a['type']} is not supported", BX_LOG_ERR);
+                throw new Exception("Model type {$a['type']} is not supported");
+        }
+
+        $GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId] = $o;
+
+        return $o;
+    }
+
+    public static function getVectorStoreInstance(int $iId): NeuronAI\RAG\VectorStore\VectorStoreInterface 
+    {
+        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId]))
+            return $GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId];
+
+        $a = BxDolAIQuery::getVectorStoreObject($iId);
+        if (!$a) {
+            bx_log('sys_agents', "Vector store with id {$iId} not found", BX_LOG_ERR);
+            throw new Exception("Vector store with id {$iId} not found");
+        }
+
+        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+
+        switch($a['type']) {
+            // TODO: add more vector store types
+            case 'file':
+                $o = new NeuronAI\RAG\VectorStore\FileVectorStore(
+                    directory: BX_DIRECTORY_STORAGE . 'vector_stores/' . $iId,
+                    topK: $a['topk'],
+                );
+                break;
+            default:
+                bx_log('sys_agents', "Vector store type {$a['type']} is not supported", BX_LOG_ERR);
+                throw new Exception("Vector store type {$a['type']} is not supported");
+        }
+
+        $GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId] = $o;
+
+        return $o;
+    }
+
     public static function callHelper($mixedHelper, $sMessage)
     {
         $oAI = BxDolAI::getInstance();

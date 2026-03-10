@@ -2639,7 +2639,8 @@ INSERT INTO `sys_cron_jobs` (`name`, `time`, `class`, `file`, `service_call`) VA
 ('sys_queue_email', '* * * * *', 'BxDolCronQueueEmail', 'inc/classes/BxDolCronQueueEmail.php', ''),
 ('sys_queue_push', '* * * * *', 'BxDolCronQueuePush', 'inc/classes/BxDolCronQueuePush.php', ''),
 ('sys_audit_clean', '* * * * *', 'BxDolCronAudit', 'inc/classes/BxDolCronAudit.php', ''),
-('sys_background_jobs', '* * * * *', 'BxDolCronBackgroundJobs', 'inc/classes/BxDolCronBackgroundJobs.php', '');
+('sys_background_jobs', '* * * * *', 'BxDolCronBackgroundJobs', 'inc/classes/BxDolCronBackgroundJobs.php', ''),
+('sys_agents_vector_store', '* * * * *', 'BxDolCronAgentsVectorStore', 'inc/classes/BxDolCronAgentsVectorStore.php', '');
 
 -- --------------------------------------------------------
 
@@ -6725,7 +6726,7 @@ CREATE TABLE `sys_agents_models` (
   `model` varchar(64) NOT NULL,
   `title` varchar(64) NOT NULL DEFAULT '',
   `docs` text NOT NULL,
-  `key` varchar(64) NOT NULL DEFAULT '',
+  `key` varchar(255) NOT NULL DEFAULT '',
   `params` text NOT NULL,
   `params_user` text DEFAULT NULL,
   `capabilities` enum('chatllm','chatvlm','embeddings') NOT NULL DEFAULT 'chatllm',
@@ -7082,7 +7083,7 @@ CREATE TABLE IF NOT EXISTS `sys_agents_vector_store_data` (
   `metadata` text NOT NULL DEFAULT '',
   `settings` varchar(255) NOT NULL DEFAULT '',
   `content` longtext NOT NULL DEFAULT '',
-  `status` enum('pending', 'processing','ready') NOT NULL DEFAULT 'pending',  
+  `status` enum('pending', 'processing','ready','error') NOT NULL DEFAULT 'pending',  
   `added` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 );

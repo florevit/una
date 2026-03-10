@@ -97,7 +97,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
 
         $oParsedown = new Parsedown();
         $oParsedown->setSafeMode(false);
-        $sDocs = $oParsedown->text($aModel['docs']);        
+        $sDocs = $oParsedown->text($aModel['docs']);
 
         $aForm = array(
             'form_attrs' => array(
