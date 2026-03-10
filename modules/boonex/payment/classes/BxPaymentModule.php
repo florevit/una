@@ -1288,7 +1288,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
     public function isAllowedManageInvoices($bPerform = false)
     {
-        if(BxDolAcl::getInstance()->isMemberLevelInSet(array(MEMBERSHIP_ID_MODERATOR, MEMBERSHIP_ID_ADMINISTRATOR)) || isAdmin())
+        if($this->_isModerator())
             return true;
 
         return _t('_sys_txt_access_denied');

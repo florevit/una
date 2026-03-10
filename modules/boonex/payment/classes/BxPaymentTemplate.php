@@ -291,6 +291,11 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
         $aSeller = $oModule->getVendorInfo((int)$aOrder['seller_id']);
         $aClient = $oModule->getProfileInfo((int)$aOrder['client_id']);
 
+        if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_PENDING, BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION]))
+            $aItems = $this->_oConfig->descriptorsM2A($aOrder['items']);
+        else
+            $aItems = $this->_oConfig->descriptorsM2A($this->_oConfig->descriptorA2S([$aOrder['seller_id'], $aOrder['module_id'], $aOrder['item_id'], $aOrder['item_count']]));
+
         $aTmplVarsLicense = array();
         if(in_array($sType, array(BX_PAYMENT_ORDERS_TYPE_PROCESSED, BX_PAYMENT_ORDERS_TYPE_HISTORY)))
             $aTmplVarsLicense = array(
@@ -329,12 +334,27 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
         );
 
         $aTmplVarsCustom = [];
-        if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION]))
+        if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION])) {
+            $sOrder = $aOrder['order'];
+            if($oModule->_isModerator() && ($aItem = array_shift($aItems))) {
+                $aItemModule = bx_srv((int)$aItem['module_id'], 'get_payment_data');
+                if(($sUrlBrowse = $aItemModule['url_browse_order_administration'] ?? false)) 
+                    $sOrder = $this->displayLink('link', [
+                        'href' => bx_replace_markers($sUrlBrowse, [
+                            'order' => $sOrder
+                        ]),
+                        'title' => bx_html_attribute($sOrder),
+                        'content' => $sOrder
+                    ]);
+            }
+
             $aTmplVarsCustom = [
                 'txt_order' => _t($this->_sLangsPrefix . 'txt_subscription'),
+                'order' => $sOrder,
                 'txt_customer_id' => _t($this->_sLangsPrefix . 'txt_customer_id'),
                 'customer_id' => $aOrder['customer_id'],
             ];
+        }
 
         $aResult = array_merge(array(
             'txt_client' => _t($this->_sLangsPrefix . 'txt_client'),
@@ -363,11 +383,6 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
             ),
             'bx_repeat:items' => array()
         ), $aTmplVarsSeller, $aTmplVarsCustom);
-
-        if(in_array($sType, array(BX_PAYMENT_ORDERS_TYPE_PENDING, BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION)))
-            $aItems = $this->_oConfig->descriptorsM2A($aOrder['items']);
-        else
-            $aItems = $this->_oConfig->descriptorsM2A($this->_oConfig->descriptorA2S(array($aOrder['seller_id'], $aOrder['module_id'], $aOrder['item_id'], $aOrder['item_count'])));
 
         foreach($aItems as $aItem) {
             $aInfo = $oModule->callGetCartItem((int)$aItem['module_id'], array($aItem['item_id'], $aOrder['client_id']));

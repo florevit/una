@@ -70,6 +70,21 @@ class BxPaymentGridSbsAdministration extends BxBaseModPaymentGridTransactions
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
 
+    protected function _getCellItems($mixedValue, $sKey, $aField, $aRow)
+    {
+        $aInfo = $this->_oModule->getObjectCart()->getInfo(BX_PAYMENT_TYPE_RECURRING, $aRow['client_id'], $aRow['seller_id'], $mixedValue);
+
+        $mixedValue = [];
+        if(($sK = 'items') && !empty($aInfo[$sK]) && is_array($aInfo[$sK]))
+        foreach($aInfo[$sK] as $aItem)
+            if($this->_bIsApi)
+                $mixedValue[] = $aItem['title'];
+            else
+                $mixedValue[] = $this->_oTemplate->parseLink($aItem['url'], $aItem['title']);
+
+        return parent::_getCellDefault(implode(', ', $mixedValue), $sKey, $aField, $aRow);
+    }
+
     protected function _getCellDateAdd($mixedValue, $sKey, $aField, $aRow)
     {
         return $this->_getCellDefaultDateTime($mixedValue, $sKey, $aField, $aRow);

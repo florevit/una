@@ -216,6 +216,16 @@ class BxBaseModPaymentModule extends BxBaseModGeneralModule
         return $aResult;
     }
 
+    public function _isModeratorForProfile($isPerformAction = false, $iProfileId = false)
+    {
+        return BxDolAcl::getInstance()->isMemberLevelInSet([MEMBERSHIP_ID_MODERATOR, MEMBERSHIP_ID_ADMINISTRATOR], $iProfileId) || (($oProfile = BxDolProfile::getInstance()) !== false && isAdmin($oProfile->getAccountId()));
+    }
+
+    public function _isAdministratorForProfile($isPerformAction = false, $iProfileId = false)
+    {
+        return BxDolAcl::getInstance()->isMemberLevelInSet([MEMBERSHIP_ID_ADMINISTRATOR], $iProfileId) || (($oProfile = BxDolProfile::getInstance()) !== false && isAdmin($oProfile->getAccountId()));
+    }
+
     public function isSingleSeller()
     {
         return $this->_oConfig->isSingleSeller();
