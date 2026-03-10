@@ -24,38 +24,24 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
         return 'oBxDolStudioPageAgents';
     }
 
-    public function performActionAdd()
+    public function performActionDuplicate()
     {
-        $sAction = 'add';
-
-        $aForm = $this->_getForm($sAction);
-        $oForm = new BxTemplFormView($aForm);
-        $oForm->initChecker();
-
-        if($oForm->isSubmittedAndValid()) {
-            $aValsToAdd = ['added' => time()];
-
-            $bIsValid = true;
-            if($bIsValid) {
-                if(($iId = $oForm->insert($aValsToAdd)) !== false) {
-                    $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
-                }
-                else
-                    $aRes = ['msg' => _t('_sys_txt_error_occured')];
-
+        $iId = $this->_getId();
+        $aModel = $this->_oDb->getModelsBy(['sample' => 'id', 'id' => $iId]);
+        if (!empty($aModel)) {
+            unset($aModel['id']);
+            $aModel['title'] .= ' (Copy)';
+            $aModel['duplicate'] = 1;
+            $aModel['changed'] = time();
+            $aModel['active'] = 0;
+            $iNewId = $this->_oDb->insertModel($aModel);
+            if ($iNewId) {
+                $aRes = ['grid' => $this->getCode(false), 'blink' => $iNewId];
                 return echoJson($aRes);
             }
         }
-
-        $sFormId = $oForm->getId();
-        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup', _t('_sys_agents_models_popup_add'), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
-            'form_id' => $sFormId,
-            'form' => $oForm->getCode(true),
-            'object' => $this->_sObject,
-            'action' => $sAction
-        ]));
-
-        return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
+        $aRes = ['msg' => _t('_sys_txt_error_occured')];
+        return echoJson($aRes);
     }
 
     public function performActionEdit()
@@ -103,6 +89,16 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
     {
         $sJsObject = $this->getPageJsObject();
 
+        $sParams = $aModel['params'];
+        if (!empty($aModel['params_user']))
+            $sParams = $aModel['params_user'];
+        $s = json_decode($sParams, true);
+        $sParams = json_encode($s, JSON_PRETTY_PRINT);
+
+        $oParsedown = new Parsedown();
+        $oParsedown->setSafeMode(false);
+        $sDocs = $oParsedown->text($aModel['docs']);
+
         $aForm = array(
             'form_attrs' => array(
                 'id' => 'bx_std_agents_models_' . $sAction,
@@ -117,18 +113,33 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                 ),
             ),
             'inputs' => array(
-                'name' => [
+                'docs' => [
+                    'type' => 'custom',
+                    'name' => 'docs',
+                    'caption' => '',
+                    'content' => $sDocs,
+                ],
+                'title' => [
                     'type' => 'text',
-                    'name' => 'name',
+                    'name' => 'title',
                     'required' => '1',
-                    'caption' => _t('_sys_agents_models_field_name'),
-                    'value' => isset($aModel['name']) ? $aModel['name'] : '',
+                    'caption' => _t('_sys_agents_models_field_title'),
+                    'value' => isset($aModel['title']) ? $aModel['title'] : '',
                     'required' => '1',
                     'checker' => [
                         'func' => 'Avail',
                         'params' => [],
                         'error' => _t('_sys_agents_form_field_err_enter'),
                     ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ]
+                ],
+                'model' => [
+                    'type' => 'text',
+                    'name' => 'model',
+                    'caption' => _t('_sys_agents_models_field_model'),
+                    'value' => isset($aModel['model']) ? $aModel['model'] : '',
                     'db' => [
                         'pass' => 'Xss',
                     ]
@@ -136,32 +147,24 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                 'key' => [
                     'type' => 'text',
                     'name' => 'key',
-                    'required' => '1',
                     'caption' => _t('_sys_agents_models_field_key'),
                     'value' => isset($aModel['key']) ? $aModel['key'] : '',
-                    'required' => '1',
-                    'checker' => [
-                        'func' => 'Avail',
-                        'params' => [],
-                        'error' => _t('_sys_agents_form_field_err_enter'),
-                    ],
                     'db' => [
                         'pass' => 'Xss',
                     ]
                 ],
-                'params' => [
+                'params_user' => [
                     'type' => 'textarea',
-                    'name' => 'params',
+                    'name' => 'params_user',
                     'caption' => _t('_sys_agents_models_field_params'),
-                    'value' => isset($aModel['params']) ? $aModel['params'] : '',
-                    'required' => '1',
+                    'value' => $sParams,
                     'checker' => [
-                        'func' => 'Avail',
-                        'params' => [],
-                        'error' => _t('_sys_agents_form_field_err_enter'),
+                        'func' => 'Json',
+                        'params' => ['allow_empty' => true],
+                        'error' => _t('_sys_agents_json_field_err'),
                     ],
                     'db' => [
-                        'pass' => 'Xss',
+                        'pass' => 'All'
                     ]
                 ],
                 'submit' => $this->_getFormControls(),
@@ -169,6 +172,21 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
         );
 
         return $aForm;
+    }
+
+    protected function _getActionDelete ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
+    {
+        if ($sType == 'single' && $aRow['duplicate'] == 0)
+            return '';
+        return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
+
+    protected function _delete ($mixedId)
+    {
+        $aModel = $this->_oDb->getModelsBy(['sample' => 'id', 'id' => $mixedId]);
+        if (empty($aModel) || $aModel['duplicate'] == 0)
+            return false;
+        return parent::_delete($mixedId);
     }
 }
 

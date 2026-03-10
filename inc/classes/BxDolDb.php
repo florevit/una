@@ -1206,7 +1206,7 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
                 throw new Exception('Invalid field name in arrayToSQL method');
             if ($bWildcardSpaceChars)
                 $v = preg_replace('/[\p{Zs}\p{Cc}\p{Pd}]/', '_', $v);
-            $s .= "`{$k}` {$sOperator} " . $this->escape($v) . $sDiv;
+            $s .= "`{$k}` {$sOperator} " . (is_null($v) ? 'NULL' : $this->escape($v)) . $sDiv;
         }
         return trim($s, $sDiv);
     }

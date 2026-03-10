@@ -5633,20 +5633,19 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Models
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'added', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsModels', '');
+('sys_studio_agents_models', 'Sql', 'SELECT * FROM `sys_agents_models` WHERE 1 ', 'sys_agents_models', 'id', 'changed', 'active', '', 20, NULL, 'start', '', 'type,model,title,capabilities', '', 'like', 'type,model,title,capabilities', '', 128, 1, 1, 'BxTemplStudioAgentsModels', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
-('sys_studio_agents_models', 'checkbox', '', '2%', 0, 0, '', '', 1),
-('sys_studio_agents_models', 'switcher', '_sys_agents_models_txt_active', '8%', 0, 0, '', '', 2),
-('sys_studio_agents_models', 'name', '_sys_agents_models_txt_name', '15%', 0, 0, '', '', 3),
-('sys_studio_agents_models', 'title', '_sys_agents_models_txt_title', '10%', 0, 0, '', '', 4),
-('sys_studio_agents_models', 'key', '_sys_agents_models_txt_key', '10%', 0, 0, '', '', 5),
-('sys_studio_agents_models', 'params', '_sys_agents_models_txt_params', '25%', 0, 32, '', '', 6),
-('sys_studio_agents_models', 'added', '_sys_agents_models_txt_added', '10%', 0, 0, '', '', 7),
-('sys_studio_agents_models', 'actions', '', '20%', 0, 0, '', '', 8);
+('sys_studio_agents_models', 'checkbox', '', '2%', 0, 0, '', '', 10),
+('sys_studio_agents_models', 'switcher', '_sys_agents_models_txt_active', '8%', 0, 0, '', '', 20),
+('sys_studio_agents_models', 'type', '_sys_agents_automators_txt_type', '10%', 0, 0, '', '', 30),
+('sys_studio_agents_models', 'title', '_sys_agents_models_txt_title', '10%', 0, 0, '', '', 40),
+('sys_studio_agents_models', 'model', '_sys_agents_models_txt_model', '10%', 0, 0, '', '', 50),
+('sys_studio_agents_models', 'capabilities', '_sys_agents_models_txt_capabilities', '10%', 0, 0, '', '', 60),
+('sys_studio_agents_models', 'actions', '', '50%', 0, 0, '', '', 70);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
-('sys_studio_agents_models', 'independent', 'add', '_sys_agents_models_btn_add', '', 0, 0, 1, 1),
+('sys_studio_agents_models', 'single', 'duplicate', '_Duplicate', 'copy', 1, 0, 1, 1),
 ('sys_studio_agents_models', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 2),
 ('sys_studio_agents_models', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 3),
 ('sys_studio_agents_models', 'bulk', 'delete', '_Delete', '', 0, 1, 1, 1);
@@ -5780,26 +5779,26 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRID: Agents Vector Store
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_vector_store', 'Sql', 'SELECT * FROM `sys_agents_vector_store` WHERE 1 ', 'sys_agents_vector_store', 'id', 'id', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStore', '');
+('sys_studio_agents_vector_store', 'Sql', 'SELECT * FROM `sys_agents_vector_store` WHERE 1 ', 'sys_agents_vector_store', 'id', 'id', 'active', '', 20, NULL, 'start', '', '', '', 'like', '', '', 128, 1, 1, 'BxTemplStudioAgentsVectorStore', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
-('sys_studio_agents_vector_store', 'checkbox', '', '2%', 0, 0, '', '', 1),
-('sys_studio_agents_vector_store', 'switcher', '_sys_active', '8%', 0, 0, '', '', 2),
-('sys_studio_agents_vector_store', 'title', '_Title', '20%', 0, 0, '', '', 3),
-('sys_studio_agents_vector_store', 'type', '_adm_form_txt_fields_type', '10%', 0, 0, '', '', 5),
-('sys_studio_agents_vector_store', 'topk', '_sys_agents_vector_store_txt_topk', '10%', 0, 0, '', '', 6),
-('sys_studio_agents_vector_store', 'actions', '', '25%', 0, 0, '', '', 9);
+('sys_studio_agents_vector_store', 'switcher', '_sys_active', '10%', 0, 0, '', '', 10),
+('sys_studio_agents_vector_store', 'title', '_Title', '20%', 0, 0, '', '', 20),
+('sys_studio_agents_vector_store', 'type', '_adm_form_txt_fields_type', '10%', 0, 0, '', '', 30),
+('sys_studio_agents_vector_store', 'topk', '_sys_agents_vector_store_txt_topk', '5%', 0, 0, '', '', 40),
+('sys_studio_agents_vector_store', 'files_num', '_sys_agents_vector_store_txt_files_num', '5%', 0, 0, '', '', 50),
+('sys_studio_agents_vector_store', 'actions', '', '25%', 0, 0, '', '', 60);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
 ('sys_studio_agents_vector_store', 'single', 'add_data', '_sys_uploader_simple_attach_one_more_file', 'plus', 1, 0, 1, 10),
 ('sys_studio_agents_vector_store', 'single', 'files', '_adm_lmi_cpt_files', 'folder', 1, 0, 1, 20),
 ('sys_studio_agents_vector_store', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 1, 30),
 ('sys_studio_agents_vector_store', 'single', 'delete', '_Delete', 'remove', 1, 1, 1, 40),
-('sys_studio_agents_vector_store', 'single', 'duplicate', '_Duplicate', 'copy', 1, 1, 1, 50);
+('sys_studio_agents_vector_store', 'single', 'duplicate', '_Duplicate', 'copy', 1, 0, 1, 50);
 
 -- GRID: Agents Vector Store Data
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `responsive`, `show_total_count`, `override_class_name`, `override_class_file`) VALUES
-('sys_studio_agents_vector_store_data', 'Sql', 'SELECT * FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = ''{vector_store_id}'' ', 'sys_agents_vector_store_data', 'id', 'id', '', '', 10, NULL, 'start', '', 'name', '', 'like', '', '', 2147483647, 1, 1, 'BxTemplStudioAgentsVectorStoreData', '');
+('sys_studio_agents_vector_store_data', 'Sql', 'SELECT * FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = ''{vector_store_id}'' ', 'sys_agents_vector_store_data', 'id', 'id', '', '', 10, NULL, 'start', '', 'name', '', 'like', '', '', 128, 1, 1, 'BxTemplStudioAgentsVectorStoreData', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
 ('sys_studio_agents_vector_store_data', 'checkbox', '', '2%', 0, 0, '', '', 10),
@@ -6721,25 +6720,148 @@ CREATE TABLE `sys_api_origins` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `sys_agents_models` (
+CREATE TABLE `sys_agents_models` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL default '',
-  `title` varchar(64) NOT NULL default '',
-  `key` varchar(64) NOT NULL default '',
+  `type` varchar(64) NOT NULL,
+  `model` varchar(64) NOT NULL,
+  `title` varchar(64) NOT NULL DEFAULT '',
+  `docs` text NOT NULL,
+  `key` varchar(64) NOT NULL DEFAULT '',
   `params` text NOT NULL,
-  `for_asst` tinyint(4) NOT NULL DEFAULT '0',
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `hidden` tinyint(4) NOT NULL DEFAULT '0',
-  `added` int(11) unsigned NOT NULL DEFAULT '0',
-  `class_name` varchar(128) NOT NULL default '',
-  `class_file` varchar(255) NOT NULL  default '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name`(`name`)
+  `params_user` text DEFAULT NULL,
+  `capabilities` enum('chatllm','chatvlm','embeddings') NOT NULL DEFAULT 'chatllm',
+  `duplicate` tinyint(4) NOT NULL DEFAULT 1,
+  `active` tinyint(4) NOT NULL DEFAULT 1,
+  `changed` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 );
 
-INSERT INTO `sys_agents_models`(`name`, `title`, `key`, `params`, `for_asst`, `active`, `hidden`, `class_name`, `class_file`) VALUES
-('gpt-3.5-turbo', 'GPT-3.5-TURBO', '', '{"call":{"temperature":0.1}}', 0, 1, 0, 'BxDolAIModelGpt35', ''),
-('gpt-4o', 'GPT-4.O', '', '{"call":{},"assistants":{"event_init":"asst_HcEyaghqWZefkAyoEML40joY","event":"asst_wqaXtKjcsBKceMtJ2NxID2LT","scheduler_init":"asst_kEbDH1hUy2Y45nOKk9jaSTB8","scheduler":"asst_M6zOv4osQwZmRItaiYptjjOS","webhook_init":"asst_sSkOblPyXmYovS5IiEiVW17n","webhook":"asst_w7F3RiylJfdDEb9Eaa4RvO1q"}}', 1, 1, 0, 'BxDolAIModelGpt40', '');
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('anthropic', 'claude-sonnet-4-6', 'Anthropic', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'endpoint', 'AZURE_ENDPOINT',
+    'version', 'AZURE_API_VERSION'
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('azure-openai', 'gpt-5-mini', 'Azure OpenAI', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'baseUri', 'https://api.together.xyz/v1',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'url', 'OLLAMA_URL',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('ollama', '', 'Ollama', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('gemini', 'gemini-3-flash-preview', 'Gemini', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('mistral', 'mistral-medium-2508', 'Mistral', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'inferenceProvider', 'hf-inference/models',
+    'parameters', JSON_OBJECT(
+        'max_tokens', 500,
+        'temperature', 0.5
+    )
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('deepseek', 'deepseek-chat', 'Deepseek', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'parameters', JSON_OBJECT(),
+    'strict_response', FALSE
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'client', JSON_OBJECT(
+        'version', 'latest',
+        'region', 'us-east-1',
+        'credentials', JSON_OBJECT(
+            'key', '{key}',
+            'secret', 'AWS_BEDROCK_SECRET'
+        )
+    ),
+    'inferenceConfig', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('cohere', 'command-a-03-2025', 'Cohere', '', '', '', NULL, 'chatllm', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'url', 'http://localhost:11434/api',
+    'parameters', JSON_OBJECT()
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('ollama-embeddings', 'all-minilm', 'Ollama', 'With Ollama you can run embedding models locally. Documentation - https://ollama.com/blog/embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'dimensions', 1024
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('voyageai-embeddings', 'voyage-4-large', 'Voyage AI', 'Models - https://docs.voyageai.com/docs/embeddings, pricing - https://docs.voyageai.com/docs/embeddings', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'dimensions', 1024
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-embeddings', 'text-embedding-3-small', 'OpenAI', 'Models - https://developers.openai.com/api/docs/guides/embeddings#embedding-models', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'baseUri', 'PRODIDER_URL'
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('openai-like-embeddings', 'MODEL_NAME_HER', 'OpenAI Like Embeddings', 'Use any providers comaptible with OpenAI API format.', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
+
+SET @j = JSON_OBJECT(
+    'client', JSON_OBJECT(
+        'version', 'latest',
+        'region', 'us-east-1',
+        'credentials', JSON_OBJECT(
+            'key', '{key}',
+            'secret', 'AWS_BEDROCK_SECRET'
+        )
+    )
+);
+INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
+('aws-bedrock-embeddings', 'amazon.titan-embed-text-v2:0', 'Aws Bedrock', 'https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
+
 
 CREATE TABLE IF NOT EXISTS `sys_agents_automators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -6961,7 +7083,7 @@ CREATE TABLE IF NOT EXISTS `sys_agents_vector_store_data` (
   `metadata` text NOT NULL DEFAULT '',
   `settings` varchar(255) NOT NULL DEFAULT '',
   `content` longtext NOT NULL DEFAULT '',
-  `status` enum('pending', 'processing','ready') NOT NULL DEFAULT 'pending',
+  `status` enum('pending', 'processing','ready') NOT NULL DEFAULT 'pending',  
   `added` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 );
@@ -6973,6 +7095,7 @@ CREATE TABLE IF NOT EXISTS `sys_agents_vector_store` (
   `topk` tinyint(4) DEFAULT 4,
   `params` text DEFAULT NULL,
   `params_user` text DEFAULT NULL,
+  `duplicate` tinyint(4) NOT NULL DEFAULT 1,
   `changed` int(11) NOT NULL DEFAULT 0,
   `active` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -6982,16 +7105,16 @@ CREATE TABLE IF NOT EXISTS `sys_agents_vector_store` (
 SET @j = JSON_OBJECT(
     'folder', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('file', 'File', 4, CAST(@j AS CHAR), 0, 1);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('file', 'File', 4, CAST(@j AS CHAR), 0, 0, 1);
 
 -- 2. Pinecone
 SET @j = JSON_OBJECT(
     'key', 'PINECONE_API_KEY',
     'indexUrl', 'PINECONE_INDEX_URL'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('pinecone', 'Pinecone', 4, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('pinecone', 'Pinecone', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 3. Elasticsearch
 SET @j = JSON_OBJECT(
@@ -7001,8 +7124,8 @@ SET @j = JSON_OBJECT(
     ),
     'index', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('elasticsearch', 'Elasticsearch', 4, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('elasticsearch', 'Elasticsearch', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 4. Opensearch
 SET @j = JSON_OBJECT(
@@ -7011,8 +7134,8 @@ SET @j = JSON_OBJECT(
     ),
     'index', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('opensearch', 'Opensearch', 4, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('opensearch', 'Opensearch', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 5. Typesense
 SET @j = JSON_OBJECT(
@@ -7029,24 +7152,24 @@ SET @j = JSON_OBJECT(
     'collection', 'vectorstore',
     'vectorDimension', 1024
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('typesense', 'Typesense', 4, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('typesense', 'Typesense', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 6. Qdrant
 SET @j = JSON_OBJECT(
     'collectionUrl', 'http://localhost:6333/collections/neuron-ai/',
     'key', 'QDRANT_API_KEY'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('qdrant', 'Qdrant', 4, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('qdrant', 'Qdrant', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 7. ChromaDB
 SET @j = JSON_OBJECT(
     'collection', 'vectorstore',
     'host', 'http://localhost:8000'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('chromadb', 'ChromaDB', 5, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('chromadb', 'ChromaDB', 5, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 8. Meilisearch
 SET @j = JSON_OBJECT(
@@ -7055,8 +7178,8 @@ SET @j = JSON_OBJECT(
     'key', 'MEILISEARCH_API_KEY',
     'embedder', 'default'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, changed, active)
-VALUES ('meilisearch', 'Meilisearch', 5, CAST(@j AS CHAR), 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
+VALUES ('meilisearch', 'Meilisearch', 5, CAST(@j AS CHAR), 0, 0, 0);
 
 -- --------------------------------------------------------
 

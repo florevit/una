@@ -73,6 +73,14 @@ class BxDolAIQuery extends BxDolDb
         return $aAssistant;
     }
 
+    public function insertModel($aModel)
+    {
+        if(empty($aModel))
+            return false;
+
+        return (int)$this->query("INSERT INTO `sys_agents_models` SET " . $this->arrayToSQL($aModel));
+    }
+
     public function getModelsBy($aParams = [])
     {
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
@@ -94,23 +102,12 @@ class BxDolAIQuery extends BxDolDb
                 $aMethod['params'][2] = 'title';
                 $aMethod['params'][3] = [];
 
-                if(isset($aParams['for_asst'])) {
-                    $aMethod['params'][3]['for_asst'] = $aParams['for_asst'];
-
-                    $sWhereClause .= " AND `for_asst`=:for_asst";
-                }
-
                 if(isset($aParams['active'])) {
                     $aMethod['params'][3]['active'] = $aParams['active'];
 
                     $sWhereClause .= " AND `active`=:active";
                 }
 
-                if(isset($aParams['hidden'])) {
-                    $aMethod['params'][3]['hidden'] = $aParams['hidden'];
-
-                    $sWhereClause .= " AND `hidden`=:hidden";
-                }
                 break;
         }
 
@@ -801,6 +798,20 @@ class BxDolAIQuery extends BxDolDb
         return $this->getRow($sQuery, ['id' => $iId]); 
     }
 
+    public function insertVectorStore($aVectorStore)
+    {
+        if(empty($aVectorStore) || !is_array($aVectorStore))
+            return false;
+
+        return (int)$this->query("INSERT INTO `sys_agents_vector_store` SET " . $this->arrayToSQL($aVectorStore));
+    }
+
+    public function getVectorStoreDataNum (int $iVectorStoreId): int
+    {
+        $sQuery = "SELECT COUNT(*) FROM `sys_agents_vector_store_data` WHERE `vector_store_id` = :vector_store_id";
+        return (int)$this->getOne($sQuery, ['vector_store_id' => $iVectorStoreId]);
+    }
+
     public function addVectorStoreData (int $iVectorStoreId, string $sType, string $sName, int $iFileSize, string $sMetadata, string $sSettings, string $sContent): bool
     {
         $sQuery = "INSERT INTO `sys_agents_vector_store_data` SET  
@@ -824,6 +835,19 @@ class BxDolAIQuery extends BxDolDb
             'ts' => time()]) > 0;
     }
 
+    static public function getVectorStorePendingData (int $iLimit = 1): mixed
+    {
+        $oDb = BxDolDb::getInstance();
+        $sQuery = "SELECT * FROM `sys_agents_vector_store_data` ORDER BY `added` ASC LIMIT :limit";
+        return $oDb->getAll($sQuery, ['limit' => $iLimit]);
+    }
+
+    static public function updateVectorStoreDataStatus (int $iId, string $sStatus): mixed
+    {
+        $oDb = BxDolDb::getInstance();
+        $sQuery = "UPDATE `sys_agents_vector_store_data` SET `status` = :status WHERE `id` = :id";
+        return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
+    }
 }
 
 /** @} */
