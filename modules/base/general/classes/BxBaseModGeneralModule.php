@@ -4529,6 +4529,7 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($aRecipients))
             return;
 
+        $sModule = $this->_oConfig->getName();
         foreach($aRecipients as $iRecipientId)
             /**
              * @hooks
