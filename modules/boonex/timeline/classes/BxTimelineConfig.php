@@ -1088,13 +1088,38 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         return strpos($sType, $sPrefix) === false && !empty($sAction);
     }
 
-    public function getSystemData(&$aEvent, $aBrowseParams = array())
+    public function getSystemData(&$aEvent, $aBrowseParams = [])
     {
         $aHandler = $this->getHandler($aEvent);
         if($aHandler === false)
             return false;
 
-        return BxDolService::call($aHandler['module_name'], $aHandler['module_method'], array($aEvent, $aBrowseParams), $aHandler['module_class']);
+        $aData = bx_srv($aHandler['module_name'], $aHandler['module_method'], [$aEvent, $aBrowseParams], $aHandler['module_class']);
+
+        /**
+         * @hooks
+         * @hookdef hook-bx_timeline-get_system_data 'bx_timeline', 'get_system_data' - hook to override event's data received from content modules before output
+         * - $unit_name - equals `bx_timeline`
+         * - $action - equals `get_system_data`
+         * - $object_id - not used
+         * - $sender_id - not used
+         * - $extra_params - array of additional params with the following array keys:
+         *      - `module_name` - [string] content module name
+         *      - `module_method` - [string] content module method to get detailed data about the event
+         *      - `event` - [array] event data array as key&value pairs
+         *      - `browse_params` - [array] browse params array as key&value pairs
+         *      - `override_result` - [array] by ref, event's data as key&value pairs, can be overridden in hook processing
+         * @hook @ref hook-bx_timeline-get_post
+         */
+        bx_alert($this->getName(), 'get_system_data', 0, 0, [
+            'module_name' => $aHandler['module_name'],
+            'module_method' => $aHandler['module_method'],
+            'event' => $aEvent,
+            'browse_params' => $aBrowseParams,
+            'override_result' => &$aData
+        ]);
+
+        return $aData;
     }
 
     public function getSystemDataByDescriptor($sType, $sAction, $iObjectId)
