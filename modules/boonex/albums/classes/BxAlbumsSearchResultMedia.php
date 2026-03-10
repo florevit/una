@@ -82,6 +82,8 @@ class BxAlbumsSearchResultMedia extends BxBaseModTextSearchResult
             case 'album':
                 $iAlbumId = (int)$aParams['album_id'];
                 $this->aCurrent['restriction']['album']['value'] = $iAlbumId;
+                $this->aCurrent['restriction']['status']['value'] = '';
+                $this->aCurrent['restriction']['statusAdmin']['value'] = '';
                 $this->sBrowseUrl = BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $iAlbumId);
                 $this->aCurrent['title'] = _t('_bx_albums_page_title_browse_media_in_album');
                 $this->aCurrent['rss']['link'] = 'modules/?r=albums/rss_media/' . $sMode . '/' . $iAlbumId;
