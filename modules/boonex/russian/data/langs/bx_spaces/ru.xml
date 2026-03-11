@@ -42,7 +42,7 @@
     <string name="_bx_spaces_form_profile_input_initial_members"><![CDATA[Пригласить участников]]></string>
     <string name="_bx_spaces_form_profile_input_sys_space_name"><![CDATA[Название пространства]]></string>
     <string name="_bx_spaces_form_profile_input_space_name"><![CDATA[Название пространства]]></string>
-    <string name="_bx_spaces_form_profile_input_space_name_err"><![CDATA[Эта информация необходима. Пожалуйста, заполните это поле.]]></string>
+    <string name="_bx_spaces_form_profile_input_space_name_err"><![CDATA[Название обязательно, мин. 3 макс. 160.]]></string>
     <string name="_bx_spaces_form_profile_input_sys_space_desc"><![CDATA[Описание]]></string>
     <string name="_bx_spaces_form_profile_input_space_desc"><![CDATA[Описание]]></string>
     <string name="_bx_spaces_form_profile_input_sys_space_cat"><![CDATA[Категория]]></string>
