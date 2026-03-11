@@ -38,7 +38,7 @@
     <string name="_bx_jobs_form_profile_input_initial_members"><![CDATA[Пригласить участников]]></string>
     <string name="_bx_jobs_form_profile_input_sys_name"><![CDATA[Название задания]]></string>
     <string name="_bx_jobs_form_profile_input_name"><![CDATA[Название задания]]></string>
-    <string name="_bx_jobs_form_profile_input_name_err"><![CDATA[Поле должно содержать от 1 до 80 символов.]]></string>
+    <string name="_bx_jobs_form_profile_input_name_err"><![CDATA[Название обязательно, мин. 3 макс. 160.]]></string>
     <string name="_bx_jobs_form_profile_input_sys_desc"><![CDATA[Описание]]></string>
     <string name="_bx_jobs_form_profile_input_desc"><![CDATA[Описание]]></string>
     <string name="_bx_jobs_form_profile_input_sys_cat"><![CDATA[Категория]]></string>

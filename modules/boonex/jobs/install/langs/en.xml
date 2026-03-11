@@ -38,7 +38,7 @@
     <string name="_bx_jobs_form_profile_input_initial_members"><![CDATA[Invite Assignees]]></string>
     <string name="_bx_jobs_form_profile_input_sys_name"><![CDATA[Job Name]]></string>
     <string name="_bx_jobs_form_profile_input_name"><![CDATA[Job Name]]></string>
-    <string name="_bx_jobs_form_profile_input_name_err"><![CDATA[Field must contain 1 - 80 characters.]]></string>
+    <string name="_bx_jobs_form_profile_input_name_err"><![CDATA[Name is essential min 3 max 160.]]></string>
     <string name="_bx_jobs_form_profile_input_sys_desc"><![CDATA[Description]]></string>
     <string name="_bx_jobs_form_profile_input_desc"><![CDATA[Description]]></string>
     <string name="_bx_jobs_form_profile_input_sys_cat"><![CDATA[Category]]></string>
