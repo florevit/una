@@ -11,7 +11,7 @@ class BxDolCronAgentsVectorStore extends BxDolCron
 {
     public function processing()
     {
-        // TODO:
+        BxBaseStudioAgentsVectorStoreData::processPendingData();
     }
 }
 
