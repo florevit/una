@@ -55,11 +55,11 @@
     <string name="_bx_jobs_form_profile_input_delete_confirm_error"><![CDATA[Please check this checkbox if you really want to delete job.]]></string>
     <string name="_bx_jobs_form_profile_input_sys_date_start"><![CDATA[Date start]]></string>
     <string name="_bx_jobs_form_profile_input_date_start"><![CDATA[Date start]]></string>
-    <string name="_bx_jobs_form_profile_input_date_start_err"><![CDATA[Start date is mandatory]]></string>
+    <string name="_bx_jobs_form_profile_input_date_start_err"><![CDATA[Leave empty or enter a correct future date.]]></string>
     <string name="_bx_jobs_form_profile_input_sys_date_end"><![CDATA[Date end]]></string>
     <string name="_bx_jobs_form_profile_input_date_end"><![CDATA[Date end]]></string>    
-    <string name="_bx_jobs_form_profile_input_date_end_err"><![CDATA[End date is mandatory]]></string>
-    <string name="_bx_jobs_form_profile_input_date_end_invalid_err"><![CDATA[End date must be greater than start date]]></string>
+    <string name="_bx_jobs_form_profile_input_date_end_err"><![CDATA[Leave empty or enter a correct future date.]]></string>
+    <string name="_bx_jobs_form_profile_input_date_end_invalid_err"><![CDATA[End date must be greater than start date.]]></string>
     <string name="_bx_jobs_form_profile_input_sys_timezone"><![CDATA[Timezone]]></string>
     <string name="_bx_jobs_form_profile_input_timezone"><![CDATA[Timezone]]></string>
     <string name="_bx_jobs_form_profile_input_sys_time"><![CDATA[Time]]></string>

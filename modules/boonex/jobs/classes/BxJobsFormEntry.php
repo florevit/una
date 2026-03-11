@@ -9,6 +9,14 @@
  * @{
  */
 
+class BxJobsFormEntryCheckerHelper extends BxDolFormCheckerHelper
+{
+    static public function checkDateTimeEmptyOrValid ($s)
+    {
+        return empty($s) || (self::checkDateTime($s) && strtotime($s) > time());
+    }
+}
+
 /**
  * Create/Edit Group Form.
  */

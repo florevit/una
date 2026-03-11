@@ -373,7 +373,7 @@ INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_par
 
 -- FORMS
 INSERT INTO `sys_objects_form`(`object`, `module`, `title`, `action`, `form_attrs`, `table`, `key`, `uri`, `uri_title`, `submit_name`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
-('bx_job', 'bx_jobs', '_bx_jobs_form_profile', '', 'a:1:{s:7:\"enctype\";s:19:\"multipart/form-data\";}', 'bx_jobs_data', 'id', '', '', 'do_submit', '', 0, 1, 'BxJobsFormEntry', 'modules/boonex/jobs/classes/BxJobsFormEntry.php');
+('bx_job', 'bx_jobs', '_bx_jobs_form_profile', '', 'a:1:{s:7:\"enctype\";s:19:\"multipart/form-data\";}', 'bx_jobs_data', 'id', '', '', 'do_submit', 'a:1:{s:14:"checker_helper";s:28:"BxJobsFormEntryCheckerHelper";}', 0, 1, 'BxJobsFormEntry', 'modules/boonex/jobs/classes/BxJobsFormEntry.php');
 
 INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`, `title`) VALUES 
 ('bx_job', 'bx_job_add', 'bx_jobs', 0, '_bx_jobs_form_profile_display_add'),
@@ -388,8 +388,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_job', 'bx_jobs', 'cf', '1', '#!sys_content_filter', 0, 'select', '_sys_form_entry_input_sys_cf', '_sys_form_entry_input_cf', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_job', 'bx_jobs', 'allow_view_to', 3, '', 0, 'custom', '_bx_jobs_form_profile_input_sys_allow_view_to', '_bx_jobs_form_profile_input_allow_view_to', '_bx_jobs_form_profile_input_allow_view_to_desc', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_job', 'bx_jobs', 'allow_post_to', 3, '', 0, 'custom', '_bx_jobs_form_profile_input_sys_allow_post_to', '_bx_jobs_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_job', 'bx_jobs', 'date_start', 0, '', 0, 'datetime', '_bx_jobs_form_profile_input_sys_date_start', '_bx_jobs_form_profile_input_date_start', '', 0, 0, 0, '', '', '', '', '', '_bx_jobs_form_profile_input_date_start_err', 'DateTimeUtc', '', 1, 0),
-('bx_job', 'bx_jobs', 'date_end', 0, '', 0, 'datetime', '_bx_jobs_form_profile_input_sys_date_end', '_bx_jobs_form_profile_input_date_end', '', 0, 0, 0, '', '', '', '', '', '_bx_jobs_form_profile_input_date_end_err', 'DateTimeUtc', '', 1, 0),
+('bx_job', 'bx_jobs', 'date_start', 0, '', 0, 'datetime', '_bx_jobs_form_profile_input_sys_date_start', '_bx_jobs_form_profile_input_date_start', '', 0, 0, 0, '', '', '', 'DateTimeEmptyOrValid', '', '_bx_jobs_form_profile_input_date_start_err', 'DateTimeUtc', '', 1, 0),
+('bx_job', 'bx_jobs', 'date_end', 0, '', 0, 'datetime', '_bx_jobs_form_profile_input_sys_date_end', '_bx_jobs_form_profile_input_date_end', '', 0, 0, 0, '', '', '', 'DateTimeEmptyOrValid', '', '_bx_jobs_form_profile_input_date_end_err', 'DateTimeUtc', '', 1, 0),
 ('bx_job', 'bx_jobs', 'pay_hourly', '', '', 0, 'price', '_bx_jobs_form_profile_input_sys_pay_hourly', '_bx_jobs_form_profile_input_pay_hourly', '', 0, 0, 0, '', '', '', '', '', '', 'Float', '', 1, 0),
 ('bx_job', 'bx_jobs', 'pay_total', '', '', 0, 'price', '_bx_jobs_form_profile_input_sys_pay_total', '_bx_jobs_form_profile_input_pay_total', '', 0, 0, 0, '', '', '', '', '', '', 'Float', '', 1, 0),
 ('bx_job', 'bx_jobs', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_jobs_form_profile_input_sys_delete_confirm', '_bx_jobs_form_profile_input_delete_confirm', '_bx_jobs_form_profile_input_delete_confirm_info', 1, 0, 0, '', '', '', 'avail', '', '_bx_jobs_form_profile_input_delete_confirm_error', '', '', 1, 0),
