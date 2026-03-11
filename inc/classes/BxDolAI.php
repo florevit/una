@@ -151,11 +151,80 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
 
         switch($a['type']) {
-            // TODO: add more vector store types
             case 'file':
                 $o = new NeuronAI\RAG\VectorStore\FileVectorStore(
                     directory: BX_DIRECTORY_STORAGE . 'vector_stores/' . $iId,
-                    topK: $a['topk'],
+                    topK: $a['topk'] ?? 4
+                );
+                break;
+            case 'pinecon':
+                $o = new NeuronAI\RAG\VectorStore\PineconeVectorStore(
+                    key: $a['key'],
+                    indexUrl: $a['indexUrl'],
+                    topK: $a['topk'] ?? 4,
+                    version: $a['version'] ?? '2025-04',
+                    namespace: $a['namespace'] ?? '__default__'
+                );
+                break;
+            case 'elasticsearch':
+                $oClient = Elastic\Elasticsearch\ClientBuilder::create()
+                    ->setHosts([$a['client_params']['endpoint']])
+                    ->setApiKey($a['client_params']['key'])
+                    ->build();
+                
+                $o = new NeuronAI\RAG\VectorStore\ElasticsearchVectorStore(
+                    client: $oClient,
+                    index: $a['index'],
+                    topK: $a['topk'] ?? 4
+                );
+                break;
+            case 'opensearch':
+                $oClient = (new OpenSearch\GuzzleClientFactory())->create([
+                    'base_uri' => $a['client_params']['endpoint'] ?? 'http://localhost:9200',
+                ]);
+        
+                $o = NeuronAI\RAG\VectorStore\OpenSearchVectorStore(
+                    client: $oClient,
+                    index: $a['index'],
+                    topK: $a['topk'] ?? 4,
+                );
+                break;
+            case 'typesense':
+                $oClient = new \Typesense\Client($a['client_params']);
+
+                $o = new NeuronAI\RAG\VectorStore\TypesenseVectorStore(
+                    client: $oClient,
+                    collection: $a['collection'],
+                    vectorDimension: $a['vectorDimension'] ?? 1024,
+                    topK: $a['topk'] ?? 4,
+                );
+                break;
+            case 'qdrant':
+                $o = new NeuronAI\RAG\VectorStore\QdrantVectorStore(
+                    collectionUrl: $a['collectionUrl'],
+                    key: $a['key'],
+                    topK: $a['topk'] ?? 4,
+                    dimension: $a['dimension'] ?? 1024
+                );
+                break;
+            case 'chromadb':
+                $o = new NeuronAI\RAG\VectorStore\ChromaVectorStore(
+                    collection: $a['collection'],
+                    host: $a['host'] ?? 'http://localhost:8000',
+                    tenant: $a['tenant'] ?? 'default_tenant',
+                    database: $a['database'] ?? 'default_database',
+                    key: $a['key'] ?? null,
+                    topK: $a['topk'] ?? 4
+                );
+                break;
+            case 'meilisearch':
+                $o = new NeuronAI\RAG\VectorStore\MeilisearchVectorStore(
+                    indexUid: $a['indexUid'],
+                    host: $a['host'] ?? 'http://localhost:8000',
+                    key: $a['key'] ?? null,
+                    embedder: $a['embedder'] ?? 'default',
+                    topK: $a['topk'] ?? 4,
+                    dimension: $a['dimension'] ?? 1024
                 );
                 break;
             default:
