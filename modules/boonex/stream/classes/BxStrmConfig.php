@@ -36,7 +36,6 @@ class BxStrmConfig extends BxBaseModTextConfig
             'FIELD_AUTHOR' => 'author',
             'FIELD_ADDED' => 'added',
             'FIELD_CHANGED' => 'changed',
-            'FIELD_PUBLISHED' => 'published',
             'FIELD_TITLE' => 'title',
             'FIELD_TEXT' => 'text',
             'FIELD_TEXT_ID' => 'stream-text',

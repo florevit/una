@@ -21,11 +21,10 @@ class BxStrmModule extends BxBaseModTextModule
         parent::__construct($aModule);
 
         $CNF = &$this->_oConfig->CNF;
-        $this->_aSearchableNamesExcept = array_merge($this->_aSearchableNamesExcept, array(
-            $CNF['FIELD_PUBLISHED'],
+        $this->_aSearchableNamesExcept = array_merge($this->_aSearchableNamesExcept, [
             $CNF['FIELD_ANONYMOUS'],
             $CNF['FIELD_ALLOW_COMMENTS']
-        ));
+        ]);
     }
 
     public function getStreamEngine ()
@@ -207,24 +206,6 @@ class BxStrmModule extends BxBaseModTextModule
 
         $oForm = new BxTemplFormView ($aForm);
         return $oForm->getCode();
-    }
-
-    /**
-     * Entry post for Timeline module
-     */
-    public function serviceGetTimelinePost($aEvent, $aBrowseParams = array())
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        $aResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
-        if(empty($aResult) || !is_array($aResult) || empty($aResult['date']))
-            return $aResult;
-
-        $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
-        if($aContentInfo[$CNF['FIELD_PUBLISHED']] > $aResult['date'])
-            $aResult['date'] = $aContentInfo[$CNF['FIELD_PUBLISHED']];
-
-        return $aResult;
     }
 
     public function serviceCheckAllowedCommentsPost($iContentId, $sObjectComments) 
