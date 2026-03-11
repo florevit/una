@@ -1472,36 +1472,31 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         $CNF = &$this->_oConfig->CNF;
         $sModule = $this->_aModule['name'];
 
-        $aAlerts = array();
-        $aHandlers = array();
+        $aResult = parent::serviceGetTimelineData();
+
         if(!empty($CNF['FIELD_PICTURE'])) {
-            $aAlerts = array_merge($aAlerts, array(
-                array('unit' => $sModule, 'action' => 'profile_picture_changed'),
-                array('unit' => $sModule, 'action' => 'profile_picture_deleted')
-            ));
-            $aHandlers = array_merge($aHandlers, array(
-                array('group' => $sModule . '_profile_picture', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'profile_picture_changed', 'module_name' => $sModule, 'module_method' => 'get_timeline_profile_picture', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
-                array('group' => $sModule . '_profile_picture', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'profile_picture_deleted')
-            ));
+            $aResult['handlers'] = array_merge($aResult['handlers'], [
+                ['group' => $sModule . '_profile_picture', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'profile_picture_changed', 'module_name' => $sModule, 'module_method' => 'get_timeline_profile_picture', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''],
+                ['group' => $sModule . '_profile_picture', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'profile_picture_deleted']
+            ]);
+
+            $aResult['alerts'] = array_merge($aResult['alerts'], [
+                ['unit' => $sModule, 'action' => 'profile_picture_changed'],
+                ['unit' => $sModule, 'action' => 'profile_picture_deleted']
+            ]);
         }
 
         if(!empty($CNF['FIELD_COVER'])) {
-            $aAlerts = array_merge($aAlerts, array(
-                array('unit' => $sModule, 'action' => 'profile_cover_changed'),
-                array('unit' => $sModule, 'action' => 'profile_cover_deleted')
-            ));
-            $aHandlers = array_merge($aHandlers, array(
-                array('group' => $sModule . '_profile_cover', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'profile_cover_changed', 'module_name' => $sModule, 'module_method' => 'get_timeline_profile_cover', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
-                array('group' => $sModule . '_profile_cover', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'profile_cover_deleted')
-            ));
-        }
+            $aResult['handlers'] = array_merge($aResult['handlers'], [
+                ['group' => $sModule . '_profile_cover', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'profile_cover_changed', 'module_name' => $sModule, 'module_method' => 'get_timeline_profile_cover', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''],
+                ['group' => $sModule . '_profile_cover', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'profile_cover_deleted']
+            ]);
 
-    	$aResult = array();
-        if(!empty($aAlerts) && !empty($aHandlers))
-            $aResult = array(
-            	'handlers' => $aHandlers,
-            	'alerts' => $aAlerts
-            );
+            $aResult['alerts'] = array_merge($aResult['alerts'], [
+                ['unit' => $sModule, 'action' => 'profile_cover_changed'],
+                ['unit' => $sModule, 'action' => 'profile_cover_deleted']
+            ]);
+        }
 
         return $aResult;
     }
@@ -2532,8 +2527,6 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
             $aResult['meta'] = $oMetaMenu->getCodeAPI();
         }
 
-        $this->decodeDataAPICommonFields($aResult, $aData, $aParams);
-        
         return $aResult;
     }
 
