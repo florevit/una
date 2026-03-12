@@ -103,12 +103,20 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
 
+        // replace markers {key} {model} in $aParameters recoursively
+        $aParameters = bx_replace_markers($aParameters, [
+            'key' => $a['key'],
+            'model' => $a['model']
+        ]);
+
         switch($a['type']) {
-            // TODO: add more providers
+            // regular AI providers ------------------------
             case 'anthropic':
                 $o = new NeuronAI\Providers\Anthropic\Anthropic(
                     key: $a['key'],
                     model: $a['model'],
+                    version: $aParameters['version'] ?? '2023-06-01',
+                    max_tokens: $aParameters['max_tokens'] ?? 8192,
                     parameters: $aParameters['parameters'] ?? [],
                 );
                 break;
@@ -117,9 +125,95 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
                     key: $a['key'],
                     model: $a['model'],
                     parameters: $aParameters['parameters'] ?? [],
-                    strict_response: false
+                    strict_response: $aParameters['strict_response'] ?? false,
                 );
                 break;
+            case 'azure-openai':
+                $o = new NeuronAI\Providers\OpenAI\AzureOpenAI(
+                    key: $a['key'],
+                    model: $a['model'],
+                    endpoint: $aParameters['endpoint'],
+                    version: $aParameters['version'],
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'openai-like':
+                $o = new NeuronAI\Providers\OpenAILike(
+                    baseUri: $aParameters['baseUri'],
+                    key: $a['key'],
+                    model: $a['model'],                    
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'ollama':
+                $o = new NeuronAI\Providers\Ollama\Ollama(
+                    url: $aParameters['url'] ?? 'http://localhost:11434/api',
+                    model: $a['model'],                    
+                    parameters: $aParameters['parameters'] ?? [],
+                );
+                break;
+            case 'gemini':
+                $o = new NeuronAI\Providers\Gemini\Gemini(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                );
+                break;
+            case 'mistral':
+                $o = new NeuronAI\Providers\Mistral\Mistral(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'huggingface':
+                $o = new NeuronAI\Providers\HuggingFace\HuggingFace(
+                    key: $a['key'],
+                    model: $a['model'],
+                    inferenceProvider: $aParameters['inferenceProvider'] ?? 'hf-inference/models', // cohere, groq, etc - https://github.com/neuron-core/neuron-ai/blob/3.x/src/Providers/HuggingFace/InferenceProvider.php
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'deepseek':
+                $o = new NeuronAI\Providers\DeepSeek\DeepSeek(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'grok':
+                $o = new NeuronAI\Providers\XAI\Grok(
+                    key: $a['key'],
+                    model: $a['model'],
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+            case 'aws-bedrock':
+                $oClient = new Aws\BedrockRuntime\BedrockRuntimeClient($aParameters['client_params']);
+
+                $o = new NeuronAI\Providers\AWS\BedrockRuntime(
+                    client: $oClient,
+                    model: $a['model'],
+                    inferenceConfig: $aParameters['inferenceConfig'] ?? [],
+                );
+                break;
+            case 'cohere':
+                $o = new NeuronAI\Providers\Cohere\Cohere(
+                    key: $a['key'],
+                    model: $a['model'],
+                    baseUri: $aParameters['baseUri'] ?? 'https://api.cohere.ai/v2',
+                    parameters: $aParameters['parameters'] ?? [],
+                    strict_response: $aParameters['strict_response'] ?? false,
+                );
+                break;
+
+            // embeddings models ------------------------
             case 'openai-embeddings':
                 $o = new NeuronAI\RAG\Embeddings\OpenAIEmbeddingsProvider(
                     key: $a['key'],
@@ -150,6 +244,12 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
 
+        // replace marker {topk} in $aParameters recoursively
+        $aParameters = bx_replace_markers($aParameters, [
+            'topk' => $a['topk'],
+        ]);
+        
+        // TODO: fix params
         switch($a['type']) {
             case 'file':
                 $o = new NeuronAI\RAG\VectorStore\FileVectorStore(

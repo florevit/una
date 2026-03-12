@@ -6808,7 +6808,7 @@ INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `param
 ('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
-    'client', JSON_OBJECT(
+    'client_params', JSON_OBJECT(
         'version', 'latest',
         'region', 'us-east-1',
         'credentials', JSON_OBJECT(
