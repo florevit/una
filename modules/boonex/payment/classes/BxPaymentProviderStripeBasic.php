@@ -149,8 +149,8 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
 
     public function getMenuItemsActionsRecurring($iClientId, $iVendorId, $aParams = array())
     {
-        if(empty($aParams['order']))
-            return array();
+        if($this->_bIsApi || empty($aParams['order']))
+            return [];
 
         $sJsObject = $this->_oModule->_oConfig->getJsObject(BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION);
 

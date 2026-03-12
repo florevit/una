@@ -317,9 +317,7 @@ class BxBaseMenu extends BxDolMenu
 
         if ($this->_bIsApi) {
             list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->_getMenuIcon($a);
-if($this->_sObject == 'sys_site') {
-    var_dump($a); exit;
-}
+
             $aResult = [
                 'id' => $a['id'],
                 'name' => $a['name'],
@@ -336,6 +334,12 @@ if($this->_sObject == 'sys_site') {
                 'primary' => isset($a['primary']) ? $a['primary'] : 0,
                 'persistent' => isset($a['persistent']) ? $a['persistent'] : 0,
             ];
+            
+            if(!empty($a['onclick']))
+                $aResult = array_merge($aResult, [
+                    'display_type' => 'callback',
+                    'data' => $this->_getMenuCallbackDataAPI($a)
+                ]);
 
             $this->_updateVisibilityParamsAPI($aResult);
 
@@ -522,6 +526,11 @@ if($this->_sObject == 'sys_site') {
     protected function _getMenuTitle($a)
     {
         return bx_html_attribute(strip_tags(!empty($a['title_attr']) && ($sTitleAttr = _t($a['title_attr'])) ? $sTitleAttr : $a['title']));
+    }
+
+    protected function _getMenuCallbackDataAPI($a)
+    {
+        return [];
     }
 
     public function getMenuIconHtml($sIcon)

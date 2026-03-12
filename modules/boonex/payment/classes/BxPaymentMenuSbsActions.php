@@ -14,7 +14,9 @@ class BxPaymentMenuSbsActions extends BxTemplMenu
 {
     protected $_sModule;
     protected $_oModule;
-    
+
+    protected $_iPendingId;
+
     public function __construct($aObject, $oTemplate = false)
     {
         $this->_sModule = 'bx_payment';
@@ -22,31 +24,43 @@ class BxPaymentMenuSbsActions extends BxTemplMenu
 
         parent::__construct($aObject, $oTemplate);
 
-        $iPendingId = bx_process_input(bx_get('id'), BX_DATA_INT);
-        if(empty($iPendingId))
-            return;
+        if(($iPendingId = bx_get('id')) !== false && ($iPendingId = bx_process_input($iPendingId, BX_DATA_INT)))
+            $this->setPendingId($iPendingId);
+    }
 
-        $aPending = $this->_oModule->_oDb->getOrderPending(array('type' => 'id', 'id' => $iPendingId));
+    public function setContentParams($aParams)
+    {
+        parent::setContentParams($aParams);
+
+        if(($iPendingId = $aParams['pending_id'] ?? false))
+            $this->setPendingId($iPendingId);
+    }
+
+    public function setPendingId($iPendingId)
+    {
+        $this->_iPendingId = $iPendingId;
+
+        $aPending = $this->_oModule->_oDb->getOrderPending(['type' => 'id', 'id' => $this->_iPendingId]);
         if(empty($aPending) || !is_array($aPending))
             return;
 
         $sMethod = 'getMenuItemsActionsRecurring';
         $oProvider = $this->_oModule->getObjectProvider($aPending['provider'], $aPending['seller_id']);
         if($oProvider === false || !$oProvider->isActive() || !method_exists($oProvider, $sMethod))
-        	return;
+            return;
 
-        $this->_aObject['menu_items'] = array_merge($oProvider->$sMethod($aPending['client_id'], $aPending['seller_id'], array(
-        	'id' => $aPending['id'],
+        $this->_aObject['menu_items'] = array_merge($oProvider->$sMethod($aPending['client_id'], $aPending['seller_id'], [
+            'id' => $aPending['id'],
             'order' => $aPending['order']
-        )), $this->getMenuItemsRaw());
+        ]), $this->getMenuItemsRaw());
 
-        $aMarkers = array(
-			'js_object' => $this->_oModule->_oConfig->getJsObject('subscription'),
-            'id' => $iPendingId
-		);
+        $aMarkers = [
+            'js_object' => $this->_oModule->_oConfig->getJsObject('subscription'),
+            'id' => $this->_iPendingId
+        ];
 
-		if(bx_get('grid') !== false)
-		    $aMarkers['grid'] = bx_process_input(bx_get('grid'));
+        if(($sGrid = bx_get('grid')) !== false)
+            $aMarkers['grid'] = bx_process_input($sGrid);
 
         $this->addMarkers($aMarkers);
     }
@@ -57,6 +71,22 @@ class BxPaymentMenuSbsActions extends BxTemplMenu
             return MsgBox(_t('_Empty'));
 
         return parent::getCode();
+    }
+
+    protected function _getMenuCallbackDataAPI($a)
+    {
+        $aResult = [];
+
+        switch($a['name']) {
+            case 'sbs-cancel':
+                $aResult = [
+                    'request_url' => $this->_sModule . '/cancel_by_pending_id/subscriptions&params[]=' . $this->_iPendingId . '&params[]=1', 
+                    'on_callback' => 'hide'
+                ];
+                break;
+        }
+
+        return $aResult;
     }
 }
 

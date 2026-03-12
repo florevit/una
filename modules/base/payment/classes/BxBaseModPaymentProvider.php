@@ -18,6 +18,8 @@ interface iBxBaseModPaymentProvider
 
 class BxBaseModPaymentProvider extends BxDol
 {
+    protected $_bIsApi;
+
     protected $MODULE;
     protected $_oModule;
 
@@ -46,6 +48,8 @@ class BxBaseModPaymentProvider extends BxDol
     public function __construct($aConfig)
     {
         parent::__construct();
+
+        $this->_bIsApi = bx_is_api();
 
         $this->_oModule = BxDolModule::getInstance($this->MODULE);
 
