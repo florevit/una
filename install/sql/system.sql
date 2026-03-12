@@ -6768,7 +6768,7 @@ SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('ollama', '', 'Ollama', 'Run AI models locaaly - https://ollama.com/library', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('ollama', '', 'Ollama', 'Run AI models locally - https://ollama.com/library', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
@@ -7107,16 +7107,16 @@ CREATE TABLE IF NOT EXISTS `sys_agents_vector_store` (
 SET @j = JSON_OBJECT(
     'folder', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('file', 'File', 4, CAST(@j AS CHAR), 0, 0, 1);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('file', 'File', 'Local low volume embeddings storage', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 2. Pinecone
 SET @j = JSON_OBJECT(
     'key', 'PINECONE_API_KEY',
     'indexUrl', 'PINECONE_INDEX_URL'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('pinecone', 'Pinecone', 4, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('pinecone', 'Pinecone', 'https://www.pinecone.io/', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 3. Elasticsearch
 SET @j = JSON_OBJECT(
@@ -7126,8 +7126,8 @@ SET @j = JSON_OBJECT(
     ),
     'index', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('elasticsearch', 'Elasticsearch', 4, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('elasticsearch', 'Elasticsearch', 'https://www.elastic.co/elasticsearch/vector-database', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 4. Opensearch
 SET @j = JSON_OBJECT(
@@ -7136,8 +7136,8 @@ SET @j = JSON_OBJECT(
     ),
     'index', 'vectorstore'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('opensearch', 'Opensearch', 4, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('opensearch', 'Opensearch', 'Free open source fork of Elasticsearch - https://opensearch.org/', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 5. Typesense
 SET @j = JSON_OBJECT(
@@ -7154,24 +7154,24 @@ SET @j = JSON_OBJECT(
     'collection', 'vectorstore',
     'vectorDimension', 1024
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('typesense', 'Typesense', 4, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('typesense', 'Typesense', 'https://typesense.org/', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 6. Qdrant
 SET @j = JSON_OBJECT(
     'collectionUrl', 'http://localhost:6333/collections/neuron-ai/',
     'key', 'QDRANT_API_KEY'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('qdrant', 'Qdrant', 4, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('qdrant', 'Qdrant', 'https://qdrant.tech/', 4, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 7. ChromaDB
 SET @j = JSON_OBJECT(
     'collection', 'vectorstore',
     'host', 'http://localhost:8000'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('chromadb', 'ChromaDB', 5, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('chromadb', 'ChromaDB', 'https://www.trychroma.com/products/chromadb', 5, CAST(@j AS CHAR), 0, 0, 0);
 
 -- 8. Meilisearch
 SET @j = JSON_OBJECT(
@@ -7180,8 +7180,8 @@ SET @j = JSON_OBJECT(
     'key', 'MEILISEARCH_API_KEY',
     'embedder', 'default'
 );
-INSERT INTO sys_agents_vector_store (type, title, topk, params, duplicate, changed, active)
-VALUES ('meilisearch', 'Meilisearch', 5, CAST(@j AS CHAR), 0, 0, 0);
+INSERT INTO sys_agents_vector_store (type, title, docs, topk, params, duplicate, changed, active)
+VALUES ('meilisearch', 'Meilisearch', 'https://www.meilisearch.com/', 5, CAST(@j AS CHAR), 0, 0, 0);
 
 -- --------------------------------------------------------
 
