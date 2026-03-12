@@ -214,11 +214,40 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
                 break;
 
             // embeddings models ------------------------
+            case 'ollama-embeddings':
+                $o = new NeuronAI\RAG\Embeddings\OllamaEmbeddingsProvider(
+                    model: $a['model'],
+                    url: $aParameters['url'] ?? 'http://localhost:11434/api',
+                    parameters: $aParameters['parameters'] ?? [],
+                );
+                break;
+            case 'voyageai-embeddings':
+                $o = new NeuronAI\RAG\Embeddings\VoyageEmbeddingsProvider(
+                    key: $a['key'],
+                    model: $a['model'],
+                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : null
+                );
+                break;
             case 'openai-embeddings':
                 $o = new NeuronAI\RAG\Embeddings\OpenAIEmbeddingsProvider(
                     key: $a['key'],
                     model: $a['model'],
                     dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : 1024
+                );
+                break;
+            case 'openai-like-embeddings':
+                $o = new NeuronAI\RAG\Embeddings\OpenAILikeEmbeddings(
+                    baseUri: $aParameters['baseUri'],
+                    key: $a['key'],
+                    model: $a['model'],                    
+                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : 1024
+                );
+                break;
+            case 'aws-bedrock-embeddings':
+                $oClient = new Aws\BedrockRuntime\BedrockRuntimeClient($aParameters['client_params']);
+                $o = new NeuronAI\RAG\Embeddings\AwsBedrockEmbeddingsProvider(
+                    client: $oClient,
+                    model: $a['model']
                 );
                 break;
             default:

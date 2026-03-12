@@ -6740,48 +6740,48 @@ SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('anthropic', 'claude-sonnet-4-6', 'Anthropic', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('anthropic', 'claude-sonnet-4-6', 'Anthropic', 'https://platform.claude.com/docs/en/about-claude/models/overview', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('openai-responses', 'gpt-5-mini', 'OpenAI (Responses)', 'https://developers.openai.com/api/docs/models', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'endpoint', 'AZURE_ENDPOINT',
     'version', 'AZURE_API_VERSION'
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('azure-openai', 'gpt-5-mini', 'Azure OpenAI', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('azure-openai', 'gpt-5-mini', 'Azure OpenAI', 'https://ai.azure.com/catalog/publishers/openai', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'baseUri', 'https://api.together.xyz/v1',
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', 'Use any provider with the same data format like official OpenAI API', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'url', 'OLLAMA_URL',
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('ollama', '', 'Ollama', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('ollama', '', 'Ollama', 'Run AI models locaaly - https://ollama.com/library', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('gemini', 'gemini-3-flash-preview', 'Gemini', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('gemini', 'gemini-3-flash-preview', 'Gemini', 'https://ai.google.dev/gemini-api/docs/models', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('mistral', 'mistral-medium-2508', 'Mistral', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('mistral', 'mistral-medium-2508', 'Mistral', 'https://docs.mistral.ai/getting-started/models', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'inferenceProvider', 'hf-inference/models',
@@ -6791,21 +6791,21 @@ SET @j = JSON_OBJECT(
     )
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('huggingface', 'mistralai/Mistral-7B-Instruct-v0.3', 'HuggingFace', 'https://huggingface.co/models?pipeline_tag=text-generation', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('deepseek', 'deepseek-chat', 'Deepseek', '', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('deepseek', 'deepseek-chat', 'Deepseek', 'https://api-docs.deepseek.com/quick_start/pricing', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT(),
     'strict_response', FALSE
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('grok', 'grok-4-1-fast-reasoning', 'Grok (X-AI)', 'https://docs.x.ai/developers/models', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'client_params', JSON_OBJECT(
@@ -6819,10 +6819,10 @@ SET @j = JSON_OBJECT(
     'inferenceConfig', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', '', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
+('aws-bedrock', 'google.gemma-3-12b-it', 'AWS Bedrock', 'https://docs.aws.amazon.com/bedrock/latest/userguide/models.html', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0);
 
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('cohere', 'command-a-03-2025', 'Cohere', '', '', '', NULL, 'chatllm', 0, 0, 0);
+('cohere', 'command-a-03-2025', 'Cohere', 'https://docs.cohere.com/docs/models', '', '', NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'url', 'http://localhost:11434/api',
@@ -6850,7 +6850,7 @@ INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `docs`, `key`, `param
 ('openai-like-embeddings', 'MODEL_NAME_HER', 'OpenAI Like Embeddings', 'Use any providers comaptible with OpenAI API format.', '', CAST(@j AS CHAR), NULL, 'embeddings', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
-    'client', JSON_OBJECT(
+    'client_params', JSON_OBJECT(
         'version', 'latest',
         'region', 'us-east-1',
         'credentials', JSON_OBJECT(
