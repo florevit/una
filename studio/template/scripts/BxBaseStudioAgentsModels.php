@@ -124,6 +124,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                     'name' => 'title',
                     'required' => '1',
                     'caption' => _t('_sys_agents_models_field_title'),
+                    'info' => _t('_sys_agents_models_field_title_info'),
                     'value' => isset($aModel['title']) ? $aModel['title'] : '',
                     'required' => '1',
                     'checker' => [
@@ -139,6 +140,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                     'type' => 'text',
                     'name' => 'model',
                     'caption' => _t('_sys_agents_models_field_model'),
+                    'info' => _t('_sys_agents_models_field_model_info'),
                     'value' => isset($aModel['model']) ? $aModel['model'] : '',
                     'db' => [
                         'pass' => 'Xss',
@@ -148,6 +150,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                     'type' => 'text',
                     'name' => 'key',
                     'caption' => _t('_sys_agents_models_field_key'),
+                    'info' => _t('_sys_agents_models_field_key_info'),
                     'value' => isset($aModel['key']) ? $aModel['key'] : '',
                     'db' => [
                         'pass' => 'Xss',
@@ -157,6 +160,7 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
                     'type' => 'textarea',
                     'name' => 'params_user',
                     'caption' => _t('_sys_agents_models_field_params'),
+                    'info' => _t('_sys_agents_models_field_params_info'),
                     'value' => $sParams,
                     'checker' => [
                         'func' => 'Json',

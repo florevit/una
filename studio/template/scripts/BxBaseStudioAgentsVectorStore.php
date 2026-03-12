@@ -63,7 +63,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
 
-        if($oForm->isSubmittedAndValid()) {
+        if($oForm->isSubmittedAndValid() && isset($_FILES['files'])) {
             $iFilesAdded = 0;
             foreach ($_FILES['files']['tmp_name'] as $key => $tmp_name) {
                 $sFileName = $_FILES['files']['name'][$key];
@@ -201,8 +201,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'embedding_provider_id' => [
                     'type' => 'select',
                     'name' => 'embedding_provider_id',
-                    'caption' => '_sys_agents_vector_store_field_embedding_provider_id',
-                    'info' => '_sys_agents_vector_store_field_embedding_provider_id_info',
+                    'caption' => _t('_sys_agents_vector_store_field_embedding_provider_id'),
+                    'info' => _t('_sys_agents_vector_store_field_embedding_provider_id_info'),
                     'value' => !empty($aVectorStore['embedding_provider_id']) ? $aVectorStore['embedding_provider_id'] : '',
                     'values' => $aEmbeddingProviders,
                     'db' => [
@@ -212,8 +212,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'topk' => [
                     'type' => 'text',
                     'name' => 'topk',
-                    'caption' => '_sys_agents_vector_store_field_topk',
-                    'info' => '_sys_agents_vector_store_field_topk_info',
+                    'caption' => _t('_sys_agents_vector_store_field_topk'),
+                    'info' => _t('_sys_agents_vector_store_field_topk_info'),
                     'required' => true,
                     'value' => !empty($aVectorStore['topk']) ? $aVectorStore['topk'] : '',
                     'db' => [
@@ -223,8 +223,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'params_user' => [
                     'type' => 'textarea',
                     'name' => 'params_user',
-                    'caption' => '_sys_agents_vector_store_field_params',
-                    'info' => '_sys_agents_vector_store_field_params_info',
+                    'caption' => _t('_sys_agents_vector_store_field_params'),
+                    'info' => _t('_sys_agents_vector_store_field_params_info'),
                     'required' => false,
                     'value' => !empty($aVectorStore['params_user']) ? $aVectorStore['params_user'] : '',
                     'checker' => [
@@ -269,8 +269,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'chunk_size' => [
                     'type' => 'text',
                     'name' => 'chunk_size',
-                    'caption' => '_sys_agents_vector_store_field_chunk_size',
-                    'info' => '_sys_agents_vector_store_field_chunk_size_info',
+                    'caption' => _t('_sys_agents_vector_store_field_chunk_size'),
+                    'info' => _t('_sys_agents_vector_store_field_chunk_size_info'),
                     'required' => true,
                     'value' => 512,
                     'db' => [
@@ -280,8 +280,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'delimeter' => [
                     'type' => 'text',
                     'name' => 'delimeter',
-                    'caption' => '_sys_agents_vector_store_field_delimeter',
-                    'info' => '_sys_agents_vector_store_field_chunk_size_info',
+                    'caption' => _t('_sys_agents_vector_store_field_delimeter'),
+                    'info' => _t('_sys_agents_vector_store_field_delimeter_info'),
                     'required' => true,
                     'value' => '.',
                     'db' => [
@@ -291,8 +291,8 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'overlap' => [
                     'type' => 'text',
                     'name' => 'overlap',
-                    'caption' => '_sys_agents_vector_store_field_overlap',
-                    'info' => '_sys_agents_vector_store_field_chunk_size_info',
+                    'caption' => _t('_sys_agents_vector_store_field_overlap'),
+                    'info' => _t('_sys_agents_vector_store_field_overlap_info'),
                     'required' => true,
                     'value' => 2,
                     'db' => [
@@ -302,13 +302,13 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                 'metadata' => [
                     'type' => 'textarea',
                     'name' => 'metadata',
-                    'caption' => '_sys_agents_vector_store_field_metadata',
-                    'info' => '_sys_agents_vector_store_field_chunk_size_info',
+                    'caption' => _t('_sys_agents_vector_store_field_metadata'),
+                    'info' => _t('_sys_agents_vector_store_field_metadata_info'),
                     'required' => false,
                     'checker' => [
                         'func' => 'Json',
                         'params' => ['allow_empty' => true],
-                        'error' => _t('_sys_agents_vector_store_json_field_err'),
+                        'error' => _t('_sys_agents_json_field_err'),
                     ],
                     'db' => [
                         'pass' => 'All'
