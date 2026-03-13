@@ -80,6 +80,31 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return self::getInstance()->getAiProviderInstance($iId);
     }   
 
+    public static function getAgentInstance(int $iId): NeuronAI\Agent\Agent
+    {
+        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId]))
+            return $GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId];
+
+        $a = BxDolAIQuery::getAgentObject($iId);
+        if (!$a || !$a['active'] || !$a['prompt_system'] || !$a['model_id']) {
+            return null;
+        }
+
+        $o = BxDolAiAgent::make($a);
+
+        if ($a['vector_store_id']) {
+            $aVectorStore = BxDolAIQuery::getVectorStoreObject($a['vector_store_id']);
+            if ($aVectorStore && $aVectorStore['embedding_provider_id']) {
+                $oEmbedder = self::getAiEmbeddingsProviderInstance($aVectorStore['embedding_provider_id']);
+                $o->setEmbeddingsProvider($oEmbedder);
+            }
+        }
+
+        $GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId] = $o;
+
+        return $o;
+    }
+
     public static function getModelInstance(int $iId): NeuronAI\Providers\AIProviderInterface | NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
     {
         if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId]))
@@ -621,6 +646,30 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
                 $aAutomator['params'] = json_decode($aAutomator['params'], true);
 
         return $aAutomators;
+    }
+
+    public function callAgent($sType, $aAgent, $aParams = [])
+    {
+        // update sample data
+        $a = ['alert' => 'alert_sample', 'webhook' => 'webhook_sample'];
+        if (isset($a[$sType]) && empty($aAgent[$a[$sType]])) {
+            $this->updateAgentField($aAgent['id'], $a[$sType], json_encode($aParams));
+        }
+
+        $o = self::getAgentInstance($aAgent['id']);
+        if (!$o)
+            return false;
+
+        $o->chat(new UserMessage($aParams));
+
+        $o->run();
+
+        return $o->getMessage();
+    }
+
+    public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
+    {
+        return $this->_oDb->getAgentsByAlertUnitAndAction($sUnit, $sAction);
     }
 
     public function callAutomator($sType, $aParams = [])

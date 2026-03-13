@@ -122,6 +122,20 @@ BxDolStudioPageAgents.prototype.assistantDelete = function(oButton) {
     $(oButton).parents('.bx-form-input-assistant:first').remove();
 };
 
+BxDolStudioPageAgents.prototype.toolAdd = function(oButton, sName) {
+    var oButton = $(oButton);
+
+    var oSubentry = oButton.parents('#bx-form-element-' + sName).find('.bx-form-input-tools:first').clone();
+    oSubentry.find("select").val('');
+    oSubentry.find("input[type = 'hidden']").remove();
+
+    oButton.parents('.bx-form-input-tools-add:first').before(oSubentry);
+};
+
+BxDolStudioPageAgents.prototype.toolDelete = function(oButton) {
+    $(oButton).parents('.bx-form-input-tools:first').remove();
+};
+
 BxDolStudioPageAgents.prototype._getDefaultData = function() {
     var oDate = new Date();
     return jQuery.extend({}, this._oRequestParams, {_t:oDate.getTime()});

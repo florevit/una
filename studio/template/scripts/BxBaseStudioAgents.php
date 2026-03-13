@@ -37,7 +37,8 @@ class BxBaseStudioAgents extends BxDolStudioAgents
             BX_DOL_STUDIO_AGENTS_TYPE_TOOLS => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_EMBEDDING_PROVIDERS => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => ['icon' => 'mi-agt-helpers.svg'],
-            BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => ['icon' => 'mi-agt-assistants.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_AGENTS => ['icon' => 'mi-agt-assistants.svg'],
+
             /*
              * Hidden for now. Most probably they will be removed.
              * 
@@ -54,7 +55,7 @@ class BxBaseStudioAgents extends BxDolStudioAgents
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => 'sys_studio_agents_assistants',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_chats' => 'sys_studio_agents_assistants_chats',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_files' => 'sys_studio_agents_assistants_files',
-
+            BX_DOL_STUDIO_AGENTS_TYPE_AGENTS => 'sys_studio_agents_agents',
             /*
              * Hidden for now. Most probably they will be removed.
              * 
@@ -227,6 +228,11 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         }
 
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS]);
+    }
+
+    protected function getAgents()
+    {
+        return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_AGENTS]);
     }
 
     /*

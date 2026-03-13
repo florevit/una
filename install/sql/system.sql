@@ -5810,6 +5810,26 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `active`, `order`) VALUES
 ('sys_studio_agents_vector_store_data', 'bulk', 'delete', '_Delete', '', 0, 1, 1, 10);
 
+-- GRID: Agents
+INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `override_class_name`, `override_class_file`) VALUES
+('sys_studio_agents_agents', 'Sql', 'SELECT * FROM `sys_agents_agents` WHERE 1 ', 'sys_agents_agents', 'id', 'added', 'active', '', 20, NULL, 'start', '', 'name', '', 'like', '', '', 'BxTemplStudioAgentsAgents', '');
+
+INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
+('sys_studio_agents_agents', 'checkbox', '', '2%', 0, 0, '', '', 1),
+('sys_studio_agents_agents', 'switcher', '_sys_active', '8%', 0, 0, '', '', 2),
+('sys_studio_agents_agents', 'name', '_sys_agents_agents_txt_name', '10%', 0, 0, '', '', 3),
+('sys_studio_agents_agents', 'trigger', '_sys_agents_agents_txt_trigger', '8%', 0, 0, '', '', 4),
+('sys_studio_agents_agents', 'profile_id', '_sys_agents_agents_txt_profile_id', '10%', 0, 0, '', '', 6),
+('sys_studio_agents_agents', 'actions', '', '20%', 0, 0, '', '', 11);
+
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
+('sys_studio_agents_agents', 'bulk', 'delete', '_Delete', '', 0, 1, 1),
+('sys_studio_agents_agents', 'single', 'manual', '_Run', 'play', 1, 0, 1),
+('sys_studio_agents_agents', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 2),
+('sys_studio_agents_agents', 'single', 'delete', '_Delete', 'remove', 1, 1, 3),
+('sys_studio_agents_agents', 'independent', 'add', '_adm_form_btn_field_add', '', 0, 0, 1);
+
+
 -- --------------------------------------------------------
 
 

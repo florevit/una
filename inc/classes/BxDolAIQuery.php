@@ -36,6 +36,17 @@ class BxDolAIQuery extends BxDolDb
         return $aVectorStore;
     }
 
+    static public function getAgentObject($iId)
+    {
+        $oDb = BxDolDb::getInstance();
+
+        $a = $oDb->getRow("SELECT * FROM `sys_agents_agents` WHERE `id` = :id", ['id' => $iId]);
+        if(!$a || !is_array($a))
+            return false;
+
+        return $a;
+    }
+
     static public function getProviderObject($iId)
     {
         $oDb = BxDolDb::getInstance();
@@ -120,11 +131,15 @@ class BxDolAIQuery extends BxDolDb
                 }
 
                 if(isset($aParams['capabilities'])) {
-                    $aMethod['params'][3]['capabilities'] = $aParams['capabilities'];
-
-                    $sWhereClause .= " AND `capabilities` = :capabilities";
+                    if (is_array($aParams['capabilities']))
+                    {                        
+                        $sWhereClause .= " AND `capabilities` IN (" . $this->implode_escape($aParams['capabilities']) . ")"; 
+                    }
+                    else {
+                        $aMethod['params'][3]['capabilities'] = $aParams['capabilities'];
+                        $sWhereClause .= " AND `capabilities` = :capabilities";
+                    }
                 }
-
                 break;
         }
 
@@ -809,6 +824,12 @@ class BxDolAIQuery extends BxDolDb
         return (int)$this->query("DELETE FROM `sys_agents_assistants_files` WHERE " . $this->arrayToSQL($aParamsWhere, ' AND ')) > 0;
     }
 
+    public function getVectorStores (): mixed
+    {
+        $sQuery = "SELECT `id`, `title` FROM `sys_agents_vector_store` WHERE `active` = 1 ORDER BY `title` ASC";
+        return $this->getPairs($sQuery, 'id', 'title'); 
+    }
+
     public function getVectorStoreById (int $iId): mixed
     {
         $sQuery = "SELECT * FROM `sys_agents_vector_store` WHERE `id` = :id";
@@ -870,6 +891,21 @@ class BxDolAIQuery extends BxDolDb
         $oDb = BxDolDb::getInstance();
         $sQuery = "UPDATE `sys_agents_vector_store_data` SET `status` = :status WHERE `id` = :id";
         return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
+    }
+
+    public function getTools()
+    {
+        return [];
+    }
+
+    public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
+    {
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action", ['unit' => $sUnit, 'action' => $sAction]);
+    }
+
+    public function updateAgentField($iId, $sField, $sValue)
+    {
+        return $this->query("UPDATE `sys_agents_agents` SET `$sField` = :value WHERE `id` = :id", ['value' => $sValue, 'id' => $iId]);
     }
 }
 

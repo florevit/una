@@ -14,7 +14,7 @@ define('BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS', 'ai_providers');
 define('BX_DOL_STUDIO_AGENTS_TYPE_TOOLS', 'tools');
 define('BX_DOL_STUDIO_AGENTS_TYPE_EMBEDDING_PROVIDERS', 'embedding_providers');
 define('BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE', 'vector_store');
-
+define('BX_DOL_STUDIO_AGENTS_TYPE_AGENTS', 'agents');
 
 /*
  * Isn't used for now. Most probably they will be removed.

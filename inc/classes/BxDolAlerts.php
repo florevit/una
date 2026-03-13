@@ -144,6 +144,21 @@ class BxDolAlerts extends BxDol
             }
         }
 
+        // call agents
+        $oAi = BxDolAI::getInstance();
+        if($aAgents = $oAi->getAgentsByAlertUnitAndAction($this->sUnit, $this->sAction)) {
+            foreach($aAgents as $a) {
+                $oAi->callAgent('alert', $a, [
+                    'trigger' => 'alert',
+                    'object' => $this->iObject,
+                    'sender' => $this->iSender,
+                    'unit' => $this->sUnit, 
+                    'action' => $this->sAction,
+                    'extra' => $this->aExtras
+                ]);
+            }
+        }
+
         // call automators
         $oAi = BxDolAI::getInstance();
         if($oAi->hasAutomators(BX_DOL_AI_AUTOMATOR_EVENT, true)) {
@@ -154,7 +169,7 @@ class BxDolAlerts extends BxDol
                     'alert' => $this
                 ]);
             }
-        }
+        }        
     }
 
     /**
