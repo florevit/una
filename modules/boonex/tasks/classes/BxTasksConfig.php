@@ -312,7 +312,7 @@ class BxTasksConfig extends BxBaseModTextConfig
 
     public function getDueDateTitle($iValue)
     {
-        return bx_time_js($iValue, BX_FORMAT_DATE, true);
+        return bx_process_output($iValue, BX_DATA_DATE_TS);
     }
 
     public function getStateTitle($iValue)

@@ -88,6 +88,14 @@ class BxTasksTime extends BxTemplReport
 
         $this->_trigger();
 
+        $this->_oModule->logActivity($iObjectId, [
+            'key' => '_bx_tasks_txt_msg_report_time_for_date', 
+            'markers' => [
+                'time' => $this->_oModule->_oConfig->timeI2S($aTrack['value']),
+                'date' => bx_process_output($aTrack['value_date'] ?: $aTrack['date'], BX_DATA_DATE_TS)
+            ]
+        ]);
+
         /**
          * @hooks
          * @hookdef bx_tasks-report_time '{module_name}', 'report_time' - hook on create new time report 
