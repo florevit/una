@@ -2243,6 +2243,7 @@
 
     <string name="_sys_agents_form_field_err_enter"><![CDATA[This field is essential. Please enter something here.]]></string>
     <string name="_sys_agents_form_field_err_select"><![CDATA[This field is essential. Please select something here.]]></string>
+    <string name="_sys_agents_json_field_err"><![CDATA[Invalid JSON format.]]></string>
     <string name="_sys_agents_automators_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_automators_txt_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_automators_txt_type"><![CDATA[Type]]></string>
@@ -2337,7 +2338,42 @@
     <string name="_sys_agents_models_txt_key"><![CDATA[API Key]]></string>
     <string name="_sys_agents_models_txt_params"><![CDATA[Parameters]]></string>
     <string name="_sys_agents_models_txt_added"><![CDATA[Added]]></string>
+    <string name="_sys_agents_models_txt_capabilities"><![CDATA[Capabilities]]></string>
+    <string name="_sys_agents_models_txt_model"><![CDATA[Model]]></string>
     <string name="_sys_agents_models_btn_add"><![CDATA[Add AI Provider]]></string>
+    <string name="_sys_agents_models_popup_edit"><![CDATA[Edit AI provider]]></string>
+    <string name="_sys_agents_models_field_title"><![CDATA[Title]]></string>
+    <string name="_sys_agents_models_field_title_info"><![CDATA[Display name for the AI provider.]]></string>
+    <string name="_sys_agents_models_field_model"><![CDATA[Model]]></string>
+    <string name="_sys_agents_models_field_model_info"><![CDATA[Model identifier used by the provider.]]></string>
+    <string name="_sys_agents_models_field_key"><![CDATA[API Key]]></string>
+    <string name="_sys_agents_models_field_key_info"><![CDATA[API key to authenticate with the provider.]]></string>
+    <string name="_sys_agents_models_field_params"><![CDATA[Parameters]]></string>
+    <string name="_sys_agents_models_field_params_info"><![CDATA[Additional configuration parameters in JSON format.]]></string>
+    <string name="_Duplicate"><![CDATA[Duplicate]]></string>
+    
+    <string name="_sys_agents_vector_store_txt_embedding_provider"><![CDATA[Embedder]]></string>
+    <string name="_sys_agents_vector_store_txt_files_num"><![CDATA[Files]]></string>
+    <string name="_sys_agents_vector_store_popup_files"><![CDATA[Files]]></string>
+    <string name="_sys_agents_vector_store_popup_edit"><![CDATA[Edit vector store]]></string>
+    <string name="_sys_agents_vector_store_field_embedding_provider_id"><![CDATA[Embedding Provider]]></string>
+    <string name="_sys_agents_vector_store_field_embedding_provider_id_info"><![CDATA[Select the embedding provider for this vector store.]]></string>
+    <string name="_sys_agents_vector_store_field_topk"><![CDATA[Top K Results]]></string>
+    <string name="_sys_agents_vector_store_field_topk_info"><![CDATA[Number of top results to return from similarity search.]]></string>
+    <string name="_sys_agents_vector_store_field_params"><![CDATA[Parameters]]></string>
+    <string name="_sys_agents_vector_store_field_params_info"><![CDATA[Additional parameters in JSON format.]]></string>
+    <string name="_sys_agents_vector_store_popup_add_data"><![CDATA[Upload new files]]></string>
+    <string name="_sys_agents_vector_store_field_chunk_size"><![CDATA[Chunk Size]]></string>
+    <string name="_sys_agents_vector_store_field_chunk_size_info"><![CDATA[Number of characters in text chunks for embedding.]]></string>
+    <string name="_sys_agents_vector_store_field_delimeter"><![CDATA[Delimiter]]></string>
+    <string name="_sys_agents_vector_store_field_delimeter_info"><![CDATA[Character or sequence to split text into chunks.]]></string>
+    <string name="_sys_agents_vector_store_field_overlap"><![CDATA[Chunk Overlap]]></string>
+    <string name="_sys_agents_vector_store_field_overlap_info"><![CDATA[Number of overlapping elements between adjacent chunks, determined by the delimeter, for dot - it's bumber of sentences, for space - it's number of words.]]></string>
+    <string name="_sys_agents_vector_store_field_metadata"><![CDATA[Metadata]]></string>
+    <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Additional metadata in JSON format for each chunk.]]></string>
+    <string name="_sys_agents_vector_store_field_files"><![CDATA[Files]]></string>
+    <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Data files to upload to the vector store.]]></string>
+    
     <string name="_sys_agents_assistants_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_assistants_txt_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_assistants_txt_model_id"><![CDATA[Model]]></string>

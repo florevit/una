@@ -2218,6 +2218,7 @@
 
         <string name="_sys_agents_form_field_err_enter"><![CDATA[Это поле имеет важное значение. Пожалуйста, напишите что-нибудь здесь.]]></string>
         <string name="_sys_agents_form_field_err_select"><![CDATA[Это поле имеет важное значение. Пожалуйста, выберите что-нибудь здесь.]]></string>
+        <string name="_sys_agents_json_field_err"><![CDATA[Неверный формат JSON.]]></string>
         <string name="_sys_agents_automators_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_automators_txt_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_automators_txt_type"><![CDATA[Тип]]></string>
@@ -2312,7 +2313,42 @@
         <string name="_sys_agents_models_txt_key"><![CDATA[Ключ API]]></string>
         <string name="_sys_agents_models_txt_params"><![CDATA[Параметры]]></string>
         <string name="_sys_agents_models_txt_added"><![CDATA[Добавлено]]></string>
-        <string name="_sys_agents_models_btn_add"><![CDATA[Добавить поставщика ИИ]]></string>
+        <string name="_sys_agents_models_txt_capabilities"><![CDATA[Возможности]]></string>
+        <string name="_sys_agents_models_txt_model"><![CDATA[Модель]]></string>
+        <string name="_sys_agents_models_btn_add"><![CDATA[Добавить провайдера ИИ]]></string>
+        <string name="_sys_agents_models_popup_edit"><![CDATA[Редактировать провайдера ИИ]]></string>
+        <string name="_sys_agents_models_field_title"><![CDATA[Название]]></string>
+        <string name="_sys_agents_models_field_title_info"><![CDATA[Отображаемое имя провайдера ИИ.]]></string>
+        <string name="_sys_agents_models_field_model"><![CDATA[Модель]]></string>
+        <string name="_sys_agents_models_field_model_info"><![CDATA[Идентификатор модели, используемый ИИ провайдером.]]></string>
+        <string name="_sys_agents_models_field_key"><![CDATA[Ключ API]]></string>
+        <string name="_sys_agents_models_field_key_info"><![CDATA[Ключ API для аутентификации у провайдера ИИ.]]></string>
+        <string name="_sys_agents_models_field_params"><![CDATA[Параметры]]></string>
+        <string name="_sys_agents_models_field_params_info"><![CDATA[Дополнительные параметры конфигурации в формате JSON.]]></string>
+        <string name="_Duplicate"><![CDATA[Дублировать]]></string>
+        
+        <string name="_sys_agents_vector_store_txt_embedding_provider"><![CDATA[Ембеддер]]></string>
+        <string name="_sys_agents_vector_store_txt_files_num"><![CDATA[Файлы]]></string>
+        <string name="_sys_agents_vector_store_popup_files"><![CDATA[Файлы]]></string>
+        <string name="_sys_agents_vector_store_popup_edit"><![CDATA[Редактировать хранилище векторов]]></string>
+        <string name="_sys_agents_vector_store_field_embedding_provider_id"><![CDATA[Провайдер эмбеддинга]]></string>
+        <string name="_sys_agents_vector_store_field_embedding_provider_id_info"><![CDATA[Выберите провайдера эмбеддинга для этого хранилища векторов.]]></string>
+        <string name="_sys_agents_vector_store_field_topk"><![CDATA[Топ K результатов]]></string>
+        <string name="_sys_agents_vector_store_field_topk_info"><![CDATA[Количество лучших результатов для возврата из поиска по сходству.]]></string>
+        <string name="_sys_agents_vector_store_field_params"><![CDATA[Параметры]]></string>
+        <string name="_sys_agents_vector_store_field_params_info"><![CDATA[Дополнительные параметры в формате JSON.]]></string>
+        <string name="_sys_agents_vector_store_popup_add_data"><![CDATA[Загрузить новые файлы]]></string>
+        <string name="_sys_agents_vector_store_field_chunk_size"><![CDATA[Размер фрагментов текста]]></string>
+        <string name="_sys_agents_vector_store_field_chunk_size_info"><![CDATA[Размер текстовых фрагментов для эмбеддинга (число символов).]]></string>
+        <string name="_sys_agents_vector_store_field_delimeter"><![CDATA[Разделитель]]></string>
+        <string name="_sys_agents_vector_store_field_delimeter_info"><![CDATA[Символ или последовательность для разделения текста на фрагменты.]]></string>
+        <string name="_sys_agents_vector_store_field_overlap"><![CDATA[Перекрытие фрагментов]]></string>
+        <string name="_sys_agents_vector_store_field_overlap_info"><![CDATA[Количество перекрывающихся элементов между соседними фрагментами, для точки - это число предложений, для пробела - это число слов.]]></string>
+        <string name="_sys_agents_vector_store_field_metadata"><![CDATA[Метаданные]]></string>
+        <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Дополнительные метаданные в формате JSON для каждого фрагмента.]]></string>
+        <string name="_sys_agents_vector_store_field_files"><![CDATA[Файлы]]></string>
+        <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Файлы данных для загрузки в хранилище векторов.]]></string>
+        
         <string name="_sys_agents_assistants_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_assistants_txt_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_assistants_txt_model_id"><![CDATA[Модель]]></string>
