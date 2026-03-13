@@ -1121,6 +1121,7 @@
     <string name="_adm_lang_cnf_uninstall"><![CDATA[<h3>Uninstall "{0}" language?</h3><p>Uninstalling "{0}" language will also delete all of its data. Do you want to continue?</p>]]></string>
     <string name="_adm_lmi_cpt_actions"><![CDATA[Actions]]></string>
     <string name="_adm_lmi_cpt_api_config"><![CDATA[Configuration]]></string>
+    <string name="_adm_lmi_cpt_agents"><![CDATA[Agents]]></string>
     <string name="_adm_lmi_cpt_ai_providers"><![CDATA[AI Providers]]></string>
     <string name="_adm_lmi_cpt_embedding_providers"><![CDATA[Embedding Providers]]></string>
     <string name="_adm_lmi_cpt_tools"><![CDATA[Tools]]></string>

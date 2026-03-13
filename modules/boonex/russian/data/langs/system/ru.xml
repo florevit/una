@@ -1105,6 +1105,7 @@
     <string name="_adm_lang_cnf_uninstall"><![CDATA[<h3>Удалить "{0}" язык?</h3><p>Удаление "{0}" языка также удалит все его данные. Вы хотите продолжить?</p>]]></string>
     <string name="_adm_lmi_cpt_actions"><![CDATA[Действия]]></string>
     <string name="_adm_lmi_cpt_api_config"><![CDATA[Конфигурация]]></string>
+    <string name="_adm_lmi_cpt_agents"><![CDATA[Агенты]]></string>
     <string name="_adm_lmi_cpt_ai_providers"><![CDATA[ИИ поставщики]]></string>
     <string name="_adm_lmi_cpt_embedding_providers"><![CDATA[Поставщики вставок]]></string>
     <string name="_adm_lmi_cpt_tools"><![CDATA[Инструменты]]></string>
