@@ -251,7 +251,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         } 
 
         $sFormId = $oForm->getId();
-        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup', _t('_sys_agents_automators_popup_edit'), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
+        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup', _t('_sys_agents_popup_edit'), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
             'form_id' => $sFormId,
             'form' => $oForm->getCode(true),
             'object' => $this->_sObject,
@@ -304,7 +304,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
     {
         $aForm = array(
             'form_attrs' => array(
-                'id' => 'bx_std_agents_automators_' . $sAction,
+                'id' => 'bx_std_agents_' . $sAction,
                 'action' => BX_DOL_URL_ROOT . 'grid.php?o=sys_studio_agents_agents&a=' . $sAction,
                 'method' => 'post',
             ),
@@ -319,8 +319,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'name' => [
                     'type' => 'text',
                     'name' => 'name',
-                    'caption' => _t('_sys_agents_automators_field_name'),
-                    'info' => _t('_sys_agents_automators_field_name_info'),
+                    'caption' => _t('_sys_agents_field_name'),
+                    'info' => _t('_sys_agents_field_name_info'),
                     'value' => isset($aAgent['name']) ? $aAgent['name'] : '',
                     'required' => '1',
                     'checker' => [
@@ -335,8 +335,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'model_id' => [
                     'type' => 'select',
                     'name' => 'model_id',
-                    'caption' => _t('_sys_agents_automators_field_model_id'),
-                    'info' => _t('_sys_agents_automators_field_model_id_info'),
+                    'caption' => _t('_sys_agents_field_model_id'),
+                    'info' => _t('_sys_agents_field_model_id_info'),
                     'value' => isset($aAgent['model_id']) ? $aAgent['model_id'] : BxDolAI::getDefaultModel(),
                     'values' => $this->_oDb->getModelsBy(['sample' => 'all_pairs', 'active' => 1, 'capabilities' => ['chatvlm', 'chatllm']]),
                     'required' => '1',
@@ -364,8 +364,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'trigger' => [
                     'type' => 'select',
                     'name' => 'trigger',
-                    'caption' => _t('_sys_agents_automators_field_trigger'),
-                    'info' => _t('_sys_agents_automators_field_trigger_info'),                    
+                    'caption' => _t('_sys_agents_field_trigger'),
+                    'info' => _t('_sys_agents_field_trigger_info'),                    
                     'value' => isset($aAgent['trigger']) ? $aAgent['trigger'] : 0,
                     'values' => [
                         'alert' => 'alert',
@@ -420,8 +420,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'scheduler_cron' => [
                     'type' => 'text',
                     'name' => 'scheduler_cron',
-                    'caption' => _t('_sys_agents_automators_field_scheduler_cron'),
-                    'info' => _t('_sys_agents_automators_field_scheduler_cron_info'),
+                    'caption' => _t('_sys_agents_field_scheduler_cron'),
+                    'info' => _t('_sys_agents_field_scheduler_cron_info'),
                     'value' => isset($aAgent['scheduler_cron']) ? $aAgent['scheduler_cron'] : '',
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'scheduler' ? 'display:none' : ''
@@ -439,8 +439,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'webhook_key' => [
                     'type' => 'text',
                     'name' => 'webhook_key',
-                    'caption' => _t('_sys_agents_automators_field_webhook_key'),
-                    'info' => _t('_sys_agents_automators_field_webhook_key_info'),
+                    'caption' => _t('_sys_agents_field_webhook_key'),
+                    'info' => _t('_sys_agents_field_webhook_key_info'),
                     'value' => isset($aAgent['webhook_key']) ? $aAgent['webhook_key'] : '',
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'webhook' ? 'display:none' : ''
@@ -449,8 +449,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'message_profile_id' => [
                     'type' => 'select',
                     'name' => 'message_profile_id',
-                    'caption' => _t('_sys_agents_automators_field_message_profile'),
-                    'info' => _t('_sys_agents_automators_field_message_profile_info'),
+                    'caption' => _t('_sys_agents_field_message_profile'),
+                    'info' => _t('_sys_agents_field_message_profile_info'),
                     'value' => isset($aAgent['message_profile_id']) ? $aAgent['message_profile_id'] : '',
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'message' ? 'display:none' : ''
@@ -459,44 +459,44 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'vector_store_id' => [
                     'type' => 'select',
                     'name' => 'vector_store_id',
-                    'caption' => _t('_sys_agents_automators_field_vector_store_id'),
-                    'info' => _t('_sys_agents_automators_field_vector_store_id_info'),
+                    'caption' => _t('_sys_agents_field_vector_store_id'),
+                    'info' => _t('_sys_agents_field_vector_store_id_info'),
                     'value' => isset($aAgent['vector_store_id']) ? $aAgent['vector_store_id'] : 0,
                     'values' => $this->_oDb->getVectorStores(),
                 ],
                 'tools' => [
                     'type' => 'custom',
                     'name' => 'tools',
-                    'caption' => _t('_sys_agents_automators_field_tools'),
-                    'info' => _t('_sys_agents_automators_field_tools_info'),
+                    'caption' => _t('_sys_agents_field_tools'),
+                    'info' => _t('_sys_agents_field_tools_info'),
                     'value' => '',
                 ],
                 'prompt_system' => [
                     'type' => 'textarea',
                     'name' => 'prompt_system',
-                    'caption' => _t('_sys_agents_automators_field_prompt_system'),
-                    'info' => _t('_sys_agents_automators_field_prompt_system_info'),
+                    'caption' => _t('_sys_agents_field_prompt_system'),
+                    'info' => _t('_sys_agents_field_prompt_system_info'),
                     'value' => isset($aAgent['prompt_system']) ? $aAgent['prompt_system'] : '',
                 ],
                 'prompt_steps' => [
                     'type' => 'textarea',
                     'name' => 'prompt_steps',
-                    'caption' => _t('_sys_agents_automators_field_prompt_steps'),
-                    'info' => _t('_sys_agents_automators_field_prompt_steps_info'),
+                    'caption' => _t('_sys_agents_field_prompt_steps'),
+                    'info' => _t('_sys_agents_field_prompt_steps_info'),
                     'value' => isset($aAgent['prompt_steps']) ? $aAgent['prompt_steps'] : '',
                 ],
                 'prompt_output' => [
                     'type' => 'textarea',
                     'name' => 'prompt_output',
-                    'caption' => _t('_sys_agents_automators_field_prompt_output'),
-                    'info' => _t('_sys_agents_automators_field_prompt_output_info'),
+                    'caption' => _t('_sys_agents_field_prompt_output'),
+                    'info' => _t('_sys_agents_field_prompt_output_info'),
                     'value' => isset($aAgent['prompt_output']) ? $aAgent['prompt_output'] : '',
                 ],
                 'prompt_tools' => [
                     'type' => 'textarea',
                     'name' => 'prompt_tools',
-                    'caption' => _t('_sys_agents_automators_field_prompt_tools'),
-                    'info' => _t('_sys_agents_automators_field_prompt_tools_info'),
+                    'caption' => _t('_sys_agents_field_prompt_tools'),
+                    'info' => _t('_sys_agents_field_prompt_tools_info'),
                     'value' => isset($aAgent['prompt_tools']) ? $aAgent['prompt_tools'] : '',
                 ],
                 'submit' => $this->_getFormControls(),
