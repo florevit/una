@@ -14,40 +14,38 @@ class BxDolAIQuery extends BxDolDb
         parent::__construct();
     }
 
-    static public function getModelObject($iId)
+    static protected function _getObject(int $iId, string $sTable): array|bool
     {
         $oDb = BxDolDb::getInstance();
 
-        $aModel = $oDb->getRow("SELECT * FROM `sys_agents_models` WHERE `id` = :id", ['id' => $iId]);
-        if(!$aModel || !is_array($aModel))
-            return false;
-
-        return $aModel;
-    }
-
-    static public function getVectorStoreObject($iId)
-    {
-        $oDb = BxDolDb::getInstance();
-
-        $aVectorStore = $oDb->getRow("SELECT * FROM `sys_agents_vector_store` WHERE `id` = :id", ['id' => $iId]);
-        if(!$aVectorStore || !is_array($aVectorStore))
-            return false;
-
-        return $aVectorStore;
-    }
-
-    static public function getAgentObject($iId)
-    {
-        $oDb = BxDolDb::getInstance();
-
-        $a = $oDb->getRow("SELECT * FROM `sys_agents_agents` WHERE `id` = :id", ['id' => $iId]);
+        $a = $oDb->getRow("SELECT * FROM `$sTable` WHERE `id` = :id", ['id' => $iId]);
         if(!$a || !is_array($a))
             return false;
 
         return $a;
     }
 
-    static public function getProviderObject($iId)
+    static public function getModelObject(int $iId): array|bool
+    {
+        return self::_getObject($iId, 'sys_agents_models');
+    }
+
+    static public function getVectorStoreObject(int $iId): array|bool
+    {
+        return self::_getObject($iId, 'sys_agents_vector_store');
+    }
+
+    static public function getAgentObject(int $iId): array|bool
+    {
+        return self::_getObject($iId, 'sys_agents_agents');
+    }
+
+    static public function getToolObject(int $iId): array|bool
+    {
+        return self::_getObject($iId, 'sys_agents_tools');
+    }
+
+    static public function getProviderObject(int $iId)
     {
         $oDb = BxDolDb::getInstance();
 
@@ -893,11 +891,6 @@ class BxDolAIQuery extends BxDolDb
         return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
     }
 
-    public function getTools()
-    {
-        return [];
-    }
-
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
     {
         return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action", ['unit' => $sUnit, 'action' => $sAction]);
@@ -906,6 +899,25 @@ class BxDolAIQuery extends BxDolDb
     public function updateAgentField($iId, $sField, $sValue)
     {
         return $this->query("UPDATE `sys_agents_agents` SET `$sField` = :value WHERE `id` = :id", ['value' => $sValue, 'id' => $iId]);
+    }
+
+    public function getToolById (int $iId): mixed
+    {
+        $sQuery = "SELECT * FROM `sys_agents_tools` WHERE `id` = :id";
+        return $this->getRow($sQuery, ['id' => $iId]); 
+    }
+
+    public function insertTool(array $aFields): int
+    {
+        if(empty($aFields) || !is_array($aFields))
+            return false;
+
+        return (int)$this->query("INSERT INTO `sys_agents_tools` SET " . $this->arrayToSQL($aFields));
+    }
+
+    public function getTools()
+    {
+        return [];
     }
 }
 
