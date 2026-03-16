@@ -383,6 +383,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ]
                 ],
+
+                'alert_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Trigger - alert',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
                 'alert_sample' => [
                     'type' => 'custom',
                     'name' => 'alert_sample',
@@ -417,6 +425,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+
+                'scheduler_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Trigger - scheduler',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
                 'scheduler_cron' => [
                     'type' => 'text',
                     'name' => 'scheduler_cron',
@@ -430,6 +446,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+
+                'webhook_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Trigger - webhook',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
                 'webhook_sample' => [
                     'type' => 'custom',
                     'name' => 'webhook_sample',
@@ -452,12 +476,21 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+
+                'message_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Trigger - message',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
                 'message_profile_id' => [
                     'type' => 'select',
                     'name' => 'message_profile_id',
                     'caption' => _t('_sys_agents_field_message_profile'),
                     'info' => _t('_sys_agents_field_message_profile_info'),
                     'value' => isset($aAgent['message_profile_id']) ? $aAgent['message_profile_id'] : '',
+                    'values' => bx_srv('system', 'get_options_agents_profile', [], 'TemplServices'),
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'message' ? 'display:none' : ''
                     // ],
@@ -465,6 +498,11 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+
+                'message_section_end' => array(
+                    'type' => 'block_end',
+                ),
+
                 'vector_store_id' => [
                     'type' => 'select',
                     'name' => 'vector_store_id',
@@ -493,6 +531,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+
+                'prompts_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Other prompts',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
                 'prompt_steps' => [
                     'type' => 'textarea',
                     'name' => 'prompt_steps',
@@ -523,6 +569,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+                'prompts_section_end' => array(
+                    'type' => 'block_end',
+                ),
                 'submit' => $this->_getFormControls(),
 
             ),
