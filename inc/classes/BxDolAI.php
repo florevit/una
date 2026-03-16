@@ -64,21 +64,11 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
     public static function getInstance()
     {
         if (!isset($GLOBALS['bxDolClasses'][__CLASS__])) {
-            $GLOBALS['bxDolClasses'][__CLASS__] = BxDolDb::getInstance()->isTableExists('sys_agents_automators') ? new BxDolAI() : null;
+            $GLOBALS['bxDolClasses'][__CLASS__] = BxDolDb::getInstance()->isTableExists('sys_agents_agents') ? new BxDolAI() : null;
         }
 
         return $GLOBALS['bxDolClasses'][__CLASS__];
     }
-
-    public static function getAiProviderInstance(int $iId):NeuronAI\Providers\AIProviderInterface
-    {
-        return self::getInstance()->getAiProviderInstance($iId);
-    }   
-
-    public static function getAiEmbeddingsProviderInstance(int $iId):NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
-    {
-        return self::getInstance()->getAiProviderInstance($iId);
-    }   
 
     public static function getAgentInstance(int $iId): NeuronAI\Agent\Agent
     {
@@ -86,8 +76,20 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
             return $GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId];
 
         $a = BxDolAIQuery::getAgentObject($iId);
-        if (!$a || !$a['active'] || !$a['prompt_system'] || !$a['model_id']) {
-            return null;
+        if (!$a) {
+            $s = "Agent with id {$iId} not found";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
+        }
+        if (!$a['active']) {
+            $s = "Agent with id {$iId} isn't active";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
+        }
+        if (!$a['prompt_system'] || !$a['model_id']) {
+            $s = "Agent with id {$iId} can't be used because it haven't prompt or AI model";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
         }
 
         $o = BxDolAiAgent::make($a);
@@ -104,6 +106,16 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         return $o;
     }
+
+    public static function getAiProviderInstance(int $iId):NeuronAI\Providers\AIProviderInterface
+    {
+        return self::getModelInstance($iId);
+    }   
+
+    public static function getAiEmbeddingsProviderInstance(int $iId):NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
+    {
+        return self::getModelInstance($iId);
+    }   
 
     public static function getModelInstance(int $iId): NeuronAI\Providers\AIProviderInterface | NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
     {
@@ -314,71 +326,71 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
             case 'pinecon':
                 $o = new NeuronAI\RAG\VectorStore\PineconeVectorStore(
                     key: $a['key'],
-                    indexUrl: $a['indexUrl'],
+                    indexUrl: $aParameters['indexUrl'],
                     topK: $a['topk'] ?? 4,
-                    version: $a['version'] ?? '2025-04',
-                    namespace: $a['namespace'] ?? '__default__'
+                    version: $aParameters['version'] ?? '2025-04',
+                    namespace: $aParameters['namespace'] ?? '__default__'
                 );
                 break;
             case 'elasticsearch':
                 $oClient = Elastic\Elasticsearch\ClientBuilder::create()
-                    ->setHosts([$a['client_params']['endpoint']])
-                    ->setApiKey($a['client_params']['key'])
+                    ->setHosts([$aParameters['client_params']['endpoint']])
+                    ->setApiKey($aParameters['client_params']['key'])
                     ->build();
                 
                 $o = new NeuronAI\RAG\VectorStore\ElasticsearchVectorStore(
                     client: $oClient,
-                    index: $a['index'],
+                    index: $aParameters['index'],
                     topK: $a['topk'] ?? 4
                 );
                 break;
             case 'opensearch':
                 $oClient = (new OpenSearch\GuzzleClientFactory())->create([
-                    'base_uri' => $a['client_params']['endpoint'] ?? 'http://localhost:9200',
+                    'base_uri' => $aParameters['client_params']['endpoint'] ?? 'http://localhost:9200',
                 ]);
         
                 $o = NeuronAI\RAG\VectorStore\OpenSearchVectorStore(
                     client: $oClient,
-                    index: $a['index'],
+                    index: $aParameters['index'],
                     topK: $a['topk'] ?? 4,
                 );
                 break;
             case 'typesense':
-                $oClient = new \Typesense\Client($a['client_params']);
+                $oClient = new \Typesense\Client($aParameters['client_params']);
 
                 $o = new NeuronAI\RAG\VectorStore\TypesenseVectorStore(
                     client: $oClient,
-                    collection: $a['collection'],
-                    vectorDimension: $a['vectorDimension'] ?? 1024,
+                    collection: $aParameters['collection'],
+                    vectorDimension: $aParameters['vectorDimension'] ?? 1024,
                     topK: $a['topk'] ?? 4,
                 );
                 break;
             case 'qdrant':
                 $o = new NeuronAI\RAG\VectorStore\QdrantVectorStore(
-                    collectionUrl: $a['collectionUrl'],
+                    collectionUrl: $aParameters['collectionUrl'],
                     key: $a['key'],
                     topK: $a['topk'] ?? 4,
-                    dimension: $a['dimension'] ?? 1024
+                    dimension: $aParameters['dimension'] ?? 1024
                 );
                 break;
             case 'chromadb':
                 $o = new NeuronAI\RAG\VectorStore\ChromaVectorStore(
-                    collection: $a['collection'],
-                    host: $a['host'] ?? 'http://localhost:8000',
-                    tenant: $a['tenant'] ?? 'default_tenant',
-                    database: $a['database'] ?? 'default_database',
+                    collection: $aParameters['collection'],
+                    host: $aParameters['host'] ?? 'http://localhost:8000',
+                    tenant: $aParameters['tenant'] ?? 'default_tenant',
+                    database: $aParameters['database'] ?? 'default_database',
                     key: $a['key'] ?? null,
                     topK: $a['topk'] ?? 4
                 );
                 break;
             case 'meilisearch':
                 $o = new NeuronAI\RAG\VectorStore\MeilisearchVectorStore(
-                    indexUid: $a['indexUid'],
-                    host: $a['host'] ?? 'http://localhost:8000',
+                    indexUid: $aParameters['indexUid'],
+                    host: $aParameters['host'] ?? 'http://localhost:8000',
                     key: $a['key'] ?? null,
-                    embedder: $a['embedder'] ?? 'default',
+                    embedder: $aParameters['embedder'] ?? 'default',
                     topK: $a['topk'] ?? 4,
-                    dimension: $a['dimension'] ?? 1024
+                    dimension: $aParameters['dimension'] ?? 1024
                 );
                 break;
             default:
@@ -387,6 +399,46 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         }
 
         $GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId] = $o;
+
+        return $o;
+    }
+
+    public static function getToolInstance(int $iId):  NeuronAI\Tools\ToolInterface
+    {
+        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_AiAgentTool_' . $iId]))
+            return $GLOBALS['bxDolClasses'][__CLASS__ . '_AiAgentTool_' . $iId];
+
+        $a = BxDolAIQuery::getToolObject($iId);
+        if (!$a) {
+            bx_log('sys_agents', "Tool with id {$iId} not found", BX_LOG_ERR);
+            throw new Exception("Tool with id {$iId} not found");
+        }
+
+        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        
+        switch($a['type']) {
+            case 'mysql_schema':
+                $o = NeuronAI\Tools\Toolkits\MySQL\MySQLSchemaTool::make(
+                    pdo: BxDolDb::getInstance()->getLink(),
+                    tables: $aParameters['tables'] ?? null
+                );
+                break;
+            case 'mysql_select':
+                $o = NeuronAI\Tools\Toolkits\MySQL\MySQLSelectTool::make(
+                    pdo: BxDolDb::getInstance()->getLink(),
+                );
+                break;
+            case 'mysql_write':
+                $o = NeuronAI\Tools\Toolkits\MySQL\MySQLWriteTool::make(
+                    pdo: BxDolDb::getInstance()->getLink(),
+                );
+                break;
+            default:
+                bx_log('sys_agents', "Tool type {$a['type']} is not supported", BX_LOG_ERR);
+                throw new Exception("Tool type {$a['type']} is not supported");
+        }
+
+        $GLOBALS['bxDolClasses'][__CLASS__ . '_AiAgentTool_' . $iId] = $o;
 
         return $o;
     }

@@ -917,7 +917,8 @@ class BxDolAIQuery extends BxDolDb
 
     public function getTools()
     {
-        return [];
+        $sQuery = "SELECT `id`, `title` FROM `sys_agents_tools` WHERE `active` = 1 ORDER BY `title` ASC";
+        return $this->getPairs($sQuery, 'id', 'title'); 
     }
 }
 

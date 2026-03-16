@@ -426,6 +426,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'scheduler' ? 'display:none' : ''
                     // ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'webhook_sample' => [
                     'type' => 'custom',
@@ -445,16 +448,22 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'webhook' ? 'display:none' : ''
                     // ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
-                'message_profile_id' => [
+                'message_profile_ids' => [
                     'type' => 'select',
-                    'name' => 'message_profile_id',
+                    'name' => 'message_profile_ids',
                     'caption' => _t('_sys_agents_field_message_profile'),
                     'info' => _t('_sys_agents_field_message_profile_info'),
-                    'value' => isset($aAgent['message_profile_id']) ? $aAgent['message_profile_id'] : '',
+                    'value' => isset($aAgent['message_profile_ids']) ? $aAgent['message_profile_ids'] : '',
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'message' ? 'display:none' : ''
                     // ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'vector_store_id' => [
                     'type' => 'select',
@@ -463,6 +472,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'info' => _t('_sys_agents_field_vector_store_id_info'),
                     'value' => isset($aAgent['vector_store_id']) ? $aAgent['vector_store_id'] : 0,
                     'values' => $this->_oDb->getVectorStores(),
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'tools' => [
                     'type' => 'custom',
@@ -477,6 +489,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_prompt_system'),
                     'info' => _t('_sys_agents_field_prompt_system_info'),
                     'value' => isset($aAgent['prompt_system']) ? $aAgent['prompt_system'] : '',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'prompt_steps' => [
                     'type' => 'textarea',
@@ -484,6 +499,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_prompt_steps'),
                     'info' => _t('_sys_agents_field_prompt_steps_info'),
                     'value' => isset($aAgent['prompt_steps']) ? $aAgent['prompt_steps'] : '',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'prompt_output' => [
                     'type' => 'textarea',
@@ -491,6 +509,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_prompt_output'),
                     'info' => _t('_sys_agents_field_prompt_output_info'),
                     'value' => isset($aAgent['prompt_output']) ? $aAgent['prompt_output'] : '',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'prompt_tools' => [
                     'type' => 'textarea',
@@ -498,6 +519,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_prompt_tools'),
                     'info' => _t('_sys_agents_field_prompt_tools_info'),
                     'value' => isset($aAgent['prompt_tools']) ? $aAgent['prompt_tools'] : '',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
                 ],
                 'submit' => $this->_getFormControls(),
 

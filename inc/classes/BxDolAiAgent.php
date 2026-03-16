@@ -12,9 +12,11 @@ use NeuronAI\RAG\RAG;
 class BxDolAiAgent extends RAG
 {
     public function __construct(protected array $aAgent)
-    {}
+    {
+        parent::__construct();
+    }
 
-    protected function provider(): AIProviderInterface
+    protected function provider(): NeuronAI\Providers\AIProviderInterface
     {
         return BxDolAi::getModelInstance($this->aAgent['model_id']);
     }
@@ -22,10 +24,10 @@ class BxDolAiAgent extends RAG
     protected function instructions(): string
     {
         $oPrompt = new NeuronAI\Agent\SystemPrompt(
-            background: [$aAgent['prompt_system']],
-            steps: !empty($aAgent['prompt_steps']) ? [$aAgent['prompt_steps']] : [],
-            output: !empty($aAgent['prompt_output']) ? [$aAgent['prompt_output']] : [],
-            toolsUsage: !empty($aAgent['prompt_tools']) ? [$aAgent['prompt_tools']] : []
+            background: [$this->aAgent['prompt_system']],
+            steps: !empty($this->aAgent['prompt_steps']) ? [$this->aAgent['prompt_steps']] : [],
+            output: !empty($this->aAgent['prompt_output']) ? [$this->aAgent['prompt_output']] : [],
+            toolsUsage: !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : []
         );
         return (string) $oPrompt;
     }
@@ -35,11 +37,21 @@ class BxDolAiAgent extends RAG
      */
     protected function tools(): array
     {
-        // TODO:
-        return [];
+        if ($this->aAgent['tools']) {
+            $aTools = explode(',', $this->aAgent['tools']);
+            $aToolInstances = [];
+            foreach ($aTools as $iToolId) {
+                $oTool = BxDolAi::getToolInstance($iToolId);
+                $aToolInstances[] = $oTool;                
+            }
+            return $aToolInstances;
+        }
+        else {
+            return [];
+        }
     }
     
-    protected function vectorStore(): VectorStoreInterface
+    protected function vectorStore(): NeuronAI\RAG\VectorStore\VectorStoreInterface
     {
         if ($this->aAgent['vector_store_id'])
             return BxDolAi::getVectorStoreInstance($this->aAgent['vector_store_id']);
