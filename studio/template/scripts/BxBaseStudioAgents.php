@@ -35,7 +35,6 @@ class BxBaseStudioAgents extends BxDolStudioAgents
             BX_DOL_STUDIO_AGENTS_TYPE_SETTINGS => ['icon' => 'mi-agt-settings.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS => ['icon' => 'mi-agt-providers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_TOOLS => ['icon' => 'mi-agt-helpers.svg'],
-            BX_DOL_STUDIO_AGENTS_TYPE_EMBEDDING_PROVIDERS => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_AGENTS => ['icon' => 'mi-agt-assistants.svg'],
 
@@ -51,6 +50,7 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         $this->aGridObjects = [
             BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS => 'sys_studio_agents_models',
             BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => 'sys_studio_agents_vector_store',
+            BX_DOL_STUDIO_AGENTS_TYPE_TOOLS => 'sys_studio_agents_tools',
 
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS => 'sys_studio_agents_assistants',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_chats' => 'sys_studio_agents_assistants_chats',
@@ -122,18 +122,13 @@ class BxBaseStudioAgents extends BxDolStudioAgents
     
     protected function getTools()
     {
-        return MsgBox('Under construction');
-    }
-    
-    protected function getEmbeddingProviders()
-    {
-        return MsgBox('Under construction');
+        $this->aPageJsOptions['sPageUrl'] .= 'tools';
+
+        return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_TOOLS]);
     }
 
     protected function getVectorstore()
     {
-        $oTemplate = BxDolStudioTemplate::getInstance();
-        
         $this->aPageJsOptions['sPageUrl'] .= 'vector_store';
 
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE]);

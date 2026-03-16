@@ -8,10 +8,9 @@
  * @{
  */
 
-class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
+class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsInstruments
 {
     protected $_sUrlPage;
-    protected $_sFieldName;
     protected $_aDataExt = [
         'txt' => 'getFileContentPlain',
         'md' => 'getFileContentPlain',
@@ -23,33 +22,11 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         parent::__construct ($aOptions, $oTemplate);
 
         $this->_sUrlPage = BX_DOL_URL_STUDIO . 'agents.php?page=vector_store';
-
-        $this->_sFieldName = 'name';
-    }
-
-    public function getPageJsObject()
-    {
-        return 'oBxDolStudioPageAgents';
     }
     
     public function performActionDuplicate()
     {
-        $iId = $this->_getId();
-        $aVectorStore = $this->_oDb->getVectorStoreById($iId);
-        if (!empty($aVectorStore)) {
-            unset($aVectorStore['id']);
-            $aVectorStore['title'] .= ' (Copy)';
-            $aVectorStore['duplicate'] = 1;
-            $aVectorStore['changed'] = time();
-            $aVectorStore['active'] = 0;
-            $iNewId = $this->_oDb->insertVectorStore($aVectorStore);
-            if ($iNewId) {
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $iNewId];
-                return echoJson($aRes);
-            }
-        }
-        $aRes = ['msg' => _t('_sys_txt_error_occured')];
-        return echoJson($aRes);
+        return parent::_performActionDuplicate('getVectorStoreById', 'insertVectorStore');
     }
 
     public function performActionAddData()
@@ -112,32 +89,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
 
     public function performActionEdit()
     {
-        $sAction = 'edit';
-
-        $iId = $this->_getId();
-        $aVectorStore = $this->_oDb->getVectorStoreById($iId);
-
-        $aForm = $this->_getFormEdit($sAction, $aVectorStore);
-        $oForm = new BxTemplFormView($aForm);
-        $oForm->initChecker();
-
-        if($oForm->isSubmittedAndValid()) {
-            if($oForm->update($iId, ['changed' => time()]) === false)
-                return echoJson(['msg' => _t('_sys_txt_error_occured')]);
-
-            return echoJson(['grid' => $this->getCode(false), 'blink' => $iId]);
-        } 
-
-        $sFormId = $oForm->getId();
-        $sForm = $oForm->getCode(true);
-        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup_' . $sAction, _t('_sys_agents_vector_store_popup_edit'), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
-            'form_id' => $sFormId,
-            'form' => $sForm,
-            'object' => $this->_sObject,
-            'action' => $sAction
-        ]));
-
-        return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
+        return $this->_performActionEdit('getVectorStoreById', '_sys_agents_vector_store_popup_edit');
     }
 
     public function performActionFiles()
@@ -180,7 +132,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
 
         return [
             'form_attrs' => [
-                'id' => 'bx_std_agents_helpers_' . $sAction,
+                'id' => 'bx_std_agents_vector_store_' . $sAction,
                 'action' => BX_DOL_URL_ROOT . 'grid.php?o=sys_studio_agents_vector_store&a=' . $sAction,
                 'method' => 'post',
             ],
@@ -197,6 +149,16 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
                     'name' => 'docs',
                     'caption' => '',
                     'content' => $sDocs,
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'name' => 'title',
+                    'caption' => _t('_sys_agents_field_title'),
+                    'required' => true,
+                    'value' => !empty($aVectorStore['title']) ? $aVectorStore['title'] : '',
+                    'db' => [
+                        'pass' => 'Xss'
+                    ]
                 ],
                 'embedding_provider_id' => [
                     'type' => 'select',
@@ -249,7 +211,7 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
 
         return [
             'form_attrs' => [
-                'id' => 'bx_std_agents_helpers_' . $sAction,
+                'id' => 'bx_std_agents_vector_store_data_' . $sAction,
                 'action' => BX_DOL_URL_ROOT . 'grid.php?o=sys_studio_agents_vector_store&a=' . $sAction,
                 'method' => 'post',
             ],
@@ -330,14 +292,6 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         ];
     }
 
-    protected function _getFormEdit($sAction, $aVectorStore = [])
-    {
-        $aForm = $this->_getForm($sAction, $aVectorStore);
-        $aForm['form_attrs']['action'] .= '&id=' . $aVectorStore['id'];
-
-        return $aForm;
-    }
-
     protected function getFileContentPlain($sFilePath)
     {
         return file_get_contents($sFilePath);
@@ -362,13 +316,6 @@ class BxBaseStudioAgentsVectorStore extends BxDolStudioAgentsVectorStore
         if ((int)$s !== 0)
             $s = '<a href="javascript:void(0)" onclick="glGrids.' . $this->_sObject . '.actionWithId (' . $aRow['id'] . ', \'files\', {}, \'\', false, 0);">' . $s . '</a>';
         return parent::_getCellDefault($s, $sKey, $aField, $aRow);
-    }
-    
-    protected function _getActionDelete ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
-    {
-        if ($sType == 'single' && $aRow['duplicate'] == 0)
-            return '';
-        return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
     }
 
     protected function _delete ($mixedId)
