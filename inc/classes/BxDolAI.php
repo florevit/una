@@ -700,28 +700,34 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $aAutomators;
     }
 
-    public function callAgent($sType, $aAgent, $aParams = [])
+    public function callAgent($sType, $aAgent, $mixedParams = [])
     {
+        $sParams = is_string($mixedParams) ? $mixedParams : json_encode($mixedParams);
+
         // update sample data
         $a = ['alert' => 'alert_sample', 'webhook' => 'webhook_sample'];
         if (isset($a[$sType]) && empty($aAgent[$a[$sType]])) {
-            $this->updateAgentField($aAgent['id'], $a[$sType], json_encode($aParams));
+            $this->updateAgentField($aAgent['id'], $a[$sType], $sParams);
         }
 
+        // call agent
         $o = self::getAgentInstance($aAgent['id']);
         if (!$o)
             return false;
 
-        $o->chat(new UserMessage($aParams));
+        $oMessage = $o->chat(new NeuronAI\Chat\Messages\UserMessage($sParams))->getMessage();
 
-        $o->run();
-
-        return $o->getMessage();
+        return $oMessage->getContent();
     }
 
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
     {
         return $this->_oDb->getAgentsByAlertUnitAndAction($sUnit, $sAction);
+    }
+
+    public function getAgentsByProfileId($iProfileId)
+    {
+        return $this->_oDb->getAgentsByProfileId($iProfileId);
     }
 
     public function callAutomator($sType, $aParams = [])

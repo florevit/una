@@ -896,6 +896,11 @@ class BxDolAIQuery extends BxDolDb
         return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action", ['unit' => $sUnit, 'action' => $sAction]);
     }
 
+    public function getAgentsByProfileId($iProfileId)
+    {
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `profile_id` = :profile", ['profile' => $iProfileId]);
+    }
+
     public function updateAgentField($iId, $sField, $sValue)
     {
         return $this->query("UPDATE `sys_agents_agents` SET `$sField` = :value WHERE `id` = :id", ['value' => $sValue, 'id' => $iId]);

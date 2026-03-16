@@ -452,12 +452,12 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
-                'message_profile_ids' => [
+                'message_profile_id' => [
                     'type' => 'select',
-                    'name' => 'message_profile_ids',
+                    'name' => 'message_profile_id',
                     'caption' => _t('_sys_agents_field_message_profile'),
                     'info' => _t('_sys_agents_field_message_profile_info'),
-                    'value' => isset($aAgent['message_profile_ids']) ? $aAgent['message_profile_ids'] : '',
+                    'value' => isset($aAgent['message_profile_id']) ? $aAgent['message_profile_id'] : '',
                     // 'tr_attrs' => [
                     //     'style' => $sType != 'message' ? 'display:none' : ''
                     // ],

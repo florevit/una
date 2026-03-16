@@ -2291,6 +2291,13 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('sys_cmts_images', 'file_deleted', @iIdHandler);
 
 
+INSERT INTO `sys_alerts_handlers` (`name`, `class`, `file`) VALUES
+('sys_agents', 'BxDolAiAlertResponse', 'inc/classes/BxDolAiAlertResponse.php');
+SET @iIdHandler = LAST_INSERT_ID();
+
+INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
+('bx_messenger', 'got_jot', @iIdHandler);
+
 -- --------------------------------------------------------
 
 
@@ -7127,11 +7134,12 @@ CREATE TABLE `sys_agents_agents` (
   `webhook_key` varchar(255) NOT NULL,
   `webhook_sample` text NOT NULL,
   `agent_sample` text NOT NULL,
-  `message_profile_ids` int(11) NOT NULL,
+  `message_profile_id` int(11) NOT NULL,
   `added` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `active` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `alert` (`alert_unit`,`alert_action`),
+  KEY `profile_id` (`profile_id`,`message_profile_id`),
   KEY `webhook_key` (`webhook_key`(192))
 );
 
