@@ -2283,6 +2283,10 @@
         <string name="_sys_agents_field_prompt_output_info"><![CDATA[Инструкции по форматированию результата.]]></string>
         <string name="_sys_agents_field_prompt_tools"><![CDATA[Инструкция по инструментам]]></string>
         <string name="_sys_agents_field_prompt_tools_info"><![CDATA[Инструкции по использованию доступных инструментов.]]></string>
+        <string name="_sys_agents_tools_popup_edit"><![CDATA[Редактирование инструмента]]></string>
+        <string name="_sys_agents_field_title"><![CDATA[Название]]></string>
+        <string name="_sys_agents_tools_field_params"><![CDATA[Параметры]]></string>
+        <string name="_sys_agents_tools_field_params_info"><![CDATA[Параметры для конфигурации этого инструмента, свои для каждого инструмента]]></string>
         <string name="_sys_agents_automators_field_providers"><![CDATA[Поставщики]]></string>
         <string name="_sys_agents_automators_field_providers_add"><![CDATA[Добавить]]></string>
         <string name="_sys_agents_automators_field_helpers"><![CDATA[Помощники]]></string>
