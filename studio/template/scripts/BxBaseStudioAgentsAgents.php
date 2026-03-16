@@ -93,11 +93,9 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         $oAI = BxDolAI::getInstance();
 
         $iId = $this->_getId();
-        $aAutomator = $oAI->getAutomator($iId);
-        $aAutomator['providers'] = $this->_oDb->getAutomatorsBy(['sample' => 'providers_by_id_pairs', 'id' => $iId]);
-        $aAutomator['helpers'] = $this->_oDb->getAutomatorsBy(['sample' => 'helpers_by_id_pairs', 'id' => $iId]);
+        $aAgent = BxDolAiQuery::getAgentObject($iId);
 
-        $aForm = $this->_getFormEdit($sAction, $aAutomator);
+        $aForm = $this->_getFormEdit($sAction, $aAgent);
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
 
@@ -105,97 +103,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             $aValsToAdd = [];
 
             $sName = $oForm->getCleanValue($this->_sFieldName);
-            if($aAutomator[$this->_sFieldName] != $sName) {
-                $sName = $this->_getUniqName($sName);
-                BxDolForm::setSubmittedValue($this->_sFieldName, $sName, $oForm->aFormAttrs['method']);
-            }
-
-            /**
-             * Process Providers
-             */
-            $aProvidersIds = $oForm->getCleanValue('providers_ids');
-            $bProvidersIds = !empty($aProvidersIds) && is_array($aProvidersIds);
-            $aProvidersValues = $oForm->getCleanValue('providers');
-            $bProvidersValues = !empty($aProvidersValues) && is_array($aProvidersValues);
-
-            //--- Providers: Remove deleted
-            if(!empty($aAutomator['providers']) && is_array($aAutomator['providers']))
-                $this->_oDb->deleteAutomatorProvidersById(array_diff(array_keys($aAutomator['providers']), $bProvidersIds ? $aProvidersIds : []));
-
-            //--- Providers: Update existed
-            if($bProvidersIds)
-                foreach($aProvidersIds as $iIndex => $iApId)
-                    $this->_oDb->updateAutomatorProvider(['provider_id' => (int)$aProvidersValues[$iIndex]], ['id' => (int)$iApId]);
-
-            //--- Providers: Add new
-            $iProvidersIds = $bProvidersIds ? count($aProvidersIds) : 0;
-            $iProvidersValues = $bProvidersValues ? count($aProvidersValues) : 0;
-            if($iProvidersValues > $iProvidersIds) {
-                $aProvidersValues = array_slice($aProvidersValues, $iProvidersIds);
-                foreach($aProvidersValues as $iProvidersValue)
-                    $this->_oDb->insertAutomatorProvider([
-                        'automator_id' => $iId,
-                        'provider_id' => (int)$iProvidersValue,
-                    ]);
-            }
-
-            /**
-             * Process Helpers
-             */
-            $aHelpersIds = $oForm->getCleanValue('helpers_ids');
-            $bHelpersIds = !empty($aHelpersIds) && is_array($aHelpersIds);
-            $aHelpersValues = $oForm->getCleanValue('helpers');
-            $bHelpersValues = !empty($aHelpersValues) && is_array($aHelpersValues);
-
-            //--- Helpers: Remove deleted
-            if(!empty($aAutomator['helpers']) && is_array($aAutomator['helpers']))
-                $this->_oDb->deleteAutomatorHelpersById(array_diff(array_keys($aAutomator['helpers']), $bHelpersIds ? $aHelpersIds : []));
-
-            //--- Helpers: Update existed
-            if($bHelpersIds)
-                foreach($aHelpersIds as $iIndex => $iAhId)
-                    $this->_oDb->updateAutomatorHelper(['helper_id' => (int)$aHelpersValues[$iIndex]], ['id' => (int)$iAhId]);
-
-            //--- Helpers: Add new
-            $iHelpersIds = $bHelpersIds ? count($aHelpersIds) : 0;
-            $iHelpersValues = $bHelpersValues ? count($aHelpersValues) : 0;
-            if($iHelpersValues > $iHelpersIds) {
-                $aHelpersValues = array_slice($aHelpersValues, $iHelpersIds);
-                foreach($aHelpersValues as $iHelpersValue)
-                    $this->_oDb->insertAutomatorHelper([
-                        'automator_id' => $iId,
-                        'helper_id' => (int)$iHelpersValue,
-                    ]);
-            }
-
-            /**
-             * Process Assistants
-             */
-            $aAssistantsIds = $oForm->getCleanValue('assistants_ids');
-            $bAssistantsIds = !empty($aAssistantsIds) && is_array($aAssistantsIds);
-            $aAssistantsValues = $oForm->getCleanValue('assistants');
-            $bAssistantsValues = !empty($aAssistantsValues) && is_array($aAssistantsValues);
-
-            //--- Assistants: Remove deleted
-            if(!empty($aAutomator['assistants']) && is_array($aAutomator['assistants']))
-                $this->_oDb->deleteAutomatorAssistantsById(array_diff(array_keys($aAutomator['assistants']), $bAssistantsIds ? $aAssistantsIds : []));
-
-            //--- Assistants: Update existed
-            if($bAssistantsIds)
-                foreach($aAssistantsIds as $iIndex => $iAhId)
-                    $this->_oDb->updateAutomatorAssistant(['assistant_id' => (int)$aAssistantsValues[$iIndex]], ['id' => (int)$iAhId]);
-
-            //--- Assistants: Add new
-            $iAssistantsIds = $bAssistantsIds ? count($aAssistantsIds) : 0;
-            $iAssistantsValues = $bAssistantsValues ? count($aAssistantsValues) : 0;
-            if($iAssistantsValues > $iAssistantsIds) {
-                $aAssistantsValues = array_slice($aAssistantsValues, $iAssistantsIds);
-                foreach($aAssistantsValues as $iAssistantsValue)
-                    $this->_oDb->insertAutomatorAssistant([
-                        'automator_id' => $iId,
-                        'assistant_id' => (int)$iAssistantsValue,
-                    ]);
-            }
+            $sName = $this->_getUniqName($sName);
+            BxDolForm::setSubmittedValue($this->_sFieldName, $sName, $oForm->aFormAttrs['method']);
 
             $iProfileId = $oForm->getCleanValue('profile_id');
             if(empty($iProfileId)) {
@@ -205,53 +114,27 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
 
                 $aValsToAdd['profile_id'] = $iProfileId;
             }
+  
+            $iModel = $oForm->getCleanValue('model_id');
+            $sTrigger = $oForm->getCleanValue('trigger');
 
-            $sSchedulerTime = $oForm->getCleanValue('scheduler_time');
-            if(!empty($sSchedulerTime))
-                $aValsToAdd['params'] = json_encode(['scheduler_time' => $sSchedulerTime]);
+            $sTools = is_array($oForm->getCleanValue('tools')) ? implode(',', $oForm->getCleanValue('tools')) : '';
+            $aValsToAdd['tools'] = $sTools;
 
-            if($oForm->update($iId, $aValsToAdd) !== false) {
-                if(($oCmts = BxDolAI::getInstance()->getAutomatorCmtsObject($iId, $oTemplate)) !== null) {
-                    $sInstructions = $oAI->getAutomatorInstruction('profile', $iProfileId);
-
-                    $aProviders = $this->_oDb->getAutomatorsBy(['sample' => 'providers_by_id_pairs', 'id' => $iId]);
-                    if(!empty($aProviders) && is_array($aProviders))
-                        $sInstructions .= $oAI->getAutomatorInstruction('providers', array_values($aProviders));
-
-                    $aHelpers = $this->_oDb->getAutomatorsBy(['sample' => 'helpers_by_id_pairs', 'id' => $iId]);
-                    if(!empty($aHelpers) && is_array($aHelpers))
-                        $sInstructions .= $oAI->getAutomatorInstruction('helpers', array_values($aHelpers));
-
-                    $aAssistants = $this->_oDb->getAutomatorsBy(['sample' => 'assistants_by_id_pairs', 'id' => $iId]);
-                    if(!empty($aAssistants) && is_array($aAssistants))
-                        $sInstructions .= $oAI->getAutomatorInstruction('assistants', array_values($aAssistants));
-
-                    $oCmts->addAuto([
-                        'cmt_author_id' => $iProfileId,
-                        'cmt_parent_id' => 0,
-                        'cmt_text' => $sInstructions
-                    ]);
-
-                    if(($oMessage = new BxDolAIMessageString('hb', $sInstructions)) && ($sResponse = $oAI->getModelObject($aAutomator['model_id'])->getResponse($aAutomator['type'], $oMessage, $aAutomator['params'])) !== false) {
-                        sleep(1);
-                        $oCmts->addAuto([
-                            'cmt_author_id' => $this->_iProfileIdAi,
-                            'cmt_parent_id' => 0,
-                            'cmt_text' => $sResponse
-                        ]);
-                    }
+            $bIsValid = true;
+            if($bIsValid) {
+                if(($iId = $oForm->update($iId, $aValsToAdd)) !== false) {
+                    $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
                 }
+                else
+                    $aRes = ['msg' => _t('_sys_txt_error_occured')];
 
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
+                return echoJson($aRes);
             }
-            else
-                $aRes = ['msg' => _t('_sys_txt_error_occured')];
-
-            return echoJson($aRes);
         } 
 
         $sFormId = $oForm->getId();
-        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup', _t('_sys_agents_popup_edit'), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
+        $sContent = BxTemplStudioFunctions::getInstance()->popupBox($sFormId . '_popup', _t('_sys_agents_agents_popup_edit', $aAgent['name']), $this->_oTemplate->parseHtmlByName('agents_automator_form.html', [
             'form_id' => $sFormId,
             'form' => $oForm->getCode(true),
             'object' => $this->_sObject,
@@ -294,8 +177,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         $aForm = $this->_getForm($sAction, $aAgent);
         $aForm['form_attrs']['action'] .= '&id=' . $aAgent['id'];
 
-        unset($aForm['inputs']['type']);
-        unset($aForm['inputs']['message']);
+        unset($aForm['inputs']['name']);
 
         return $aForm;
     }

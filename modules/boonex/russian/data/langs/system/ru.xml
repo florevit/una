@@ -2559,6 +2559,9 @@
 	<string name="_sys_audit_userside_caching"><![CDATA[Кэширование статичного содержимого на стороне пользователя]]></string>
 	<string name="_sys_audit_version"><![CDATA[версия]]></string>
 	<string name="_sys_audit_version_script"><![CDATA[Версия UNA]]></string>
+
+	<string name="_sys_agents_agents_popup_edit"><![CDATA[Редактирование агента "{0}"]]></string>
+
         <string name="_sys_block_type_custom"><![CDATA[индивидуальный]]></string>
 	<string name="_sys_block_type_html"><![CDATA[html]]></string>
 	<string name="_sys_block_type_image"><![CDATA[изображение]]></string>
