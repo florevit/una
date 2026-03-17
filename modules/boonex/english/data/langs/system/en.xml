@@ -2295,7 +2295,7 @@
     <string name="_sys_agents_field_webhook_key_info"><![CDATA[Unique key for webhook endpoint, used as Bearer Authentication header.]]></string>
     <string name="_sys_agents_field_webhook_sample"><![CDATA[Webhook: sample payload]]></string>
     <string name="_sys_agents_field_message_profile"><![CDATA[Message: profile for communication with agent]]></string>
-    <string name="_sys_agents_field_message_profile_info"><![CDATA[Profile to use for sending messages to the agent, messages form other users are ignored.]]></string>
+    <string name="_sys_agents_field_message_profile_info"><![CDATA[Profile to use for sending messages to the agent, messages from other users are ignored.]]></string>
     <string name="_sys_agents_field_vector_store_id"><![CDATA[Knowledge]]></string>
     <string name="_sys_agents_field_vector_store_id_info"><![CDATA[Vector store for knowledge retrieval.]]></string>
     <string name="_sys_agents_field_tools"><![CDATA[Tools]]></string>

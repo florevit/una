@@ -207,7 +207,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'required' => '1',
                     'checker' => [
                         'func' => 'Avail',
-                        'params' => [],
                         'error' => _t('_sys_agents_form_field_err_enter'),
                     ],
                     'db' => [
@@ -224,7 +223,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'required' => '1',
                     'checker' => [
                         'func' => 'Avail',
-                        'params' => [],
                         'error' => _t('_sys_agents_form_field_err_select'),
                     ],
                     'db' => [
@@ -238,7 +236,12 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'info' => _t('_sys_agents_field_profile_id_inf'),
                     'value' => isset($aAgent['profile_id']) ? $aAgent['profile_id'] : 0,
                     'values' => bx_srv('system', 'get_options_agents_profile', [], 'TemplServices'),
-                    'required' => '0',
+                    'required' => '1',
+                    'required' => '1',
+                    'checker' => [
+                        'func' => 'Avail',
+                        'error' => _t('_sys_agents_form_field_err_select'),
+                    ],
                     'db' => [
                         'pass' => 'Int',
                     ]
@@ -278,9 +281,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'name' => 'alert_sample',
                     'caption' => _t('_sys_agents_field_alert_sample'),
                     'content' => isset($aAgent['alert_sample']) ? $aAgent['alert_sample'] : _t('_sys_agents_waiting_for_sample_data'),
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'alert' ? 'display:none' : ''
-                    // ],
                 ],
                 'alert_unit' => [
                     'type' => 'text',
@@ -288,9 +288,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_alert_unit'),
                     'info' => _t('_sys_agents_field_alert_unit_info'),
                     'value' => isset($aAgent['alert_unit']) ? $aAgent['alert_unit'] : '',
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'alert' ? 'display:none' : ''
-                    // ],
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -300,9 +297,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'name' => 'alert_action',
                     'caption' => _t('_sys_agents_field_alert_action'),
                     'value' => isset($aAgent['alert_action']) ? $aAgent['alert_action'] : '',
-                    // 'tr_attrs' => [
-                    //    'style' => $sType != 'alert' ? 'display:none' : ''
-                    // ],
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -321,9 +315,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_scheduler_cron'),
                     'info' => _t('_sys_agents_field_scheduler_cron_info'),
                     'value' => isset($aAgent['scheduler_cron']) ? $aAgent['scheduler_cron'] : '',
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'scheduler' ? 'display:none' : ''
-                    // ],
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -341,9 +332,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'name' => 'webhook_sample',
                     'caption' => _t('_sys_agents_field_webhook_sample'),
                     'content' => isset($aAgent['webhook_sample']) ? $aAgent['webhook_sample'] : _t('_sys_agents_waiting_for_sample_data'),
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'webhook' ? 'display:none' : ''
-                    // ],
                 ],
                 'webhook_key' => [
                     'type' => 'text',
@@ -351,9 +339,6 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_webhook_key'),
                     'info' => _t('_sys_agents_field_webhook_key_info'),
                     'value' => isset($aAgent['webhook_key']) ? $aAgent['webhook_key'] : '',
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'webhook' ? 'display:none' : ''
-                    // ],
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -372,10 +357,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_message_profile'),
                     'info' => _t('_sys_agents_field_message_profile_info'),
                     'value' => isset($aAgent['message_profile_id']) ? $aAgent['message_profile_id'] : '',
-                    'values' => bx_srv('system', 'get_options_agents_profile', [], 'TemplServices'),
-                    // 'tr_attrs' => [
-                    //     'style' => $sType != 'message' ? 'display:none' : ''
-                    // ],
+                    'values' => bx_srv('system', 'get_options_agents_profile', [true, '_adm_nav_txt_items_visible_for_all'], 'TemplServices'),
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -392,6 +374,11 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'info' => _t('_sys_agents_field_vector_store_id_info'),
                     'value' => isset($aAgent['vector_store_id']) ? $aAgent['vector_store_id'] : 0,
                     'values' => $this->_oDb->getVectorStores(),
+                    'required' => '1',
+                    'checker' => [
+                        'func' => 'Avail',
+                        'error' => _t('_sys_agents_form_field_err_select'),
+                    ],
                     'db' => [
                         'pass' => 'Xss',
                     ],

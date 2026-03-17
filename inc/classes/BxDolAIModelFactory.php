@@ -110,7 +110,7 @@ class BxDolAIModelFactory extends BxDolFactory
                 );
                 break;
             case 'deepseek':
-                $o = new NeuronAI\Providers\DeepSeek\DeepSeek(
+                $o = new NeuronAI\Providers\Deepseek\Deepseek(
                     key: $a['key'],
                     model: $a['model'],
                     parameters: $aParameters['parameters'] ?? [],

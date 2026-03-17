@@ -400,7 +400,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $oMessage->getContent();
     }
 
-    public function sendAutoMessage ($iSender, $iRecipient, $sMsg) 
+    public function sendMessengerMessage ($iSender, $iRecipient, $sMsg) 
     {        
         $oMessengerModule = BxDolModule::getInstance('bx_messenger');
 
