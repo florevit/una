@@ -38,7 +38,10 @@ class BxDolAiAlertResponse extends BxDolAlertsResponse
                         'message_text' => $aJotInfo['message'],
                         'message_info' => $aJotInfo,
                     ]);
-                    $this->sendAutoMessage($a['profile_id'], $iSender, $sMessage);
+                    $oParsedown = new Parsedown();
+                    $oParsedown->setSafeMode(true);
+                    $sMessageHtml = $oParsedown->text($sMessage);
+                    $this->sendAutoMessage($a['profile_id'], $iSender, str_replace('\n', '', $sMessageHtml));
                 }
             }
         }
