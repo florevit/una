@@ -19,7 +19,7 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
     protected function _delete ($mixedId)
     {
         $r = $this->_oDb->getVectorStoreDataById($mixedId);
-        $oVectorStore = BxDolAI::getVectorStoreInstance($r['vector_store_id']);
+        $oVectorStore = BxDolAIVectorStoreFactory::getVectorStoreInstance($r['vector_store_id']);
         if ($oVectorStore) {
             $oVectorStore->deleteBySource($r['vector_store_id'], $r['id']);
         }
@@ -53,6 +53,10 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
         return parent::_getCellDefault ($mixedValue, $sKey, $aField, $aRow);
     } 
 
+    /**
+     * Process files which were added to the vector store. 
+     * It takes files converts it to the vector and store in the appropriate vector store.
+     */
     static public function processPendingData()
     { 
         $iLimit = 5; // TODO: add to settings
@@ -64,8 +68,8 @@ class BxBaseStudioAgentsVectorStoreData extends BxDolStudioAgentsVectorStoreData
                 BxDolAiQuery::updateVectorStoreDataStatus($r['id'], 'processing');
 
                 $aVectorStore = BxDolAiQuery::getVectorStoreObject($r['vector_store_id']);
-                $oVectorStore = BxDolAI::getVectorStoreInstance($aVectorStore['id']);
-                $oEmbedder = BxDolAI::getModelInstance($aVectorStore['embedding_provider_id']);
+                $oVectorStore = BxDolAIVectorStoreFactory::getVectorStoreInstance($aVectorStore['id']);
+                $oEmbedder = BxDolAIModelFactory::getModelInstance($aVectorStore['embedding_provider_id']);
                 $sError = '';
 
                 if ($oEmbedder && $oVectorStore) {

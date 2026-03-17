@@ -18,7 +18,7 @@ class BxDolAiAgent extends RAG
 
     protected function provider(): NeuronAI\Providers\AIProviderInterface
     {
-        return BxDolAi::getModelInstance($this->aAgent['model_id']);
+        return BxDolAIModelFactory::getModelInstance($this->aAgent['model_id']);
     }
 
     protected function instructions(): string
@@ -41,7 +41,7 @@ class BxDolAiAgent extends RAG
             $aTools = explode(',', $this->aAgent['tools']);
             $aToolInstances = [];
             foreach ($aTools as $iToolId) {
-                $oTool = BxDolAi::getToolInstance($iToolId);
+                $oTool = BxDolAIToolFactory::getToolInstance($iToolId);
                 $aToolInstances[] = $oTool;                
             }
             return $aToolInstances;
@@ -54,7 +54,7 @@ class BxDolAiAgent extends RAG
     protected function vectorStore(): NeuronAI\RAG\VectorStore\VectorStoreInterface
     {
         if ($this->aAgent['vector_store_id'])
-            return BxDolAi::getVectorStoreInstance($this->aAgent['vector_store_id']);
+            return BxDolAIVectorStoreFactory::getVectorStoreInstance($this->aAgent['vector_store_id']);
         else
             return new NeuronAI\RAG\VectorStore\MemoryVectorStore();
     }
