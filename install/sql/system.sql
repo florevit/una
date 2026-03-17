@@ -7272,7 +7272,6 @@ INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`
 ('mysql_select', 'MySQL Select', 'Use this tool to make your agent able to run SELECT query against the database. It\'s like read-only access without ability to change anything in the DB. It works the best in par of MySQL Schema tool.  \r\nNo parameters are needed for this tool.', '{}', NULL, 0, 0, 1),
 ('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0);
 
-
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `thread_id` VARCHAR(255) NOT NULL,
@@ -7280,7 +7279,7 @@ CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_thread_id` (`thread_id`)
+  UNIQUE KEY `uk_thread_id` (`thread_id`(192))
 );
 
 -- --------------------------------------------------------
