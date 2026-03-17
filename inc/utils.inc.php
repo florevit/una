@@ -2907,5 +2907,34 @@ function bx_mem_cache_set(string $sKey, mixed $mixedData): mixed
     return $GLOBALS['glMemCache'][$sKey] = $mixedData;
 }
 
+function bx_ai_process_agents_call_queue($bFinishRequest = true, $bExit = true)
+{
+    if ($bFinishRequest) {
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            @ob_end_flush();
+            @flush();
+        }
+    }
+
+    if (!empty($GLOBALS['glAgentsCallQueue']))
+    {
+        $oAi = BxDolAI::getInstance();
+        foreach ($GLOBALS['glAgentsCallQueue'] as $r) 
+        {
+            $sMessage = $oAi->callAgent($r['type'], $r['agent'], $r['params']);
+
+            $oParsedown = new Parsedown();
+            $oParsedown->setSafeMode(true);
+            $sMessageHtml = $oParsedown->text($sMessage);
+            $oAi->sendMessengerMessage($r['agent']['profile_id'], $r['params']['sender_profile_id'], str_replace('\n', '', $sMessageHtml));
+        }
+    }
+    
+    if ($bExit) {
+        exit(0);
+    }
+}
 
 /** @} */

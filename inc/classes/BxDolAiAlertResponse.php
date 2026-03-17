@@ -26,41 +26,38 @@ class BxDolAiAlertResponse extends BxDolAlertsResponse
 
         // call agents
         $oAi = BxDolAI::getInstance();
-        if($aAgents = $oAi->getAgentsByProfileId($iRecipient)) {            
+        if($aAgents = $oAi->getAgentsByProfileId($iRecipient)) {
+            $GLOBALS['glAgentsCallQueue'] = [];
             foreach($aAgents as $a) {
                 if (!$a['message_profile_id'] || $iSender == $a['message_profile_id']) {
-                    $sMessage = $oAi->callAgent('message', $a, [
-                        'trigger' => 'message',
-                        'sender_profile_id' => $iSender,
-                        'recipient_profile_id' => $iRecipient,
-                        'message_lot_id' => $iLotId, 
-                        'message_id' => $iJotId,
-                        'message_text' => $aJotInfo['message'],
-                        'message_info' => $aJotInfo,
-                    ]);
-                    $oParsedown = new Parsedown();
-                    $oParsedown->setSafeMode(true);
-                    $sMessageHtml = $oParsedown->text($sMessage);
-                    $this->sendAutoMessage($a['profile_id'], $iSender, str_replace('\n', '', $sMessageHtml));
+
+                    $GLOBALS['glAgentsCallQueue'][] = [
+                        'type' => 'message',
+                        'agent' => $a,
+                        'params' => [
+                            'trigger' => 'message',
+                            'sender_profile_id' => $iSender,
+                            'recipient_profile_id' => $iRecipient,
+                            'message_lot_id' => $iLotId, 
+                            'message_id' => $iJotId,
+                            'message_text' => $aJotInfo['message'],
+                            'message_info' => $aJotInfo,
+                        ],
+                    ];
                 }
             }
+            if (!empty($GLOBALS['glAgentsCallQueue'])) {
+                ignore_user_abort(true); 
+                set_time_limit(0);
+
+                // TODO: need a way to force messenger to show new message from the server side
+                // register_shutdown_function(function () { 
+                //     bx_ai_process_agents_call_queue();
+                // });
+                bx_ai_process_agents_call_queue(false, false); // TODO: for a while do synchronically
+            }
+
         }
-    }
-
-    function sendAutoMessage ($iSender, $iRecipient, $sMsg) 
-    {        
-        $oMessengerModule = BxDolModule::getInstance('bx_messenger');
-
-        $aAutoReplyData = [
-            'message' => $sMsg,
-            'participants' => [$iSender, $iRecipient],
-        ];
-
-        $iSaveProfileId = $oMessengerModule->setProfileId($iSender);
-        $a = $oMessengerModule->sendMessage($aAutoReplyData, $iRecipient, $iSender);
-        $oMessengerModule->setProfileId($iSaveProfileId);
-
-        return $a;
     }
 }
 

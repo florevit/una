@@ -400,6 +400,22 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $oMessage->getContent();
     }
 
+    public function sendAutoMessage ($iSender, $iRecipient, $sMsg) 
+    {        
+        $oMessengerModule = BxDolModule::getInstance('bx_messenger');
+
+        $aAutoReplyData = [
+            'message' => $sMsg,
+            'participants' => [$iSender, $iRecipient],
+        ];
+
+        $iSaveProfileId = $oMessengerModule->setProfileId($iSender);
+        $a = $oMessengerModule->sendMessage($aAutoReplyData, $iRecipient, $iSender);
+        $oMessengerModule->setProfileId($iSaveProfileId);
+
+        return $a;
+    }
+
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
     {
         return $this->_oDb->getAgentsByAlertUnitAndAction($sUnit, $sAction);
