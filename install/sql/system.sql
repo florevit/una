@@ -7125,6 +7125,7 @@ CREATE TABLE `sys_agents_agents` (
   `prompt_output` text NOT NULL,
   `prompt_tools` text NOT NULL,
   `tools` varchar(255) NOT NULL DEFAULT '',
+  `chat_history_context` int(11) NOT NULL DEFAULT 50000,
   `vector_store_id` int(11) NOT NULL,
   `trigger` enum('alert','scheduler','webhook','manual','agent','message') NOT NULL DEFAULT 'message',
   `alert_unit` varchar(128) NOT NULL DEFAULT '',
@@ -7264,6 +7265,16 @@ CREATE TABLE IF NOT EXISTS `sys_agents_tools` (
   `changed` int(11) NOT NULL DEFAULT 0,
   `active` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `thread_id` VARCHAR(255) NOT NULL,
+  `messages` LONGTEXT NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_thread_id` (`thread_id`)
 );
 
 -- --------------------------------------------------------

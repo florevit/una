@@ -2287,6 +2287,8 @@
         <string name="_sys_agents_field_title"><![CDATA[Название]]></string>
         <string name="_sys_agents_tools_field_params"><![CDATA[Параметры]]></string>
         <string name="_sys_agents_tools_field_params_info"><![CDATA[Параметры для конфигурации этого инструмента, свои для каждого инструмента]]></string>
+        <string name="_sys_agents_field_chat_history_context"><![CDATA[Размер контекста истории чата]]></string>
+        <string name="_sys_agents_field_chat_history_context_info"><![CDATA[Автоматически обрезать историю диалога на основе размера контекста, 0 - отключить историю чата]]></string>
         <string name="_sys_agents_automators_field_providers"><![CDATA[Поставщики]]></string>
         <string name="_sys_agents_automators_field_providers_add"><![CDATA[Добавить]]></string>
         <string name="_sys_agents_automators_field_helpers"><![CDATA[Помощники]]></string>

@@ -2312,6 +2312,8 @@
     <string name="_sys_agents_field_title"><![CDATA[Title]]></string>
     <string name="_sys_agents_tools_field_params"><![CDATA[Parameters]]></string>
     <string name="_sys_agents_tools_field_params_info"><![CDATA[Parameters for configuring the tool, specific to each tool]]></string>
+    <string name="_sys_agents_field_chat_history_context"><![CDATA[Chat history context window]]></string>
+    <string name="_sys_agents_field_chat_history_context_info"><![CDATA[Automatically cut the conversation history based on the size of the context window, set to '0' to disable chat history]]></string>
     <string name="_sys_agents_automators_field_providers"><![CDATA[Providers]]></string>
     <string name="_sys_agents_automators_field_providers_add"><![CDATA[Add]]></string>
     <string name="_sys_agents_automators_field_helpers"><![CDATA[Helpers]]></string>

@@ -396,6 +396,16 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+                'chat_history_context' => [
+                    'type' => 'text',
+                    'name' => 'chat_history_context',
+                    'caption' => _t('_sys_agents_field_chat_history_context'),
+                    'info' => _t('_sys_agents_field_chat_history_context_info'),
+                    'value' => isset($aAgent['chat_history_context']) ? $aAgent['chat_history_context'] : 50000,
+                    'db' => [
+                        'pass' => 'Int',
+                    ],
+                ],
                 'tools' => [
                     'type' => 'custom',
                     'name' => 'tools',

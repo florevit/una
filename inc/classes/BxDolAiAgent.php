@@ -11,7 +11,7 @@ use NeuronAI\RAG\RAG;
 
 class BxDolAiAgent extends RAG
 {
-    public function __construct(protected array $aAgent)
+    public function __construct(protected array $aAgent, protected array $aParams = [])
     {
         parent::__construct();
     }
@@ -57,5 +57,31 @@ class BxDolAiAgent extends RAG
             return BxDolAIVectorStoreFactory::getVectorStoreInstance($this->aAgent['vector_store_id']);
         else
             return new NeuronAI\RAG\VectorStore\MemoryVectorStore();
+    }
+
+    protected function chatHistory(): NeuronAI\Chat\History\ChatHistoryInterface
+    {
+        if ($this->aAgent['chat_history_context']) {
+            return new NeuronAI\Chat\History\SQLChatHistory(
+                thread_id: $this->getСhatHistoryThreadId(),
+                pdo: BxDolDb::getInstance()->getLink(),
+                table: 'sys_agents_chat_history',
+                contextWindow: $this->aAgent['chat_history_context']
+            );
+        }
+        else {
+            return new NeuronAI\Chat\History\InMemoryChatHistory(
+                contextWindow: 50000
+            );
+        }
+    }
+
+    protected function getСhatHistoryThreadId(): string
+    {
+        echoDbgLog($this->aParams);
+        $s = $this->aAgent['trigger'] . ':' . $this->aAgent['id'];
+        if (isset($this->aParams['chat_history_subindex']))
+            $s .=  ':' . $this->aParams['chat_history_subindex'];
+        return $s;
     }
 }

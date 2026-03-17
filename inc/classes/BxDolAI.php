@@ -70,7 +70,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $GLOBALS['bxDolClasses'][__CLASS__];
     }
 
-    public static function getAgentInstance(int $iId): NeuronAI\Agent\Agent
+    public static function getAgentInstance(int $iId, array $aParams = []): NeuronAI\Agent\Agent
     {
         if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId]))
             return $GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId];
@@ -92,7 +92,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
             throw new Exception($s);
         }
 
-        $o = BxDolAiAgent::make($a);
+        $o = BxDolAiAgent::make($a, $aParams);
 
         if ($a['vector_store_id']) {
             $aVectorStore = BxDolAIQuery::getVectorStoreObject($a['vector_store_id']);
@@ -384,8 +384,14 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
             $this->updateAgentField($aAgent['id'], $a[$sType], $sParams);
         }
 
+        // set additional params
+        $aParams = [];
+        if ('message' == $sType) {
+            $aParams = ['chat_history_subindex' => $mixedParams['sender_profile_id']];
+        }
+
         // call agent
-        $o = self::getAgentInstance($aAgent['id']);
+        $o = self::getAgentInstance($aAgent['id'], $aParams);
         if (!$o)
             return false;
 
