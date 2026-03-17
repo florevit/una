@@ -30,7 +30,9 @@ class BxDolAIModelFactory extends BxDolFactory
             throw new Exception("Model with id {$iId} is not active, can't be used");
         }
 
-        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersSystem = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersUser = !empty($a['params_user']) ? json_decode($a['params_user'], true) : [];
+        $aParameters = array_merge($aParametersSystem, $aParametersUser);
 
         // replace markers {key} {model} in $aParameters recoursively
         $aParameters = bx_replace_markers($aParameters, [

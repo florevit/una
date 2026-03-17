@@ -20,7 +20,9 @@ class BxDolAIToolFactory extends BxDolFactory
             throw new Exception("Tool with id {$iId} not found");
         }
 
-        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersSystem = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersUser = !empty($a['params_user']) ? json_decode($a['params_user'], true) : [];
+        $aParameters = array_merge($aParametersSystem, $aParametersUser);
         
         switch($a['type']) {
             case 'mysql_schema':

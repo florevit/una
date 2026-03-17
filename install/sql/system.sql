@@ -7267,6 +7267,12 @@ CREATE TABLE IF NOT EXISTS `sys_agents_tools` (
   PRIMARY KEY (`id`)
 );
 
+INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`, `duplicate`, `changed`, `active`) VALUES
+('mysql_schema', 'MySQL Schema', 'This tool allows agents to understand the structure of the database, enabling them to construct intelligent queries without requiring you to hardcode table structures or relationships into the prompts. This tool essentially gives your agent the equivalent of a database administrator’s understanding of your schema, allowing it to craft queries that respect your data model and take advantage of existing indexes.  \r\nIt reads all tables by default, but it\'s possible to limit it to a certain number of tables by providing the list in the `tables` parameter. By limiting the schema scope, you can create specialized agents that focus on specific areas of the site.', '{\"tables\":[]}', NULL, 0, 0, 1),
+('mysql_select', 'MySQL Select', 'Use this tool to make your agent able to run SELECT query against the database. It\'s like read-only access without ability to change anything in the DB. It works the best in par of MySQL Schema tool.  \r\nNo parameters are needed for this tool.', '{}', NULL, 0, 0, 1),
+('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0);
+
+
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `thread_id` VARCHAR(255) NOT NULL,

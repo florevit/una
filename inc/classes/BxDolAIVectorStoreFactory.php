@@ -21,7 +21,9 @@ class BxDolAIVectorStoreFactory extends BxDolFactory
             throw new Exception("Vector store with id {$iId} not found");
         }
 
-        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersSystem = !empty($a['params']) ? json_decode($a['params'], true) : [];
+        $aParametersUser = !empty($a['params_user']) ? json_decode($a['params_user'], true) : [];
+        $aParameters = array_merge($aParametersSystem, $aParametersUser);
 
         // replace marker {topk} in $aParameters recoursively
         $aParameters = bx_replace_markers($aParameters, [
