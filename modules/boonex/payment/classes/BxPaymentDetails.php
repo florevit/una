@@ -77,7 +77,7 @@ class BxPaymentDetails extends BxBaseModPaymentDetails
                 $mixedContent[] = bx_api_get_block('form', $mixedForm, [
                     'id' => $iIndex + 1,
                     'ext' => [
-                        'name' => $this->MODULE, 
+                        'name' => $mixedForm['attrs']['name'] ?? $this->MODULE,
                         'request' => ['url' => '/api.php?r=' . $this->MODULE . '/get_block_details/Details', 'immutable' => true]
                     ]
                 ]);
