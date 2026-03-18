@@ -449,7 +449,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks', 'bx_tasks', 'changed', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_changed', '_bx_tasks_form_entry_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'published', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_published', '_bx_tasks_form_entry_input_date_published', '_bx_tasks_form_entry_input_date_published_info', 0, 0, 0, '', '', '', '', '', '', 'DateTimeTs', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'initial_members', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_initial_members', '_bx_tasks_form_entry_input_initial_members', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 1),
-('bx_tasks', 'bx_tasks', 'estimate', '', '', 0, 'text', '_bx_tasks_form_entry_input_sys_estimate', '_bx_tasks_form_entry_input_estimate', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
+('bx_tasks', 'bx_tasks', 'estimate', '', '#!bx_tasks_estimates', 0, 'select', '_bx_tasks_form_entry_input_sys_estimate', '_bx_tasks_form_entry_input_estimate', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'due_date', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_due_date', '_bx_tasks_form_entry_input_date_due_date', '', 0, 0, 0, '', '', '', '', '', '', 'DateTimeUtc', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'attachments', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_attachments', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
@@ -619,6 +619,18 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_tasks_priorities', '3', 3, '_bx_tasks_priority_3', ''),
 ('bx_tasks_priorities', '4', 4, '_bx_tasks_priority_4', ''),
 ('bx_tasks_priorities', '5', 5, '_bx_tasks_priority_5', '');
+
+INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES
+('bx_tasks_estimates', '_bx_tasks_pre_lists_estimates', 'bx_tasks', '0');
+
+INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALUES
+('bx_tasks_estimates', '', 0, '_sys_please_select', ''),
+('bx_tasks_estimates', '2', 1, '_bx_tasks_estimate_2', ''),
+('bx_tasks_estimates', '4', 1, '_bx_tasks_estimate_4', ''),
+('bx_tasks_estimates', '8', 1, '_bx_tasks_estimate_8', ''),
+('bx_tasks_estimates', '16', 1, '_bx_tasks_estimate_16', ''),
+('bx_tasks_estimates', '32', 1, '_bx_tasks_estimate_32', ''),
+('bx_tasks_estimates', '64', 1, '_bx_tasks_estimate_64', '');
 
 INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES
 ('bx_tasks_states', '_bx_tasks_pre_lists_states', 'bx_tasks', '0');

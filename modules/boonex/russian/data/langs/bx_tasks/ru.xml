@@ -21,7 +21,7 @@
     <string name="_bx_tasks_form_entry_display_edit_body"><![CDATA[Редактировать тело задачи]]></string>
     <string name="_bx_tasks_form_entry_display_edit_type"><![CDATA[Редактировать тип задачи]]></string>
     <string name="_bx_tasks_form_entry_display_edit_priority"><![CDATA[Редактировать приоритет задачи]]></string>
-    <string name="_bx_tasks_form_entry_display_edit_estimate"><![CDATA[Редактировать временные затраты задачи]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_estimate"><![CDATA[Редактировать временные оценки задачи]]></string>
     <string name="_bx_tasks_form_entry_display_edit_due_date"><![CDATA[Редактировать срок выполнения задачи]]></string>
     <string name="_bx_tasks_form_entry_display_edit_state"><![CDATA[Редактировать состояние задачи]]></string>
     <string name="_bx_tasks_form_entry_display_delete"><![CDATA[Удалить задание]]></string>
@@ -88,8 +88,8 @@
     <string name="_bx_tasks_form_entry_input_initial_members"><![CDATA[Назначить на]]></string>
     <string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Срок]]></string>
     <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Срок]]></string>
-    <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Временные затраты]]></string>
-    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Временные затраты (в часах)]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Временные оценки]]></string>
+    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Временные оценки (в баллах)]]></string>
 
     <string name="_bx_tasks_form_list_entry"><![CDATA[Списки заданий]]></string>
     <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Добавить Список заданий]]></string>
@@ -395,6 +395,13 @@
     <string name="_bx_tasks_priority_3"><![CDATA[Средний]]></string>
     <string name="_bx_tasks_priority_4"><![CDATA[Низкий]]></string>
     <string name="_bx_tasks_priority_5"><![CDATA[Нет приоритета]]></string>
+    <string name="_bx_tasks_pre_lists_estimates"><![CDATA[Оценки времени]]></string>
+    <string name="_bx_tasks_estimate_2"><![CDATA[2 балла]]></string>
+    <string name="_bx_tasks_estimate_4"><![CDATA[4 балла]]></string>
+    <string name="_bx_tasks_estimate_8"><![CDATA[8 баллов]]></string>
+    <string name="_bx_tasks_estimate_16"><![CDATA[16 баллов]]></string>
+    <string name="_bx_tasks_estimate_32"><![CDATA[32 балла]]></string>
+    <string name="_bx_tasks_estimate_64"><![CDATA[64 балла]]></string>
     <string name="_bx_tasks_pre_lists_states"><![CDATA[Состояния]]></string>
     <string name="_bx_tasks_state_1"><![CDATA[Отставание]]></string>
     <string name="_bx_tasks_state_2"><![CDATA[Запланировано]]></string>

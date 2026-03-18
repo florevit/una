@@ -89,7 +89,7 @@
     <string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Due date]]></string>
     <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Due date]]></string>
     <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Estimate]]></string>
-    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Estimate (in hours)]]></string>
+    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Estimate (in points)]]></string>
 
     <string name="_bx_tasks_form_list_entry"><![CDATA[Tasklists]]></string>
     <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Add Tasklist]]></string>
@@ -398,6 +398,13 @@
     <string name="_bx_tasks_priority_3"><![CDATA[Medium]]></string>
     <string name="_bx_tasks_priority_4"><![CDATA[Low]]></string>
     <string name="_bx_tasks_priority_5"><![CDATA[No Priority]]></string>
+    <string name="_bx_tasks_pre_lists_estimates"><![CDATA[Estimates]]></string>
+    <string name="_bx_tasks_estimate_2"><![CDATA[2 points]]></string>
+    <string name="_bx_tasks_estimate_4"><![CDATA[4 points]]></string>
+    <string name="_bx_tasks_estimate_8"><![CDATA[8 points]]></string>
+    <string name="_bx_tasks_estimate_16"><![CDATA[16 points]]></string>
+    <string name="_bx_tasks_estimate_32"><![CDATA[32 points]]></string>
+    <string name="_bx_tasks_estimate_64"><![CDATA[64 points]]></string>
     <string name="_bx_tasks_pre_lists_states"><![CDATA[States]]></string>
     <string name="_bx_tasks_state_1"><![CDATA[Backlog]]></string>
     <string name="_bx_tasks_state_2"><![CDATA[Todo]]></string>
