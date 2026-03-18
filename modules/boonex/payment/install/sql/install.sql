@@ -327,11 +327,11 @@ INSERT INTO `bx_payment_providers`(`name`, `caption`, `description`, `option_pre
 ('stripe_connect', '_bx_payment_strp_cnnt_cpt', '_bx_payment_strp_cnnt_dsc', 'strp_cnnt_', 1, 1, 1, 1, 65, 'BxPaymentProviderStripeConnect');
 SET @iProviderId = LAST_INSERT_ID();
 
-INSERT INTO `bx_payment_providers_options`(`provider_id`, `name`, `type`, `caption`, `description`, `extra`, `check_type`, `check_params`, `check_error`, `order`) VALUES
-(@iProviderId, 'strp_cnnt_mode', 'value', '_bx_payment_strp_mode_cpt', '', '', '', '', '', 1),
-(@iProviderId, 'strp_cnnt_connect', 'custom', '_bx_payment_strp_cnnt_connect_cpt', '', '', '', '', '', 2),
-(@iProviderId, 'strp_cnnt_live_account_id', 'value', '_bx_payment_strp_cnnt_live_account_id_cpt', '', '', '', '', '', 3),
-(@iProviderId, 'strp_cnnt_test_account_id', 'value', '_bx_payment_strp_cnnt_test_account_id_cpt', '', '', '', '', '', 4);
+INSERT INTO `bx_payment_providers_options`(`provider_id`, `name`, `type`, `value`, `caption`, `description`, `extra`, `check_type`, `check_params`, `check_error`, `extended`, `order`) VALUES
+(@iProviderId, 'strp_cnnt_mode', 'value', '', '_bx_payment_strp_mode_cpt', '', '', '', '', '', 0, 1),
+(@iProviderId, 'strp_cnnt_connect', 'custom', '', '_bx_payment_strp_cnnt_connect_cpt', '', '', '', '', '', 0, 2),
+(@iProviderId, 'strp_cnnt_live_account_id', 'value', '', '_bx_payment_strp_cnnt_live_account_id_cpt', '', '', '', '', '', 0, 3),
+(@iProviderId, 'strp_cnnt_test_account_id', 'value', '', '_bx_payment_strp_cnnt_test_account_id_cpt', '', '', '', '', '', 1, 4);
 
 -- Apple In-App payment provider
 INSERT INTO `bx_payment_providers`(`name`, `caption`, `description`, `option_prefix`, `for_visitor`, `for_owner_only`, `for_single`, `for_recurring`, `active`, `order`, `class_name`) VALUES
