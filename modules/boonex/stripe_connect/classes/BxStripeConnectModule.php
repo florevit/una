@@ -60,10 +60,16 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
         if(!$oAccount)
             return ['code' => 1, 'message' => $sError];
 
-        $this->_oDb->insertAccount([
-            'profile_id' => $iId,
-            $sAccIdField => $oAccount->id
-        ]);
+        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iId]);
+        if($aAccount && is_array($aAccount))
+            $this->_oDb->updateAccount([
+                $sAccIdField => $oAccount->id
+            ], ['profile_id' => $iId]);
+        else
+            $this->_oDb->insertAccount([
+                'profile_id' => $iId,
+                $sAccIdField => $oAccount->id
+            ]);
 
         $sRefreshLink = $this->_oConfig->getRefreshLink();
         $sReturnLink = $this->_oConfig->getReturnLink();
