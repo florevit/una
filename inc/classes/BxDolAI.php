@@ -64,33 +64,35 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
     public static function getInstance()
     {
         if (!isset($GLOBALS['bxDolClasses'][__CLASS__])) {
-            $GLOBALS['bxDolClasses'][__CLASS__] = BxDolDb::getInstance()->isTableExists('sys_agents_automators') ? new BxDolAI() : null;
+            $GLOBALS['bxDolClasses'][__CLASS__] = BxDolDb::getInstance()->isTableExists('sys_agents_agents') ? new BxDolAI() : null;
         }
 
         return $GLOBALS['bxDolClasses'][__CLASS__];
     }
 
-    public static function getAiProviderInstance(int $iId):NeuronAI\Providers\AIProviderInterface
-    {
-        return self::getInstance()->getAiProviderInstance($iId);
-    }   
-
-    public static function getAiEmbeddingsProviderInstance(int $iId):NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
-    {
-        return self::getInstance()->getAiProviderInstance($iId);
-    }   
-
-    public static function getAgentInstance(int $iId): NeuronAI\Agent\Agent
+    public static function getAgentInstance(int $iId, array $aParams = []): NeuronAI\Agent\Agent
     {
         if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId]))
             return $GLOBALS['bxDolClasses'][__CLASS__ . '_Agent_' . $iId];
 
         $a = BxDolAIQuery::getAgentObject($iId);
-        if (!$a || !$a['active'] || !$a['prompt_system'] || !$a['model_id']) {
-            return null;
+        if (!$a) {
+            $s = "Agent with id {$iId} not found";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
+        }
+        if (!$a['active']) {
+            $s = "Agent with id {$iId} isn't active";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
+        }
+        if (!$a['prompt_system'] || !$a['model_id']) {
+            $s = "Agent with id {$iId} can't be used because it haven't prompt or AI model";
+            bx_log('sys_agents', $s, BX_LOG_ERR);
+            throw new Exception($s);
         }
 
-        $o = BxDolAiAgent::make($a);
+        $o = BxDolAiAgent::make($a, $aParams);
 
         if ($a['vector_store_id']) {
             $aVectorStore = BxDolAIQuery::getVectorStoreObject($a['vector_store_id']);
@@ -105,290 +107,14 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $o;
     }
 
-    public static function getModelInstance(int $iId): NeuronAI\Providers\AIProviderInterface | NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
+    public static function getAiProviderInstance(int $iId):NeuronAI\Providers\AIProviderInterface
     {
-        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId]))
-            return $GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId];
+        return BxDolAIModelFactory::getModelInstance($iId);
+    }   
 
-        $aProvidersWithKey = ['anthropic'];
-        $a = BxDolAIQuery::getModelObject($iId);
-        if (!$a) {
-            bx_log('sys_agents', "Agent AI Model with id {$iId} not found", BX_LOG_ERR);
-            throw new Exception("Agent AI Model with id {$iId} not found");
-        }
-        if (in_array($a['type'], $aProvidersWithKey) && empty($a['key'])) {
-            bx_log('sys_agents', "Model with id {$iId} has empty key, can't be used", BX_LOG_ERR);
-            throw new Exception("Model with id {$iId} has empty key, can't be used");
-        }
-
-        if (!$a['active']) {
-            bx_log('sys_agents', "Model with id {$iId} is not active, can't be used", BX_LOG_ERR);
-            throw new Exception("Model with id {$iId} is not active, can't be used");
-        }
-
-        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
-
-        // replace markers {key} {model} in $aParameters recoursively
-        $aParameters = bx_replace_markers($aParameters, [
-            'key' => $a['key'],
-            'model' => $a['model']
-        ]);
-
-        switch($a['type']) {
-            // regular AI providers ------------------------
-            case 'anthropic':
-                $o = new NeuronAI\Providers\Anthropic\Anthropic(
-                    key: $a['key'],
-                    model: $a['model'],
-                    version: $aParameters['version'] ?? '2023-06-01',
-                    max_tokens: $aParameters['max_tokens'] ?? 8192,
-                    parameters: $aParameters['parameters'] ?? [],
-                );
-                break;
-            case 'openai-responses':
-                $o = new NeuronAI\Providers\OpenAI\Responses\OpenAIResponses(
-                    key: $a['key'],
-                    model: $a['model'],
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'azure-openai':
-                $o = new NeuronAI\Providers\OpenAI\AzureOpenAI(
-                    key: $a['key'],
-                    model: $a['model'],
-                    endpoint: $aParameters['endpoint'],
-                    version: $aParameters['version'],
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'openai-like':
-                $o = new NeuronAI\Providers\OpenAILike(
-                    baseUri: $aParameters['baseUri'],
-                    key: $a['key'],
-                    model: $a['model'],                    
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'ollama':
-                $o = new NeuronAI\Providers\Ollama\Ollama(
-                    url: $aParameters['url'] ?? 'http://localhost:11434/api',
-                    model: $a['model'],                    
-                    parameters: $aParameters['parameters'] ?? [],
-                );
-                break;
-            case 'gemini':
-                $o = new NeuronAI\Providers\Gemini\Gemini(
-                    key: $a['key'],
-                    model: $a['model'],
-                    parameters: $aParameters['parameters'] ?? [],
-                );
-                break;
-            case 'mistral':
-                $o = new NeuronAI\Providers\Mistral\Mistral(
-                    key: $a['key'],
-                    model: $a['model'],
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'huggingface':
-                $o = new NeuronAI\Providers\HuggingFace\HuggingFace(
-                    key: $a['key'],
-                    model: $a['model'],
-                    inferenceProvider: $aParameters['inferenceProvider'] ?? 'hf-inference/models', // cohere, groq, etc - https://github.com/neuron-core/neuron-ai/blob/3.x/src/Providers/HuggingFace/InferenceProvider.php
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'deepseek':
-                $o = new NeuronAI\Providers\DeepSeek\DeepSeek(
-                    key: $a['key'],
-                    model: $a['model'],
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'grok':
-                $o = new NeuronAI\Providers\XAI\Grok(
-                    key: $a['key'],
-                    model: $a['model'],
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-            case 'aws-bedrock':
-                $oClient = new Aws\BedrockRuntime\BedrockRuntimeClient($aParameters['client_params']);
-
-                $o = new NeuronAI\Providers\AWS\BedrockRuntime(
-                    client: $oClient,
-                    model: $a['model'],
-                    inferenceConfig: $aParameters['inferenceConfig'] ?? [],
-                );
-                break;
-            case 'cohere':
-                $o = new NeuronAI\Providers\Cohere\Cohere(
-                    key: $a['key'],
-                    model: $a['model'],
-                    baseUri: $aParameters['baseUri'] ?? 'https://api.cohere.ai/v2',
-                    parameters: $aParameters['parameters'] ?? [],
-                    strict_response: $aParameters['strict_response'] ?? false,
-                );
-                break;
-
-            // embeddings models ------------------------
-            case 'ollama-embeddings':
-                $o = new NeuronAI\RAG\Embeddings\OllamaEmbeddingsProvider(
-                    model: $a['model'],
-                    url: $aParameters['url'] ?? 'http://localhost:11434/api',
-                    parameters: $aParameters['parameters'] ?? [],
-                );
-                break;
-            case 'voyageai-embeddings':
-                $o = new NeuronAI\RAG\Embeddings\VoyageEmbeddingsProvider(
-                    key: $a['key'],
-                    model: $a['model'],
-                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : null
-                );
-                break;
-            case 'openai-embeddings':
-                $o = new NeuronAI\RAG\Embeddings\OpenAIEmbeddingsProvider(
-                    key: $a['key'],
-                    model: $a['model'],
-                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : 1024
-                );
-                break;
-            case 'openai-like-embeddings':
-                $o = new NeuronAI\RAG\Embeddings\OpenAILikeEmbeddings(
-                    baseUri: $aParameters['baseUri'],
-                    key: $a['key'],
-                    model: $a['model'],                    
-                    dimensions: !empty($aParameters['dimensions']) ? (int)$aParameters['dimensions'] : 1024
-                );
-                break;
-            case 'aws-bedrock-embeddings':
-                $oClient = new Aws\BedrockRuntime\BedrockRuntimeClient($aParameters['client_params']);
-                $o = new NeuronAI\RAG\Embeddings\AwsBedrockEmbeddingsProvider(
-                    client: $oClient,
-                    model: $a['model']
-                );
-                break;
-            default:
-                bx_log('sys_agents', "Model type {$a['type']} is not supported", BX_LOG_ERR);
-                throw new Exception("Model type {$a['type']} is not supported");
-        }
-
-        $GLOBALS['bxDolClasses'][__CLASS__ . '_Model_' . $iId] = $o;
-
-        return $o;
-    }
-
-    public static function getVectorStoreInstance(int $iId): NeuronAI\RAG\VectorStore\VectorStoreInterface 
+    public static function getAiEmbeddingsProviderInstance(int $iId):NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface
     {
-        if (isset($GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId]))
-            return $GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId];
-
-        $a = BxDolAIQuery::getVectorStoreObject($iId);
-        if (!$a) {
-            bx_log('sys_agents', "Vector store with id {$iId} not found", BX_LOG_ERR);
-            throw new Exception("Vector store with id {$iId} not found");
-        }
-
-        $aParameters = !empty($a['params']) ? json_decode($a['params'], true) : [];
-
-        // replace marker {topk} in $aParameters recoursively
-        $aParameters = bx_replace_markers($aParameters, [
-            'topk' => $a['topk'],
-        ]);
-        
-        // TODO: fix params
-        switch($a['type']) {
-            case 'file':
-                $o = new NeuronAI\RAG\VectorStore\FileVectorStore(
-                    directory: BX_DIRECTORY_STORAGE . 'vector_stores/' . $iId,
-                    topK: $a['topk'] ?? 4
-                );
-                break;
-            case 'pinecon':
-                $o = new NeuronAI\RAG\VectorStore\PineconeVectorStore(
-                    key: $a['key'],
-                    indexUrl: $a['indexUrl'],
-                    topK: $a['topk'] ?? 4,
-                    version: $a['version'] ?? '2025-04',
-                    namespace: $a['namespace'] ?? '__default__'
-                );
-                break;
-            case 'elasticsearch':
-                $oClient = Elastic\Elasticsearch\ClientBuilder::create()
-                    ->setHosts([$a['client_params']['endpoint']])
-                    ->setApiKey($a['client_params']['key'])
-                    ->build();
-                
-                $o = new NeuronAI\RAG\VectorStore\ElasticsearchVectorStore(
-                    client: $oClient,
-                    index: $a['index'],
-                    topK: $a['topk'] ?? 4
-                );
-                break;
-            case 'opensearch':
-                $oClient = (new OpenSearch\GuzzleClientFactory())->create([
-                    'base_uri' => $a['client_params']['endpoint'] ?? 'http://localhost:9200',
-                ]);
-        
-                $o = NeuronAI\RAG\VectorStore\OpenSearchVectorStore(
-                    client: $oClient,
-                    index: $a['index'],
-                    topK: $a['topk'] ?? 4,
-                );
-                break;
-            case 'typesense':
-                $oClient = new \Typesense\Client($a['client_params']);
-
-                $o = new NeuronAI\RAG\VectorStore\TypesenseVectorStore(
-                    client: $oClient,
-                    collection: $a['collection'],
-                    vectorDimension: $a['vectorDimension'] ?? 1024,
-                    topK: $a['topk'] ?? 4,
-                );
-                break;
-            case 'qdrant':
-                $o = new NeuronAI\RAG\VectorStore\QdrantVectorStore(
-                    collectionUrl: $a['collectionUrl'],
-                    key: $a['key'],
-                    topK: $a['topk'] ?? 4,
-                    dimension: $a['dimension'] ?? 1024
-                );
-                break;
-            case 'chromadb':
-                $o = new NeuronAI\RAG\VectorStore\ChromaVectorStore(
-                    collection: $a['collection'],
-                    host: $a['host'] ?? 'http://localhost:8000',
-                    tenant: $a['tenant'] ?? 'default_tenant',
-                    database: $a['database'] ?? 'default_database',
-                    key: $a['key'] ?? null,
-                    topK: $a['topk'] ?? 4
-                );
-                break;
-            case 'meilisearch':
-                $o = new NeuronAI\RAG\VectorStore\MeilisearchVectorStore(
-                    indexUid: $a['indexUid'],
-                    host: $a['host'] ?? 'http://localhost:8000',
-                    key: $a['key'] ?? null,
-                    embedder: $a['embedder'] ?? 'default',
-                    topK: $a['topk'] ?? 4,
-                    dimension: $a['dimension'] ?? 1024
-                );
-                break;
-            default:
-                bx_log('sys_agents', "Vector store type {$a['type']} is not supported", BX_LOG_ERR);
-                throw new Exception("Vector store type {$a['type']} is not supported");
-        }
-
-        $GLOBALS['bxDolClasses'][__CLASS__ . '_VectorStore_' . $iId] = $o;
-
-        return $o;
+        return BxDolAIModelFactory::getModelInstance($iId);
     }
 
     public static function callHelper($mixedHelper, $sMessage)
@@ -648,28 +374,56 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $aAutomators;
     }
 
-    public function callAgent($sType, $aAgent, $aParams = [])
+    public function callAgent($sType, $aAgent, $mixedParams = [])
     {
+        $sParams = is_string($mixedParams) ? $mixedParams : json_encode($mixedParams);
+
         // update sample data
         $a = ['alert' => 'alert_sample', 'webhook' => 'webhook_sample'];
         if (isset($a[$sType]) && empty($aAgent[$a[$sType]])) {
-            $this->updateAgentField($aAgent['id'], $a[$sType], json_encode($aParams));
+            $this->updateAgentField($aAgent['id'], $a[$sType], $sParams);
         }
 
-        $o = self::getAgentInstance($aAgent['id']);
+        // set additional params
+        $aParams = [];
+        if ('message' == $sType) {
+            $aParams = ['chat_history_subindex' => $mixedParams['sender_profile_id']];
+        }
+
+        // call agent
+        $o = self::getAgentInstance($aAgent['id'], $aParams);
         if (!$o)
             return false;
 
-        $o->chat(new UserMessage($aParams));
+        $oMessage = $o->chat(new NeuronAI\Chat\Messages\UserMessage($sParams))->getMessage();
 
-        $o->run();
+        return $oMessage->getContent();
+    }
 
-        return $o->getMessage();
+    public function sendMessengerMessage ($iSender, $iRecipient, $sMsg) 
+    {        
+        $oMessengerModule = BxDolModule::getInstance('bx_messenger');
+
+        $aAutoReplyData = [
+            'message' => $sMsg,
+            'participants' => [$iSender, $iRecipient],
+        ];
+
+        $iSaveProfileId = $oMessengerModule->setProfileId($iSender);
+        $a = $oMessengerModule->sendMessage($aAutoReplyData, $iRecipient, $iSender);
+        $oMessengerModule->setProfileId($iSaveProfileId);
+
+        return $a;
     }
 
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
     {
         return $this->_oDb->getAgentsByAlertUnitAndAction($sUnit, $sAction);
+    }
+
+    public function getAgentsByProfileId($iProfileId)
+    {
+        return $this->_oDb->getAgentsByProfileId($iProfileId);
     }
 
     public function callAutomator($sType, $aParams = [])

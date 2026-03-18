@@ -104,8 +104,9 @@ class BxDolAlerts extends BxDol
     public function alert()
     {
         if (isset($this->_aAlerts[$this->sUnit]) && isset($this->_aAlerts[$this->sUnit][$this->sAction]))
-            foreach($this->_aAlerts[$this->sUnit][$this->sAction] as $iHandlerId) {
-                $aHandler = $this->_aHandlers[$iHandlerId];
+
+            foreach($this->_aAlerts[$this->sUnit][$this->sAction] as $iHandlerId) {                
+                $aHandler = $this->_aHandlers[$iHandlerId];                
                 if(!$aHandler['active'])
                     continue;
 

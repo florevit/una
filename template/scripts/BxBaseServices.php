@@ -1527,11 +1527,11 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return ['' => _t('_Select_one')] + BxDolAI::getInstance()->getModels(['active' => true, 'hidden' => false]);
     }
 
-    public function serviceGetOptionsAgentsProfile($bSelectOne = true)
+    public function serviceGetOptionsAgentsProfile($bSelectOne = true, $sSelectOneLangKey = '_Select_one')
     {
         $aResult = [];
         if($bSelectOne)
-            $aResult[] = ['key' => '', 'value' => _t('_Select_one')];
+            $aResult[] = ['key' => '', 'value' => _t($sSelectOneLangKey)];
 
         $aAccountsIds = BxDolAccountQuery::getInstance()->getOperators();
         foreach($aAccountsIds as $iAccountId) {

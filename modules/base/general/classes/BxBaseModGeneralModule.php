@@ -4153,9 +4153,16 @@ class BxBaseModGeneralModule extends BxDolModule
         return $oActions->{bx_is_api() ? 'getCodeAPI' : 'getCode'}();
     }
 
+    public function setProfileId($i)
+    {
+        $iOldProfileId = $this->_iProfileId;
+        $this->_iProfileId = $i;
+        return $iOldProfileId;
+    }
+    
     public function getProfileId()
     {
-    	return bx_get_logged_profile_id();
+        return $this->_iProfileId;
     }
 
     public function getProfileInfo($iUserId = false)

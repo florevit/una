@@ -2295,7 +2295,7 @@
     <string name="_sys_agents_field_webhook_key_info"><![CDATA[Unique key for webhook endpoint, used as Bearer Authentication header.]]></string>
     <string name="_sys_agents_field_webhook_sample"><![CDATA[Webhook: sample payload]]></string>
     <string name="_sys_agents_field_message_profile"><![CDATA[Message: profile for communication with agent]]></string>
-    <string name="_sys_agents_field_message_profile_info"><![CDATA[Profile to use for sending messages to the agent, messages form other users are ignored.]]></string>
+    <string name="_sys_agents_field_message_profile_info"><![CDATA[Profile to use for sending messages to the agent, messages from other users are ignored.]]></string>
     <string name="_sys_agents_field_vector_store_id"><![CDATA[Knowledge]]></string>
     <string name="_sys_agents_field_vector_store_id_info"><![CDATA[Vector store for knowledge retrieval.]]></string>
     <string name="_sys_agents_field_tools"><![CDATA[Tools]]></string>
@@ -2308,6 +2308,12 @@
     <string name="_sys_agents_field_prompt_output_info"><![CDATA[Instructions for formatting the output.]]></string>
     <string name="_sys_agents_field_prompt_tools"><![CDATA[Tools Prompt]]></string>
     <string name="_sys_agents_field_prompt_tools_info"><![CDATA[Instructions for using available tools.]]></string>
+    <string name="_sys_agents_tools_popup_edit"><![CDATA[Edit tool]]></string>
+    <string name="_sys_agents_field_title"><![CDATA[Title]]></string>
+    <string name="_sys_agents_tools_field_params"><![CDATA[Parameters]]></string>
+    <string name="_sys_agents_tools_field_params_info"><![CDATA[Parameters for configuring the tool, specific to each tool]]></string>
+    <string name="_sys_agents_field_chat_history_context"><![CDATA[Chat history context window]]></string>
+    <string name="_sys_agents_field_chat_history_context_info"><![CDATA[Automatically cut the conversation history based on the size of the context window, set to '0' to disable chat history]]></string>
     <string name="_sys_agents_automators_field_providers"><![CDATA[Providers]]></string>
     <string name="_sys_agents_automators_field_providers_add"><![CDATA[Add]]></string>
     <string name="_sys_agents_automators_field_helpers"><![CDATA[Helpers]]></string>
@@ -2580,6 +2586,9 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_audit_userside_caching"><![CDATA[User-side caching for static content]]></string>
 	<string name="_sys_audit_version"><![CDATA[version]]></string>
 	<string name="_sys_audit_version_script"><![CDATA[UNA version]]></string>
+
+	<string name="_sys_agents_agents_popup_edit"><![CDATA[Edit "{0}" agent]]></string>
+
         <string name="_sys_block_type_custom"><![CDATA[custom]]></string>
 	<string name="_sys_block_type_html"><![CDATA[html]]></string>
 	<string name="_sys_block_type_image"><![CDATA[image]]></string>

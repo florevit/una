@@ -681,9 +681,9 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         }
 
         if((defined('BX_DB_FULL_VISUAL_PROCESSING') && BX_DB_FULL_VISUAL_PROCESSING) || defined('BX_DOL_INSTALL')) {
-            $sOutput = '<div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">';
-            $sOutput .= '<div style="text-align:center;background-color:red;color:white;font-weight:bold;">Error</div>';
-            $sOutput .= '<div style="text-align:center;">' . $sErrorType . '</div>';
+            $sOutput = '<div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">'."\n";
+            $sOutput .= '<div style="text-align:center;background-color:red;color:white;font-weight:bold;">Error</div>'."\n";
+            $sOutput .= '<div style="text-align:center;">' . $sErrorType . '</div>'."\n";
             if((defined('BX_DB_FULL_DEBUG_MODE') && BX_DB_FULL_DEBUG_MODE) || defined('BX_DOL_INSTALL'))
 				$sOutput .= $this->errorOutput($aError);
             $sOutput .= '</div>';
@@ -1370,15 +1370,15 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         $sOutput = '';
         
         if(!empty($aError['query']))
-            $sOutput .= '<p><b>Query:</b><br />' . bx_process_output($aError['query']) . '</p>';
+            $sOutput .= '<p><b>Query:</b><br />' . bx_process_output($aError['query']) . '</p>'."\n";
 
         if(!empty($aError['message']))
-            $sOutput .= '<p><b>Mysql error:</b><br />' . $aError['message'] . '</p>';
+            $sOutput .= '<p><b>Mysql error:</b><br />' . $aError['message'] . '</p>'."\n";
 
 		if(!empty($aErrorLocation))
-			$sOutput .= '<p><b>Location:</b><br />The error was found in <b>' . $aErrorLocation['function'] . '</b> function in the file <b>' . $aErrorLocation['file'] . '</b> at line <b>' . $aErrorLocation['line'] . '</b>.</p>';
+			$sOutput .= '<p><b>Location:</b><br />The error was found in <b>' . $aErrorLocation['function'] . '</b> function in the file <b>' . $aErrorLocation['file'] . '</b> at line <b>' . $aErrorLocation['line'] . '</b>.</p>'."\n";
 
-        $sOutput .= '<p><b>collation_connection:</b><br />' . $this->getOne("SELECT @@collation_connection") . '</p>';
+        $sOutput .= '<p><b>collation_connection:</b><br />' . $this->getOne("SELECT @@collation_connection") . '</p>'."\n";
         
 		if(!empty($aError['trace'])) {
             $sBackTrace = print_r($aError['trace'], true);
