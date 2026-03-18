@@ -227,10 +227,15 @@
     <string name="_bx_tasks_page_block_title_system_time_manage"><![CDATA[Manage Own Time]]></string>
     <string name="_bx_tasks_page_block_title_system_time_manage_administration"><![CDATA[Manage All Time]]></string>
     <string name="_bx_tasks_page_block_title_time_manage"><![CDATA[Manage Time]]></string>
+    <string name="_bx_tasks_page_title_sys_timers"><![CDATA[Timers]]></string>
+    <string name="_bx_tasks_page_title_timers"><![CDATA[Timers]]></string>
+    <string name="_bx_tasks_page_block_title_system_timers"><![CDATA[Timers]]></string>
+    <string name="_bx_tasks_page_block_title_timers"><![CDATA[Timers]]></string>
     <string name="_bx_tasks_page_block_title_popular_keywords"><![CDATA[Popular Hashtags]]></string>
     <string name="_bx_tasks_page_block_title_cats"><![CDATA[Tasks Categories]]></string>
     <string name="_bx_tasks_page_block_title_sys_multicats"><![CDATA[Tasks Categories(Multi)]]></string>
     <string name="_bx_tasks_page_block_title_multicats"><![CDATA[Tasks Categories]]></string>
+    <string name="_bx_tasks_page_block_title_entry_timer"><![CDATA[Timer]]></string>
     <string name="_bx_tasks_page_block_title_entry_info"><![CDATA[Info]]></string>
     <string name="_bx_tasks_page_block_title_my_entries"><![CDATA[My Tasks]]></string>
     <string name="_bx_tasks_page_block_title_sys_recent_entries_view_showcase"><![CDATA[Latest Tasks (Showcase View)]]></string>
@@ -338,6 +343,7 @@
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_administration"><![CDATA[All Tasks]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[My Time]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[All Time]]></string>
+    <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[My Timers]]></string>
 
     <!-- Grids -->
     <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[All Statuses]]></string>
@@ -459,6 +465,12 @@
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
+
+    <string name="_bx_tasks_txt_timer_start"><![CDATA[Start]]></string>
+    <string name="_bx_tasks_txt_timer_stop"><![CDATA[Stop]]></string>
+    <string name="_bx_tasks_txt_timer_resume"><![CDATA[Resume]]></string>
+    <string name="_bx_tasks_txt_timer_clear"><![CDATA[Clear]]></string>
+    <string name="_bx_tasks_txt_timer_log"><![CDATA[Log]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>

@@ -227,10 +227,15 @@
     <string name="_bx_tasks_page_block_title_system_time_manage"><![CDATA[Управление собственным временем]]></string>
     <string name="_bx_tasks_page_block_title_system_time_manage_administration"><![CDATA[Управление всем временем]]></string>
     <string name="_bx_tasks_page_block_title_time_manage"><![CDATA[Управление временем]]></string>
+    <string name="_bx_tasks_page_title_sys_timers"><![CDATA[Таймеры]]></string>
+    <string name="_bx_tasks_page_title_timers"><![CDATA[Таймеры]]></string>
+    <string name="_bx_tasks_page_block_title_system_timers"><![CDATA[Таймеры]]></string>
+    <string name="_bx_tasks_page_block_title_timers"><![CDATA[Таймеры]]></string>
     <string name="_bx_tasks_page_block_title_popular_keywords"><![CDATA[Популярные хэштеги]]></string>
     <string name="_bx_tasks_page_block_title_cats"><![CDATA[Задания Категории]]></string>
     <string name="_bx_tasks_page_block_title_sys_multicats"><![CDATA[Задания Категории(Мульти)]]></string>
     <string name="_bx_tasks_page_block_title_multicats"><![CDATA[Задания Категории]]></string>
+    <string name="_bx_tasks_page_block_title_entry_timer"><![CDATA[Таймер]]></string>
     <string name="_bx_tasks_page_block_title_entry_info"><![CDATA[Инфо]]></string>
     <string name="_bx_tasks_page_block_title_my_entries"><![CDATA[Мои Задания]]></string>
     <string name="_bx_tasks_page_block_title_sys_recent_entries_view_showcase"><![CDATA[Последние Задания (Витринный просмотр)]]></string>
@@ -336,6 +341,7 @@
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_administration"><![CDATA[Все задания]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[Моё время]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[Всё время]]></string>
+    <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[Мои таймеры]]></string>
 
     <!-- Grids -->
     <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[Все статусы]]></string>
@@ -456,6 +462,12 @@
     <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
+
+    <string name="_bx_tasks_txt_timer_start"><![CDATA[Старт]]></string>
+    <string name="_bx_tasks_txt_timer_stop"><![CDATA[Стоп]]></string>
+    <string name="_bx_tasks_txt_timer_resume"><![CDATA[Возобновить]]></string>
+    <string name="_bx_tasks_txt_timer_clear"><![CDATA[Очистить]]></string>
+    <string name="_bx_tasks_txt_timer_log"><![CDATA[Внести]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>

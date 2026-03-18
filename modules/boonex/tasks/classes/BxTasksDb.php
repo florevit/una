@@ -154,7 +154,7 @@ class BxTasksDb extends BxBaseModTextDb
 
         return count($aResult) == (int)$this->query("UPDATE `" . $CNF['TABLE_ENTRIES'] . "` SET `" . $CNF['FIELD_EXPIRED'] . "` = '1' WHERE `id` IN (" . $this->implode_escape($aResult) . ")") ? $aResult : false;
     }
-    
+
     public function getTimeTracks($aParams = []) 
     {
         $CNF = &$this->_oConfig->CNF;
@@ -190,6 +190,112 @@ class BxTasksDb extends BxBaseModTextDb
             WHERE 1 " . $sWhereClause . " " . $sOrderClause;
 
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
+    public function insertTimeTrack($aParamsSet)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($aParamsSet))
+            return false;
+
+        return $this->query("INSERT INTO `" . $CNF['TABLE_TIME_TRACK'] . "` SET " . $this->arrayToSQL($aParamsSet)) ? $this->lastId() : false;
+    }
+
+    public function getTimers($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`tt`.*';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `tt`.`id` = :id";
+                    break;
+
+                case 'content_profile_ids':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'content_id' => $aParams['content_id'],
+                        'profile_id' => $aParams['profile_id']
+                    ];
+
+                    $sWhereClause = "AND `tt`.`content_id` = :content_id AND `tt`.`profile_id` = :profile_id";
+                    break;
+
+                case 'profile_id':
+                    $aMethod['params'][1] = [
+                        'profile_id' => $aParams['profile_id']
+                    ];
+
+                    $sWhereClause = "AND `tt`.`profile_id` = :profile_id";
+
+                    if(isset($aParams['active']) && $aParams['active'] === true) {
+                        $aMethod['name'] = 'getRow';
+
+                        $sWhereClause .= " AND `tt`.`started` <> '0'";
+                    }
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_TIMERS'] . "` AS `tt` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
+    public function isTimerStarted($iObjectId, $iAuthorId)
+    {
+        $aTimer = $this->getTimers([
+            'sample' => 'content_profile_ids', 
+            'content_id' => $iObjectId, 
+            'profile_id' => $iAuthorId
+        ]);
+
+        return ($aTimer['started'] ?? 0) != 0;
+    }
+
+    public function insertTimer($aParamsSet)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($aParamsSet))
+            return false;
+
+        return $this->query("INSERT INTO `" . $CNF['TABLE_TIMERS'] . "` SET " . $this->arrayToSQL($aParamsSet)) ? $this->lastId() : false;
+    }
+    
+    public function updateTimer($aParamsSet, $aParamsWhere)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($aParamsSet) || empty($aParamsWhere))
+            return false;
+
+        return $this->query("UPDATE `" . $CNF['TABLE_TIMERS'] . "` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
+    }
+
+    public function deleteTimer($aParamsWhere)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($aParamsWhere))
+            return false;
+
+        return $this->query("DELETE FROM `" . $CNF['TABLE_TIMERS'] . "` WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
     }
 }
 

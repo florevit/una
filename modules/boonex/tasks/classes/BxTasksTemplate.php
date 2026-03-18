@@ -13,13 +13,38 @@
  */
 class BxTasksTemplate extends BxBaseModTextTemplate
 {
-    function __construct(&$oConfig, &$oDb)
+    public function __construct(&$oConfig, &$oDb)
     {
         $this->MODULE = 'bx_tasks';
 
         parent::__construct($oConfig, $oDb);
     }
 
+    public function getJsCode($sType, $aParams = [], $mixedWrap = true)
+    {
+        $aParams = array_merge([
+            'aHtmlIds' => $this->_oConfig->getHtmlIds()
+        ], $aParams);
+
+        return parent::getJsCode($sType, $aParams, $mixedWrap);
+    }
+
+    public function getJsCodeTimer($sType, $aParams = [], $mixedWrap = true)
+    {
+        $aParams = array_merge([
+            'aHtmlIds' => $this->_oConfig->getHtmlIds()
+        ], $aParams);
+
+        if(is_array($mixedWrap))
+            return parent::getJsCode($sType, $aParams, [
+                'wrap' => true,
+                'mask' => "{var} {object} = new {class}({params}); {object}.init({content_id}, {profile_id}, {started});",
+                'mask_markers' => $mixedWrap
+            ]);
+        else
+            parent::getJsCode($sType, $aParams, $mixedWrap);
+    }
+    
     /**
      * Use Gallery image for both because currently there is no Unit types with small thumbnails.
      */
@@ -72,6 +97,125 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         return $aTmplVarsProfiles ? $this->parseHtmlByName('entry-assignments.html', [
             'bx_repeat:profiles' => $aTmplVarsProfiles
         ]) : MsgBox(_t('_sys_txt_empty'));
+    }
+
+    public function entryTimer ($iContentId, $iProfileId)
+    {
+        $this->addJs(['timer.js']);
+        return $this->getTimer($iContentId, $iProfileId) . $this->getJsCodeTimer('timer', [], [
+            'content_id' => $iContentId,
+            'profile_id' => $iProfileId,
+            'started' => $this->_oDb->isTimerStarted($iContentId, $iProfileId),
+        ]);
+    }
+
+    public function getBlockTimers ($iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $oModule = $this->getModule();
+        $sJsObject = $this->_oConfig->getJsObject('timer');
+
+        $aTimers = $this->_oDb->getTimers(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
+        if(!$aTimers || !is_array($aTimers))
+            return MsgBox(_t('_Empty'));
+
+        $oPermalinks = BxDolPermalinks::getInstance();
+
+        $aTmplVarsSections = [];
+        foreach($aTimers as $aTimer) {
+            $aContentInfo = $this->_oDb->getContentInfoById($aTimer['content_id']);
+            if(!$aContentInfo && !is_array($aContentInfo))
+                continue;
+
+            $sContextType = $sContextTitle = $sContextUrl = '';
+            if(($iAllowViewTo = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0 && ($oContext = BxDolProfile::getInstance(abs($iAllowViewTo))) !== false) {
+                $sContextType = $oContext->getModule();
+                $sContextTitle = $oContext->getDisplayName();
+                $sContextUrl = $oContext->getUrl();
+            }
+
+            if(!isset($aTmplVarsSections[$sContextType]))
+                $aTmplVarsSections[$sContextType] = [
+                    'section_title' => $oModule->getModuleTitle($sContextType),
+                    'bx_repeat:timers' => []
+                ];
+
+            $aTmplVarsSections[$sContextType]['bx_repeat:timers'][] = [
+                'bx_if:show_context' => [
+                    'condition' => $sContextTitle && $sContextUrl,
+                    'content' => [
+                        'title' => $sContextTitle,
+                        'url' => $sContextUrl
+                    ]
+                ],
+                'content_title' => $aContentInfo[$CNF['FIELD_TITLE']],
+                'content_url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']])),
+                'timer' => $this->getTimer($aTimer['content_id'], $iProfileId),
+                'js_code_timer' => $sJsObject . '.init(' . $aTimer['content_id'] . ', ' . $iProfileId . ', ' . ($aTimer['started'] != 0 ? 1 : 0) . ');'
+            ];
+        }
+
+        $this->addJs(['timer.js']);
+        return $this->parseHtmlByName('browse_timers.html', [
+            'js_code' => $this->getJsCode('timer', [
+                'bMulti' => true
+            ]),
+            'bx_repeat:sections' => array_values($aTmplVarsSections)
+        ]);
+    }
+
+    public function getTimer ($iContentId, $iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sPrefix = str_replace('_', '-', $this->_oConfig->getName());
+        $sJsObject = $this->_oConfig->getJsObject('timer');
+
+        $aTimer = $this->_oDb->getTimers(['sample' => 'content_profile_ids', 'content_id' => $iContentId, 'profile_id' => $iProfileId]);
+        $bTimer = $aTimer && is_array($aTimer);
+        $bStarted = $bTimer && (int)$aTimer['started'] > 0;
+
+        $aActions = [];
+        $iHours = $iMinutes = $iSeconds = 0;
+        if($bTimer) {
+            $iDuration = (int)$aTimer['duration'];
+            if($bStarted)
+                $iDuration += time() - (int)$aTimer['started'];
+
+            list($iHours, $iMinutes, $iSeconds) = $this->_oConfig->timeI2A($iDuration, true);
+
+            $aActions = [];
+            if($bStarted)
+                $aActions = [
+                    ['id' => $sPrefix . '-stop', 'name' => $sPrefix . '-stop', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.stop(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_stop')],
+                ];
+            else
+                $aActions = [
+                    ['id' => $sPrefix . '-resume', 'name' => $sPrefix . '-resume', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.resume(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_resume')],
+                    ['id' => $sPrefix . '-clear', 'name' => $sPrefix . '-clear', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.clear(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_clear')],
+                    ['id' => $sPrefix . '-log', 'name' => $sPrefix . '-log', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.log(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_log')],
+                ];
+        }
+        else {
+            $aActions = [
+                ['id' => $sPrefix . '-start', 'name' => $sPrefix . '-start', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.start(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_start')],
+            ];
+        }
+
+        $oActions = new BxTemplMenu([
+            'template' => 'menu_buttons_hor.html', 
+            'menu_id' => $this->_oConfig->getHtmlIds('timer_actions'), 
+            'menu_items' => $aActions
+        ]);
+
+        return $this->parseHtmlByName('entry-timer.html', [
+            'html_id' => $this->_oConfig->getHtmlIds('timer') . $iContentId . '-' . $iProfileId,
+            'hours' => sprintf("%02d", $iHours),
+            'minutes' => sprintf("%02d", $iMinutes),
+            'seconds' => sprintf("%02d", $iSeconds),
+            'actions' => $oActions->getCode()
+        ]);
     }
 
     public function getEntriesList($iContextId)

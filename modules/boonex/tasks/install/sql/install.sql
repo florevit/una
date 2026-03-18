@@ -316,6 +316,17 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_time_track` (
   PRIMARY KEY (`id`)
 );
 
+-- TABLE: timers
+CREATE TABLE IF NOT EXISTS `bx_tasks_timers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` int(11) NOT NULL default '0',
+  `profile_id` int(11) NOT NULL default '0',
+  `started` int(11) NOT NULL default '0',
+  `duration` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `timer` (`content_id`, `profile_id`)
+);
+
 -- TABLE: favorites
 CREATE TABLE `bx_tasks_favorites_track` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

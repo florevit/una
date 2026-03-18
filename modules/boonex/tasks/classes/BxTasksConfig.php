@@ -36,6 +36,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'TABLE_LISTS' => $aModule['db_prefix'] . 'lists',
             'TABLE_TIME' => $aModule['db_prefix'] . 'time',
             'TABLE_TIME_TRACK' => $aModule['db_prefix'] . 'time_track',
+            'TABLE_TIMERS' => $aModule['db_prefix'] . 'timers',
             'TABLE_POLLS' => '',
             'TABLE_ENTRIES_FULLTEXT' => 'title_text',
 
@@ -247,14 +248,16 @@ class BxTasksConfig extends BxBaseModTextConfig
             'manage_tools' => 'BxTasksManageTools',
             'categories' => 'BxDolCategories',
             'tasks' => 'BxTasksView',
-            'time' => 'BxTasksTime'
+            'time' => 'BxTasksTime',
+            'timer' => 'BxTasksTimer'
         ]);
 
         $this->_aJsObjects = array_merge($this->_aJsObjects, [
             'manage_tools' => 'oBxTasksManageTools',
             'categories' => 'oBxDolCategories',
             'tasks' => 'oBxTasksView',
-            'time' => 'oBxTasksTime'
+            'time' => 'oBxTasksTime',
+            'timer' => 'oBxTasksTimer'
         ]);
 
         $this->_aGridObjects = [
@@ -270,6 +273,8 @@ class BxTasksConfig extends BxBaseModTextConfig
         $this->_aHtmlIds = array_merge($this->_aHtmlIds, [
             'time_popup' =>  $sPrefix . '-time-popup',
             'total_popup' =>  $sPrefix . '-total-popup',
+            'timer' => $sPrefix . '-timer-',
+            'timer_actions' =>  $sPrefix . '-timer-actions',
         ]);
 
         $this->_bAttachmentsInTimeline = true;
@@ -347,10 +352,17 @@ class BxTasksConfig extends BxBaseModTextConfig
         return $this->timeA2I(explode(':', $s));
     }
 
-    public function timeI2A($i)
+    public function timeI2A($i, $bUseSeconds = false)
     {
-        $iH = intdiv($i, 60);
-        return [$iH, $i - 60 * $iH];
+        if(!$bUseSeconds) {
+            $iH = intdiv($i, 60);
+
+            return [$iH, $i - 60 * $iH];
+        }
+
+        $iH = intdiv($i, 3600);
+        $iM = intdiv($i - 3600 * $iH, 60);
+        return [$iH, $iM, $i - 3600 * $iH - 60 * $iM];
     }
 
     public function timeI2S($i)

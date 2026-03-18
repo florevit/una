@@ -1,0 +1,28 @@
+__js_code__
+<div class="bx-tasks-timers-sections">
+    <div class="bx-tasks-ts-cnt space-y-4">
+        <bx_repeat:sections>
+            <div class="bx-tasks-section">
+                <div class="bx-tasks-section-ttl mb-2 text-xl">__section_title__</div>
+                <div class="bx-tasks-section-cnt flex flex-wrap -m-2">
+                    <bx_repeat:timers>
+                        <div class="bx-tasks-timer-wrp w-1/4">
+                            <div class="bx-tasks-timer bx-def-box bx-def-box-round-corners m-2">
+                                <div class="bx-tasks-timer-cnt p-4">
+                                    <div class="bx-tasks-t-task flex">
+                                        <bx_if:show_context>
+                                            <a class="bx-tasks-t-context truncate" href="__url__">__title__</a><span class="pr-1">:</span>
+                                        </bx_if:show_context>
+                                        <a class="bx-tasks-t-content truncate" href="__content_url__">__content_title__</a>
+                                    </div>
+                                    <div class="bx-tasks-t-value mt-4">__timer__</div>
+                                </div>
+                            </div>
+                            <script>__js_code_timer__</script>
+                        </div>
+                    </bx_repeat:timers>
+                </div>
+            </div>
+        </bx_repeat:sections>
+    </div>
+</div>

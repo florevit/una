@@ -260,6 +260,110 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         echo json_encode($aEntries);
     }
 
+    public function actionProcessTimer($sAction, $iContentId, $iProfileId)
+    {
+        if(!$this->_iProfileId || $this->_iProfileId != $iProfileId)
+            return echoJson(['msg' => _t('_sys_txt_access_denied')]);
+
+        $aResult = $this->serviceProcessTimer($sAction, $iContentId, $iProfileId);
+        if($aResult['code'] == 0)
+            $aResult = array_merge($aResult, [
+                'content_id' => $iContentId,
+                'profile_id' => $iProfileId,
+                'content' => $this->_oTemplate->getTimer($iContentId, $iProfileId),
+                'eval' => $this->_oConfig->getJsObject('timer') . '.onPerformAction' . bx_gen_method_name($sAction) . '(oData)'
+            ]);
+
+        return echoJson($aResult);
+    }
+
+    public function serviceGetSafeServices()
+    {
+        return array_merge(parent::serviceGetSafeServices(), [
+            'ProcessTimer' => '',
+        ]);
+    }
+
+    public function serviceProcessTimer($sAction, $iContentId, $iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aResult = ['code' => 1, 'msg' => _t('_sys_txt_error_occured')];
+
+        $iNow = time();
+        switch($sAction) {
+            case 'start':
+                $this->stopTimerByAuthor($iProfileId);
+
+                $iTimer = false;
+                $aTimer = $this->getTimer($iContentId, $iProfileId);
+                if($aTimer && is_array($aTimer)) {
+                    if($this->updateTimerById($aTimer['id'], ['started' => $iNow]))
+                        $iTimer = $aTimer['id'];
+                }
+                else
+                    $iTimer = $this->_oDb->insertTimer(['content_id' => $iContentId, 'profile_id' => $iProfileId, 'started' => $iNow]);
+
+                if($iTimer !== false)
+                    $aResult = ['code' => 0, 'id' => $iTimer];
+                break;
+
+            case 'stop':
+                if($this->stopTimerByAuthor($iProfileId))
+                    $aResult = ['code' => 0];
+                break;
+
+            case 'resume':
+                $this->stopTimerByAuthor($iProfileId);
+
+                $aTimer = $this->getTimer($iContentId, $iProfileId);
+                if($aTimer && is_array($aTimer) && $this->updateTimerById($aTimer['id'], ['started' => $iNow]))
+                    $aResult = ['code' => 0];
+                break;
+
+            case 'log':
+                $aTimer = $this->getTimer($iContentId, $iProfileId);
+                if(!$aTimer || !is_array($aTimer) || !$aTimer['duration'])
+                    break;
+
+                list($iH, $iM) = $this->_oConfig->timeI2A($aTimer['duration'], true);
+
+                $iNow = time();
+                $iTrackId = $this->_oDb->insertTimeTrack([
+                    'object_id' => $iContentId,
+                    'author_id' => $iProfileId,
+                    'author_nip' => $iProfileId == $this->_iProfileId ? bx_get_ip_hash(getVisitorIP()) : 0,
+                    'value' => $this->_oConfig->timeA2I([(int)$iH, (int)$iM + 1]),
+                    'value_date' => $iNow,
+                    'date' => $iNow
+                ]);
+                if(!$iTrackId)
+                    break;
+
+                $oTime = BxDolReport::getObjectInstance($CNF['OBJECT_REPORTS_TIME'], $iContentId);
+                if(!$oTime || !$oTime->isEnabled())
+                    break;
+
+                if(!$oTime->putReport($iContentId, $iProfileId, $iTrackId))
+                    break;
+
+                $this->_oDb->deleteTimer([
+                    'content_id' => $iContentId, 
+                    'profile_id' => $iProfileId
+                ]);
+
+                $aResult = ['code' => 0];
+                break;
+
+            case 'clear':
+                if($this->_oDb->deleteTimer(['content_id' => $iContentId, 'profile_id' => $iProfileId]) !== false)
+                    $aResult = ['code' => 0];
+                break;
+        }
+
+        return $aResult;
+    }
+
     public function serviceManageTools($sType = 'common')
     {
         $CNF = &$this->_oConfig->CNF;
@@ -319,6 +423,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             $aResult['menu'] = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU']);
 
         return $aResult;
+    }
+
+    public function serviceGetBlockTimers()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return [
+            'content' => $this->_oTemplate->getBlockTimers($this->_iProfileId),
+            'menu' => BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])
+        ];
     }
 
     /**
@@ -542,6 +656,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $this->_oTemplate->entryAssignments($aProfiles);
     }
 
+    public function serviceEntityTimer($iContentId = 0)
+    {
+        if(!$iContentId)
+            $iContentId = bx_process_input(bx_get('id'), BX_DATA_INT);
+        if(!$iContentId)
+            return false;
+
+        return $this->_oTemplate->entryTimer($iContentId, $this->_iProfileId);
+    }
+
     public function serviceCheckAllowedCommentsTask($iContentId, $sObjectComments) 
     {
         $CNF = &$this->_oConfig->CNF;
@@ -697,6 +821,33 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $aEntries;
     }
 
+    public function getTimer($iContentId, $iProfileId)
+    {
+        return $this->_oDb->getTimers(['sample' => 'content_profile_ids', 'content_id' => $iContentId, 'profile_id' => $iProfileId]);
+    }
+
+    public function getTimersByAuthor($iProfileId, $bActive = false)
+    {
+        return $this->_oDb->getTimers(['sample' => 'profile_id', 'profile_id' => $iProfileId, 'active' => $bActive]);
+    }
+
+    public function stopTimerByAuthor($iProfileId)
+    {
+        $aTimer = $this->getTimersByAuthor($iProfileId, true);
+        if(!$aTimer || !is_array($aTimer)) 
+            return false;
+
+        return $this->updateTimerById($aTimer['id'], [
+            'started' => 0,
+            'duration' => $aTimer['duration'] + (time() - $aTimer['started']),
+        ]);
+    }
+
+    public function updateTimerById($iId, $aSet)
+    {
+        return $this->_oDb->updateTimer($aSet, ['id' => (int)$iId]) !== false;
+    }
+    
     public function onExpired($iContentId)
     {
         $CNF = &$this->_oConfig->CNF;
