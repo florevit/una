@@ -479,14 +479,14 @@ class BxBaseReport extends BxDolReport
         return ['code' => 3, 'message' => _t('_report_err_cannot_perform_action')];
     }
 
-    protected function _getDoReport($aParams = array())
+    protected function _getDoReport($aParams = [])
     {
     	$bReported = isset($aParams['is_reported']) && $aParams['is_reported'] === true;
         $bShowDoReportAsButtonSmall = isset($aParams['show_do_report_as_button_small']) && $aParams['show_do_report_as_button_small'] == true;
         $bShowDoReportAsButton = !$bShowDoReportAsButtonSmall && isset($aParams['show_do_report_as_button']) && $aParams['show_do_report_as_button'] == true;
         $bDisabled = !$this->isAllowedReport() || ($bReported && !$this->isUndo());
 
-        $sTitle = call_user_func_array('_t', $this->_getTitleDoReport($bReported));
+        $sTitle = call_user_func_array('_t', $this->_getTitleDoReport($bReported, $aParams));
 
         if($this->_bApi)
             return [
@@ -528,26 +528,26 @@ class BxBaseReport extends BxDolReport
         return _t('_report_counter', $iCount);
     }
 
-    protected function _getLabelDoReport($aParams = array())
+    protected function _getLabelDoReport($aParams = [])
     {
     	$bReported = isset($aParams['is_reported']) && $aParams['is_reported'] === true;
-        return $this->_oTemplate->parseHtmlByContent($this->_getTmplContentDoActionLabel(), array(
+        return $this->_oTemplate->parseHtmlByContent($this->_getTmplContentDoActionLabel(), [
             'style_prefix' => $this->_sStylePrefix,
-            'bx_if:show_icon' => array(
+            'bx_if:show_icon' => [
                 'condition' => isset($aParams['show_do_report_icon']) && $aParams['show_do_report_icon'] == true,
-                'content' => array(
+                'content' => [
                     'style_prefix' => $this->_sStylePrefix,
                     'name' => $this->_getIconDoReport($bReported)
-                )
-            ),
-            'bx_if:show_text' => array(
+                ]
+            ],
+            'bx_if:show_text' => [
                 'condition' => isset($aParams['show_do_report_label']) && $aParams['show_do_report_label'] == true,
-                'content' => array(
+                'content' => [
                     'style_prefix' => $this->_sStylePrefix,
-                    'text' => call_user_func_array('_t', $this->_getTitleDoReport($bReported))
-                )
-            )
-        ));
+                    'text' => call_user_func_array('_t', $this->_getTitleDoReport($bReported, $aParams))
+                ]
+            ]
+        ]);
     }
 
     protected function _getReportedBy()

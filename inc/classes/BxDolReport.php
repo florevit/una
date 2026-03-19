@@ -328,7 +328,7 @@ class BxDolReport extends BxDolObject
     	return $bPerformed && $this->isUndo() ? 'exclamation-circle' : 'exclamation-circle';
     }
 
-    protected function _getTitleDoReport($bPerformed)
+    protected function _getTitleDoReport($bPerformed, $aParams = [])
     {
         if($bPerformed && $this->isUndo())
             return ['_report_do_unreport'];
