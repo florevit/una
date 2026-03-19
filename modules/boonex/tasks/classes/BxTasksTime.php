@@ -147,6 +147,25 @@ class BxTasksTime extends BxTemplReport
             if(($oSockets = BxDolSockets::getInstance()) && $oSockets->isEnabled())
                 $oSockets->sendEvent($this->getSocketName(), $iObjectId, 'reported', json_encode($this->_returnReportDataForSocket($aResult)));
 
+            /*
+             * If timer is attached, clear it and initiate reloading.
+             */
+            if(($iTimerId = (int)$oForm->getCleanValue('timer_id'))) {
+                $aTimer = $this->_oModule->_oDb->getTimers([
+                    'sample' => 'id', 
+                    'id' => $iTimerId
+                ]);
+
+                if($aTimer && ($iContentId = $aTimer['content_id'] ?? 0) && ($iProfileId = $aTimer['profile_id'] ?? 0)) {
+                    $this->_oModule->serviceProcessTimer('clear', $iContentId, $iProfileId);
+
+                    $aResult = array_merge($aResult, [
+                        'label_title' => _t('_bx_tasks_txt_timer_log'),
+                        'eval' => $aResult['eval'] . '; ' . $this->_oModule->_oConfig->getJsObject('timer'). '.reload(this, ' . $iContentId . ', ' . $iProfileId . ');'
+                    ]);
+                } 
+            }
+
             return $aResult;
         }
 
@@ -196,8 +215,11 @@ class BxTasksTime extends BxTemplReport
     	return $bPerformed && $this->isUndo() ? 'stopwatch' : 'stopwatch';
     }
 
-    protected function _getTitleDoReport($bPerformed)
+    protected function _getTitleDoReport($bPerformed, $aParams = [])
     {
+        if(($sTitle = $aParams['do_report_label'] ?? false))
+            return [$sTitle];
+
         return ['_bx_tasks_report_time_do_' . ($bPerformed && $this->isUndo() ? 'un' : '') . 'report'];
     }
 }

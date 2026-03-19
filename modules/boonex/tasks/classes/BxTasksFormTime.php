@@ -33,6 +33,44 @@ class BxTasksFormTime extends BxTemplFormView
             }
         }
     }
+    
+    public function initChecker ($aValues = [], $aSpecificValues = [])
+    {
+        if(($iContentId = $this->aInputs['object_id']['value'] ?? 0) && ($iProfileId = bx_get_logged_profile_id())) {
+            $aTimer = $this->_oModule->_oDb->getTimers([
+                'sample' => 'content_profile_ids', 
+                'content_id' => $iContentId, 
+                'profile_id' => $iProfileId
+            ]);
+
+            if($aTimer && is_array($aTimer) && ($iDuration = (int)$aTimer['duration']) && ($sKey = 'value') && isset($this->aInputs[$sKey])) {
+                list($iHours, $iMinutes) = $this->_oModule->_oConfig->timeI2A($iDuration, true);
+
+                foreach($this->aInputs[$sKey] as $mixedKey => $mixedValue) {
+                    if(!is_numeric($mixedKey) || !is_array($mixedValue))
+                        continue;
+
+                    switch($this->aInputs[$sKey][$mixedKey]['name']) {
+                        case 'value_h':
+                            $this->aInputs[$sKey][$mixedKey]['value'] = $iHours;
+                            break;
+
+                        case 'value_m':
+                            $this->aInputs[$sKey][$mixedKey]['value'] = $iMinutes + 1;
+                            break;
+                    }
+                }
+
+                $this->aInputs['timer_id'] = [
+                    'type' => 'hidden',
+                    'name' => 'timer_id',
+                    'value' => $aTimer['id']
+                ];
+            }
+        }
+
+        return parent::initChecker ($aValues, $aSpecificValues);
+    }
 }
 
 /** @} */

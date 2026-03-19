@@ -68,6 +68,12 @@ BxTasksTimer.prototype.resume = function (oSource, iContentId, iProfileId) {
     this._performAction(oSource, 'resume', iContentId, iProfileId);
 };
 
+BxTasksTimer.prototype.reload = function (oSource, iContentId, iProfileId) {
+    this._clearTimer(iContentId, iProfileId);
+
+    this._performAction(oSource, 'reload', iContentId, iProfileId);
+};
+
 BxTasksTimer.prototype.log = function (oSource, iContentId, iProfileId) {
     this._clearTimer(iContentId, iProfileId);
 
@@ -87,15 +93,26 @@ BxTasksTimer.prototype.clear = function (oSource, iContentId, iProfileId) {
 BxTasksTimer.prototype.onPerformActionStart = function(oData) {
     this._onPerformActionAndSet(oData);
 };
+
 BxTasksTimer.prototype.onPerformActionStop = function(oData) {
     this._onPerformAction(oData);
 };
+
 BxTasksTimer.prototype.onPerformActionResume = function(oData) {
     this._onPerformActionAndSet(oData);
 };
+
+BxTasksTimer.prototype.onPerformActionReload = function(oData) {
+    if(oData && oData.started)
+        this._onPerformActionAndSet(oData);
+    else
+        this._onPerformAction(oData);
+};
+
 BxTasksTimer.prototype.onPerformActionLog = function(oData) {
     this._onPerformAction(oData);
 };
+
 BxTasksTimer.prototype.onPerformActionClear = function(oData) {
     this._onPerformAction(oData);
 };

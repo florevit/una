@@ -138,7 +138,6 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 ('bx_tasks_timers', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_timers', '_bx_tasks_page_block_title_timers', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:16:"get_block_timers";}', 0, 1, 0);
 
 
-
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
@@ -161,7 +160,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_tasks_entry_attachments', 'bx_tasks', 'file_html5', '_bx_tasks_menu_item_title_system_cpa_file_html5', '_bx_tasks_menu_item_title_cpa_file_html5', 'javascript:void(0)', 'javascript:{js_object_uploader_files_html5}.showUploaderForm();', '_self', 'file', '', '', 2147483647, '', 1, 0, 1, 7);
 
 -- MENU: actions menu for view entry 
-
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_view', '_bx_tasks_menu_title_view_entry', 'bx_tasks_view', 'bx_tasks', 9, 0, 1, 'BxTasksMenuView', 'modules/boonex/tasks/classes/BxTasksMenuView.php');
 
@@ -176,7 +174,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 
 
 -- MENU: all actions menu for view entry 
-
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_view_actions', '_sys_menu_title_view_actions', 'bx_tasks_view_actions', 'bx_tasks', 15, 0, 1, 'BxTasksMenuViewActions', 'modules/boonex/tasks/classes/BxTasksMenuViewActions.php');
 
@@ -187,7 +184,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_tasks_view_actions', 'bx_tasks', 'edit-task', '_bx_tasks_menu_item_title_system_edit_entry', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 10),
 ('bx_tasks_view_actions', 'bx_tasks', 'edit-task-state', '_bx_tasks_menu_item_title_system_edit_entry_state', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 12),
 ('bx_tasks_view_actions', 'bx_tasks', 'delete-task', '_bx_tasks_menu_item_title_system_delete_entry', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 20),
-('bx_tasks_view_actions', 'bx_tasks', 'report-time', '_bx_tasks_menu_item_title_system_report_time', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 25),
+('bx_tasks_view_actions', 'bx_tasks', 'report-time', '_bx_tasks_menu_item_title_system_report_time', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 25),
 ('bx_tasks_view_actions', 'bx_tasks', 'set-completed', '_bx_tasks_menu_item_title_system_set_completed', '_bx_tasks_menu_item_title_set_completed', 'javascript:void(0)', 'javascript:{js_object}.setCompletedByMenu({content_id}, 1, this);', '', 'check', '', '', 0, 2147483647, 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:22:"check_allowed_complete";s:6:"params";a:1:{i:0;s:12:"{content_id}";}}', 1, 0, 30),
 ('bx_tasks_view_actions', 'bx_tasks', 'set-uncompleted', '_bx_tasks_menu_item_title_system_set_uncompleted', '_bx_tasks_menu_item_title_set_uncompleted', 'javascript:void(0)', 'javascript:{js_object}.setCompletedByMenu({content_id}, 0, this);', '', 'circle', '', '', 0, 2147483647, 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:24:"check_allowed_uncomplete";s:6:"params";a:1:{i:0;s:12:"{content_id}";}}', 1, 0, 35),
 ('bx_tasks_view_actions', 'bx_tasks', 'approve', '_sys_menu_item_title_system_va_approve', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 40),

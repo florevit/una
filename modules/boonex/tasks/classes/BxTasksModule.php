@@ -321,6 +321,15 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                     $aResult = ['code' => 0];
                 break;
 
+            case 'reload':
+                $aTimer = $this->getTimer($iContentId, $iProfileId);
+
+                $aResult = [
+                    'code' => 0,
+                    'started' => $aTimer && ($aTimer['started'] ?? 0) != 0
+                ];
+                break;
+
             case 'log':
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
                 if(!$aTimer || !is_array($aTimer) || !$aTimer['duration'])

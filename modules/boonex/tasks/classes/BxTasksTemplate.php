@@ -8,9 +8,8 @@
  * @{
  */
 
-/*
- * Module representation.
- */
+require_once('BxTasksMenuTimer.php');
+
 class BxTasksTemplate extends BxBaseModTextTemplate
 {
     public function __construct(&$oConfig, &$oDb)
@@ -101,6 +100,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
     public function entryTimer ($iContentId, $iProfileId)
     {
+        $this->addCss(['timer.css']);
         $this->addJs(['timer.js']);
         return $this->getTimer($iContentId, $iProfileId) . $this->getJsCodeTimer('timer', [], [
             'content_id' => $iContentId,
@@ -176,7 +176,6 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $bTimer = $aTimer && is_array($aTimer);
         $bStarted = $bTimer && (int)$aTimer['started'] > 0;
 
-        $aActions = [];
         $iHours = $iMinutes = $iSeconds = 0;
         if($bTimer) {
             $iDuration = (int)$aTimer['duration'];
@@ -184,30 +183,15 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 $iDuration += time() - (int)$aTimer['started'];
 
             list($iHours, $iMinutes, $iSeconds) = $this->_oConfig->timeI2A($iDuration, true);
-
-            $aActions = [];
-            if($bStarted)
-                $aActions = [
-                    ['id' => $sPrefix . '-stop', 'name' => $sPrefix . '-stop', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.stop(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_stop')],
-                ];
-            else
-                $aActions = [
-                    ['id' => $sPrefix . '-resume', 'name' => $sPrefix . '-resume', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.resume(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_resume')],
-                    ['id' => $sPrefix . '-clear', 'name' => $sPrefix . '-clear', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.clear(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_clear')],
-                    ['id' => $sPrefix . '-log', 'name' => $sPrefix . '-log', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.log(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_log')],
-                ];
-        }
-        else {
-            $aActions = [
-                ['id' => $sPrefix . '-start', 'name' => $sPrefix . '-start', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.start(this, ' . $iContentId . ', ' . $iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_start')],
-            ];
         }
 
-        $oActions = new BxTemplMenu([
-            'template' => 'menu_buttons_hor.html', 
+        $oActions = new BxTasksMenuTimer([
+            'object' => $sPrefix . '_timer',
+            'template' => 'menu_custom_hor.html', 
             'menu_id' => $this->_oConfig->getHtmlIds('timer_actions'), 
-            'menu_items' => $aActions
+            'persistent' => 0
         ]);
+        $oActions->setParams($iContentId, $iProfileId);
 
         return $this->parseHtmlByName('entry-timer.html', [
             'html_id' => $this->_oConfig->getHtmlIds('timer') . $iContentId . '-' . $iProfileId,
