@@ -207,6 +207,45 @@ class BxBaseConnection extends BxDolConnection
         ]);
     }
 
+    public function getElementAPI($iContent, $iInitiator = false, $aParams = [])
+    {
+        if(!($this->_bApi = bx_is_api()))
+            return;
+
+        if(!$iInitiator && (!($iInitiator = bx_get_logged_profile_id()) || $iInitiator == $iContent))
+            return [];
+
+        $aActions = $this->_getActions($iInitiator, $iContent, $aParams);
+        if((empty($aActions['items']) || !is_array($aActions['items'])))
+            return [];
+
+        $aName = $aActions['name'] ?? '';
+        $sTitle = $aActions['title'] ?? '';
+        $aActions = $aActions['items'];
+
+        if(count($aActions) == 1) {
+            list($aName, $sTitle) = array_values(reset($aActions));
+            $aActions = [];
+        }
+        else {
+            foreach($aActions as $iKey => $aAction)
+                if(!$aAction || !isset($aAction['name'], $aAction['title']))
+                    unset($aActions[$iKey]);
+                else
+                    $aActions[$iKey]['title'] = _t($aAction['title']);
+        }       
+
+        return [
+            'type' => 'connections_ext',
+            'o' => $this->_sObject,
+            'iid' => $iInitiator,
+            'cid' => $iContent,
+            'name' => $aName,
+            'title' => _t($sTitle),
+            'actions' => $aActions,
+        ];
+    }
+
     public function getCounter($iProfileId, $bIsMutual = false, $aParams = [])
     {
         $aParams = $this->_prepareParamsData($aParams);

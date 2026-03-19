@@ -71,6 +71,9 @@ class BxBaseServiceConnections extends BxDol
         if($aResult['err'] !== false)
             return ['code' => 3, 'message' => $aResult['msg']];
 
+        if(($aParams['r'] ?? '') == 'object') 
+            return $oConnection->getElementAPI($aParams['cid'], $aParams['iid']);
+
         $aFlip = ['add' => 'remove', 'remove' => 'add'];
 
         return [

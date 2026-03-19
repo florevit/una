@@ -75,7 +75,9 @@ class BxBaseModProfileMenuViewActionsAll extends BxBaseModGeneralMenuViewActions
                 'id' => $aItem['id'],
                 'name' => $aItem['name'],
                 'display_type' => 'element',
-                'data' => $oObject->getElementApi($aObjectOptions)
+                'data' => array_merge($oObject->getElementApi($iId, false, $aObjectOptions), [
+                    'primary' => !empty($aItem['primary']),
+                ])
             ];
 
         $sResult = $oObject->getElement($iId, false, $aObjectOptions);
