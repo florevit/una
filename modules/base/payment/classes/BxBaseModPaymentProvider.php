@@ -95,12 +95,12 @@ class BxBaseModPaymentProvider extends BxDol
 
     public function isActive()
     {
-    	return $this->getOption('active') == 'on';
+        return in_array($this->getOption('active'), ['on', 1]);
     }
 
     public function isHidden()
     {
-    	return $this->getOption('hidden') == 'on';
+        return is_array($this->getOption('hidden'), ['on', 1]);
     }
 
     public function getOption($sName)

@@ -295,10 +295,10 @@ class BxPaymentDb extends BxBaseModPaymentDb
 
         $aResult = [];
         foreach($aProviders as $sProvider => $aProvider) {
-            if(!isset($aOptions[$aProvider['option_prefix'] . 'active']) || $aOptions[$aProvider['option_prefix'] . 'active']['value'] != 'on') 
+            if(!isset($aOptions[$aProvider['option_prefix'] . 'active']) || !in_array($aOptions[$aProvider['option_prefix'] . 'active']['value'], ['on', 1]))
                 continue;
 
-            if(isset($aOptions[$aProvider['option_prefix'] . 'hidden']) && $aOptions[$aProvider['option_prefix'] . 'hidden']['value'] == 'on') 
+            if(isset($aOptions[$aProvider['option_prefix'] . 'hidden']) && in_array($aOptions[$aProvider['option_prefix'] . 'hidden']['value'], ['on', 1]))
                 continue;
 
             foreach($aOptions as $sName => $aOption)

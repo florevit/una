@@ -81,7 +81,8 @@ class BxPaymentMenuSbsActions extends BxTemplMenu
             case 'sbs-cancel':
                 $aResult = [
                     'request_url' => $this->_sModule . '/cancel_by_pending_id/Subscriptions&params[]=' . $this->_iPendingId . '&params[]=1', 
-                    'on_callback' => 'hide'
+                    'on_callback' => 'hide_row',
+                    'id' => $this->_iPendingId
                 ];
                 break;
         }
