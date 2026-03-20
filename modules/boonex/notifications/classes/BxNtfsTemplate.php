@@ -355,7 +355,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
             'subject' => $sSubject,
             'content' => $this->parseHtmlByName('et_new_event.html', [
                 'icon_url' => !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : $this->getIconUrl('std-icon.svg'),
-                'content_url' => $this->_getContentLink($aEvent),
+                'content_url' => bx_absolute_url($this->_getContentLink($aEvent, getParam('sys_api_url_root_email') != '')),
                 'content' => $sContent,
                 'date' => bx_process_output($aEvent['date'], BX_DATA_DATE_TS),
                 'bx_if:show_summary' => [
@@ -386,7 +386,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
         $aContent = &$aEvent['content'];
         return array(
             'content' => array(
-                'url' => $this->_getContentLink($aEvent),
+                'url' => bx_absolute_url($this->_getContentLink($aEvent, getParam('sys_api_url_root_push') != '')),
                 'message' => $sMessage,
                 'icon' => !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : ''
             ),
@@ -526,11 +526,11 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
         return $this->parseHtmlByContent(_t($sLangKey), array_diff_key($aEvent['content'], $aExclude), array('{', '}'));
     }
 
-    protected function _getContentLink(&$aEvent)
+    protected function _getContentLink($aEvent, $bForApi = false)
     {
-        $sLink = $aEvent['content']['entry_url'];
+        $sLink = $aEvent['content']['entry_url' . ($bForApi ? '_api' : '')] ?? $aEvent['content']['entry_url'];
         if(!empty($aEvent['subobject_id']) && !empty($aEvent['content']['subentry_url'])) 
-            $sLink = $aEvent['content']['subentry_url'];
+            $sLink = $aEvent['content']['subentry_url' . ($bForApi ? '_api' : '')] ?? $aEvent['content']['subentry_url'];
 
         return $this->_getLink($sLink);
     }
