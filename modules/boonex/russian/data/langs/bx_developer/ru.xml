@@ -457,8 +457,14 @@
     <string name="_bx_dev_bp_txt_sys_block_designbox_id"><![CDATA[Дизайн]]></string>
     <string name="_bx_dev_bp_txt_block_designbox_id"><![CDATA[Дизайн]]></string>
     <string name="_bx_dev_bp_err_block_designbox_id"><![CDATA[Нужно выбрать дизайн]]></string>
+    <string name="_bx_dev_bp_txt_sys_block_content_empty"><![CDATA[Текст-заполнитель для пустого блока]]></string>
+    <string name="_bx_dev_bp_txt_block_content_empty"><![CDATA[Текст-заполнитель для пустого блока]]></string>
+    <string name="_bx_dev_bp_txt_sys_block_help"><![CDATA[Помощь]]></string>
+    <string name="_bx_dev_bp_txt_block_help"><![CDATA[Помощь]]></string>
     <string name="_bx_dev_bp_txt_sys_block_class"><![CDATA[CSS класс]]></string>
     <string name="_bx_dev_bp_txt_block_class"><![CDATA[CSS класс]]></string>
+    <string name="_bx_dev_bp_txt_sys_block_cache_lifetime"><![CDATA[Кэш для блока (в секундах)]]></string>
+    <string name="_bx_dev_bp_txt_block_cache_lifetime"><![CDATA[Кэш для блока (в секундах)]]></string>
     <string name="_bx_dev_bp_txt_sys_block_config_api"><![CDATA[Конфигурация (для приложения)]]></string>
     <string name="_bx_dev_bp_txt_block_config_api"><![CDATA[Конфигурация (для приложения в формате JSON)]]></string>
     <string name="_bx_dev_bp_txt_sys_block_async"><![CDATA[Асинхронный режим]]></string>
