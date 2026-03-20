@@ -153,12 +153,6 @@ class BxBaseModProfilePageEntry extends BxBaseModGeneralPageEntry
 
     public function getCode ()
     {
-        // check if profile is active
-        if (!$this->_oProfile || (!$this->_oProfile->isActive() && $this->_oProfile->id() != bx_get_logged_profile_id() && $this->_oModule->checkAllowedEditAnyEntry() !== CHECK_ACTION_RESULT_ALLOWED)) {
-            $this->_oTemplate->displayPageNotFound();
-            exit;
-        }
-
         $this->_oTemplate->addCss('main.css');
 
         $sResult = parent::getCode();
@@ -166,6 +160,15 @@ class BxBaseModProfilePageEntry extends BxBaseModGeneralPageEntry
             BxDolTemplate::getInstance()->setPageUrl($this->_sCanonicalUrl);
 
         return $sResult;
+    }
+
+    protected function _isAvailablePage($a)
+    {
+        // check if profile is active
+        if(!$this->_oProfile || (!$this->_oProfile->isActive() && $this->_oProfile->id() != bx_get_logged_profile_id() && $this->_oModule->checkAllowedEditAnyEntry() !== CHECK_ACTION_RESULT_ALLOWED))
+            return false;
+
+        return parent::_isAvailablePage($a);
     }
 
     protected function _isVisiblePage ($a)
