@@ -747,7 +747,7 @@ class BxBasePage extends BxDolPage
             pow(2, BX_DB_HIDDEN_DESKTOP - 1) => 'desktop',
             pow(2, BX_DB_HIDDEN_MOBILE - 1) => 'mobile-app'
         ];
-        $aFieldsUnset = ['object', 'cell_id', 'title_system', 'class', 'submenu', 'tabs', 'async', 'visible_for_levels', 'type', 'text', 'text_updated', 'help', 'cache_lifetime', 'active', 'active_api', 'copyable', 'deletable', 'order'];
+        $aFieldsUnset = ['object', 'cell_id', 'title_system', 'class', 'submenu', 'tabs', 'async', 'visible_for_levels', 'type', 'text', 'text_updated', 'cache_lifetime', 'active', 'active_api', 'copyable', 'deletable', 'order'];
 
         $bBlocks = !empty($aBlocks) && is_array($aBlocks);
 
@@ -783,6 +783,9 @@ class BxBasePage extends BxDolPage
                     if(!empty($aConfigApi) && is_array($aConfigApi))
                         $aBlock[$sK] = $aConfigApi;
                 }
+                
+                if(($sK = 'help') && !empty($aBlock[$sK]))
+                    $aBlock[$sK] = _t($aBlock[$sK]);
 
                 $mBlock = $aBlock['content'];
                 if(($sFunc = '_getBlock' . bx_gen_method_name($aBlock['type'])) && method_exists($this, $sFunc))
