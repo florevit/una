@@ -2597,7 +2597,8 @@
     <string name="_sys_confirmed"><![CDATA[Подтвержденный]]></string>
     <string name="_sys_conn_do_by"><![CDATA[Присоединились]]></string>
     <string name="_sys_conn_friends_counter"><![CDATA[Друзья: {0}]]></string>
-    <string name="_sys_conn_friends_do_initiator"><![CDATA[Друзья]]></string>
+    <string name="_sys_conn_friends_done_initiator"><![CDATA[Запрос отправлен]]></string>
+    <string name="_sys_conn_friends_done_initiator_mutual"><![CDATA[Друзья]]></string>
     <string name="_sys_conn_friends_do_content"><![CDATA[Ответить]]></string>
     <string name="_sys_conn_subscriptions_do_initiator"><![CDATA[Слежу]]></string>
     <string name="_sys_conn_subscriptions_counter"><![CDATA[Подписчики: {0}]]></string>

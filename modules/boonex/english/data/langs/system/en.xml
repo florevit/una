@@ -2622,7 +2622,8 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_confirmed"><![CDATA[Confirmed]]></string>
     <string name="_sys_conn_do_by"><![CDATA[Connected by]]></string>
     <string name="_sys_conn_friends_counter"><![CDATA[{0} friends]]></string>
-    <string name="_sys_conn_friends_do_initiator"><![CDATA[Friends]]></string>
+    <string name="_sys_conn_friends_done_initiator"><![CDATA[Request sent]]></string>
+    <string name="_sys_conn_friends_done_initiator_mutual"><![CDATA[Friends]]></string>
     <string name="_sys_conn_friends_do_content"><![CDATA[Respond]]></string>
     <string name="_sys_conn_subscriptions_do_initiator"><![CDATA[Following]]></string>
     <string name="_sys_conn_subscriptions_counter"><![CDATA[{0} followers]]></string>

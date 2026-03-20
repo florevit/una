@@ -17,7 +17,8 @@ class BxBaseConnectionFriend extends BxDolConnectionFriend
         parent::__construct($aObject);
 
         $this->_aT = array_merge($this->_aT, [
-            'do_initiator' => '_sys_conn_friends_do_initiator',
+            'done_initiator' => '_sys_conn_friends_done_initiator',
+            'done_initiator_mutual' => '_sys_conn_friends_done_initiator_mutual',
             'do_content' => '_sys_conn_friends_do_content',
             'counter' => '_sys_conn_friends_counter'
         ]);
@@ -29,9 +30,16 @@ class BxBaseConnectionFriend extends BxDolConnectionFriend
         $aActions = [];
 
         if($this->isConnectedNotMutual($iInitiator, $iContent)) {
+            $sName = 'default';
+            $sTitle = $this->_aT['done_initiator'];
             $aActions = [[
                 'name' => 'remove',
                 'title' => ($sKey = 'txt_unfriend_cancel') && !empty($aParams[$sKey]) ? $aParams[$sKey] : '_sys_menu_item_title_sm_unfriend_cancel'
+            ], [
+                /*
+                 * An empty array item to show all items in popup.
+                 * More actions will be added later.
+                 */
             ]];
         }
         else if($this->isConnectedNotMutual($iContent, $iInitiator)) {
@@ -47,7 +55,7 @@ class BxBaseConnectionFriend extends BxDolConnectionFriend
         }
         else if($this->isConnected($iInitiator, $iContent, true)) {
             $sName = 'default';
-            $sTitle = $this->_aT['do_initiator'];
+            $sTitle = $this->_aT['done_initiator_mutual'];
             $aActions = [[
                 'name' => 'remove',
                 'title' => ($sKey = 'txt_unfriend') && !empty($aParams[$sKey]) ? $aParams[$sKey] : '_sys_menu_item_title_sm_unfriend'
