@@ -58,6 +58,15 @@ class BxBaseModGeneralGrid extends BxTemplGrid
         }
     }
 
+    protected function _setFilterValue($iNumber, $mixedValue)
+    {
+        $sFfName = '_sFilter' . $iNumber . 'Name';
+        $sFfValue = '_sFilter' . $iNumber . 'Value';
+
+        $this->$sFfValue = bx_process_input($mixedValue);
+        $this->_aQueryAppend[$this->$sFfName] = $this->$sFfValue;
+    }
+
     protected function _parseFilterValue(&$sFilter)
     {
         $iFilterParts = substr_count($sFilter, $this->_sParamsDivider);
