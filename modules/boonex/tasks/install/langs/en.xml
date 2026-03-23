@@ -260,6 +260,8 @@
     <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[My Time in <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
     <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[All Time in <a href="{profile_link}">{display_name}</a>]]></string>
+    <string name="_bx_tasks_page_block_title_system_menu_browse"><![CDATA[Browse menu]]></string>
+    <string name="_bx_tasks_page_block_title_menu_browse"><![CDATA[Browse]]></string>
 
     <!-- Menus -->
     <string name="_bx_tasks_menu_title_entry_attachments"><![CDATA[Form Attachments]]></string>
@@ -344,6 +346,8 @@
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[My Time]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[All Time]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[My Timers]]></string>
+    <string name="_bx_tasks_menu_title_browse"><![CDATA[Browse Tasks]]></string>
+    <string name="_bx_tasks_menu_set_title_browse"><![CDATA[Browse Tasks]]></string>
 
     <!-- Grids -->
     <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[All Statuses]]></string>

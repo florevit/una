@@ -1,3 +1,4 @@
+/*-- Timer --*/
 .bx-tasks-actions .bx-menu-custom {
     justify-content: center;
 }
@@ -12,4 +13,10 @@
 .bx-tasks-actions .bx-menu-custom li a {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+}
+
+/*-- Timer Card --*/
+.bx-tasks-timer-card .bx-tasks-actions .bx-menu-custom li a {
+    padding-left: 1.0rem;
+    padding-right: 1.0rem;
 }

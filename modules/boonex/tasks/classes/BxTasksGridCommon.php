@@ -11,9 +11,19 @@
 
 class BxTasksGridCommon extends BxBaseModTextGridCommon
 {
+    /**
+     * Context module
+     */
     protected $_sFilter3Name;
     protected $_sFilter3Value;
     protected $_aFilter3Values;
+
+    /**
+     * Context entry
+     */
+    protected $_sFilter4Name;
+    protected $_sFilter4Value;
+    protected $_aFilter4Values;
 
     public function __construct ($aOptions, $oTemplate = false)
     {
@@ -23,6 +33,11 @@ class BxTasksGridCommon extends BxBaseModTextGridCommon
         $this->_sTableAlias = 'tt';
 
         $this->_initFilter(3, $this->_oModule->getContexts());
+        if(($sValue = bx_get('cxt_m')) !== false)
+            $this->_setFilterValue(3, $sValue);
+
+        if(($sValue = bx_get('cxt_id')) !== false)
+            $this->_setFilterValue(4, $sValue);
     }
 
     protected function _getCellContextModule($mixedValue, $sKey, $aField, $aRow)
@@ -42,6 +57,9 @@ class BxTasksGridCommon extends BxBaseModTextGridCommon
 
         if(!empty($this->_sFilter3Value))
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`type`=?", $this->_sFilter3Value);
+
+        if(!empty($this->_sFilter4Value))
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`id`=?", $this->_sFilter4Value);
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }

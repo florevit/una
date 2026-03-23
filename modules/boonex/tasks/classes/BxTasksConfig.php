@@ -165,6 +165,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_MENU_SUBMENU_VIEW_CONTEXT' => 'bx_tasks_view_context_submenu',
             'OBJECT_MENU_MANAGE_TOOLS_SUBMENU' => 'bx_tasks_manage_tools_submenu',
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage item menu in content administration tools
+            'OBJECT_MENU_BROWSE' => 'bx_tasks_browse',
             'OBJECT_GRID_ADMINISTRATION' => 'bx_tasks_administration',
             'OBJECT_GRID_COMMON' => 'bx_tasks_common',
             'OBJECT_GRID_TIME_ADMINISTRATION' => 'bx_tasks_time_administration',

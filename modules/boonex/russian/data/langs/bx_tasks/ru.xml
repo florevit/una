@@ -260,6 +260,8 @@
     <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[Мое время в <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[Всё время в контексте]]></string>
     <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[Всё время в <a href="{profile_link}">{display_name}</a>]]></string>
+    <string name="_bx_tasks_page_block_title_system_menu_browse"><![CDATA[Меню просмотра]]></string>
+    <string name="_bx_tasks_page_block_title_menu_browse"><![CDATA[Просмотр задач]]></string>
 
     <!-- Menus -->
     <string name="_bx_tasks_menu_title_entry_attachments"><![CDATA[Форма - Прикрепления]]></string>
@@ -342,6 +344,8 @@
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[Моё время]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[Всё время]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[Мои таймеры]]></string>
+    <string name="_bx_tasks_menu_title_browse"><![CDATA[Просмотр задач]]></string>
+    <string name="_bx_tasks_menu_set_title_browse"><![CDATA[Просмотр задач]]></string>
 
     <!-- Grids -->
     <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[Все статусы]]></string>

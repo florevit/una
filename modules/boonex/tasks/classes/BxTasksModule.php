@@ -386,6 +386,17 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         ]);
     }
 
+    public function serviceGetBlockMenuBrowse()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_BROWSE']);
+        if(!$oMenu)
+            return '';
+
+        return $oMenu->getCode();            
+    }
+
     public function serviceGetBlockMenuContext($iProfileId)
     {
         $CNF = &$this->_oConfig->CNF;

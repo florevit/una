@@ -155,6 +155,14 @@ class BxTasksDb extends BxBaseModTextDb
         return count($aResult) == (int)$this->query("UPDATE `" . $CNF['TABLE_ENTRIES'] . "` SET `" . $CNF['FIELD_EXPIRED'] . "` = '1' WHERE `id` IN (" . $this->implode_escape($aResult) . ")") ? $aResult : false;
     }
 
+    public function getContextsIdsByType($sType, $iProfileId)
+    {
+        return $this->getColumn('SELECT `tp`.`id` FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE `tp`.`type`=:type AND `tt`.`author`=:author GROUP BY `tp`.`id`', [
+            'type' => $sType,
+            'author' => $iProfileId
+        ]);
+    }
+
     public function getTimeTracks($aParams = []) 
     {
         $CNF = &$this->_oConfig->CNF;

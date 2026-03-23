@@ -156,6 +156,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             ];
         }
 
+        $this->addCss(['timer.css']);
         $this->addJs(['timer.js']);
         return $this->parseHtmlByName('browse_timers.html', [
             'js_code' => $this->getJsCode('timer', [
