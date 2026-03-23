@@ -277,41 +277,6 @@ class BxBaseModProfileMenuSnippetMeta extends BxBaseModGeneralMenuSnippetMeta
 
         $iContentProfile = $this->_oContentProfile->id();
 
-        if($this->_bIsApi) {
-            $mixedTitle = $this->_oModule->getMenuItemTitleByConnection($sConnection, $sAction, $iContentProfile);
-            if(empty($mixedTitle))
-                return false;
-
-            $sApiAction = $sAction;
-            $sApiTitle = '';
-            if(is_array($mixedTitle)) {
-                foreach($mixedTitle as $_sAction => $_sTitle)
-                    if(!empty($_sTitle)) {
-                        $sApiAction = $_sAction;
-                        $sApiTitle = $_sTitle;
-                        break;
-                    }
-            }
-            else
-                $sApiTitle = $mixedTitle;
-
-            if(!$sApiAction || !$sApiTitle)
-                return false;
-
-            return $this->_getMenuItemAPI($aItem, ['display' => 'element'], [
-                'title' => $sApiTitle,
-                'data' => [
-                    'type' => 'connections',
-                    'o' => $sConnection,
-                    'a' => $sApiAction,
-                    'iid' => bx_get_logged_profile_id(),
-                    'cid' => $iContentProfile,
-                    'title' => $sApiTitle,
-                    'primary' => !empty($aItem['primary']),
-                ]
-            ]);
-        }
-
         $oObject = BxDolConnection::getObjectInstance($sConnection);
         if(!$oObject)
             return false;
@@ -321,6 +286,15 @@ class BxBaseModProfileMenuSnippetMeta extends BxBaseModGeneralMenuSnippetMeta
             'show_do_as_button' => true,
             'show_do_label' => true
         ];
+
+        if($this->_bIsApi) {
+            return $this->_getMenuItemAPI($aItem, ['display' => 'element'], [
+                'data' => array_merge($oObject->getElementApi($iContentProfile, false, $aObjectOptions), [
+                    'primary' => !empty($aItem['primary']),
+                ])
+            ]);
+        }
+
         return ($mixedItem = $oObject->getElement($iContentProfile, false, $aObjectOptions)) && ($mixedItem = $this->getUnitMetaItemCustom($mixedItem)) ? [$mixedItem, 'bx-menu-item-button'] : false;
     }
 
