@@ -1846,6 +1846,12 @@
     <string name="_adm_stg_cpt_option_sys_api_search_sections"><![CDATA[Search sections]]></string>
     <string name="_adm_stg_cpt_option_sys_api_extended_units"><![CDATA[Use extended units]]></string>
     <string name="_adm_stg_cpt_option_sys_api_conn_in_prof_units"><![CDATA[Use connections lists in profiles/groups units]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_guest"><![CDATA[Root page for non-logged user]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_member"><![CDATA[Root page for logged user]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_home"><![CDATA[Home]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_dashboard"><![CDATA[Dashboard]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_profile"><![CDATA[Profile]]></string>
+    <string name="_adm_stg_cpt_option_sys_api_root_page_splash"><![CDATA[Splash]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_email"><![CDATA[Site main URL in email notifications]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_push"><![CDATA[Site main URL in push notifications]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_api_key"><![CDATA[Default API key]]></string>

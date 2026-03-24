@@ -1488,6 +1488,27 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return $aResults;
     }
 
+    public function serviceGetOptionsApiRootPageGuest()
+    {
+        $sKey = '_adm_stg_cpt_option_sys_api_root_page_';
+
+        return [
+            'home' => _t($sKey .'home'), 
+            'splash' => _t($sKey . 'splash')
+        ];
+    }
+
+    public function serviceGetOptionsApiRootPageMember()
+    {
+        $sKey = '_adm_stg_cpt_option_sys_api_root_page_';
+
+        return [
+            'home' => _t($sKey .'home'), 
+            'dashboard' => _t($sKey . 'dashboard'), 
+            'profile' => _t($sKey . 'profile')
+        ];
+    }
+
     public function serviceGetOptionsApiMenuTop()
     {
         $aMenus = BxDolMenuQuery::getMenuObjects();

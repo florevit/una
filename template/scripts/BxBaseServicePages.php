@@ -36,9 +36,22 @@ class BxBaseServicePages extends BxDol
      */
     public function serviceGetPageByRequest ($sRequest, $sBlocks = '', $sParams = '')
     {
+        $bLogged = isLogged();
+
+        if($sRequest == 'home' && ($sReplacement = getParam('sys_api_root_page_' . ($bLogged ? 'member' : 'guest'))))
+            switch($sReplacement) {
+                case 'dashboard':
+                    $sRequest = 'dashboard';
+                    break;
+
+                case 'profile':
+                    $sRequest = ltrim(bx_api_get_relative_url(BxDolProfile::getInstance()->getUrl()), '/');
+                    break;
+            }
+
         list($aRes, $aExtras) = $this->_getByRequest('page', $sRequest, $sBlocks, $sParams);
 
-        if(isset($aRes['code'], $aRes['data']) && (int)$aRes['code'] == 404 && isLogged())
+        if(isset($aRes['code'], $aRes['data']) && (int)$aRes['code'] == 404 && $bLogged)
             $aRes['data']['user'] = BxDolProfile::getDataForPage();
         
         $aExtras['data'] = &$aRes;

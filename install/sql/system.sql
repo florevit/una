@@ -860,8 +860,10 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_api_cookie_path', '_adm_stg_cpt_option_sys_api_cookie_path', '/', 'digit', '', '', '', 40),
 (@iCategoryId, 'sys_api_cookie_secure', '_adm_stg_cpt_option_sys_api_cookie_secure', '', 'checkbox', '', '', '', 42),
 (@iCategoryId, 'sys_api_cookie_samesite', '_adm_stg_cpt_option_sys_api_cookie_samesite', 'Lax', 'select', 'None,Lax,Strict', '', '', 44),
-(@iCategoryId, 'sys_api_url_root_email', '_adm_stg_cpt_option_sys_api_url_root_email', '', 'digit', '', '', '', 50),
-(@iCategoryId, 'sys_api_url_root_push', '_adm_stg_cpt_option_sys_api_url_root_push', '', 'digit', '', '', '', 51);
+(@iCategoryId, 'sys_api_root_page_guest', '_adm_stg_cpt_option_sys_api_root_page_guest', 'home', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_options_api_root_page_guest";s:5:"class";s:13:"TemplServices";}', '', '', 50),
+(@iCategoryId, 'sys_api_root_page_member', '_adm_stg_cpt_option_sys_api_root_page_member', 'splash', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:32:"get_options_api_root_page_member";s:5:"class";s:13:"TemplServices";}', '', '', 52),
+(@iCategoryId, 'sys_api_url_root_email', '_adm_stg_cpt_option_sys_api_url_root_email', '', 'digit', '', '', '', 55),
+(@iCategoryId, 'sys_api_url_root_push', '_adm_stg_cpt_option_sys_api_url_root_push', '', 'digit', '', '', '', 57);
 
 
 --

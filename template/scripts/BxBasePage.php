@@ -517,12 +517,14 @@ class BxBasePage extends BxDolPage
             $_GET = array_merge($_GET, $aQueryString);
         }
 
+        $bLogged = isLogged();
         $bIsAvailable = $this->_isAvailablePage($this->_aObject);
         $bIsVisible = $this->_isVisiblePage($this->_aObject);
         //TODO: If page isn't Available or isn't Visible then we should exit with related Error Codes immediately.
 
         $sMetaTitle = $this->_getPageMetaTitle();
         $sName = $this->_getPageTitle();
+        $sUri = $this->_aObject['uri'];
         $sModule = $this->getModule();
         $aElements = $this->getPageBlocksAPI($aBlocks);
 
@@ -533,13 +535,13 @@ class BxBasePage extends BxDolPage
             'description' => $this->_getPageMetaDesc(),
             'keywords' => $this->_getPageMetaKeywords(),
             'image' => '',
-            'uri' => $this->_aObject['uri'],
-            'url' => ($bGetParams && !empty($aGetParams[0]) ? $aGetParams[0] : $this->_aObject['uri']) . ($sQueryString != '' ? '?' . $sQueryString : ''),
+            'uri' => $sUri,
+            'url' => ($bGetParams && !empty($aGetParams[0]) ? $aGetParams[0] : $sUri) . ($sQueryString != '' ? '?' . $sQueryString : ''),
             'author' => $this->_aObject['author'],
             'added' => $this->_aObject['added'],
             'module' => $sModule,
             'type' => $this->getType (),
-            'layout' => str_replace('.html', '', $this->_aObject['template']),
+            'layout' => !$bLogged && $sUri == 'home' && ($sReplacement = getParam('sys_api_root_page_guest')) == 'splash' ? $sReplacement : str_replace('.html', '', $this->_aObject['template']),
             'layout_parsed' => !is_numeric(trim(current(array_keys($aElements)), 'cell_')),
             'cover_block' => '',
             'cover' => $this->_aObject['cover'],
@@ -651,7 +653,7 @@ class BxBasePage extends BxDolPage
             }
         }
 
-        if(isLogged() && ($o = BxDolProfile::getInstance()) !== false) {
+        if($bLogged && ($o = BxDolProfile::getInstance()) !== false) {
             $iLogged = $o->id();
 
             $a['user'] = BxDolProfile::getDataForPage($o);
