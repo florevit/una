@@ -13,9 +13,14 @@ class BxTasksMenuBrowse extends BxTemplMenu
     protected $_sModule;
     protected $_oModule;
 
+    protected $_iProfileId;
+
     protected $_oPermalink;
     protected $_sPageLink;
     protected $_aPageParams;
+
+    protected $_sParamName;
+    protected $_iParamValue;
 
     public function __construct($aObject, $oTemplate = false)
     {
@@ -26,18 +31,28 @@ class BxTasksMenuBrowse extends BxTemplMenu
 
         $this->_isMultilevel = true;
 
+        $this->_iProfileId = 0;
+
         $this->_oPermalink = BxDolPermalinks::getInstance();
         list($this->_sPageLink, $this->_aPageParams) = bx_get_base_url_inline();
+
+        $this->_sParamName = 'context_pid';
+        if(($iParamValue = bx_get($this->_sParamName)) !== false)
+            $this->_iParamValue = (int)$iParamValue;
+    }
+    
+    public function setProfileId($iProfileId)
+    {
+        $this->_iProfileId = $iProfileId;
     }
 
     protected function getMenuItemsRaw ()
     {
-        $iProfile = bx_get_logged_profile_id();
         $aContexts = $this->_oModule->getContexts();
 
         $aMenuItems = [];
         foreach($aContexts as $sName => $sTitle) {
-            $aSubmenu = $this->_getMenuSubitems($iProfile, $sName);
+            $aSubmenu = $this->_getMenuSubitems($this->_iProfileId, $sName);
             if(empty($aSubmenu))
                 continue;
 
@@ -69,10 +84,10 @@ class BxTasksMenuBrowse extends BxTemplMenu
             $aSubmenu[] = [
                 'id' => 'context-' . $iId, 
                 'name' => 'context-' . $iId, 
-                'class' => '', 
+                'class_add' => $iId == $this->_iParamValue ? 'bx-menu-tab-active' : '',
+                'class' => '',
                 'link' => $this->_oPermalink->permalink(bx_append_url_params($this->_sPageLink, array_merge($this->_aPageParams, [
-                    'cxt_m' => $sContextModule,
-                    'cxt_id' => $iId
+                    $this->_sParamName => $iId
                 ]))), 
                 'onclick' => '', 
                 'target' => '_self', 

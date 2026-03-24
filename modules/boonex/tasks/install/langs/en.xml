@@ -170,6 +170,8 @@
     <string name="_bx_tasks_page_title_browse_updated"><![CDATA[Updated Tasks]]></string>
     <string name="_bx_tasks_page_title_sys_home"><![CDATA[Tasks Home]]></string>
     <string name="_bx_tasks_page_title_home"><![CDATA[Tasks]]></string>
+    <string name="_bx_tasks_page_block_title_sys_home_entries"><![CDATA[Tasks]]></string>
+    <string name="_bx_tasks_page_block_title_home_entries"><![CDATA[Tasks]]></string>
     <string name="_bx_tasks_page_block_title_featured_entries_view_extended"><![CDATA[Featured Tasks]]></string>
     <string name="_bx_tasks_page_block_title_recent_entries"><![CDATA[Latest Tasks (Gallery View)]]></string>
     <string name="_bx_tasks_page_block_title_recent_entries_view_extended"><![CDATA[Latest Tasks]]></string>

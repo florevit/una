@@ -44,6 +44,38 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             parent::getJsCode($sType, $aParams, $mixedWrap);
     }
     
+    public function getBlockMenuBrowse()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iProfileId = bx_get_logged_profile_id();
+
+        $sMenuManage = '';
+        if(($oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])) !== false)
+            $sMenuManage = $oMenu->getCode();
+
+        $sMenuBrowse = '';
+        if(($oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_BROWSE'])) !== false) {
+            $oMenu->setProfileId($iProfileId);
+            $sMenuBrowse = $oMenu->getCode();
+        }
+
+        return $this->parseHtmlByName('menu_browse.html', [
+            'bx_if:show_menu_manage' => [
+                'condition' => $sMenuManage != '',
+                'content' => [
+                    'menu_manage' => $sMenuManage
+                ]
+            ],
+            'bx_if:show_menu_browse' => [
+                'condition' => $sMenuBrowse != '',
+                'content' => [
+                    'menu_browse' => $sMenuBrowse
+                ]
+            ]
+        ]);
+    }
+    
     /**
      * Use Gallery image for both because currently there is no Unit types with small thumbnails.
      */
@@ -203,10 +235,11 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         ]);
     }
 
-    public function getEntriesList($iContextId)
+    public function getEntriesList($iContextId, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
 
+        $oModule = $this->getModule();
         $oPermalinks = BxDolPermalinks::getInstance();
         $oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
 
@@ -219,16 +252,15 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             $aFilterValues = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
 
         $_iContextId = abs($iContextId);
-
-        $oModule = $this->getModule();
         $bAllowAdd = $oModule->isAllowAdd($_iContextId);
         $bAllowManage = $oModule->isAllowManageByContext($_iContextId);
-
-        $aLists = $this->_oDb->getLists($iContextId);
+        $iForProfile = (int)($aParams['for_profile'] ?? 0);
 
         $aTmplVarsLists = [];
+
+        $aLists = $this->_oDb->getLists($iContextId);
         foreach($aLists as $aList) {
-            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id'], true);
+            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id'], $iForProfile, true);
 
             $aTmplVarsTasks = [];
             foreach($aTasks as $aTask) {

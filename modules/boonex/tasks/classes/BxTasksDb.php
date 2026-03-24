@@ -45,7 +45,7 @@ class BxTasksDb extends BxBaseModTextDb
         $this->query($sQuery);
     }
 	
-    public function getTasks ($iContextId = 0, $iListId = 0, $bWithStats = false)
+    public function getTasks ($iContextId = 0, $iListId = 0, $iProfileId = 0, $bWithStats = false)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -61,6 +61,12 @@ class BxTasksDb extends BxBaseModTextDb
         if(($sField = $CNF['FIELD_TASKLIST']) && $iListId) {
             $aBindings[$sField] = $iListId;
             $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
+        }
+
+        if($iProfileId) {
+            $aBindings['profile_id'] = $iProfileId;
+            $sJoinClause .= " LEFT JOIN `" . $CNF['TABLE_ASSIGNMENTS'] . "` AS `ta` ON `te`.`id`=`ta`.`content`";
+            $sWhereClause .= " AND (`te`.`" . $CNF['FIELD_AUTHOR'] . "`=:profile_id OR `ta`.`initiator`=:profile_id)";
         }
 
         if(($oCf = BxDolContentFilter::getInstance()) && $oCf->isEnabled())
@@ -157,7 +163,19 @@ class BxTasksDb extends BxBaseModTextDb
 
     public function getContextsIdsByType($sType, $iProfileId)
     {
-        return $this->getColumn('SELECT `tp`.`id` FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE `tp`.`type`=:type AND `tt`.`author`=:author GROUP BY `tp`.`id`', [
+        $CNF = $this->_oConfig->CNF;
+
+        //--- Add own tasks
+        $sQuery = '(SELECT `tp`.`id` FROM `' . $CNF['TABLE_ENTRIES'] . '` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` AND `tp`.`type`=:type WHERE `tt`.`author`=:author GROUP BY `tp`.`id`)';
+
+        //--- Add assigned tasks
+        $oAssignments = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
+        $aSql = $oAssignments->getConnectedContentAsSQLParts('tt', 'id', $iProfileId);
+
+        if($aSql && ($sJoin = $aSql['join'] ?? false))
+            $sQuery .= ' UNION (SELECT `tp`.`id` FROM `' . $CNF['TABLE_ENTRIES'] . '` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` AND `tp`.`type`=:type ' . $sJoin . ' WHERE 1)';
+
+        return $this->getColumn($sQuery, [
             'type' => $sType,
             'author' => $iProfileId
         ]);

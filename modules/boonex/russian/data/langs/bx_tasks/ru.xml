@@ -170,6 +170,8 @@
     <string name="_bx_tasks_page_title_browse_updated"><![CDATA[Обновлённые Задания]]></string>
     <string name="_bx_tasks_page_title_sys_home"><![CDATA[Задания - Домой]]></string>
     <string name="_bx_tasks_page_title_home"><![CDATA[Задания]]></string>
+    <string name="_bx_tasks_page_block_title_sys_home_entries"><![CDATA[Задания]]></string>
+    <string name="_bx_tasks_page_block_title_home_entries"><![CDATA[Задания]]></string>
     <string name="_bx_tasks_page_block_title_featured_entries_view_extended"><![CDATA[Продвинутые Задания]]></string>
     <string name="_bx_tasks_page_block_title_recent_entries"><![CDATA[Недавние Задания (Галерея)]]></string>
     <string name="_bx_tasks_page_block_title_recent_entries_view_extended"><![CDATA[Недавние Задания]]></string>

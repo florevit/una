@@ -34,6 +34,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'tasks',
             'TABLE_LISTS' => $aModule['db_prefix'] . 'lists',
+            'TABLE_ASSIGNMENTS' => $aModule['db_prefix'] . 'assignments',
             'TABLE_TIME' => $aModule['db_prefix'] . 'time',
             'TABLE_TIME_TRACK' => $aModule['db_prefix'] . 'time_track',
             'TABLE_TIMERS' => $aModule['db_prefix'] . 'timers',

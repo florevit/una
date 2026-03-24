@@ -388,18 +388,15 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceGetBlockMenuBrowse()
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_BROWSE']);
-        if(!$oMenu)
-            return '';
-
-        return $oMenu->getCode();            
+        return $this->_oTemplate->getBlockMenuBrowse();
     }
 
     public function serviceGetBlockMenuContext($iProfileId)
     {
         $CNF = &$this->_oConfig->CNF;
+
+        if(!$this->isAllowView($iProfileId))
+            return ''; 
 
         $oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_SUBMENU_VIEW_CONTEXT']);
         if(!$oMenu)
@@ -757,8 +754,30 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $aSQLPart['where'] = " AND " . $CNF['TABLE_ENTRIES'] . ".`" . $CNF['FIELD_ID'] . "` IN(" . implode(',', $aData2) . ")";
         return $this->_oDb->getEntriesByDate(bx_get('start'), bx_get('end'), null, $aSQLPart);
     }
-	
-    public function serviceBrowseContext ($iProfileId = 0, $aParams = array())
+
+    public function serviceBrowseHome($aParams = [])
+    {
+        $iContextPid = bx_process_input(bx_get('context_pid'), BX_DATA_INT);
+        if(!$iContextPid)
+            return MsgBox(_t('_Empty'));
+
+        $sContent = $this->serviceBrowseTasks(-$iContextPid, array_merge($aParams, [
+            'for_profile' => bx_get_logged_profile_id()
+        ]));
+        
+        if($sContent && ($oProfile = BxDolProfile::getInstance($iContextPid)) !== false)
+            return [
+                'title' => bx_replace_markers(_t('_bx_tasks_page_block_title_entries_in_context'), [
+                    'display_name' => $oProfile->getDisplayName(),
+                    'profile_link' => $oProfile->getUrl()
+                ]),
+                'content' => $sContent
+            ];
+
+        return $sContent;
+    }
+
+    public function serviceBrowseContext($iProfileId = 0, $aParams = [])
     {
         if(!$iProfileId)
             $iProfileId = bx_process_input(bx_get('profile_id'), BX_DATA_INT);
@@ -767,18 +786,13 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         return $this->serviceBrowseTasks (-$iProfileId, $aParams);
     }
-	
-    public function serviceBrowseTasks ($iContextId = 0, $aParams = array())
+
+    public function serviceBrowseTasks($iContextId = 0, $aParams = [])
     {
-        $_iContextId = abs($iContextId);
+        if(!$this->isAllowView(abs($iContextId)))
+            return '';
 
-        if(!$this->isAllowView($_iContextId))
-            return;  
-
-        if(!($oProfileContext = BxDolProfile::getInstance($_iContextId)) || $oProfileContext->checkAllowedProfileView($_iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
-            return false;
-
-        return $this->_oTemplate->getEntriesList($iContextId);
+        return $this->_oTemplate->getEntriesList($iContextId, $aParams);
     }
 
     /**
