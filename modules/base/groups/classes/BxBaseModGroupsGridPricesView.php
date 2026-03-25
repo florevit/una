@@ -169,6 +169,7 @@ class BxBaseModGroupsGridPricesView extends BxBaseModGroupsGridPrices
                 'type' => 'callback', 
                 'on_callback' => 'redirect',
                 'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iSeller)),
+                'payment_type' => BX_PAYMENT_TYPE_SINGLE,
                 'seller_id' => $this->_iSeller,
                 'items' => [$this->_oPayment->getCartItemDescriptor($this->_iSeller, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
@@ -202,6 +203,7 @@ class BxBaseModGroupsGridPricesView extends BxBaseModGroupsGridPrices
                 'name' => $sKey, 
                 'type' => 'object', 
                 'object_name' => 'stripe_v3',
+                'payment_type' => BX_PAYMENT_TYPE_RECURRING,
                 'seller_id' => $this->_iSeller,
                 'items' => [$this->_oPayment->getCartItemDescriptor($this->_iSeller, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
