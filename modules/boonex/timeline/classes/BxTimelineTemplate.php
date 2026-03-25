@@ -1819,9 +1819,13 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
         $sSample = !empty($aResult['sample']) ? $aResult['sample'] : '_bx_timeline_txt_sample';
 
-        $aUpdate = array(
+        $aUpdate = [
             'object_owner_id' => $aResult['object_owner_id']
-        );
+        ];
+
+        //--- Update Object Provacy View if provided.
+        if(!empty($aResult['object_privacy_view']))
+            $aUpdate['object_privacy_view'] = $aResult['object_privacy_view'];
 
         //--- Update Title if empty.
         if(empty($aEvent['title'])) {

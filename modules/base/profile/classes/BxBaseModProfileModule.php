@@ -1504,6 +1504,24 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     /**
      * Entry post for Timeline module
      */
+    public function serviceGetTimelinePost($aEvent, $aBrowseParams = [])
+    {
+        $mixedResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
+
+        if($mixedResult !== false && ($oAuthor = BxDolProfile::getInstanceByContentAndType($aEvent['object_id'], $this->_aModule['name'])) !== false)
+            $mixedResult['object_owner_id'] = $oAuthor->id();
+
+        /*
+         * Item should be shown to the author only as a 'welcome' item just after join.
+         */
+        $mixedResult['object_privacy_view'] = 2;
+
+        return $mixedResult;
+    }
+
+    /**
+     * Entry post for Timeline module
+     */
     public function serviceGetTimelineProfilePicture($aEvent, $aBrowseParams = [])
     {
         $aResult = $this->_serviceGetTimelineProfileImage($aEvent, $aBrowseParams, [
@@ -2315,10 +2333,14 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     {
         $CNF = &$this->_oConfig->CNF;
 
+        $sModule = $this->getName();
         $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
+        $iAuthorId = false;
+        if(($oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $sModule)) !== false)
+            $iAuthorId = $oProfile->id();
 
         $aParams = $this->_alertParams($aContentInfo);
-        
+
         /**
          * @hooks
          * @hookdef hook-bx_base_profile-added '{module_name}', 'added' - hook after profile was added
@@ -2332,7 +2354,7 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
          *      - `privacy_view` - [int] or [string] privacy for view context action, @see BxDolPrivacy
          * @hook @ref hook-bx_base_profile-added
          */
-        bx_alert($this->getName(), 'added', $iContentId, false, $aParams);
+        bx_alert($this->getName(), 'added', $iContentId, $iAuthorId, $aParams);
     }
 
     public function alertAfterEdit($aContentInfo)
