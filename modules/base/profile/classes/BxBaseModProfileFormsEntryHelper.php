@@ -208,10 +208,13 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
          */
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
 
-        // approve profile if auto-approval is enabled and profile status is 'pending'
+        /* 
+         * approve profile if auto-approval is enabled and profile status is 'pending'
+         * don't send Activation letter when 'Auto Approval' mode is enabled.
+         */
         $sStatus = $oProfile->getStatus();
         if ($sStatus == BX_PROFILE_STATUS_PENDING && $this->isAutoApproval(BX_DOL_PROFILE_ACTIVATE_ADD))
-            $oProfile->approve(BX_PROFILE_ACTION_AUTO, 0, $this->_oModule->serviceActAsProfile() && $this->_oModule->serviceIsEnableProfileActivationLetter());
+            $oProfile->approve(BX_PROFILE_ACTION_AUTO, 0, false);
 
         // set created profile some default membership
         if ((int)bx_get('level_id') && bx_srv('bx_acl', 'get_prices', [(int)bx_get('level_id'), true]))

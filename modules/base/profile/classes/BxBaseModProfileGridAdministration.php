@@ -218,14 +218,14 @@ class BxBaseModProfileGridAdministration extends BxBaseModGeneralGridAdministrat
 
     protected function _enable ($mixedId, $isChecked)
     {
-    	$oProfile = $this->_getProfileObject($mixedId);
+        $oProfile = $this->_getProfileObject($mixedId);
 
-    	if($oProfile instanceof BxDolProfileUndefined)
+        if($oProfile instanceof BxDolProfileUndefined)
             return false;
 
         $iAction = BX_PROFILE_ACTION_MANUAL;
         $bSendEmailNotification = $this->_oModule->serviceActAsProfile();
-    	return $isChecked ? $oProfile->activate($iAction, 0, $bSendEmailNotification) : $oProfile->suspend($iAction, 0, $bSendEmailNotification);
+        return $isChecked ? $oProfile->activate($iAction, 0, $bSendEmailNotification && $this->_oModule->serviceIsEnableProfileActivationLetter()) : $oProfile->suspend($iAction, 0, $bSendEmailNotification);
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
