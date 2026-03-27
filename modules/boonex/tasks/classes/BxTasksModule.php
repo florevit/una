@@ -60,23 +60,29 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         return echoJson(['code' => 0, 'reload' => 1]);
     }
-	
-    public function actionSetFilterValue($iListId, $sValue)
+
+    public function actionApplyFilter($iContextId, $iFilterId)
     {
         $CNF = &$this->_oConfig->CNF;
+        $sCookieKey = $CNF['COOKIE_SETTING_KEY'];
 
-        $aTmp = array();
-        if (isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
-            $aTmp = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
+        $aFilters = [];
+        if(isset($_COOKIE[$sCookieKey]))
+            $aFilters = json_decode($_COOKIE[$sCookieKey], true);
 
-        if ($sValue != '')
-            $aTmp[$iListId] = $sValue;
+        if(($iFilterId = (int)$iFilterId) != 0)
+            $aFilters[$iContextId] = $iFilterId;
         else
-            unset($aTmp[$iListId]);
+            unset($aFilters[$iContextId]);
 
-        bx_setcookie($CNF['COOKIE_SETTING_KEY'], json_encode($aTmp), time() + 60*60*24*365);
+        bx_setcookie($sCookieKey, json_encode($aFilters), time() + 60 * 60 * 24 * 365);
+
+        return echoJson([
+            'content' => $this->_oTemplate->getEntries($iContextId, ['filter' => $iFilterId]),
+            'eval' => $this->_oConfig->getJsObject('tasks') . '.onApplyFilter(oData)'
+        ]);
     }
-	
+
     public function actionProcessTaskListForm($iContextId, $iId)
     {
         if (!$this->isAllowAdd(-$iContextId))
@@ -761,9 +767,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$iContextPid)
             return MsgBox(_t('_Empty'));
 
-        $sContent = $this->serviceBrowseTasks(-$iContextPid, array_merge($aParams, [
-            'for_profile' => bx_get_logged_profile_id()
-        ]));
+        $sContent = $this->serviceBrowseTasks(-$iContextPid);
         
         if($sContent && ($oProfile = BxDolProfile::getInstance($iContextPid)) !== false)
             return [

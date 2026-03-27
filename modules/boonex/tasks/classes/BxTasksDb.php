@@ -13,11 +13,17 @@
  */
 class BxTasksDb extends BxBaseModTextDb
 {
+    protected $_aSqlMarkers;
+
     public function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
+
+        $this->_aSqlMarkers = [
+            'logged_pid' => bx_get_logged_profile_id()
+        ];
     }
-	
+
     public function getLists ($iContextId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -45,7 +51,7 @@ class BxTasksDb extends BxBaseModTextDb
         $this->query($sQuery);
     }
 	
-    public function getTasks ($iContextId = 0, $iListId = 0, $iProfileId = 0, $bWithStats = false)
+    public function getTasks ($iContextId = 0, $iListId = 0, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -63,8 +69,16 @@ class BxTasksDb extends BxBaseModTextDb
             $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
         }
 
-        if($iProfileId) {
-            $aBindings['profile_id'] = $iProfileId;
+        if(($iFilter = (int)($aParams['filter'] ?? 0)) && ($aFilter = $this->getFilterById($iFilter))) {
+            if(($aFltJoin = $aFilter['conditions']['join'] ?? false) && ($sFltJoin = $this->_getSqlJoinFrom($aFltJoin)) != '')
+                $sJoinClause .= " " . $sFltJoin;
+
+            if(($aFltWhere = $aFilter['conditions']['where'] ?? false) && ($sFltWhere = $this->_getSqlWhereFrom($aFltWhere)) != '')
+                $sWhereClause .= " AND " . $sFltWhere;
+        }
+
+        if(($iProfileId = $aParams['for_profile'] ?? false)) {
+            $aBindings['profile_id'] = (int)$iProfileId;
             $sJoinClause .= " LEFT JOIN `" . $CNF['TABLE_ASSIGNMENTS'] . "` AS `ta` ON `te`.`id`=`ta`.`content`";
             $sWhereClause .= " AND (`te`.`" . $CNF['FIELD_AUTHOR'] . "`=:profile_id OR `ta`.`initiator`=:profile_id)";
         }
@@ -72,13 +86,13 @@ class BxTasksDb extends BxBaseModTextDb
         if(($oCf = BxDolContentFilter::getInstance()) && $oCf->isEnabled())
             $sWhereClause .= $oCf->getSQLParts('te', $CNF['FIELD_CF']);
 
-        if($bWithStats) {
+        if(($aParams['with_stats'] ?? false)) {
             $sSelectClause .= $this->prepareAsString(", (SELECT SUM(`value`) FROM `" . $CNF['TABLE_TIME_TRACK'] . "` WHERE `object_id`=`te`.`id` AND `author_id`=?) AS `time`, `tt`.`sum` AS `time_total`", bx_get_logged_profile_id());
 
             $sJoinClause .= " LEFT JOIN `" . $CNF['TABLE_TIME'] . "` AS `tt` ON `te`.`id`=`tt`.`object_id`";
         }
 
-        return $this->getAll("SELECT " . $sSelectClause . " FROM `" . $CNF['TABLE_ENTRIES'] . "` AS `te`" . $sJoinClause . " WHERE 1" . $sWhereClause, $aBindings);
+        return $this->getAll("SELECT DISTINCT " . $sSelectClause . " FROM `" . $CNF['TABLE_ENTRIES'] . "` AS `te`" . $sJoinClause . " WHERE 1" . $sWhereClause, $aBindings);
     }
 
     public function getEntriesByDate($sDateFrom, $sDateTo, $aSQLPart = array())
@@ -179,6 +193,65 @@ class BxTasksDb extends BxBaseModTextDb
             'type' => $sType,
             'author' => $iProfileId
         ]);
+    }
+
+    public function getFilters($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`tf`.*';
+        $sJoinClause = $sWhereClause = '';
+        $sOrderClause = '`tf`.`order` ASC';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `tf`.`id` = :id";
+                    break;
+
+                case 'author':
+                    $aMethod['params'][1] = [
+                        'author' => $aParams['author']
+                    ];
+
+                    $sWhereClause = "AND `tf`.`author` = :author";
+
+                    if(isset($aParams['active']) && $aParams['active'] === true)
+                        $sWhereClause .= " AND `tf`.`active` <> '0'";
+                    break;
+
+                case 'active':
+                    $sWhereClause .= " AND `tf`.`active` <> '0'";
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_FILTERS'] . "` AS `tf` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+    
+    public function getFilterById($iId) 
+    {
+        $aFilter = $this->getFilters(['sample' => 'id', 'id' => $iId]);
+        if(!$aFilter || !is_array($aFilter))
+            return false;
+     
+        if(($sK = 'conditions') && $aFilter[$sK])
+            $aFilter[$sK] = json_decode($aFilter[$sK], true);
+
+        return $aFilter;
     }
 
     public function getTimeTracks($aParams = []) 
@@ -322,6 +395,144 @@ class BxTasksDb extends BxBaseModTextDb
             return false;
 
         return $this->query("DELETE FROM `" . $CNF['TABLE_TIMERS'] . "` WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
+    }
+
+    /**
+     * Legend: 
+     * grp - group
+     * cnd - condition
+     * cnds - conditions
+     * 
+     * t - table
+     * f - field
+     * o - operation
+     * v - value
+     * j - joining type (INNER, LEFT)
+     * 
+     * Addons:
+     * +a - alias, like ta - table alias
+     * +j - join, like tj - table join or fj - field join
+     * +m - main, like tm - table main or fm - field main
+     */
+    protected function _getSqlJoinFrom($aCnd)
+    {
+        return $this->_getSqlClauseFrom('join', $aCnd);
+    }
+
+    protected function _getSqlJoinFromGroup($aGrp)
+    {
+        $sResult = "";
+        if(empty($aGrp['cnds']) || !is_array($aGrp['cnds']))
+            return $sResult;
+
+        $sOprGrp = " ";
+        foreach($aGrp['cnds'] as $aCnd)
+            if(($sResultCnd = $this->_getSqlJoinFromCondition($aCnd)) != '')
+                $sResult .= $sOprGrp . $sResultCnd;
+
+        return trim($sResult, $sOprGrp);
+    }
+
+    protected function _getSqlJoinFromCondition($aCnd)
+    {
+    	$sResult = "";
+    	if(!$this->_isJoinCondition($aCnd))
+            return $sResult;
+
+        $sFldJ = "`" . ($aCnd['taj'] ?? $aCnd['tj']) . "`.`" . $aCnd['fj'] . "`";
+
+        $sFldM = "`" . $aCnd['fm'] . "`";
+        if(($sTblAlsM = $aCnd['tam'] ?? ($aCnd['tm'] ?? false)))
+            $sFldM = "`" . $sTblAlsM . "`." . $sFldM;
+
+        return $aCnd['j'] . " JOIN `" . $aCnd['tj'] . "`" . (($sTblAlsJ = $aCnd['taj'] ?? false) ? " AS `" . $sTblAlsJ . "`" : "") . " ON (" . $sFldM . " = " . $sFldJ . ")";
+    }
+
+    protected function _getSqlWhereFrom($aCnd)
+    {
+        return $this->_getSqlClauseFrom('where', $aCnd);
+    }
+
+    protected function _getSqlWhereFromGroup($aGrp)
+    {
+        $sResult = "";
+        if(!isset($aGrp['o'], $aGrp['cnds']) || empty($aGrp['cnds']) || !is_array($aGrp['cnds']))
+            return $sResult;
+
+        $sOprGrp = " " . $aGrp['o'] . " ";
+        foreach($aGrp['cnds'] as $aCnd)
+            if(($sResultCnd = $this->_getSqlWhereFrom($aCnd)) != '')
+                $sResult .= $sOprGrp . $sResultCnd;
+
+        if(($sResult = trim($sResult, $sOprGrp)) != '')
+            $sResult = "(" . $sResult . ")";
+
+    	return $sResult;
+    }
+
+    protected function _getSqlWhereFromCondition($aCnd)
+    {
+        $sResult = "";
+        if(!$this->_isWhereCondition($aCnd))
+            return $sResult;
+
+        if(($sMethod = '_getSqlWhereFromCondition' . bx_gen_method_name($aCnd['f'])) && method_exists($this, $sMethod)) {
+            $mixedResult = $this->$sMethod($aCnd);
+            if(!$this->_isWhereCondition($mixedResult))
+                return $mixedResult;
+
+            $aCnd = $mixedResult;    
+        }
+
+        $sFld = "`" . $aCnd['f'] . "`";
+        if(($sTbl = $aCnd['t'] ?? ''))
+            $sFld = "`" . $sTbl . "`." . $sFld;
+
+        switch($aCnd['o']) {
+            case 'IN':
+                if(empty($aCnd['v']) || !is_array($aCnd['v']))
+                    break;
+
+                $sResult .= $sFld . " IN (" . $this->implode_escape($aCnd['v']) . ")";
+                break;
+
+            case 'LIKE':
+                $sResult .= $sFld . " LIKE " . $this->escape('%' . $aCnd['v'] . '%');
+                break;
+
+            default:
+                $sResult .= $sFld . " " . $aCnd['o'] . " " . $this->escape($aCnd['v']);
+        }
+
+        return $sResult;
+    }
+
+    protected function _isJoinCondition($mixedCnd)
+    {
+        return is_array($mixedCnd) && isset($mixedCnd['j'], $mixedCnd['tj'], $mixedCnd['fj'], $mixedCnd['fm']);
+    }
+
+    protected function _isWhereCondition($mixedCnd)
+    {
+        return is_array($mixedCnd) && isset($mixedCnd['f'], $mixedCnd['v'], $mixedCnd['o']);
+    }
+
+    protected function _getSqlClauseFrom($sType, $aCnd)
+    {
+        $sMethod = '';
+        if(($aCnd['grp'] ?? false) === true)
+            $sMethod = 'Group';
+        else if(($aCnd['cnd'] ?? false) === true)
+            $sMethod = 'Condition';
+
+        if(!$sMethod || !method_exists($this, ($sMethod = '_getSql' . bx_gen_method_name($sType) . 'From' . $sMethod)))
+            return '';
+
+        $sResult = $this->$sMethod($aCnd);
+        if($sResult && $this->_aSqlMarkers)
+            $sResult = bx_replace_markers($sResult, $this->_aSqlMarkers);
+
+        return $sResult;
     }
 }
 

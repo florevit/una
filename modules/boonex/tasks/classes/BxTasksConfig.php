@@ -35,6 +35,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'tasks',
             'TABLE_LISTS' => $aModule['db_prefix'] . 'lists',
             'TABLE_ASSIGNMENTS' => $aModule['db_prefix'] . 'assignments',
+            'TABLE_FILTERS' => $aModule['db_prefix'] . 'filters',
             'TABLE_TIME' => $aModule['db_prefix'] . 'time',
             'TABLE_TIME_TRACK' => $aModule['db_prefix'] . 'time_track',
             'TABLE_TIMERS' => $aModule['db_prefix'] . 'timers',
@@ -273,10 +274,11 @@ class BxTasksConfig extends BxBaseModTextConfig
 
         $sPrefix = str_replace('_', '-', $this->_sName);
         $this->_aHtmlIds = array_merge($this->_aHtmlIds, [
-            'time_popup' =>  $sPrefix . '-time-popup',
-            'total_popup' =>  $sPrefix . '-total-popup',
+            'tasks' => $sPrefix . '-tasks',
+            'time_popup' => $sPrefix . '-time-popup',
+            'total_popup' => $sPrefix . '-total-popup',
             'timer' => $sPrefix . '-timer-',
-            'timer_actions' =>  $sPrefix . '-timer-actions',
+            'timer_actions' => $sPrefix . '-timer-actions',
         ]);
 
         $this->_bAttachmentsInTimeline = true;

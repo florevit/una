@@ -469,9 +469,6 @@
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Дата публикации:  {date_publish_uf}]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[Новый Список заданий]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[Новое Задание]]></string>
-    <string name="_bx_tasks_txt_filter_all"><![CDATA[Все Задания]]></string>
-    <string name="_bx_tasks_txt_filter_completed"><![CDATA[Завершенные Задания]]></string>
-    <string name="_bx_tasks_txt_filter_uncompleted"><![CDATA[Незавершенные Задания]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>

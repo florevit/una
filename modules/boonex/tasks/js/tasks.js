@@ -109,16 +109,39 @@ BxTasksView.prototype.reload = function (oData) {
     document.location = document.location;
 };
 
-BxTasksView.prototype.setFilter = function (iListId, object) {
+BxTasksView.prototype.applyFilter = function (oSource, iContextId) {
     var $this = this;
-    var val = $(object).val();
+    var iFilter = $(oSource).val();
+    var oDate = new Date();
 
-    $('#bx-tasks-tasklist-' + iListId).removeClass (function (index, className) {
-    	return (className.match (/(^|\s)bx-tasks-tasklist-filter-\S+/g) || []).join(' ');
-    });
+    this.loadingInBlock(oSource, true);
 
-    if(val)
-        $('#bx-tasks-tasklist-' + iListId).addClass('bx-tasks-tasklist-filter-' + val);
+    $.get(
+        this._oOptions.sActionUrl + 'apply_filter/' + iContextId + '/' + iFilter, 
+        {
+            _t: oDate.getTime()
+        },
+        function(oData) {
+            $this.loadingInBlock(oSource, false);
 
-    $.getJSON($this._oOptions.sActionUrl + 'setFilterValue/' + iListId + '/' + val + '/', function (oData) {});
+            processJsonData(oData);
+        },
+        'json'
+    );
+
+    return false;
+};
+
+BxTasksView.prototype.onApplyFilter = function (oData) {
+    if(oData && oData.content) {
+        var sTasksId = '#' + this._oOptions.aHtmlIds['tasks'];
+
+        $(sTasksId).replaceWith(oData.content);
+        $(sTasksId).bxProcessHtml();
+    }
+};
+
+BxTasksView.prototype.loadingInBlock = function(e, bShow) {
+    var oParent = $(e).length ? $(e).parents('.bx-db-container:first') : $('body'); 
+    bx_loading(oParent, bShow);
 };

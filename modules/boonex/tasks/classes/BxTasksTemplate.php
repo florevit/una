@@ -220,7 +220,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $oActions = new BxTasksMenuTimer([
             'object' => $sPrefix . '_timer',
-            'template' => 'menu_custom_hor.html', 
+            'template' => 'menu_custom_hor.htbx_if:show_filtersml', 
             'menu_id' => $this->_oConfig->getHtmlIds('timer_actions'), 
             'persistent' => 0
         ]);
@@ -238,6 +238,63 @@ class BxTasksTemplate extends BxBaseModTextTemplate
     public function getEntriesList($iContextId, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
+        $sJsObject = $this->_oConfig->getJsObject('tasks');
+
+        $oModule = $this->getModule();
+        $bAllowAdd = $oModule->isAllowAdd(abs($iContextId));
+
+        $aTmplVarsFilterItems = [];
+
+        $aFilters = [];
+        if(($sK = $CNF['COOKIE_SETTING_KEY']) && isset($_COOKIE[$sK]))
+            $aFilters = json_decode($_COOKIE[$sK], true);
+        $iFilterSelected = $aParams['filter'] ?? ($aFilters[$iContextId] ?? 0);
+
+        $aFilterItems = array_merge([['id' => 0, 'title' => '_bx_tasks_filter_title_select']], $this->_oDb->getFilters(['sample' => 'active']));
+        foreach($aFilterItems as $aFilterItem)
+            $aTmplVarsFilterItems[] = [
+                'filter_id' => $aFilterItem['id'],
+                'filter_title' => _t($aFilterItem['title']),
+                'bx_if:show_filter_selected' => [
+                    'condition' => $aFilterItem['id'] == $iFilterSelected,
+                    'content' => [true]
+                ]
+            ];
+
+        $this->addCssJs();
+        $this->addJs([
+            'jquery-ui/jquery-ui.min.js',
+            'tasks.js',
+            'modules/base/general/js/|forms.js'
+        ]);
+
+        return $this->parseHtmlByName('browse_tasks.html', [
+            'bx_if:show_filters' => [
+                'condition' => !empty($aTmplVarsFilterItems),
+                'content' => [
+                    'object' => $sJsObject,
+                    'context_id' => $iContextId,
+                    'bx_repeat:filter_items' => $aTmplVarsFilterItems
+                ]
+            ],
+            'bx_if:allow_add_list' => [
+                'condition' => $bAllowAdd,
+                'content' => [
+                    'context_id' => $iContextId,
+                    'object' => $sJsObject,
+                ]
+            ],
+            'tasks' => $this->getEntries($iContextId, array_merge($aParams, [
+                'filter' => $iFilterSelected,
+            ])),
+            'js_code' => $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_txt_msg_confirm_tasklist_deletion')])
+        ]);
+    }
+    
+    public function getEntries($iContextId, $aParams = [])
+    {
+        $CNF = &$this->_oConfig->CNF;
+        $sJsObject = $this->_oConfig->getJsObject('tasks');
 
         $oModule = $this->getModule();
         $oPermalinks = BxDolPermalinks::getInstance();
@@ -247,20 +304,17 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $aPriorities = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_PRIORITIES']);
         $aStates = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_STATES']);
 
-        $aFilterValues = [];
-        if(isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
-            $aFilterValues = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
-
         $_iContextId = abs($iContextId);
         $bAllowAdd = $oModule->isAllowAdd($_iContextId);
         $bAllowManage = $oModule->isAllowManageByContext($_iContextId);
-        $iForProfile = (int)($aParams['for_profile'] ?? 0);
 
         $aTmplVarsLists = [];
 
         $aLists = $this->_oDb->getLists($iContextId);
         foreach($aLists as $aList) {
-            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id'], $iForProfile, true);
+            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id'], array_merge($aParams, [
+                'with_stats' => true
+            ]));
 
             $aTmplVarsTasks = [];
             foreach($aTasks as $aTask) {
@@ -292,12 +346,12 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'bx_repeat:members' => $aTmplVarsMembers,
                     'badges' => $oModule->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
                     'url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']])),
-                    'object' => $this->_oConfig->getJsObject('tasks'),
+                    'object' => $sJsObject,
                     'bx_if:allow_manage' => [
                         'condition' => $bAllowManage,
                         'content' => [
                             'id' => $aTask[$CNF['FIELD_ID']],
-                            'object' => $this->_oConfig->getJsObject('tasks'),
+                            'object' => $sJsObject,
                             'checked' => $bCompleted ? 'checked' : '',
                         ]
                     ],
@@ -327,7 +381,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                         'title' => $aList[$CNF['FIELD_TITLE']],
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
+                        'object' => $sJsObject,
                     ]
                 ],
                 'bx_if:allow_add' => [
@@ -335,7 +389,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'content' => [
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
+                        'object' => $sJsObject,
                     ]
                 ],
                 'bx_if:allow_delete_list' => [
@@ -343,7 +397,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'content' => [
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
+                        'object' => $sJsObject,
                     ]
                 ],
                 'bx_if:deny_edit_list' => [
@@ -356,29 +410,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'bx_repeat:tasks' =>  $aTmplVarsTasks,
                 'context_id' => $iContextId,
                 'list_id' => $aList[$CNF['FIELD_ID']],
-                'object' => $this->_oConfig->getJsObject('tasks'),
-                'class' => $sClass,
-                'completed' => $sCompleted,
-                'all' => $sAll,
+                'object' => $sJsObject
             ];
         }
 
-        $this->addCssJs();
-        $this->addJs([
-            'jquery-ui/jquery-ui.min.js',
-            'tasks.js',
-            'modules/base/general/js/|forms.js'
-        ]);
-
-        return $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_txt_msg_confirm_tasklist_deletion')]) . $this->parseHtmlByName('browse_tasks.html', [
+        return $this->parseHtmlByName('tasks.html', [
+            'html_id' => $this->_oConfig->getHtmlIds('tasks'),
             'bx_repeat:task_lists' => $aTmplVarsLists,
-            'bx_if:allow_add_list' => [
-                'condition' => $bAllowAdd,
-                'content' => [
-                    'context_id' => $iContextId,
-                    'object' => $this->_oConfig->getJsObject('tasks'),
-                ]
-            ],
         ]);
     }
 }

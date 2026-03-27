@@ -128,7 +128,7 @@
     <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
-    <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Edit Time]]></string>
+    <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Edit Time]]></string>    
 
     <string name="_bx_tasks_category_form_entry"><![CDATA[Categories Form]]></string>
     <string name="_bx_tasks_category_display_add"><![CDATA[Add category]]></string>
@@ -394,6 +394,15 @@
     <string name="_bx_tasks_search_extended"><![CDATA[Tasks Search]]></string>
     <string name="_bx_tasks_search_extended_cmts"><![CDATA[Tasks Comments Search]]></string>
 
+    <string name="_bx_tasks_filter_title_select"><![CDATA[Select filter...]]></string>
+    <string name="_bx_tasks_filter_title_by_author"><![CDATA[Owned by current user]]></string>
+    <string name="_bx_tasks_filter_title_by_author_uncompleted"><![CDATA[Owned by current user and uncompleted]]></string>
+    <string name="_bx_tasks_filter_title_by_author_completed"><![CDATA[Owned by current user and completed]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee"><![CDATA[Assigned to current user]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee_uncompleted"><![CDATA[Assigned to current user and uncompleted]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee_completed"><![CDATA[Assigned to current user completed]]></string>
+    
+
     <string name="_bx_tasks_pre_lists_types"><![CDATA[Types]]></string>
     <string name="_bx_tasks_type_1"><![CDATA[Bug]]></string>
     <string name="_bx_tasks_type_2"><![CDATA[Feature]]></string>
@@ -472,9 +481,6 @@
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Task publishing date is {date_publish_uf}]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New TaskList]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
-    <string name="_bx_tasks_txt_filter_all"><![CDATA[All Tasks]]></string>
-    <string name="_bx_tasks_txt_filter_completed"><![CDATA[Completed Tasks]]></string>
-    <string name="_bx_tasks_txt_filter_uncompleted"><![CDATA[Uncompleted Tasks]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
