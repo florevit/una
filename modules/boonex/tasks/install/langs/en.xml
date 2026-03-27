@@ -401,7 +401,6 @@
     <string name="_bx_tasks_filter_title_by_assignee"><![CDATA[Assigned to current user]]></string>
     <string name="_bx_tasks_filter_title_by_assignee_uncompleted"><![CDATA[Assigned to current user and uncompleted]]></string>
     <string name="_bx_tasks_filter_title_by_assignee_completed"><![CDATA[Assigned to current user completed]]></string>
-    
 
     <string name="_bx_tasks_pre_lists_types"><![CDATA[Types]]></string>
     <string name="_bx_tasks_type_1"><![CDATA[Bug]]></string>

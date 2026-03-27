@@ -391,6 +391,14 @@
     <string name="_bx_tasks_search_extended"><![CDATA[Задания Поиск]]></string>
     <string name="_bx_tasks_search_extended_cmts"><![CDATA[Задания Комментарии Поиск]]></string>
 
+    <string name="_bx_tasks_filter_title_select"><![CDATA[Выберите фильтр...]]></string>
+    <string name="_bx_tasks_filter_title_by_author"><![CDATA[Принадлежат текущему пользователю]]></string>
+    <string name="_bx_tasks_filter_title_by_author_uncompleted"><![CDATA[Принадлежат текущему пользователю и не завершены]]></string>
+    <string name="_bx_tasks_filter_title_by_author_completed"><![CDATA[Принадлежат текущему пользователю и завершены]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee"><![CDATA[Назначены текущему пользователю]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee_uncompleted"><![CDATA[Назначены текущему пользователю и не выполнены]]></string>
+    <string name="_bx_tasks_filter_title_by_assignee_completed"><![CDATA[Назначены текущему пользователю и выполнены]]></string>
+
     <string name="_bx_tasks_pre_lists_types"><![CDATA[Типы]]></string>
     <string name="_bx_tasks_type_1"><![CDATA[Ошибка]]></string>
     <string name="_bx_tasks_type_2"><![CDATA[Свойство]]></string>

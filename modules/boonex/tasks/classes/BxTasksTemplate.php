@@ -220,7 +220,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $oActions = new BxTasksMenuTimer([
             'object' => $sPrefix . '_timer',
-            'template' => 'menu_custom_hor.htbx_if:show_filtersml', 
+            'template' => 'menu_custom_hor.html', 
             'menu_id' => $this->_oConfig->getHtmlIds('timer_actions'), 
             'persistent' => 0
         ]);
