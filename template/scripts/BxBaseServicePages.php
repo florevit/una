@@ -142,6 +142,11 @@ class BxBaseServicePages extends BxDol
         return BxDolPage::setPageBlockData($iBlockId, $iContentId, $sContentModule, $sData);
     }
 
+    public function serviceGetPageBlockImageData($iImageId)
+    {
+        return bx_api_get_image(['sys_images_editor', 'sys_images_editor'], (int)$iImageId);
+    }
+
     public function serviceGetUrlInfo($sUrl)
     {
         $oEmbed = BxDolEmbed::getObjectInstance('sys_system');

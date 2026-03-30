@@ -721,19 +721,18 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         $sData = $oDb->getPageBlockData($iBlockId, $iContentId, $sContentModule);
         $aData = !empty($sData) ? json_decode($sData, true) : [];
 
-        $oEmbed = BxDolEmbed::getObjectInstance('sys_system');
-
         foreach($aData as &$j) {
             foreach($j as &$k) {
                 switch($k['type']) {
                     case 'image':
                         $aImage = bx_api_get_image(['sys_images_editor', 'sys_images_editor'], (int)$k['content']);
                         if($aImage && is_array($aImage))
-                            $k['content'] = $aImage['src'];
+                            $k['content'] = $aImage;
                         break;
 
                     case 'link':
-                        $k['content_data'] = $oEmbed->getData($k['content'], '');
+                        if(($oEmbed = BxDolEmbed::getObjectInstance('sys_system')) !== false)
+                            $k['content_data'] = $oEmbed->getData($k['content'], '');
                         break;
                 }
             }
