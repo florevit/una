@@ -335,36 +335,56 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
         if(empty($sEvent) || empty($aEvent['content_parsed']))
             return false;
 
-        $sContent = is_array($aEvent['content_parsed']) && isset($aEvent['content_parsed']['email']) ? $aEvent['content_parsed']['email'] : $aEvent['content_parsed'];
-
-        $sSubject = $sContent;
-        if(($iEmailSubjectMaxLen = $this->_oConfig->getEmailSubjectMaxLen()) !== 0)
-            $sSubject = strmaxtextlen($sSubject, $iEmailSubjectMaxLen);
-        else 
-            $sSubject = trim(strip_tags($sSubject));
-
         $aContent = &$aEvent['content'];
 
-        $sSummary = '';
-        if(!empty($aContent['subentry_summary']))
-            $sSummary = $aContent['subentry_summary'];
-        if(empty($sSummary) && !empty($aContent['entry_summary']))
-            $sSummary = $aContent['entry_summary'];
+        $sIconUrl = !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : $this->getIconUrl('std-icon.svg');
+        $sContentUrl = bx_absolute_url($this->_getContentLink($aEvent, getParam('sys_api_url_root_email') != ''));
+        $sContent = is_array($aEvent['content_parsed']) && isset($aEvent['content_parsed']['email']) ? $aEvent['content_parsed']['email'] : $aEvent['content_parsed'];
+        $sSummary = (($sK = 'subentry_summary') && ($sV = $aContent[$sK] ?? false)) || (($sK = 'entry_summary') && ($sV = $aContent[$sK] ?? false)) ? $sV : '';
+        $sDate = bx_process_output($aEvent['date'], BX_DATA_DATE_TS);
 
-        return [
-            'subject' => $sSubject,
-            'content' => $this->parseHtmlByName('et_new_event.html', [
-                'icon_url' => !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : $this->getIconUrl('std-icon.svg'),
-                'content_url' => bx_absolute_url($this->_getContentLink($aEvent, getParam('sys_api_url_root_email') != '')),
+        $aEtemplate = $this->_oDb->getEtemplates([
+            'sample' => 'type_action', 
+            'type' => $aEvent['type'], 
+            'action' => $aEvent['action'], 
+            'active' => 1
+        ]);
+
+        $sSubject = $sBody = '';
+        if(!empty($aEtemplate) && is_array($aEtemplate)) {
+            $sSubject = $aEtemplate['subject'];
+            $sBody = bx_replace_markers($aEtemplate['body'], [
+                'icon_url' => $sIconUrl,
+                'content_url' => $sContentUrl,
                 'content' => $sContent,
-                'date' => bx_process_output($aEvent['date'], BX_DATA_DATE_TS),
+                'summary' => $sSummary,
+                'date' => $sDate
+            ]);
+        }
+        else {
+            $sSubject = $sContent;
+            $sBody = $this->parseHtmlByName('et_new_event.html', [
+                'icon_url' => $sIconUrl,
+                'content_url' => $sContentUrl,
+                'content' => $sContent,
+                'date' => $sDate,
                 'bx_if:show_summary' => [
                     'condition' => !empty($sSummary),
                     'content' => [
                         'summary' => $sSummary
                     ]
                 ]
-            ]),
+            ]);
+        }
+
+        if(($iEmailSubjectMaxLen = $this->_oConfig->getEmailSubjectMaxLen()) !== 0)
+            $sSubject = strmaxtextlen($sSubject, $iEmailSubjectMaxLen);
+        else 
+            $sSubject = trim(strip_tags($sSubject));
+
+        return [
+            'subject' => $sSubject,
+            'content' => $sBody,
             'settings' => !empty($aContent['settings']['email']) ? $aContent['settings']['email'] : []
         ];
     }
@@ -401,6 +421,48 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
             'visible' => $bVisible ? 'block' : 'none',
             'content' => MsgBox(_t('_bx_ntfs_txt_msg_no_results'))
         ));
+    }
+
+    public function getSelectActions($aActions)
+    {
+        $aTmplVarsActions = [
+            ['value' => '', 'title' => _t('_sys_please_select')]
+        ];
+
+        foreach($aActions as $sAction)
+            $aTmplVarsActions[] = ['value' => $sAction, 'title' => $this->getActionTitle($sAction)];
+
+        return $this->parseHtmlByName('field_actions.html', [
+            'bx_repeat:actions' => $aTmplVarsActions
+        ]);
+    }
+
+    public function getTypeTitle($sType)
+    {
+        $sResult = '';
+        if(($sKey = '_bx_ntfs_alert_module_' . $sType) && ($_sKey = _t($sKey)) && strcmp($sKey, $_sKey) != 0)
+            $sResult = $_sKey;
+        else if(($sKey = '_' . $sType) && ($_sKey = _t($sKey)) && strcmp($sKey, $_sKey) != 0)
+            $sResult = $_sKey;
+        else if(($aModule = $this->_oDb->getModuleByName($sType)) && is_array($aModule) && ($_sKey = $aModule['title'] ?? false))
+            $sResult = $_sKey;
+        else
+            $sResult = $sType;
+
+        return $sResult;
+    }
+
+    public function getActionTitle($sAction)
+    {
+        $sResult = '';
+        if(($sKey = '_bx_ntfs_alert_action_' . $sAction) && ($_sKey = _t($sKey)) && strcmp($sKey, $_sKey) != 0)
+            $sResult = $_sKey;
+        else if(($sKey .= '_personal') && ($_sKey = _t($sKey)) && strcmp($sKey, $_sKey) != 0)
+            $sResult = $_sKey;
+        else
+            $sResult = $sAction;
+
+        return $sResult;
     }
 
     protected function _processContent(&$aEvent)

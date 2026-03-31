@@ -3,6 +3,25 @@
     <string name="_bx_ntfs"><![CDATA[Уведомления]]></string>
     <string name="_bx_notifications"><![CDATA[Уведомления]]></string>
 
+    <string name="_bx_ntfs_form_etemplate"><![CDATA[Шаблон электронного письма]]></string>
+    <string name="_bx_ntfs_form_etemplate_display_add"><![CDATA[Добавить шаблон электронного письма]]></string>
+    <string name="_bx_ntfs_form_etemplate_display_edit"><![CDATA[Редактировать шаблон электронного письма]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_controls"><![CDATA[Элементы управления]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_do_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_do_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_do_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_do_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_type"><![CDATA[Тип]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_type"><![CDATA[Тип]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_action"><![CDATA[Действие]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_action"><![CDATA[Действие]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_subject"><![CDATA[Тема]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_subject"><![CDATA[Тема]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_body"><![CDATA[Текст]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_body"><![CDATA[Текст]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_err_select"><![CDATA[Это поле обязательно для заполнения. Пожалуйста, выберите значение.]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_err_enter"><![CDATA[Это поле обязательно для заполнения. Пожалуйста, заполните его.]]></string>
+
     <string name="_bx_ntfs_page_title_system_view"><![CDATA[Уведомления]]></string>
     <string name="_bx_ntfs_page_title_view"><![CDATA[Уведомления]]></string>
     <string name="_bx_ntfs_page_block_title_view"><![CDATA[Уведомления]]></string>
@@ -36,6 +55,7 @@
     <string name="_bx_ntfs_lmi_cpt_site"><![CDATA[На сайте]]></string>
     <string name="_bx_ntfs_lmi_cpt_email"><![CDATA[Email]]></string>
     <string name="_bx_ntfs_lmi_cpt_push"><![CDATA[Push]]></string>
+    <string name="_bx_ntfs_lmi_cpt_etemplates_text"><![CDATA[Тексты email-ов]]></string>
 
     <string name="_bx_ntfs_options_category_system"><![CDATA[Системные]]></string>
     <string name="_bx_ntfs_option_events_per_page"><![CDATA[Количество элементов на странице]]></string>
@@ -181,4 +201,14 @@
     <string name="_bx_ntfs_grid_column_title_value"><![CDATA[Значение по умолчанию]]></string>
     <string name="_bx_ntfs_grid_action_title_activate"><![CDATA[Включить]]></string>
     <string name="_bx_ntfs_grid_action_title_deactivate"><![CDATA[Отключить]]></string>
+
+    <string name="_bx_ntfs_grid_column_title_ett_active"><![CDATA[Включено]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_type"><![CDATA[Тип]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_action"><![CDATA[Действие]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_subject"><![CDATA[Тема]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_add"><![CDATA[Добавить]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_edit"><![CDATA[Редактировать]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_delete"><![CDATA[Удалить]]></string>
+    <string name="_bx_ntfs_grid_popup_title_ett_add"><![CDATA[Добавить шаблон электронного письма]]></string>
+    <string name="_bx_ntfs_grid_popup_title_ett_edit"><![CDATA[Редактировать шаблон электронного письма]]></string>
 </resources>

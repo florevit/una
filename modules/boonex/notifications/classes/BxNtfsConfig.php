@@ -56,10 +56,14 @@ class BxNtfsConfig extends BxBaseModNotificationsConfig
             'PARAM_PROCESSED_EVENT' => 'bx_notifications_processed_event',
 
             // objects
+            'OBJECT_FORM_ETEMPLATE' => 'bx_notifications_etemplate',
+            'OBJECT_FORM_ETEMPLATE_DISPLAY_ADD' => 'bx_notifications_etemplate_add',
+            'OBJECT_FORM_ETEMPLATE_DISPLAY_EDIT' => 'bx_notifications_etemplate_edit',
             'OBJECT_MENU_SUBMENU' => 'bx_notifications_submenu', // main module submenu
             'OBJECT_MENU_SETTINGS' => 'bx_notifications_settings', // settings submenu
             'OBJECT_GRID_SETTINGS_ADMINISTRATION' => 'bx_notifications_settings_administration',
             'OBJECT_GRID_SETTINGS_COMMON' => 'bx_notifications_settings_common',
+            'OBJECT_GRID_ETEMPLATES' => 'bx_notifications_etemplates',
 
             // some language keys
             'T' => array(
@@ -114,13 +118,18 @@ class BxNtfsConfig extends BxBaseModNotificationsConfig
         );
 
         $sHtmlPrefix = str_replace('_', '-', $this->_sName);
-        $this->_aHtmlIds = array(
-            'view' => array(
+        $this->_aHtmlIds = [
+            'main' => [
+                'field_action' => $sHtmlPrefix . '-field-action',
+            ],
+            'view' => [
                 'block' => $sHtmlPrefix,
                 'events' => $sHtmlPrefix . '-events',
-                'event' => $sHtmlPrefix . '-event-'
-            )
-        );
+                'event' => $sHtmlPrefix . '-event-',
+                'add_etemplate_popup' => $sHtmlPrefix . '-etemplate-add',
+                'edit_etemplate_popup' => $sHtmlPrefix . '-etemplate-edit',
+            ]
+        ];
     }
 
     public function init(&$oDb)

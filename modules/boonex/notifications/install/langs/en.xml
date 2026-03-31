@@ -3,6 +3,25 @@
     <string name="_bx_ntfs"><![CDATA[Notifications]]></string>
     <string name="_bx_notifications"><![CDATA[Notifications]]></string>
 
+    <string name="_bx_ntfs_form_etemplate"><![CDATA[Email Template]]></string>
+    <string name="_bx_ntfs_form_etemplate_display_add"><![CDATA[Add Email Template]]></string>
+    <string name="_bx_ntfs_form_etemplate_display_edit"><![CDATA[Edit Email Template]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_controls"><![CDATA[Controls]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_do_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_do_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_type"><![CDATA[Type]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_type"><![CDATA[Type]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_action"><![CDATA[Action]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_action"><![CDATA[Action]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_subject"><![CDATA[Subject]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_subject"><![CDATA[Subject]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_sys_body"><![CDATA[Body]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_body"><![CDATA[Body]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_err_select"><![CDATA[This field is essential. Please select a value.]]></string>
+    <string name="_bx_ntfs_form_etemplate_input_err_enter"><![CDATA[This field is essential. Please fill it in.]]></string>
+
     <string name="_bx_ntfs_page_title_system_view"><![CDATA[Notifications]]></string>
     <string name="_bx_ntfs_page_title_view"><![CDATA[Notifications]]></string>
     <string name="_bx_ntfs_page_block_title_view"><![CDATA[Notifications]]></string>
@@ -36,6 +55,7 @@
     <string name="_bx_ntfs_lmi_cpt_site"><![CDATA[On Site]]></string>
     <string name="_bx_ntfs_lmi_cpt_email"><![CDATA[Email]]></string>
     <string name="_bx_ntfs_lmi_cpt_push"><![CDATA[Push]]></string>
+    <string name="_bx_ntfs_lmi_cpt_etemplates_text"><![CDATA[Email Texts]]></string>
 
     <string name="_bx_ntfs_options_category_system"><![CDATA[System]]></string>
     <string name="_bx_ntfs_option_events_per_page"><![CDATA[Number of items per page]]></string>
@@ -181,4 +201,15 @@
     <string name="_bx_ntfs_grid_column_title_value"><![CDATA[Default value]]></string>
     <string name="_bx_ntfs_grid_action_title_activate"><![CDATA[Activate]]></string>
     <string name="_bx_ntfs_grid_action_title_deactivate"><![CDATA[Deactivate]]></string>
+
+    <string name="_bx_ntfs_grid_column_title_ett_active"><![CDATA[Active]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_type"><![CDATA[Type]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_action"><![CDATA[Action]]></string>
+    <string name="_bx_ntfs_grid_column_title_ett_subject"><![CDATA[Subject]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_add"><![CDATA[Add]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_edit"><![CDATA[Edit]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_delete"><![CDATA[Delete]]></string>
+    <string name="_bx_ntfs_grid_popup_title_ett_add"><![CDATA[Add Email Template]]></string>
+    <string name="_bx_ntfs_grid_popup_title_ett_edit"><![CDATA[Edit Email Template]]></string>
+    
 </resources>

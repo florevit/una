@@ -14,6 +14,7 @@ class BxNtfsDb extends BxBaseModNotificationsDb
     protected $_sTableEvt2Usr;
     protected $_sTableQueue;
     protected $_sTableRead;
+    protected $_sTableEtemplates;
 
     /*
      * Constructor.
@@ -31,6 +32,25 @@ class BxNtfsDb extends BxBaseModNotificationsDb
         $this->_sTableEvt2Usr = $this->_sPrefix . 'events2users';
         $this->_sTableQueue = $this->_sPrefix . 'queue';
         $this->_sTableRead = $this->_sPrefix . 'read';
+        $this->_sTableEtemplates = $this->_sPrefix . 'etemplates';
+    }
+
+    public function getHandlerTypes()
+    {
+        return $this->getColumn("SELECT DISTINCT `alert_unit` FROM `{$this->_sTableHandlers}` WHERE `type`='insert'");
+    }
+
+    public function getHandlerActions($sUnit = '')
+    {
+        $aBindings = [];
+        $sWhereClause = "";
+
+        if($sUnit) {
+            $aBindings['alert_unit'] = $sUnit;
+            $sWhereClause .= " AND `alert_unit`=:alert_unit";
+        }
+
+        return $this->getColumn("SELECT DISTINCT `alert_action` FROM `{$this->_sTableHandlers}` WHERE `type`='insert'" . $sWhereClause, $aBindings);
     }
 
     public function markAsClicked($iUserId, $iEventId)
@@ -509,6 +529,51 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             $mixedId = array($mixedId);
 
         return (int)$this->query("DELETE FROM `" . $this->_sTableQueue . "` WHERE `id` IN (" . $this->implode_escape($mixedId) . ")") > 0;
+    }
+    
+    public function getEtemplates($aParams)
+    {
+    	$aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+
+    	$sSelectClause = "*";
+    	$sWhereClause = $sOrderClause = $sLimitClause = "";
+
+        switch($aParams['sample']) {
+            case 'id':
+            	$aMethod['name'] = 'getRow';
+            	$aMethod['params'][1] = [
+                    'id' => $aParams['id']
+                ];
+
+                $sWhereClause = " AND `id`=:id";
+                break;
+
+            case 'type_action':
+            	$aMethod['name'] = 'getRow';
+            	$aMethod['params'][1] = [
+                    'type' => $aParams['type'],
+                    'action' => $aParams['action']
+                ];
+
+                $sWhereClause = " AND `type`=:type AND `action`=:action";
+
+                if(isset($aParams['active'])) {
+                    $aMethod['params'][1]['active'] = (int)$aParams['active'];
+
+                    $sWhereClause .= " AND `active`=:active";
+                }
+                break;
+        }
+
+        $sOrderClause = !empty($sOrderClause) ? "ORDER BY " . $sOrderClause : $sOrderClause;
+        $sLimitClause = !empty($sLimitClause) ? "LIMIT " . $sLimitClause : $sLimitClause;
+
+        $aMethod['params'][0] = "SELECT
+                " . $sSelectClause . "
+            FROM `" . $this->_sTableEtemplates . "`
+            WHERE 1" . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
     
     public function cleanEvents($iClearIntervalInDays)

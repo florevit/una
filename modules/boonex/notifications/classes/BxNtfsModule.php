@@ -66,6 +66,18 @@ class BxNtfsModule extends BxBaseModNotificationsModule
     /**
      * ACTION METHODS
      */
+    public function actionGetAction($sType)
+    {
+        $aActions = $this->_oDb->getHandlerActions($sType);
+        if(empty($aActions) || !is_array($aActions))
+            return echoJson(['code' => 1]);
+
+        echoJson([
+            'code' => 0, 
+            'content' => $this->_oTemplate->getSelectActions($aActions)
+        ]);
+    }
+
     function actionMarkAsClicked()
     {
         $iId = bx_process_input(bx_get('id'), BX_DATA_INT);
