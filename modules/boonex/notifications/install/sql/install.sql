@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `bx_notifications_etemplates` (
   `body` text NOT NULL,
   `active` tinyint(4) NOT NULL default '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `etemplate` (`type`, `action`)
+  UNIQUE KEY `etemplate` (`type`(32), `action`(127))
 );
 
 
