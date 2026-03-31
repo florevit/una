@@ -57,9 +57,9 @@
     "masonry-layout": "^4.2.2",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.1",
-    "npm": "^11.12.0",
-    "ovenplayer": "^0.10.48",
-    "pdfjs-dist": "^5.5.207",
+    "npm": "^11.12.1",
+    "ovenplayer": "^0.10.49",
+    "pdfjs-dist": "^5.6.205",
     "photoswipe": "^5.4.4",
     "player.js": "^0.1.0",
     "prismjs": "^1.29.0",
@@ -151,7 +151,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "bower": "^1.8.14",
     "npm-run-all": "^4.1.5",
-    "rollup": "^4.60.0",
+    "rollup": "^4.60.1",
     "tailwindcss": "^3.4.17",
     "uglify-js": "^3.19.3"
   }
