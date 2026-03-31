@@ -3,6 +3,7 @@
 
     <string name="_bx_persons"><![CDATA[Persons]]></string>
     <string name="_bx_persons_cmts"><![CDATA[Persons' Comments]]></string>
+    <string name="_bx_persons_reactions"><![CDATA[Persons' Reactions]]></string>
 
     <string name="_bx_persons_option_autoapproval"><![CDATA[Activate all persons automatically]]></string>
     <string name="_bx_persons_option_default_acl_level"><![CDATA[Default member's level to assign after person's profile creation]]></string>

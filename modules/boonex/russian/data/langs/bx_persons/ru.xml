@@ -2,6 +2,7 @@
 <resources name="ru" flag="ru" title="Russian">
     <string name="_bx_persons"><![CDATA[Персоны]]></string>
     <string name="_bx_persons_cmts"><![CDATA[Персоны - Комментарии]]></string>
+    <string name="_bx_persons_reactions"><![CDATA[Персоны - Реакции]]></string>
 
     <string name="_bx_persons_option_autoapproval"><![CDATA[Автоматически активировать всех персон]]></string>
     <string name="_bx_persons_option_default_acl_level"><![CDATA[Уровень, по умолчанию назначаемый созданному персональному профилю]]></string>
