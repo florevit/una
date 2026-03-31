@@ -565,9 +565,13 @@ class BxPaymentDb extends BxBaseModPaymentDb
 
         if(($iPendingId = $aParams['id'] ?? 0)) {
             $aSubscription = $this->getSubscription(['type' => 'pending_id', 'pending_id' => $iPendingId]);
+            if(!$aSubscription || !is_array($aSubscription))
+                $aSubscription = $this->getSubscription(['type' => 'pending_id', 'pending_id' => $iPendingId, 'from_deleted' => true]);
+
             if($aSubscription && is_array($aSubscription))
                 $aResult = array_merge($aResult, [
-                    'customer_id' => $aSubscription['customer_id']
+                    'customer_id' => $aSubscription['customer_id'],
+                    'deleted' => $aSubscription['deleted'] ?? false,
                 ]);
         }
 
@@ -577,6 +581,10 @@ class BxPaymentDb extends BxBaseModPaymentDb
     public function getSubscription($aParams)
     {
     	$aMethod = array('name' => 'getAll', 'params' => array(0 => 'query'));
+
+        $sTable = $this->_sPrefix . 'subscriptions';
+        if(($sK = 'from_deleted') && isset($aParams[$sK]) && $aParams[$sK])
+            $sTable .= '_deleted';
 
         $sSelectClause = "`ts`.*";
     	$sJoinClause = $sWhereClause = $sLimitClause = '';
@@ -616,7 +624,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
                 break;
         }
 
-        $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `" . $this->_sPrefix . "subscriptions` AS `ts` " . $sJoinClause . " WHERE 1 " . $sWhereClause . $sLimitClause;
+        $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `" . $sTable . "` AS `ts` " . $sJoinClause . " WHERE 1 " . $sWhereClause . $sLimitClause;
         return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
     }
 

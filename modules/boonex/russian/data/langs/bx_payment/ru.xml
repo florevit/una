@@ -409,6 +409,7 @@
     <string name="_bx_payment_txt_processed_with"><![CDATA[Обработан используя]]></string>
     <string name="_bx_payment_txt_message"><![CDATA[Результат]]></string>
     <string name="_bx_payment_txt_date"><![CDATA[Дата]]></string>
+    <string name="_bx_payment_txt_deleted"><![CDATA[Дата отмены]]></string>
     <string name="_bx_payment_txt_products"><![CDATA[Продукты]]></string>
     <string name="_bx_payment_txt_buyer_name_mask"><![CDATA[{0} {1}]]></string>
     <string name="_bx_payment_txt_none"><![CDATA[нет]]></string>
@@ -428,6 +429,7 @@
     <string name="_bx_payment_txt_status_unpaid"><![CDATA[Не оплачено]]></string>
     <string name="_bx_payment_txt_status_overdue"><![CDATA[Просрочено]]></string>
     <string name="_bx_payment_txt_status_paused"><![CDATA[Приостановлено]]></string>
+    <string name="_bx_payment_txt_status_cancel"><![CDATA[Отменено]]></string>
     <string name="_bx_payment_txt_status_canceled"><![CDATA[Отменено]]></string>
     <string name="_bx_payment_txt_status_unknown"><![CDATA[Неизвестно]]></string>
     <string name="_bx_payment_txt_invoice_title"><![CDATA[Счет {0} от {1}]]></string>

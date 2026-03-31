@@ -407,6 +407,7 @@
     <string name="_bx_payment_txt_processed_with"><![CDATA[Processed with]]></string>
     <string name="_bx_payment_txt_message"><![CDATA[Result]]></string>
     <string name="_bx_payment_txt_date"><![CDATA[Date]]></string>
+    <string name="_bx_payment_txt_deleted"><![CDATA[Date cancel]]></string>
     <string name="_bx_payment_txt_products"><![CDATA[Products]]></string>
     <string name="_bx_payment_txt_buyer_name_mask"><![CDATA[{0} {1}]]></string>
     <string name="_bx_payment_txt_none"><![CDATA[none]]></string>
@@ -426,6 +427,7 @@
     <string name="_bx_payment_txt_status_unpaid"><![CDATA[Unpaid]]></string>
     <string name="_bx_payment_txt_status_overdue"><![CDATA[Overdue]]></string>
     <string name="_bx_payment_txt_status_paused"><![CDATA[Paused]]></string>
+    <string name="_bx_payment_txt_status_cancel"><![CDATA[Canceled]]></string>
     <string name="_bx_payment_txt_status_canceled"><![CDATA[Canceled]]></string>
     <string name="_bx_payment_txt_status_unknown"><![CDATA[Unknown]]></string>
     <string name="_bx_payment_txt_invoice_title"><![CDATA[Invoice {0} from {1}]]></string>

@@ -352,8 +352,20 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
                 'txt_order' => _t($this->_sLangsPrefix . 'txt_subscription'),
                 'order' => $sOrder,
                 'txt_customer_id' => _t($this->_sLangsPrefix . 'txt_customer_id'),
-                'customer_id' => $aOrder['customer_id'],
+                'customer_id' => $aOrder['customer_id'] ?? '',
+                'bx_if:show_deleted' => [
+                    'condition' => false,
+                    'content' => [
+                        'txt_deleted' => _t($this->_sLangsPrefix . 'txt_deleted'),
+                        'deleted' => 0
+                    ]
+                ]
             ];
+
+            if(($sK = 'deleted') && isset($aOrder[$sK]) && $aOrder[$sK]) {
+                $aTmplVarsCustom['bx_if:show_deleted']['condition'] = true;
+                $aTmplVarsCustom['bx_if:show_deleted']['content']['deleted'] = bx_time_js($aOrder[$sK], BX_FORMAT_DATE_TIME, true);
+            }
         }
 
         $aResult = array_merge(array(
@@ -579,20 +591,18 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
     {
     	$oGrid = BxDolGrid::getObjectInstance($this->_oConfig->getObject($sObject), $this->getModule()->_oTemplate);
         if(!$oGrid || empty($iClientId))
-            return MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
+            return $this->_bIsApi ? false : MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
 
-		$oGrid->addQueryParam('client_id', $iClientId);
-		if(!empty($iSellerId))
-			$oGrid->addQueryParam('seller_id', $iSellerId);
+        $oGrid->addQueryParam('client_id', $iClientId);
+        if(!empty($iSellerId))
+            $oGrid->addQueryParam('seller_id', $iSellerId);
 
-		$this->addJsCssOrders();
-        
-        if (bx_is_api()){
+        if($this->_bIsApi)
             return [
                 bx_api_get_block('grid', $oGrid->getCodeAPI())
             ];
-        }
-        
+
+        $this->addJsCssOrders();
         return $this->displayJsCode(BX_PAYMENT_ORDERS_TYPE_HISTORY) . $oGrid->getCode();
     }
 

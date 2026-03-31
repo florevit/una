@@ -33,6 +33,9 @@ class BxPaymentGridSbsList extends BxPaymentGridSbsAdministration
 
     protected function _getActionActions ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
     {
+        if(in_array($aRow['status'], ['cancel', 'canceled']))
+            return '';
+
         $sMenuObject = $this->_oModule->_oConfig->getObject('menu_sbs_actions');
 
         if($this->_bIsApi) {
