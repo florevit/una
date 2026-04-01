@@ -598,9 +598,7 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
             $oGrid->addQueryParam('seller_id', $iSellerId);
 
         if($this->_bIsApi)
-            return [
-                bx_api_get_block('grid', $oGrid->getCodeAPI())
-            ];
+            return $oGrid->getCodeAPI();
 
         $this->addJsCssOrders();
         return $this->displayJsCode(BX_PAYMENT_ORDERS_TYPE_HISTORY) . $oGrid->getCode();

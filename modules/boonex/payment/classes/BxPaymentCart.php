@@ -137,19 +137,25 @@ class BxPaymentCart extends BxBaseModPaymentCart
      */
     public function serviceGetBlockCartHistory()
     {
-    	$CNF = &$this->_oModule->_oConfig->CNF;
+        $CNF = &$this->_oModule->_oConfig->CNF;
 
-		$iSellerId = bx_get('vendor') !== false ? (int)bx_get('vendor') : 0;
-
-    	$iUserId = $this->_oModule->getProfileId();
+        $iSellerId = bx_get('vendor') !== false ? (int)bx_get('vendor') : 0;
+        $iUserId = $this->_oModule->getProfileId();
         if(empty($iUserId))
-            return array(
-            	'content' => MsgBox(_t($CNF['T']['ERR_REQUIRED_LOGIN']))
-            );
+            return $this->_bIsApi ? [] : [
+                'content' => MsgBox(_t($CNF['T']['ERR_REQUIRED_LOGIN']))
+            ];
 
-        return array(
-        	'content' => $this->_oModule->_oTemplate->displayBlockHistory($iUserId, $iSellerId),
-		);
+        $mixedBlockContent = $this->_oModule->_oTemplate->displayBlockHistory($iUserId, $iSellerId);
+
+        if($this->_bIsApi)
+            return !$mixedBlockContent ? [] : [
+                bx_api_get_block('grid', $mixedBlockContent)
+            ];
+
+        return [
+            'content' => $mixedBlockContent,
+        ];
     }
 
     /**
