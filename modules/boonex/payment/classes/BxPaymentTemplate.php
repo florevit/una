@@ -336,7 +336,7 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
         $aTmplVarsCustom = [];
         if(in_array($sType, [BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION])) {
             $sOrder = $aOrder['order'];
-            if($oModule->_isModerator() && ($aItem = array_shift($aItems))) {
+            if($oModule->_isModerator() && ($aItem = reset($aItems))) {
                 $aItemModule = bx_srv((int)$aItem['module_id'], 'get_payment_data');
                 if(($sUrlBrowse = $aItemModule['url_browse_order_administration'] ?? false)) 
                     $sOrder = $this->displayLink('link', [

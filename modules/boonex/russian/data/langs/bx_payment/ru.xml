@@ -135,8 +135,7 @@
     <string name="_bx_payment_grid_column_title_sbs_client_id"><![CDATA[Покупатель]]></string>
     <string name="_bx_payment_grid_column_title_sbs_client_email"><![CDATA[Email]]></string>
     <string name="_bx_payment_grid_column_title_sbs_items"><![CDATA[Продукты]]></string>
-    <string name="_bx_payment_grid_column_title_sbs_transaction"><![CDATA[Транзакция]]></string>
-    <string name="_bx_payment_grid_column_title_sbs_license"><![CDATA[Лицензия]]></string>
+    <string name="_bx_payment_grid_column_title_sbs_item_id"><![CDATA[Продукт]]></string>
     <string name="_bx_payment_grid_column_title_sbs_amount"><![CDATA[Сумма]]></string>
     <string name="_bx_payment_grid_column_title_sbs_date"><![CDATA[Дата]]></string>
     <string name="_bx_payment_grid_column_title_sbs_date_add"><![CDATA[Дата создания]]></string>
