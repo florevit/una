@@ -207,10 +207,11 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
     protected function _isUnitThumb($aData, $sTemplateName = 'unit.html')
     {
         $bResult = true;
-        
+
         switch($sTemplateName) {
             case 'unit.html':
             case 'unit_with_cover.html':
+            case 'unit_with_cover_showcase.html':
                 $bResult = !$this->_oConfig->isUseCoverAsThumb();
                 break;
         }
