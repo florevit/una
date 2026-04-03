@@ -6,11 +6,18 @@
             </bx_repeat:filter_items>
         </select>
     </bx_if:show_filters>
-    <bx_if:allow_add_list>
-        <a class="bx-btn bx-btn-small bx-def-margin-sec-right bx-tasks-tasklist-add" href="javascript:void(0);" onclick="__object__.processTaskList(__context_id__, 0, this)">
-            <bx_text:_bx_tasks_txt_new_task_list />
-        </a>
-    </bx_if:allow_add_list>
+    <span>
+        <bx_if:allow_add_list>
+            <a class="bx-btn bx-btn-small bx-def-margin-sec-right bx-tasks-tasklist-add" href="javascript:void(0);" onclick="__object__.processTaskList(__context_id__, 0, this)">
+                <bx_text:_bx_tasks_txt_new_task_list />
+            </a>
+        </bx_if:allow_add_list>
+        <bx_if:allow_manage_settings>
+            <a class="bx-btn bx-btn-small bx-def-margin-sec-right bx-tasks-tasklist-add" href="javascript:void(0);" onclick="__object__.processContext(__context_id__, this)">
+                <bx_text:_bx_tasks_txt_new_settings />
+            </a>
+        </bx_if:allow_manage_settings>
+    </span>
 </div>
 __tasks__
 __js_code__

@@ -100,6 +100,16 @@
     <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен. Пожалуйста, заполните это поле]]></string>
 
+    <string name="_bx_tasks_form_context"><![CDATA[Контекст]]></string>
+    <string name="_bx_tasks_form_display_context_edit"><![CDATA[Редактировать контекст]]></string>
+    <string name="_bx_tasks_form_context_input_sys_repository"><![CDATA[Репозиторий]]></string>
+    <string name="_bx_tasks_form_context_input_repository"><![CDATA[Репозиторий]]></string>
+    <string name="_bx_tasks_form_context_input_sys_do_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_tasks_form_context_input_do_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_tasks_form_context_input_sys_do_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_tasks_form_context_input_do_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_tasks_form_context_input_sys_controls"><![CDATA[Элементы управления]]></string>
+
     <string name="_bx_tasks_form_time"><![CDATA[Время]]></string>
     <string name="_bx_tasks_form_display_time_add"><![CDATA[Добавить время]]></string>
     <string name="_bx_tasks_form_display_time_edit"><![CDATA[Редактировать время]]></string>
@@ -475,7 +485,8 @@
     <string name="_bx_tasks_txt_processing_awaiting"><![CDATA[Задание будет опубликовано как только сконвертируется видео.]]></string>
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Задание не была опубликовано, тк произошла ошибка при конвертации видео. Обновите видео, чтобы решить проблему.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Дата публикации:  {date_publish_uf}]]></string>
-    <string name="_bx_tasks_txt_new_task_list"><![CDATA[Новый Список заданий]]></string>
+    <string name="_bx_tasks_txt_new_task_list"><![CDATA[Новый список заданий]]></string>
+    <string name="_bx_tasks_txt_new_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[Новое Задание]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>

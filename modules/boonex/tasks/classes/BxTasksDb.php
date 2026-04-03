@@ -24,6 +24,37 @@ class BxTasksDb extends BxBaseModTextDb
         ];
     }
 
+    public function getContexts($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`tc`.*';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `tc`.`id` = :id";
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_CONTEXTS'] . "` AS `tc` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
     public function getLists ($iContextId = 0)
     {
         $CNF = &$this->_oConfig->CNF;

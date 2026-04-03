@@ -241,7 +241,10 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $sJsObject = $this->_oConfig->getJsObject('tasks');
 
         $oModule = $this->getModule();
-        $bAllowAdd = $oModule->isAllowAdd(abs($iContextId));
+
+        $_iContextId = abs($iContextId);
+        $bAllowAdd = $oModule->isAllowAdd($_iContextId);
+        $bAllowManage = $oModule->isAllowManageByContext($_iContextId);
 
         $aTmplVarsFilterItems = [];
 
@@ -279,6 +282,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             ],
             'bx_if:allow_add_list' => [
                 'condition' => $bAllowAdd,
+                'content' => [
+                    'context_id' => $iContextId,
+                    'object' => $sJsObject,
+                ]
+            ],
+            'bx_if:allow_manage_settings' => [
+                'condition' => $bAllowManage,
                 'content' => [
                     'context_id' => $iContextId,
                     'object' => $sJsObject,

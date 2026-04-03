@@ -34,6 +34,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'tasks',
             'TABLE_LISTS' => $aModule['db_prefix'] . 'lists',
+            'TABLE_CONTEXTS' => $aModule['db_prefix'] . 'contexts',
             'TABLE_ASSIGNMENTS' => $aModule['db_prefix'] . 'assignments',
             'TABLE_FILTERS' => $aModule['db_prefix'] . 'filters',
             'TABLE_TIME' => $aModule['db_prefix'] . 'time',
@@ -153,6 +154,8 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_FORM_LIST_ENTRY' => 'bx_tasks_list',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD' => 'bx_tasks_list_entry_add',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT' => 'bx_tasks_list_entry_edit',
+            'OBJECT_FORM_CONTEXT' => 'bx_tasks_context',
+            'OBJECT_FORM_CONTEXT_DISPLAY_EDIT' => 'bx_tasks_context_edit',
             'OBJECT_FORM_TIME' => 'bx_tasks_time',
             'OBJECT_FORM_TIME_DISPLAY_ADD' => 'bx_tasks_time_add',
             'OBJECT_FORM_TIME_DISPLAY_EDIT' => 'bx_tasks_time_edit',

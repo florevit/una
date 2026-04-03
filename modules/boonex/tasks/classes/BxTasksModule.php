@@ -83,9 +83,49 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         ]);
     }
 
+    public function actionProcessContextForm($iContextId)
+    {
+        $_iContextId = abs($iContextId);
+        if(!$this->isAllowManageByContext($_iContextId))
+            return;
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $_iContextId]);
+        $bContext = !empty($aContext) && is_array($aContext);
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_CONTEXT'], $CNF['OBJECT_FORM_CONTEXT_DISPLAY_EDIT']);
+        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_context_form/' . $iContextId . '/');      
+        $oForm->initChecker($aContext);
+        if($oForm->isSubmittedAndValid()) {
+            if(!$bContext)
+                $oForm->insert(['id' => $_iContextId]);
+            else
+                $oForm->update($_iContextId);
+
+            echoJson([
+                'eval' => $this->_oConfig->getJsObject('tasks') . '.hidePopup(oData, ' . $iContextId . ')',
+            ]);
+        }
+        else {	
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
+
+            if($oForm->isSubmitted()) 
+                return echoJson([
+                    'form' => $sContent, 
+                    'form_id' => $oForm->getId()
+                ]);
+
+            echo $sContent;
+        }
+    }
+
     public function actionProcessTaskListForm($iContextId, $iId)
     {
-        if (!$this->isAllowAdd(-$iContextId))
+        if (!$this->isAllowAdd(abs($iContextId)))
             return;
 
         $CNF = &$this->_oConfig->CNF;
