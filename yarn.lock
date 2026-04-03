@@ -564,10 +564,10 @@
     "@sigstore/core" "^3.0.0"
     "@sigstore/protobuf-specs" "^0.5.0"
 
-"@stripe/connect-js@^3.3.34":
-  version "3.3.34"
-  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.34.tgz#85a535b0691d2ae9dc1def0583e089357cfc39b3"
-  integrity sha512-yVvlRbAPE1QqIGp+1lJmUtAm4LNlZh7FZPifsYqsuJ6EuDj4kMFkLo12wzEgWNVfNivSUALFSYn5ndEbwc7URg==
+"@stripe/connect-js@^3.3.35":
+  version "3.3.35"
+  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.35.tgz#5d9943f670acf893715ab89a11844561012fdaea"
+  integrity sha512-9qGDe+G5MWPHdFK05lBRX+wjHIafZ72hCNrXzXnM4Uf7X/rbRe04/EOgaur0/aza5UlDcmEWJ+LSNmeoxytX6w==
 
 "@svta/cml-608@1.0.1":
   version "1.0.1"
@@ -2389,9 +2389,9 @@ localforage@^1.10.0:
     lie "3.1.1"
 
 lodash@^4.17.4:
-  version "4.17.23"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
-  integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
+  version "4.18.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
+  integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
 
 lottie-web@^5.12.2:
   version "5.13.0"
@@ -3109,10 +3109,10 @@ promzard@^3.0.1:
   dependencies:
     read "^5.0.0"
 
-pusher-js@^8.4.3:
-  version "8.4.3"
-  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-8.4.3.tgz#2271cada42375b146840278976e1c50926991da6"
-  integrity sha512-MYnVYhKxq2Oeg3HmTQxnKDj1oAZjqJCkEcYj8hYbH1Rw5pT0g8KtgOYVUKDRnyrPtwRvA9QR4wunwJW5xIbq0Q==
+pusher-js@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-8.5.0.tgz#329d4fb4b5e4ae0a5e0a558b6da1a852c4badae4"
+  integrity sha512-V7uzGi9bqOOOyM/6IkJdpFyjGZj7llz1v0oWnYkZKcYLvbz6VcHVLmzKqkvegjuMumpfIEKGLmWHwFb39XFCpw==
   dependencies:
     tweetnacl "^1.0.3"
 
