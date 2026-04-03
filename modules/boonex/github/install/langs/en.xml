@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources name="en" flag="gb" title="English">
+    <string name="_bx_github"><![CDATA[GitHub]]></string>
+
+    <string name="_bx_github_option_"><![CDATA[]]></string>
+
+    <string name="_bx_github_form_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_github_form_settings_display_edit"><![CDATA[Edit Settings]]></string>
+    <string name="_bx_github_form_settings_input_sys_profile_id"><![CDATA[Profile ID]]></string>
+    <string name="_bx_github_form_settings_input_sys_pat"><![CDATA[Access token]]></string>
+    <string name="_bx_github_form_settings_input_pat"><![CDATA[Access token]]></string>
+    <string name="_bx_github_form_settings_input_sys_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_github_form_settings_input_do_submit"><![CDATA[Submit]]></string>
+
+    <string name="_bx_github_page_title_sys_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_github_page_title_settings"><![CDATA[GitHub Settings]]></string>
+    <string name="_bx_github_page_block_title_settings"><![CDATA[GitHub Settings]]></string>
+
+    <string name="_bx_github_menu_item_title_system_settings"><![CDATA[GitHub Settings]]></string>
+    <string name="_bx_github_menu_item_title_settings"><![CDATA[GitHub]]></string>
+
+    <string name="_bx_github_msg_save_settings"><![CDATA[Settings were successfully saved.]]></string>
+    <string name="_bx_github_err_save_settings"><![CDATA[Cannot save settings.]]></string>
+    <string name="_bx_github_txt_"><![CDATA[]]></string>
+</resources>
