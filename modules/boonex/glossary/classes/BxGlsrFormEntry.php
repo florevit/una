@@ -19,6 +19,11 @@ class BxGlsrFormEntry extends BxBaseModTextFormEntry
         $this->MODULE = 'bx_glossary';
         parent::__construct($aInfo, $oTemplate);
     }
+
+    protected function _getPhotoGhostTmplVars($aContentInfo = [])
+    {
+        return BxBaseModGeneralFormEntry::_getPhotoGhostTmplVars($aContentInfo);
+    }
 }
 
 /** @} */
