@@ -925,7 +925,29 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     {
         return $this->_oDb->updateTimer($aSet, ['id' => (int)$iId]) !== false;
     }
-    
+
+    public function onPublished($iContentId)
+    {
+        parent::onPublished($iContentId);
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(!$aContentInfo)
+            return;
+
+        $CNF = &$this->_oConfig->CNF;
+
+        if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0) {
+            $mixedRepo = $this->_oDb->getContextRepository(abs($iContextId));
+            if($mixedRepo !== false && ($sMl = 'bx_github') && ($sMd = 'create_issue') && bx_is_srv($sMl, $sMd)) {
+                list($sGhUsername, $sGhRepository) = $mixedRepo;
+
+                $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']]]);
+                if($aIssue && is_array($aIssue) && ($iNumber = (int)($aIssue['number'] ?? 0)) != 0)
+                    $this->_oDb->updateEntriesBy([$CNF['FIELD_GH_ISSUE'] => $iNumber], [$CNF['FIELD_ID'] => $iContentId]);
+            }
+        }
+    }
+
     public function onExpired($iContentId)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -1069,6 +1091,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         }
 
         $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_' . ($iCompleted ? '' : 'un') . 'completed']);
+
+        if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0 && ($mixedRepository = $this->_oDb->getContextRepository(abs($iContextId))) !== false) {
+            $sModule = 'bx_github';
+            $sMethod = ($iCompleted ? 'close' : 'reopen') . '_issue';
+            if(bx_is_srv($sModule, $sMethod) && ($iGhIssue = (int)$aContentInfo[$CNF['FIELD_GH_ISSUE']]) != 0) {
+                list($sGhUsername, $sGhRepository) = $mixedRepository;
+
+                bx_srv($sModule, $sMethod, [$sGhUsername, $sGhRepository, $iGhIssue]);
+            }
+        }
 
         return true;
     }

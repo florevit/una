@@ -102,8 +102,10 @@
 
     <string name="_bx_tasks_form_context"><![CDATA[Context]]></string>
     <string name="_bx_tasks_form_display_context_edit"><![CDATA[Edit Context]]></string>
-    <string name="_bx_tasks_form_context_input_sys_repository"><![CDATA[Repository]]></string>
-    <string name="_bx_tasks_form_context_input_repository"><![CDATA[Repository]]></string>
+    <string name="_bx_tasks_form_context_input_sys_gh_username"><![CDATA[GitHub Username]]></string>
+    <string name="_bx_tasks_form_context_input_gh_username"><![CDATA[GitHub Username]]></string>
+    <string name="_bx_tasks_form_context_input_sys_gh_repository"><![CDATA[GitHub Repository]]></string>
+    <string name="_bx_tasks_form_context_input_gh_repository"><![CDATA[GitHub Repository]]></string>
     <string name="_bx_tasks_form_context_input_sys_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_tasks_form_context_input_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_tasks_form_context_input_sys_do_cancel"><![CDATA[Cancel]]></string>

@@ -55,6 +55,16 @@ class BxTasksDb extends BxBaseModTextDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
+    public function getContextRepository($iId) 
+    {
+        $aContext = $this->getContexts([
+            'sample' => 'id', 
+            'id' => $iId
+        ]);
+
+        return $aContext && is_array($aContext) ? [$aContext['gh_username'], $aContext['gh_repository']] : false;
+    }
+
     public function getLists ($iContextId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
