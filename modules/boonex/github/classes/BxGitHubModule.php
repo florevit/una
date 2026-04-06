@@ -9,26 +9,23 @@
  * @{
  */
 
-/*
- * 
- * Creating a fine-grained personal access token
- * https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
- * 
- * Creating a personal access token (classic)
- * https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
- * 
- * Web application flow
- * https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow
- * 
- */
-
 class BxGitHubModule extends BxBaseModGeneralModule
 {
-    function __construct($aModule)
+    protected $_iLoggedId;
+
+    protected $_oApi;
+
+    public function __construct($aModule)
     {
         parent::__construct($aModule);
 
         $this->_oConfig->init($this->_oDb);
+        
+        $this->_iLoggedId = bx_get_logged_profile_id();
+
+        bx_import('Api', $aModule);
+        $this->_oApi = new BxGitHubApi($this);
+        $this->_oApi->init($this->_iLoggedId);
     }
 
     /**
@@ -40,9 +37,8 @@ class BxGitHubModule extends BxBaseModGeneralModule
      */
     public function serviceGetBlockSettings($iProfileId = 0)
     {
-        $iLoggedId = bx_get_logged_profile_id();
-        if(!$iProfileId || ($iProfileId != $iLoggedId && !$this->_isAdministrator()))
-            $iProfileId = $iLoggedId;
+        if(!$iProfileId || ($iProfileId != $this->_iLoggedId && !$this->_isAdministrator()))
+            $iProfileId = $this->_iLoggedId;
 
         if(!$iProfileId)
             return MsgBox(_t('_sys_txt_access_denied'));
@@ -50,11 +46,51 @@ class BxGitHubModule extends BxBaseModGeneralModule
         return $this->_oTemplate->getBlockSettings($iProfileId);
     }
 
-    public function serviceAddIssue($iProfileId, $sRepository, $sTitle, $sText = '')
+    public function serviceGetRepositories($sUsername, $iProfileId = 0)
     {
-        //TODO: Create Issue in Repository.
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->getRepositories($sUsername);
     }
 
+    public function serviceGetIssues($sUsername, $sRepository, $sState = 'open')
+    {
+        return $this->_oApi->getIssues($sUsername, $sRepository, $sState);
+    }
+
+    public function serviceCreateIssue($sUsername, $sRepository, $sTitle, $sText = '', $aParams = [], $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->createIssue($sUsername, $sRepository, $sTitle, $sText, $aParams);
+    }
+
+    public function serviceUpdateIssue($sUsername, $sRepository, $iIssue, $aParams, $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->updateIssue($sUsername, $sRepository, $iIssue, $aParams);
+    }
+
+    public function serviceCloseIssue($sUsername, $sRepository, $iIssue, $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->updateIssue($sUsername, $sRepository, $iIssue, ['state' => 'closed']);
+    }
+
+    public function serviceReopenIssue($sUsername, $sRepository, $iIssue, $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->updateIssue($sUsername, $sRepository, $iIssue, ['state' => 'open']);
+    }
+     
     /*
      * COMMON METHODS
      */

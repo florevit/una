@@ -11,6 +11,7 @@
     <string name="_bx_github_form_settings_input_pat"><![CDATA[Access token]]></string>
     <string name="_bx_github_form_settings_input_sys_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_github_form_settings_input_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_github_form_input_err_enter"><![CDATA[This field is essential. Please, enter a value.]]></string>
 
     <string name="_bx_github_page_title_sys_settings"><![CDATA[Settings]]></string>
     <string name="_bx_github_page_title_settings"><![CDATA[GitHub Settings]]></string>
@@ -18,6 +19,8 @@
 
     <string name="_bx_github_menu_item_title_system_settings"><![CDATA[GitHub Settings]]></string>
     <string name="_bx_github_menu_item_title_settings"><![CDATA[GitHub]]></string>
+
+    <string name="_bx_github_log_api"><![CDATA[GitHub API Logs]]></string>
 
     <string name="_bx_github_msg_save_settings"><![CDATA[Settings were successfully saved.]]></string>
     <string name="_bx_github_err_save_settings"><![CDATA[Cannot save settings.]]></string>

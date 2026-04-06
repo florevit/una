@@ -30,6 +30,7 @@ class BxGitHubConfig extends BxBaseModGeneralConfig
             // objects
             'OBJECT_FORM_SETTINGS' => 'bx_github_form_settings',
             'OBJECT_FORM_SETTINGS_DISPLAY_EDIT' => 'bx_github_form_settings_edit',
+            'OBJECT_LOG_API' => 'bx_github_api'
         );
     }
 

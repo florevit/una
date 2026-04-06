@@ -20,13 +20,19 @@ INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `v
 
 INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES
 ('bx_github_form_settings', @sName, 'profile_id', '0', '', 0, 'hidden', '_bx_github_form_settings_input_sys_profile_id', '', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 0, 0),
-('bx_github_form_settings', @sName, 'pat', '', '', 0, 'text', '_bx_github_form_settings_input_sys_pat', '_bx_github_form_settings_input_pat', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_github_form_input_err_enter', 'Xss', '', 0, 0),
+('bx_github_form_settings', @sName, 'pat', '', '', 0, 'text', '_bx_github_form_settings_input_sys_pat', '_bx_github_form_settings_input_pat', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_github_form_settings', @sName, 'do_submit', '_bx_github_form_settings_input_do_submit', '', 0, 'submit', '_bx_github_form_settings_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
 ('bx_github_form_settings_edit', 'profile_id', 2147483647, 1, 1),
-('bx_github_form_settings_edit', 'pat', 2147483647, 1, 2),
-('bx_github_form_settings_edit', 'do_submit', 2147483647, 1, 3);
+('bx_github_form_settings_edit', 'username', 2147483647, 1, 2),
+('bx_github_form_settings_edit', 'pat', 2147483647, 1, 3),
+('bx_github_form_settings_edit', 'do_submit', 2147483647, 1, 4);
+
+
+-- LOGS
+INSERT INTO `sys_objects_logs` (`object`, `module`, `logs_storage`, `title`, `active`, `class_name`, `class_file`) VALUES
+('bx_github_api', @sName, 'Auto', '_bx_github_log_api', 1, '', '');
 
 
 -- STUDIO PAGE & WIDGET

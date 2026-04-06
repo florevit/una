@@ -12,6 +12,10 @@ DELETE FROM `sys_form_displays` WHERE `module`=@sName;
 DELETE FROM `sys_objects_form` WHERE `module`=@sName;
 
 
+-- LOGS
+DELETE FROM `sys_objects_logs` WHERE `module`=@sName;
+
+
 -- STUDIO PAGE & WIDGET
 DELETE FROM `tp`, `tw`, `tpw`
 USING `sys_std_pages` AS `tp`, `sys_std_widgets` AS `tw`, `sys_std_pages_widgets` AS `tpw`
