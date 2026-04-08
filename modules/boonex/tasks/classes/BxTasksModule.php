@@ -942,8 +942,17 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 list($sGhUsername, $sGhRepository) = $mixedRepo;
 
                 $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']]]);
-                if($aIssue && is_array($aIssue) && ($iNumber = (int)($aIssue['number'] ?? 0)) != 0)
-                    $this->_oDb->updateEntriesBy([$CNF['FIELD_GH_ISSUE'] => $iNumber], [$CNF['FIELD_ID'] => $iContentId]);
+                if($aIssue && is_array($aIssue) && ($iNumber = (int)($aIssue['number'] ?? 0)) != 0 && ($sUrl = $aIssue['html_url'] ?? '') != '') {
+                    $this->_oDb->updateEntriesBy([
+                        $CNF['FIELD_GH_ISSUE'] => $iNumber,
+                        $CNF['FIELD_GH_ISSUE_URL'] => $sUrl,
+                    ], [$CNF['FIELD_ID'] => $iContentId]);
+
+                    $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_synced', 'markers' => [
+                        'ghi_link' => $sUrl,
+                        'ghi_number' => $iNumber
+                    ]]);
+                }
             }
         }
     }

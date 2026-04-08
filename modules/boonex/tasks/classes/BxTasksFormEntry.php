@@ -159,6 +159,11 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         return parent::delete($iContentId);
     }
 
+    protected function genCustomViewRowValueGhIssueUrl(&$aInput)
+    {
+        return $aInput['value'] ? bx_linkify(bx_process_output($aInput['value'])) : null;
+    }
+
     protected function _getCoverGhostTmplVars($aContentInfo = [])
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;

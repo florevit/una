@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_tasks` (
   `featured` int(11) NOT NULL default '0',
   `due_date` int(11) NOT NULL,
   `tasks_list` int(11) NOT NULL,
-  `github_issue` int(11) NOT NULL default '0',
+  `gh_issue` int(11) NOT NULL default '0',
+  `gh_issue_url` varchar(255) NOT NULL default '',
   `completed` tinyint(4) NOT NULL DEFAULT '0', 
   `expired` tinyint(4) NOT NULL DEFAULT '0', 
   `cf` int(11) NOT NULL default '1',
@@ -483,7 +484,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks', 'bx_tasks', 'attachments', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_attachments', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'anonymous', '', '', 0, 'switcher', '_sys_form_input_sys_anonymous', '_sys_form_input_anonymous', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_tasks', 'bx_tasks', 'allow_comments', '1', '', 1, 'switcher', '_bx_tasks_form_entry_input_sys_allow_comments', '_bx_tasks_form_entry_input_allow_comments', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0);
+('bx_tasks', 'bx_tasks', 'allow_comments', '1', '', 1, 'switcher', '_bx_tasks_form_entry_input_sys_allow_comments', '_bx_tasks_form_entry_input_allow_comments', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
+('bx_tasks', 'bx_tasks', 'gh_issue_url', '', '', 0, 'value', '_bx_tasks_form_entry_input_sys_gh_issue_url', '_bx_tasks_form_entry_input_gh_issue_url', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
 ('bx_tasks_entry_add', 'title', 2147483647, 1, 1),
@@ -553,7 +555,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_view', 'added', 2147483647, 1, 5),
 ('bx_tasks_entry_view', 'changed', 2147483647, 1, 6),
 ('bx_tasks_entry_view', 'due_date', 192, 1, 7),
-('bx_tasks_entry_view', 'state', 2147483647, 1, 8);
+('bx_tasks_entry_view', 'state', 2147483647, 1, 8),
+('bx_tasks_entry_view', 'gh_issue_url', 2147483647, 1, 9);
 
 
 -- FORMS: entry (tasklist)

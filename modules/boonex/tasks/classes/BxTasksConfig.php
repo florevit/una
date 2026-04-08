@@ -73,6 +73,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_LABELS' => 'labels',
             'FIELD_TASKLIST' => 'tasks_list',
             'FIELD_GH_ISSUE' => 'gh_issue',
+            'FIELD_GH_ISSUE_URL' => 'gh_issue_url',
             'FIELD_INITIAL_MEMBERS' => 'initial_members',
             'FIELD_DUE_DATE' => 'due_date',
             'FIELD_EXPIRED' => 'expired',

@@ -90,6 +90,8 @@
     <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Due date]]></string>
     <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Estimate]]></string>
     <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Estimate (in points)]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_gh_issue_url"><![CDATA[GitHub Issue]]></string>
+    <string name="_bx_tasks_form_entry_input_gh_issue_url"><![CDATA[GitHub Issue]]></string>
 
     <string name="_bx_tasks_form_list_entry"><![CDATA[Tasklists]]></string>
     <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Add Tasklist]]></string>
@@ -190,7 +192,7 @@
     <string name="_bx_tasks_page_block_title_recent_entries_view_full"><![CDATA[Latest Tasks (Full View)]]></string>
     <string name="_bx_tasks_page_block_title_entry_social_sharing"><![CDATA[Share]]></string>
     <string name="_bx_tasks_page_block_title_entry_author"><![CDATA[Author]]></string>
-    <string name="_bx_tasks_page_block_title_entry_assignments"><![CDATA[Assignments]]></string>
+    <string name="_bx_tasks_page_block_title_entry_assignments"><![CDATA[Assignees]]></string>
     <string name="_bx_tasks_page_block_title_entry_actions"><![CDATA[Actions]]></string>
     <string name="_bx_tasks_page_block_title_sys_entry_comments"><![CDATA[Activity]]></string>
     <string name="_bx_tasks_page_block_title_entry_comments"><![CDATA[Activity ({0})]]></string>
@@ -510,6 +512,7 @@
     <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
 
     <string name="_bx_tasks_txt_msg_format"><![CDATA[{0} &#183; <span>{1}</span>]]></string>
+    <string name="_bx_tasks_txt_msg_synced"><![CDATA[The task was synced with GitHub: <b><a href="{ghi_link}" target="_blank">#{ghi_number}</a></b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_type"><![CDATA[<a href="{author_link}">{author_name}</a> changed type to <b>{value}</b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_priority"><![CDATA[<a href="{author_link}">{author_name}</a> changed priority to <b>{value}</b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_estimate"><![CDATA[<a href="{author_link}">{author_name}</a> changed estimate to <b>{value}</b>]]></string>
