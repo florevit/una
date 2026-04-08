@@ -71,9 +71,11 @@ class BxGitHubApi extends BxDol
         return $this->_oClient->api('user')->repositories($sUsername);
     }
 
-    public function getIssues($sUsername, $sRepository, $sState = 'open')
+    public function getIssues($sUsername, $sRepository, $sState = 'open', $bAuthenticate = true)
     {
         $aIssues = [];
+        if($bAuthenticate && !$this->authenticate())
+            return $aIssues;
 
         try {
             $aIssues = $this->_oClient->api('issue')->all($sUsername, $sRepository, ['state' => $sState]);
@@ -83,6 +85,22 @@ class BxGitHubApi extends BxDol
         }
 
         return $aIssues;
+    }
+
+    public function getIssue($sUsername, $sRepository, $iIssue, $bAuthenticate = true)
+    {
+        $aIssue = [];
+        if($bAuthenticate && !$this->authenticate())
+            return $aIssue;
+
+        try {
+            $aIssue = $this->_oClient->api('issue')->show($sUsername, $sRepository, $iIssue);
+        }
+        catch (Exception $oException) {
+            $this->_processException('Get Issue:', $oException);
+        }
+
+        return $aIssue;
     }
 
     public function createIssue($sUsername, $sRepository, $sTitle, $sText = '', $aParams = [])

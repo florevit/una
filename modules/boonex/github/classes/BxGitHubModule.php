@@ -59,6 +59,11 @@ class BxGitHubModule extends BxBaseModGeneralModule
         return $this->_oApi->getIssues($sUsername, $sRepository, $sState);
     }
 
+    public function serviceGetIssue($sUsername, $sRepository, $iIssue)
+    {
+        return $this->_oApi->getIssue($sUsername, $sRepository, $iIssue);
+    }
+
     public function serviceCreateIssue($sUsername, $sRepository, $sTitle, $sText = '', $aParams = [], $iProfileId = 0)
     {
         if($iProfileId && $iProfileId != $this->_iLoggedId)
