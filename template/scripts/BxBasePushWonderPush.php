@@ -31,8 +31,7 @@ class BxBasePushWonderPush extends BxDolPushWonderPush
             'params' => json_encode([
                 'webKey' => $this->_sWebKey,
                 'userId' => $aTags['user_hash'],
-                'applicationName' => getParam('site_title'),
-                'requiresUserConsent' => getParam('sys_push_wonderpush_requires_user_consent') ? true : false,
+                'applicationName' => getParam('site_title'),                
             ]),
             'tags' => json_encode($aTags),
         ]);

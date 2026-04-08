@@ -771,8 +771,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 (@iCategoryId, 'sys_push_wonderpush_app_id', '_adm_stg_cpt_option_sys_push_wonderpush_app_id', '', 'digit', '', '', '', 30),
 (@iCategoryId, 'sys_push_wonderpush_access_token', '_adm_stg_cpt_option_sys_push_wonderpush_access_token', '', 'digit', '', '', '', 32),
-(@iCategoryId, 'sys_push_wonderpush_web_key', '_adm_stg_cpt_option_sys_push_wonderpush_web_key', '', 'digit', '', '', '', 34),
-(@iCategoryId, 'sys_push_wonderpush_requires_user_consent', '_adm_stg_cpt_option_sys_push_wonderpush_requires_user_consent', 'on', 'checkbox', '', '', '', 36);
+(@iCategoryId, 'sys_push_wonderpush_web_key', '_adm_stg_cpt_option_sys_push_wonderpush_web_key', '', 'digit', '', '', '', 34);
 
 
 --
