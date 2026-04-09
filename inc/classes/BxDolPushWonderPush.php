@@ -65,7 +65,7 @@ class BxDolPushWonderPush extends BxDolPush
 
         $aFields = [
             'accessToken' => $this->_sAcessToken,
-            'targetUserIds' => $iProfileId,
+            'targetUserIds' => encryptUserId($iProfileId),
         ];
         $aNotification = [
             'alert' => [],
@@ -82,7 +82,26 @@ class BxDolPushWonderPush extends BxDolPush
             $aNotification['alert']['web']['icon'] = $aMessage['icon'];
 
             $aNotification['alert']['android'] = $aNotification['alert']['android'] ?? [];
-            $aNotification['alert']['android']['smallIcon'] = $aMessage['icon'];
+            $aNotification['alert']['android']['largeIcon'] = $aMessage['icon'];
+
+            $aNotification['alert']['ios'] = $aNotification['alert']['ios'] ?? [];
+            $aNotification['alert']['ios']['attachments'] = ['url' => $aMessage['icon']];
+        }
+
+        if (!empty($sUrlWeb)) {
+            $aNotification['alert']['web'] = $aNotification['alert']['web'] ?? [];
+            $aNotification['alert']['web']['targetUrl'] = $sUrlWeb;
+
+            $aFields['push'] = $aFields['push'] ?? [];
+            $aFields['push']['custom'] = $aFields['push']['custom'] ?? [];
+            $aFields['push']['custom']['url'] = $sUrlWeb;
+        }
+        if (!empty($sUrlApp)) {
+            $aNotification['alert']['ios'] = $aNotification['alert']['ios'] ?? [];
+            $aNotification['alert']['ios']['targetUrl'] = $sUrlApp;
+
+            $aNotification['alert']['android'] = $aNotification['alert']['android'] ?? [];
+            $aNotification['alert']['android']['targetUrl'] = $sUrlApp;
         }
 
         if('on' == getParam('bx_nexus_option_push_notifications_count')) {
@@ -91,18 +110,7 @@ class BxDolPushWonderPush extends BxDolPush
             $aNotification['alert']['ios']['badge'] = $iBadgeCount;
         }
 
-        if (!empty($sUrlWeb)) {
-            $aNotification['alert']['targetUrl'] = $sUrlWeb;
-
-            $aFields['push'] = $aFields['push'] ?? [];
-            $aFields['push']['custom'] = $aFields['push']['custom'] ?? [];
-            $aFields['push']['custom']['url'] = $sUrlWeb;
-        }
-        if (!empty($sUrlApp)) {
-            // TODO: ??? https://docs.wonderpush.com/reference/notification
-        }
-
-        $aFields['notifications'] = json_encode($aNotification);
+        $aFields['notification'] = json_encode($aNotification);
 
         // send request
 
@@ -123,8 +131,11 @@ class BxDolPushWonderPush extends BxDolPush
 
         $oResult = @json_decode($sResult, true);
         
+        // bx_log('sys_push', "Payload:" . $aFields, BX_LOG_DEBUG);
+        // bx_log('sys_push', "Result:" . $sResult, BX_LOG_DEBUG);
+
         if(isset($oResult['error'])) {
-            bx_log('sys_push', $sError . " Message:" . $oResult['error']['message'], BX_LOG_ERR);
+            bx_log('sys_push', "Error message:" . $oResult['error']['message'], BX_LOG_ERR);
         }
 
         return $sResult;
