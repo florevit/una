@@ -1727,6 +1727,9 @@
     <string name="_adm_stg_cpt_option_sys_push_onesignal_rest_api"><![CDATA[OneSignal: REST API Key]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_short_name"><![CDATA[OneSignal: Short name (required only for http sites. It must match the Subdomain you entered on the Web Push settings on the OneSignal dashboard)]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_safari_id"><![CDATA[OneSignal: Apple Safari Web ID on the Web Push settings]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_app_id"><![CDATA[WonderPush: App ID]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_access_token"><![CDATA[WonderPush: Access Token]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_web_key"><![CDATA[WonderPush: Web Key]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_time"><![CDATA[Push queue execution flag]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start"><![CDATA[Number of messages to send from Push queue per run]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start_to_recipient"><![CDATA[Number of messages to send from Push queue per run to some recipient]]></string>
