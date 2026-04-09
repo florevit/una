@@ -92,8 +92,8 @@ CREATE TABLE `sys_objects_push` (
 );
 
 INSERT INTO `sys_objects_push` (`object`, `title`, `override_class_name`, `override_class_file`) VALUES
-('sys_onesignal', 'OneSignal', 'BxTemplPushOneSignal', '');
-
+('sys_onesignal', 'OneSignal', 'BxTemplPushOneSignal', ''),
+('sys_wonderpush', 'WonderPush', 'BxTemplPushWonderPush', '');
 
 -- --------------------------------------------------------
 
@@ -767,7 +767,11 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_push_onesignal_app_id', '_adm_stg_cpt_option_sys_push_onesignal_app_id', '', 'digit', '', '', '', 21),
 (@iCategoryId, 'sys_push_onesignal_rest_api', '_adm_stg_cpt_option_sys_push_onesignal_rest_api', '', 'digit', '', '', '', 22),
 (@iCategoryId, 'sys_push_onesignal_short_name', '_adm_stg_cpt_option_sys_push_onesignal_short_name', '', 'digit', '', '', '', 23),
-(@iCategoryId, 'sys_push_onesignal_safari_id', '_adm_stg_cpt_option_sys_push_onesignal_safari_id', '', 'digit', '', '', '', 24);
+(@iCategoryId, 'sys_push_onesignal_safari_id', '_adm_stg_cpt_option_sys_push_onesignal_safari_id', '', 'digit', '', '', '', 24),
+
+(@iCategoryId, 'sys_push_wonderpush_app_id', '_adm_stg_cpt_option_sys_push_wonderpush_app_id', '', 'digit', '', '', '', 30),
+(@iCategoryId, 'sys_push_wonderpush_access_token', '_adm_stg_cpt_option_sys_push_wonderpush_access_token', '', 'digit', '', '', '', 32),
+(@iCategoryId, 'sys_push_wonderpush_web_key', '_adm_stg_cpt_option_sys_push_wonderpush_web_key', '', 'digit', '', '', '', 34);
 
 
 --
