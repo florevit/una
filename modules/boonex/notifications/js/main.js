@@ -17,7 +17,7 @@ BxNtfsMain.prototype.onChangeType = function(oElement) {
         function(oData) {
             if(!oData || oData.code != 0)
                 return;
-console.log($this._aHtmlIds);
+
             $('#' + $this._aHtmlIds['field_action']).html(oData.content).removeAttr('disabled');
         },
         'json'
