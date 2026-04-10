@@ -27,6 +27,29 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         return 'oBxDolStudioPageAgents';
     }
 
+    public function performActionManual()
+    {
+        $iId = $this->_getId();        
+        $aAgent = BxDolAiQuery::getAgentObject($iId);
+        if (!$aAgent) {
+            echoJson(['msg' => _t('_sys_txt_error_occured')]);
+            return;
+        }
+
+        $oAi = BxDolAI::getInstance();
+        $sResponse = $oAi->callAgent('manual', $aAgent);
+
+        $oParsedown = new Parsedown();
+        $oParsedown->setSafeMode(true);
+        $sMessageHtml = $oParsedown->text($sResponse);
+
+        $oTemplate = BxDolStudioTemplate::getInstance();
+        $sHtml = $oTemplate->parseHtmlByName('agents_manual_response.html', [
+            'response' => $sMessageHtml
+        ]);
+        echoJson(['msg' => $sHtml]);
+    }
+
     public function performActionAdd()
     {
         $sAction = 'add';
@@ -536,6 +559,13 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             "bx_repeat:$sField" => $aTmplVars,
             'btn_add' => $oForm->genInputButton($aInputButton)
         ]);
+    }
+
+    protected function _getActionManual ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
+    {
+        if ($aRow['trigger'] != 'manual' && $aRow['trigger'] != 'scheduler')
+            return '';
+        return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
     }
 }
 
