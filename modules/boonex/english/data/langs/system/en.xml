@@ -4166,6 +4166,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_txt_account_cannot_delete"><![CDATA[Cannot delete the only Operator account]]></string>
     <string name="_sys_txt_account_deletion_scheduled"><![CDATA[Account deletion was scheduled and would be done in a few minutes.]]></string>
     
+    <string name="_sys_txt_agent_inactive"><![CDATA[Agent isn't activated]]></string>
     <string name="_sys_txt_captcha_not_available"><![CDATA[CAPTCHA not available]]></string>
     <string name="_sys_txt_categories_button_caption_add"><![CDATA[Add]]></string>
     <string name="_sys_txt_categories_button_caption_addnew"><![CDATA[Create own category]]></string>

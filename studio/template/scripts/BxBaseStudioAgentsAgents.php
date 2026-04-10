@@ -35,6 +35,10 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             echoJson(['msg' => _t('_sys_txt_error_occured')]);
             return;
         }
+        if (!$aAgent['active']) {
+            echoJson(['msg' => _t('_sys_txt_agent_inactive')]);
+            return;
+        }
 
         $oAi = BxDolAI::getInstance();
         $sResponse = $oAi->callAgent('manual', $aAgent);

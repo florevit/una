@@ -4100,6 +4100,7 @@
     <string name="_sys_txt_account_cannot_delete"><![CDATA[Невозможно удалить единственную учетную запись оператора.]]></string>
     <string name="_sys_txt_account_deletion_scheduled"><![CDATA[Удаление аккаунта запланировано и будет выполнено через несколько минут.]]></string>
 
+    <string name="_sys_txt_agent_inactive"><![CDATA[Агент не активирован]]></string>
     <string name="_sys_txt_captcha_not_available"><![CDATA[CAPTCHA недоступна]]></string>
     <string name="_sys_txt_change_image"><![CDATA[Изменить картинку]]></string>
     <string name="_sys_txt_cmt_loading"><![CDATA[Загрузка...]]></string>
