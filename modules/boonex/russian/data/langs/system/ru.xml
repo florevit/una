@@ -1702,6 +1702,9 @@
     <string name="_adm_stg_cpt_option_sys_push_onesignal_rest_api"><![CDATA[OneSignal: REST API Key]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_short_name"><![CDATA[OneSignal: Короткое имя (требуется только если у вас https сайт. Оно должно совпадать с поддоменом, введёным, в настройках пуш оповещений на OneSignal)]]></string>
     <string name="_adm_stg_cpt_option_sys_push_onesignal_safari_id"><![CDATA[OneSignal: Apple Safari Web ID в натройках Web Push]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_app_id"><![CDATA[WonderPush: ID приложения]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_access_token"><![CDATA[WonderPush: Токен доступа]]></string>
+    <string name="_adm_stg_cpt_option_sys_push_wonderpush_web_key"><![CDATA[WonderPush: Веб-ключ]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_time"><![CDATA[Флаг выполнения Push очереди]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start"><![CDATA[Количество сообщенией, отправляемое из Push очереди при каждом запуске]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start_to_recipient"><![CDATA[Количество сообщенией, отправляемое из Push очереди одному и тому же получателю при каждом запуске]]></string>
@@ -1797,6 +1800,7 @@
     <string name="_adm_stg_cpt_option_sys_profile_bot"><![CDATA[Профиль системного бота]]></string>
     <string name="_adm_stg_inf_option_sys_profile_bot"><![CDATA[Выберите профиль, который будет использоваться в качестве автора системных действий.]]></string>
     <string name="_adm_stg_cpt_option_sys_logs_storage_default"><![CDATA[Система логирования по умолчанию]]></string>
+    <string name="_adm_stg_cpt_option_sys_logs_level"><![CDATA[Уровень логирования]]></string>
     <string name="_adm_stg_cpt_option_sys_vote_reactions_quick_mode"><![CDATA[Включить режим 'Быстрых реакций' - голосовать при клике, используя реакцию по умолчанию]]></string>
     <string name="_adm_stg_cpt_option_sys_cmts_enable_auto_approve"><![CDATA[Автоматически активировать комментарий после создания]]></string>
     <string name="_adm_stg_cpt_option_sys_create_post_form_preloading_list"><![CDATA[Асинхронная предварительная загрузка форм в блоке "Создать публикацию"]]></string>
