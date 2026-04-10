@@ -19,11 +19,11 @@ class BxTasksFormTime extends BxTemplFormView
     public function __construct($aInfo, $oTemplate = false)
     {
         $this->_sModule = 'bx_tasks';
-    	$this->_oModule = BxDolModule::getInstance($this->_sModule);
+        $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         parent::__construct($aInfo, $oTemplate);
 
-    	if(($sKey = 'value') && isset($this->aInputs[$sKey])) { 
+        if(($sKey = 'value') && isset($this->aInputs[$sKey])) { 
             foreach($this->aInputs[$sKey] as $mixedKey => $mixedValue) {
                 if(!is_numeric($mixedKey) || !is_array($mixedValue))
                     continue;
@@ -32,6 +32,9 @@ class BxTasksFormTime extends BxTemplFormView
                     $this->aInputs[$sKey][$mixedKey]['attrs']['placeholder'] = _t($mixedValue['attrs']['placeholder']);
             }
         }
+
+        if(($sKey = 'value_date') && isset($this->aInputs[$sKey]))
+            $this->aInputs[$sKey]['value'] ??= time();
     }
     
     public function initChecker ($aValues = [], $aSpecificValues = [])

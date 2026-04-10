@@ -138,7 +138,6 @@
     <string name="_bx_tasks_form_time_input_value_m_placeholder"><![CDATA[minutes]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Date]]></string>
-    <string name="_bx_tasks_form_time_input_value_date_inf"><![CDATA[Leave empty to use today date.]]></string>
     <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
