@@ -184,6 +184,8 @@
     <string name="_bx_ntfs_txt_subobject_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> - {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_subobject_added_in_context"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> - {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_new_event_subject"><![CDATA[Новое на сайте "{0}"]]></string>
+    <string name="_bx_ntfs_txt_et_preview_subject"><![CDATA[Тема:]]></string>
+    <string name="_bx_ntfs_txt_et_preview_body"><![CDATA[Текст:]]></string>
 
     <string name="_bx_ntfs_email_new_event"><![CDATA[Новое уведомление]]></string>
     <string name="_bx_ntfs_email_new_event_subject"><![CDATA[{subject}]]></string>
@@ -207,8 +209,10 @@
     <string name="_bx_ntfs_grid_column_title_ett_action"><![CDATA[Действие]]></string>
     <string name="_bx_ntfs_grid_column_title_ett_subject"><![CDATA[Тема]]></string>
     <string name="_bx_ntfs_grid_action_title_ett_add"><![CDATA[Добавить]]></string>
+    <string name="_bx_ntfs_grid_action_title_ett_preview"><![CDATA[Предварительный просмотр]]></string>
     <string name="_bx_ntfs_grid_action_title_ett_edit"><![CDATA[Редактировать]]></string>
     <string name="_bx_ntfs_grid_action_title_ett_delete"><![CDATA[Удалить]]></string>
     <string name="_bx_ntfs_grid_popup_title_ett_add"><![CDATA[Добавить шаблон электронного письма]]></string>
     <string name="_bx_ntfs_grid_popup_title_ett_edit"><![CDATA[Редактировать шаблон электронного письма]]></string>
+    <string name="_bx_ntfs_grid_popup_title_ett_preview"><![CDATA[Предпросмотр шаблона электронного письма]]></string>
 </resources>

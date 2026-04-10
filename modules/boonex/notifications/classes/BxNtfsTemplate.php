@@ -352,14 +352,16 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
 
         $sSubject = $sBody = '';
         if(!empty($aEtemplate) && is_array($aEtemplate)) {
-            $sSubject = $aEtemplate['subject'];
-            $sBody = bx_replace_markers($aEtemplate['body'], [
+            $aEtParams = array_merge($aContent, [
                 'icon_url' => $sIconUrl,
                 'content_url' => $sContentUrl,
                 'content' => $sContent,
                 'summary' => $sSummary,
                 'date' => $sDate
             ]);
+
+            $sSubject = bx_replace_markers($aEtemplate['subject'], $aEtParams);
+            $sBody = bx_replace_markers($aEtemplate['body'], $aEtParams);
         }
         else {
             $sSubject = $sContent;

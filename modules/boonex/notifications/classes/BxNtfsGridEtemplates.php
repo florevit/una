@@ -47,6 +47,7 @@ class BxNtfsGridEtemplates extends BxTemplGrid
         }
         else {
             $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('view', 'add_etemplate_popup'), _t('_bx_ntfs_grid_popup_title_ett_add'), $this->_oModule->_oTemplate->parseHtmlByName('etemplate_form.html', [
+                'style_prefix' => $this->_oModule->_oConfig->getPrefix('style'),
                 'form_id' => $oForm->aFormAttrs['id'],
                 'form' => $oForm->getCode(true),
                 'object' => $this->_sObject,
@@ -77,7 +78,8 @@ class BxNtfsGridEtemplates extends BxTemplGrid
             echoJson($aRes);
         }
         else {
-            $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('edit_profile_popup'), _t('_bx_ntfs_grid_popup_title_ett_edit'), $this->_oModule->_oTemplate->parseHtmlByName('etemplate_form.html', [
+            $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('view', 'edit_etemplate_popup'), _t('_bx_ntfs_grid_popup_title_ett_edit'), $this->_oModule->_oTemplate->parseHtmlByName('etemplate_form.html', [
+                'style_prefix' => $this->_oModule->_oConfig->getPrefix('style'),
                 'form_id' => $oForm->aFormAttrs['id'],
                 'form' => $oForm->getCode(true),
                 'object' => $this->_sObject,
@@ -86,6 +88,27 @@ class BxNtfsGridEtemplates extends BxTemplGrid
 
             echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false, 'removeOnClose' => true]]]);
         }
+    }
+
+    public function performActionPreview()
+    {
+        $iId = $this->_getId();
+        $aEtemplate = $this->_oModule->_oDb->getEtemplates(['sample' => 'id', 'id' => $iId]);
+        if(empty($aEtemplate) || !is_array($aEtemplate))
+            return echoJson([]);
+
+        $aTemplate = BxDolEmailTemplates::getInstance()->parseTemplate('bx_notifications_new_event', [
+            'subject' => !empty($aEtemplate['subject']) ? $aEtemplate['subject'] : _t('_bx_ntfs_txt_new_event_subject', getParam('site_title')),
+            'content' => $aEtemplate['body']
+        ]);
+
+        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('view', 'preview_etemplate_popup'), _t('_bx_ntfs_grid_popup_title_ett_preview'), $this->_oModule->_oTemplate->parseHtmlByName('etemplate_preview.html', [
+            'style_prefix' => $this->_oModule->_oConfig->getPrefix('style'),
+            'subject' => $aTemplate['Subject'],
+            'body' => $aTemplate['Body']
+        ]));
+
+        echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => true, 'removeOnClose' => true]]]);
     }
 
     protected function _getCellType($mixedValue, $sKey, $aField, $aRow)

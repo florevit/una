@@ -128,6 +128,7 @@ class BxNtfsConfig extends BxBaseModNotificationsConfig
                 'event' => $sHtmlPrefix . '-event-',
                 'add_etemplate_popup' => $sHtmlPrefix . '-etemplate-add',
                 'edit_etemplate_popup' => $sHtmlPrefix . '-etemplate-edit',
+                'preview_etemplate_popup' => $sHtmlPrefix . '-etemplate-preview',
             ]
         ];
     }
