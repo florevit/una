@@ -352,7 +352,8 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
 
         $sSubject = $sBody = '';
         if(!empty($aEtemplate) && is_array($aEtemplate)) {
-            $aEtParams = array_merge($aContent, [
+            $aEtParams = array_diff_key($aContent, array_flip(['lang_key', 'settings']));
+            $aEtParams = array_merge($aEtParams, [
                 'icon_url' => $sIconUrl,
                 'content_url' => $sContentUrl,
                 'content' => $sContent,
