@@ -30,7 +30,6 @@ class BxDolAIVectorStoreFactory extends BxDolFactory
             'topk' => $a['topk'],
         ]);
         
-        // TODO: fix params
         switch($a['type']) {
             case 'file':
                 $o = new NeuronAI\RAG\VectorStore\FileVectorStore(

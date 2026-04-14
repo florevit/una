@@ -891,14 +891,19 @@ class BxDolAIQuery extends BxDolDb
         return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
     }
 
-    public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
+    public function getAgentsByAlertUnitAndAction($sUnit, $sAction, $bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action", ['unit' => $sUnit, 'action' => $sAction]);
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action AND `active` = :active", ['unit' => $sUnit, 'action' => $sAction, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
-    public function getAgentsByProfileId($iProfileId)
+    public function getAgentsByProfileId($iProfileId, $bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `profile_id` = :profile", ['profile' => $iProfileId]);
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `profile_id` = :profile AND `active` = :active", ['profile' => $iProfileId, 'active' => $bActiveOnly ? 1 : 0]);
+    }
+
+    public function getAgentsByTriggerType($sTrigger, $bActiveOnly = true)
+    {
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = :trigger AND `active` = :active", ['trigger' => $sTrigger, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function updateAgentField($iId, $sField, $sValue)

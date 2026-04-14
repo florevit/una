@@ -426,6 +426,11 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $this->_oDb->getAgentsByProfileId($iProfileId);
     }
 
+    public function getAgentsByTriggerType($sTrigger)
+    {
+        return $this->_oDb->getAgentsByTriggerType($sTrigger);
+    }
+
     public function callAutomator($sType, $aParams = [])
     {
         $sMethod = '_callAutomator' . bx_gen_method_name($sType);
