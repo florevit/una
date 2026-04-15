@@ -120,6 +120,129 @@ class BxBaseServiceContent extends BxDol
      * @page service Service Calls
      * @section bx_system_general System Services 
      * @subsection bx_system_general-content-objects Content Objects
+     * @subsubsection bx_system_general_cnt-modules_list Get modules list
+     * 
+     * @code bx_srv('system', 'modules_list', [], 'TemplServiceContent'); @endcode
+     * @code {{~system:modules_list:TemplServiceContent~}} @endcode
+     *
+     * Get modules list with content objects, content objects fields
+     * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/modules_list/TemplServiceContent" @endcode
+     * 
+     * @return content objects info array 
+     * 
+     * @see BxBaseServiceContent::serviceModulesList
+     */
+    /** 
+     * @ref bx_system_general_cnt-modules_list "Get modules list"
+     */
+    public function serviceModulesList ()
+    {
+        $aAllowedKeys = ['type', 'uri', 'db_prefix'];
+        $a = BxDolModuleQuery::getInstance()->getModules();
+        $aModules = [];
+        foreach ($a as $r) {
+            if ($r['enabled'] != 1)
+                continue;
+
+            if ('system' == $r['name']) {
+                $aModules[$r['name']]['content_module'] = true;
+            }
+            else {
+                $aModules[$r['name']]['content_module'] = BxDolContentInfo::getObjectInstance($r['name']) ? true : false;
+            }
+            
+            foreach ($aAllowedKeys as $sKey) {
+                if (isset($r[$sKey])) {
+                    $aModules[$r['name']][$sKey] = $r[$sKey];
+                }
+            }  
+        }
+
+        return $aModules;
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_system_general System Services 
+     * @subsection bx_system_general-content-objects Content Objects
+     * @subsubsection bx_system_general_cnt-modules_fields Get modules fields
+     * 
+     * @code bx_srv('system', 'modules_fields', [], 'TemplServiceContent'); @endcode
+     * @code {{~system:modules_fields:TemplServiceContent~}} @endcode
+     *
+     * Get mcontent odules fields
+     * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/modules_fields/TemplServiceContent" @endcode
+     * 
+     * @return content objects info array 
+     * 
+     * @see BxBaseServiceContent::serviceContentModulesFields
+     */
+    /** 
+     * @ref bx_system_general_cnt-modules_fields "Get content fields"
+     */
+    public function serviceContentModulesFields ($sModule = false, $bVerbose = false)
+    {
+        $a = BxDolContentInfo::getSystems();
+        $a['system'] = [
+            'db_table' => 'sys_accounts',
+            'db_table_fields' => BxDolDb::getInstance()->getFields('sys_accounts')['original'],
+        ];
+        if ($sModule) {
+            if (isset($a[$sModule])) {
+                $a = [$sModule => $a[$sModule]];
+            }
+            else {
+                return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
+            }
+        }
+
+        foreach ($a as $sSystem => $r) {
+            if ($sSystem == 'system') {
+                $aModules[$sSystem] = $r;
+                continue;
+            }
+            if ($r['alert_action_add'] == 'commentPost') {
+                continue;
+            }
+            $oModule = BxDolModule::getInstance($sSystem);
+            if (!$oModule || !$oModule->isEnabled())
+                continue;
+            $oFormsHelper = $oModule->getFormsHelper();
+            $sTableEntries = $oModule->_oConfig->CNF['TABLE_ENTRIES'];
+            $aFields = BxDolDb::getInstance()->getFields($sTableEntries);
+            $aModules[$sSystem] = [
+                'db_table' => $sTableEntries,
+                'db_table_fields' => $aFields['original'],
+                'fields_add' => $this->_prepareShortFields($oFormsHelper->getObjectFormAdd()->aInputs, $bVerbose),
+                'fields_edit' => $this->_prepareShortFields($oFormsHelper->getObjectFormEdit()->aInputs, $bVerbose),
+            ];
+        }
+        return $aModules;
+    }
+
+    protected function _prepareShortFields($aFields, $bVerbose)
+    {        
+        if ($bVerbose)
+            return $aFields;
+        $aShortList = ['type', 'name', 'caption', 'info', 'required', 'value', 'values'];
+        $aResult = [];
+        foreach ($aFields as $sKey => $aField) {
+            if ($aField['type'] == 'submit')
+                continue;
+            $aResult[$sKey] = [];
+            foreach ($aShortList as $sShortKey) {
+                if (isset($aField[$sShortKey]) && !empty($aField[$sShortKey])) {
+                    $aResult[$sKey][$sShortKey] = $aField[$sShortKey];
+                }
+            }
+        }
+        return $aResult;
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_system_general System Services 
+     * @subsection bx_system_general-content-objects Content Objects
      * @subsubsection bx_system_general_cnt-get_info Get content info
      * 
      * @code bx_srv('system', 'get_info', ["bx_posts", 123], 'TemplServiceContent'); @endcode
