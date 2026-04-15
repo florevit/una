@@ -5,7 +5,9 @@
  * @defgroup    UnaCore UNA Core
  * @{
  */
-function bx_editor_init(oEditor, oParams){
+function bx_editor_init(oParams) {
+    var oEditor = null;
+
     hljs.configure({   
         languages: ['javascript', 'php', 'html', 'css']
     });
@@ -360,7 +362,10 @@ function bx_editor_init(oEditor, oParams){
     if (oParams.allowed_tags){
         oConfig.formats = oParams.allowed_tags;
     }
-    
+
+    if(!Quill.imports['modules/imageUploader'])
+        Quill.register('modules/imageUploader', ImageUploader);
+
     oConfig.modules.imageUploader = {
         upload: file => {
             return new Promise((resolve, reject) => {
@@ -422,9 +427,9 @@ function bx_editor_init(oEditor, oParams){
     $(oParams.selector).next().find('span.ql-background').attr('title', _t('_sys_txt_quill_tooltip_background'));
     $(oParams.selector).next().find('span.ql-align').attr('title', _t('_sys_txt_quill_tooltip_align'));
     $(oParams.selector).next().find('span.ql-header').attr('title', _t('_sys_txt_quill_tooltip_header'));
-	
-	$('#' + oParams.name).find('.ql-editor').addClass('bx-def-vanilla-html');
-    
+
+    $('#' + oParams.name).find('.ql-editor').addClass('bx-def-vanilla-html');
+
     if (bEmptyToolbar)
         $(oParams.selector).next().hide();
 
@@ -434,23 +439,23 @@ function bx_editor_init(oEditor, oParams){
         return delta; 
     });
     
-    if (oParams.insert_as_plain_text){
+    if (oParams.insert_as_plain_text) {
         oEditor.clipboard.addMatcher (Node.ELEMENT_NODE, function (node, delta) {
-			let ops = []
-			delta.ops.forEach(op => {
-				if (op.insert && typeof op.insert === 'string') {
-					ops.push({
-						insert: op.insert
-					})
-				}
-			})
-			delta.ops = ops
-			return delta
+            let ops = []
+            delta.ops.forEach(op => {
+                if (op.insert && typeof op.insert === 'string') {
+                    ops.push({
+                        insert: op.insert
+                    })
+                }
+            })
+            delta.ops = ops
+            return delta
         });
     }
     else{
         oEditor.clipboard.addMatcher (Node.ELEMENT_NODE, function (node, delta) {
-			delta.forEach(e => {
+            delta.forEach(e => {
                 //if(typeof e.insert == 'string' && e.attributes == null)
                 //    e.insert = e.insert.replace(/\n/g, '') + "\n";
 
@@ -487,7 +492,7 @@ function bx_editor_init(oEditor, oParams){
         }
         $(oParams.selector).val(sVal); 
     });
-    
+
     return oEditor
 }
     
@@ -498,8 +503,7 @@ function bx_editor_activate(oEditor)
 
 function bx_editor_insert_html (sEditorId, sImgId, sHtml) 
 {
-
-    if ($('#' + sEditorId) &&  $('#' + sEditorId).attr('object_editor')){
+    if ($('#' + sEditorId) &&  $('#' + sEditorId).attr('object_editor')) {
         eval ('oEditor = ' + $('#' + sEditorId).attr('object_editor'));
         if (oEditor.getSelection())
             oEditor.clipboard.dangerouslyPasteHTML(oEditor.getSelection().index, sHtml, 'api');
@@ -512,7 +516,7 @@ function bx_editor_insert_img (sEditorId, sImgId, sImgUrl, sClasses)
 {
     if ('undefined' == typeof(sClasses))
         sClasses = '';
-    
+
     bx_editor_insert_html(sEditorId, sImgId, '<img id="' + sImgId + '" class="' + sClasses + '" src="' + sImgUrl + '" />')
 }
 
@@ -520,7 +524,7 @@ function bx_editor_on_space_enter (sCode, sEditorId, bSpace = true)
 {
     if (typeof glBxEditorOnSpaceEnterTimer !== 'undefined')
         clearTimeout(glBxEditorOnSpaceEnterTimer);
-    
+
     if (bSpace)
         glBxEditorOnSpaceEnterTimer = setTimeout(bx_editor_on_space_enter_in, 500, sCode, sEditorId);
     else

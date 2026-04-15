@@ -16,21 +16,37 @@ class BxBaseEditorQuill extends BxDolEditor
     /**
      * Common initialization params
      */
-    
     protected static $CONF_COMMON = "
-        var oParams = {              
-            skin: '{bx_var_skin}',
-            name: '{bx_var_editor_name}',
-            selector: '{bx_var_selector}',
-            css_class: '{bx_var_css_additional_class}',
-            toolbar: {toolbar},
-            root_url: '{bx_url_root}',
-            query_params: {bx_var_query_params},
-            insert_as_plain_text: {insert_as_plain_text},
-            empty_tags: {empty_tags},
-            allowed_tags: {allowed_tags}
-        }
-        {bx_var_editor_name} = bx_editor_init({bx_var_editor_name}, oParams);";
+        window.{bx_var_editor_call_init} = function() {
+            var oTextarea = $('{bx_var_selector}');
+            if(!oTextarea.length || typeof({bx_var_editor_name}) != 'undefined')
+                return;
+
+            {bx_var_editor_name} = bx_editor_init({              
+                skin: '{bx_var_skin}',
+                name: '{bx_var_editor_name}',
+                selector: '{bx_var_selector}',
+                css_class: '{bx_var_css_additional_class}',
+                toolbar: {toolbar},
+                root_url: '{bx_url_root}',
+                query_params: {bx_var_query_params},
+                insert_as_plain_text: {insert_as_plain_text},
+                empty_tags: {empty_tags},
+                allowed_tags: {allowed_tags}
+            });
+
+            oTextarea.addClass('bx-form-input-html').hide();
+        };
+        window.{bx_var_editor_call_destroy} = function() {
+            var oTextarea = $('{bx_var_selector}');
+            if(!oTextarea.length || typeof({bx_var_editor_name}) == 'undefined')
+                return;
+
+            {bx_var_editor_name} = undefined;
+
+            oTextarea.siblings('.ql-toolbar,.ql-container').remove();
+            oTextarea.removeClass('bx-form-input-html').show();
+        };";
    
     /**
      * Standard view initialization params
@@ -68,37 +84,38 @@ class BxBaseEditorQuill extends BxDolEditor
      */
     public function attachEditor ($sSelector, $iViewMode = BX_EDITOR_STANDARD, $bDynamicMode = false, $aAttrs = [])
     {
+        // set visual mode
         $sAllowedTags = '';
         $sToolbarItems = '';
-        // set visual mode
         switch ($iViewMode) {
             case BX_EDITOR_MINI:
                 $sToolbarItems = getParam('sys_quill_toolbar_mini');
                 $sAllowedTags = getParam('sys_quill_allowed_tags_mini');
                 $sCustomInit = self::$CONF_MINI;
                 break;
-                
+
             case BX_EDITOR_FULL:
                 $sToolbarItems = getParam('sys_quill_toolbar_full');
                 $sAllowedTags = getParam('sys_quill_allowed_tags_full');
                 $sCustomInit = self::$CONF_FULL;
-            break;
-                
+                break;
+
             case BX_EDITOR_STANDARD:
             default:
                 $sToolbarItems = getParam('sys_quill_toolbar_standard');
                 $sAllowedTags = getParam('sys_quill_allowed_tags_standard');
                 $sCustomInit = self::$CONF_STANDARD;
         }
-        
-        if ($this->_sButtonsCustom !== false) {
+
+        if($this->_sButtonsCustom !== false)
             $sToolbarItems = $this->_sButtonsCustom;
-        }
 
         $sEditorName = 'quill_' . str_replace(['-', ' '], '_', $aAttrs['form_id'] . '_' . $aAttrs['element_name'] . '_' . $aAttrs['uniq']);
-        
+        $sEditorCallInit = $sEditorName . '_init';
+        $sEditorCallDestroy = $sEditorName . '_destroy';
+
         // initialize editor
-        $sInitEditor = $this->_replaceMarkers(self::$CONF_COMMON, array(
+        $sInitEditor = $this->_replaceMarkers(self::$CONF_COMMON, [
             'bx_var_custom_init' => $sCustomInit,
             'bx_var_selector' => bx_js_string($sSelector. '.' . $aAttrs['uniq'], BX_ESCAPE_STR_APOS),
             'bx_var_query_params' => isset($aAttrs['query_params']) ? json_encode($aAttrs['query_params']) : "''",
@@ -110,36 +127,42 @@ class BxBaseEditorQuill extends BxDolEditor
             'bx_var_css_additional_class' => $sToolbarItems ? '' : 'bx-form-input-html-quill-empty',
             'bx_var_element_name' => str_replace(['-', ' '], '_', $aAttrs['element_name']),
             'bx_var_editor_name' => $sEditorName,
+            'bx_var_editor_call_init' => $sEditorCallInit,
+            'bx_var_editor_call_destroy' => $sEditorCallDestroy,
             'bx_var_skin' => bx_js_string($this->_aObject['skin'], BX_ESCAPE_STR_APOS),
             'bx_url_root' => bx_js_string(BX_DOL_URL_ROOT, BX_ESCAPE_STR_APOS)
-        ));
-        $sInitEditor = "
-            if(!Quill.imports['modules/imageUploader'])
-                Quill.register('modules/imageUploader', ImageUploader);
-        " . $sInitEditor;
+        ]);
 
-        $sInitCallBack = "
-            bQuillEditorInited = true;
-        " . $sInitEditor;
-
-        if ($bDynamicMode) {
+        $sScript = "var " . $sEditorName . " = undefined; ";
+        if($bDynamicMode) {
             list($aJs, $aJsTranslations, $aCss) = $this->_getJsCss(true);
 
-            $sScript = "var " . $sEditorName . ";"; 
-            $sScript .= $this->_oTemplate->addJsPreloaded($aJs, $sInitCallBack, "typeof bQuillEditorInited === 'undefined'", $sInitEditor . ';');
+            $sInitAndCall = $sInitEditor . $sEditorCallInit . '();';
+            $sScript .= $this->_oTemplate->addJsPreloaded($aJs, $sInitAndCall, "typeof(Quill) === 'undefined'", $sInitAndCall);
             $sScript = $this->_oTemplate->_wrapInTagJsCode($sScript);
-            $sScript .= $this->_oTemplate->addJsTranslation($aJsTranslations, true);
 
+            $sScript = $this->_oTemplate->addJsTranslation($aJsTranslations, true) . $sScript;
             $sScript = $this->_oTemplate->addCss($aCss, true) . $sScript;
-        } 
+        }
         else {
-            $sScript = "var " . $sEditorName . "; " . $this->_oTemplate->addJsCodeOnLoad($sInitCallBack);
+            $sScript .= $sInitEditor . $this->_oTemplate->addJsCodeOnLoad($sEditorCallInit . '()');
             $sScript = $this->_oTemplate->_wrapInTagJsCode($sScript);
         }
 
         return $this->_addJsCss($bDynamicMode) . $sScript;
     }
-    
+
+    public function getEditorInfo ($sSelector, $iViewMode = BX_EDITOR_STANDARD, $bDynamicMode = false, $aAttrs = [])
+    {
+        $sEditorName = 'quill_' . str_replace(['-', ' '], '_', $aAttrs['form_id'] . '_' . $aAttrs['element_name'] . '_' . $aAttrs['uniq']);
+
+        return [
+            'name' => $sEditorName,
+            'selector' => $sSelector. '.' . $aAttrs['uniq'],
+            'js_call_init' => $sEditorName . '_init()',
+            'js_call_destroy' => $sEditorName . '_destroy()'
+        ];
+    }
 
     /**
      * Add css/js files which are needed for editor display and functionality.

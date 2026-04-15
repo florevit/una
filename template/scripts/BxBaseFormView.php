@@ -1621,21 +1621,46 @@ BLAH;
         $aAttrs = $this->_genInputTextareaAttrs($aInput);
 
         $sUniq = genRndPwd(10, false);
-        
         $sClassAdd = "bx-def-font-inputs bx-form-input-{$aInput['type']}";
-        if(isset($aInput['html']) && $aInput['html'] && $this->addHtmlEditor($aInput['html'], $aInput, $sUniq)){
+
+        $bHtml = $bHtmlEditor = false;
+        if(($bHtmlEditor = ($bHtml = (bool)($aInput['html'] ?? false)) && $this->addHtmlEditor($aInput['html'], $aInput, $sUniq))) {
             $sClassAdd .= ' bx-form-input-html ' . $sUniq;
         }
 
-        if(isset($aInput['code']) && $aInput['code'] && $this->addCodeEditor($aInput['code'], $aInput, $sUniq)){
+        $bCode = $bCodeEditor = false;
+        if(($bCodeEditor = ($bCode = (bool)($aInput['code'] ?? false)) && $this->addCodeEditor($aInput['code'], $aInput, $sUniq))) {
             $sClassAdd .= ' bx-form-input-code ' . $sUniq;
         }
 
-        $sValue = isset($aInput['value']) ? bx_process_output((isset($aInput['html']) && $aInput['html']) || (isset($aInput['code']) && $aInput['code']) ? $aInput['value'] : strip_tags($aInput['value']), BX_DATA_TEXT, array('no_process_macros')) : '';
+        $aTmplVarsSwitcher = [];
+        if($bHtmlEditor && ($aHtmlEditor = $this->getHtmlEditorInfo($aInput['html'], $aInput, $sUniq))) {
+            if(($sJsInit = ($aHtmlEditor['js_call_init'] ?? false)) && ($sJsDestroy = ($aHtmlEditor['js_call_destroy'] ?? false))) {
+                $aInputSwitcher = [
+                    'type' => 'switcher',
+                    'name' => $aInput['name'] . '_switcher',
+                    'checked' => true,
+                    'attrs' => [
+                        'onchange' => "if($(this).prop('checked')) " . $sJsInit . "; else " . $sJsDestroy . ";",
+                    ],
+                ];
+                $aTmplVarsSwitcher = [
+                    'class' => 'bx-form-input-' . $aInput['type'] . '-switcher',
+                    'title' => _t('_sys_form_input_textarea_editor'),
+                    'switcher' => $this->genInputSwitcher($aInputSwitcher)
+                ];
+            }
+        }
+
+        $sValue = isset($aInput['value']) ? bx_process_output($bHtml || $bCode ? $aInput['value'] : strip_tags($aInput['value']), BX_DATA_TEXT, ['no_process_macros']) : '';
 
         return $this->oTemplate->parseHtmlByName('form_field_textarea.html', [
             'attrs' => bx_convert_array2attrs($aAttrs, $sClassAdd),
-            'value' => $sValue
+            'value' => $sValue,
+            'bx_if:show_switcher' => [
+                'condition' => !empty($aTmplVarsSwitcher),
+                'content' => $aTmplVarsSwitcher
+            ]
         ]);
     }
 
@@ -1654,18 +1679,36 @@ BLAH;
 
     function isHtmlEditor($iViewMode, &$aInput)
     {
-		return BxDolEditor::getObjectInstance(false, $this->oTemplate) !== false;
+        return BxDolEditor::getObjectInstance(false, $this->oTemplate) !== false;
     }
 
     function addHtmlEditor($iViewMode, &$aInput, $sUniq)
     {
         $oEditor = BxDolEditor::getObjectInstance(false, $this->oTemplate);
-        if (!$oEditor)
+        if(!$oEditor)
             return false;
 
-        $this->_sCodeAdd .= $oEditor->attachEditor ('#' . $this->aFormAttrs['id'] . ' [name=' . $aInput['name'] . ']', $iViewMode, $this->_bDynamicMode, ['form_id' => $this->aFormAttrs['id'], 'element_name' => $aInput['name'], 'query_params' => $this->getHtmlEditorQueryParams($aInput), 'uniq' => $sUniq]);
+        $this->_sCodeAdd .= $oEditor->attachEditor ('#' . $this->aFormAttrs['id'] . ' [name=' . $aInput['name'] . ']', $iViewMode, $this->_bDynamicMode, [
+            'form_id' => $this->aFormAttrs['id'], 
+            'element_name' => $aInput['name'], 
+            'query_params' => $this->getHtmlEditorQueryParams($aInput), 
+            'uniq' => $sUniq
+        ]);
 
         return true;
+    }
+
+    function getHtmlEditorInfo($iViewMode, &$aInput, $sUniq)
+    {
+        $oEditor = BxDolEditor::getObjectInstance(false, $this->oTemplate);
+        if(!$oEditor)
+            return false;
+
+        return $oEditor->getEditorInfo('#' . $this->aFormAttrs['id'] . ' [name=' . $aInput['name'] . ']', $iViewMode, $this->_bDynamicMode, [
+            'form_id' => $this->aFormAttrs['id'], 
+            'element_name' => $aInput['name'], 
+            'uniq' => $sUniq
+        ]);
     }
     
     function addCodeEditor($iViewMode, &$aInput, $sUniq)
