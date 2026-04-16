@@ -20,7 +20,7 @@ else {
 $sKey = str_replace('Bearer ', '', $sAuthHeader);
 
 $oAi = BxDolAI::getInstance();
-$aAgent = $sKey ? $oAi->getAgentByTriggerKey($sKey) : false;
+$aAgent = $sKey ? $oAi->getAgentByTriggerWebhookKey($sKey) : false;
 if (!$aAgent) {
     header('HTTP/1.0 403 Forbidden');
     BxDolLanguages::getInstance();

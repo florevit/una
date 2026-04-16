@@ -381,7 +381,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         // update sample data
         $a = ['alert' => 'alert_sample', 'webhook' => 'webhook_sample'];
         if (isset($a[$sType]) && empty($aAgent[$a[$sType]])) {
-            $this->updateAgentField($aAgent['id'], $a[$sType], $sParams);
+            $this->_oDb->updateAgentField($aAgent['id'], $a[$sType], $sParams);
         }
 
         // set additional params
@@ -425,10 +425,15 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
     {
         return $this->_oDb->getAgentsByProfileId($iProfileId);
     }
-
+    
     public function getAgentsByTriggerType($sTrigger)
     {
         return $this->_oDb->getAgentsByTriggerType($sTrigger);
+    }
+
+    public function getAgentByTriggerWebhookKey($sKey)
+    {
+        return $this->_oDb->getAgentByTriggerWebhookKey($sKey);
     }
 
     public function callAutomator($sType, $aParams = [])

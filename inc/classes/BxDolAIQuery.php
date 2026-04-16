@@ -906,6 +906,11 @@ class BxDolAIQuery extends BxDolDb
         return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = :trigger AND `active` = :active", ['trigger' => $sTrigger, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
+    public function getAgentByTriggerWebhookKey($sKey, $bActiveOnly = true)
+    {
+        return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);
+    }
+
     public function updateAgentField($iId, $sField, $sValue)
     {
         return $this->query("UPDATE `sys_agents_agents` SET `$sField` = :value WHERE `id` = :id", ['value' => $sValue, 'id' => $iId]);
