@@ -128,6 +128,7 @@ class BxBaseServiceContent extends BxDol
      * Get modules list with content objects, content objects fields
      * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/modules_list/TemplServiceContent" @endcode
      * 
+     * @param $bContentModulesOnly if true - return only modules with content objects, if false - return all modules
      * @return content objects info array 
      * 
      * @see BxBaseServiceContent::serviceModulesList
@@ -135,22 +136,21 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-modules_list "Get modules list"
      */
-    public function serviceModulesList ()
+    public function serviceModulesList ($bContentModulesOnly = false)
     {
-        $aAllowedKeys = ['type', 'uri', 'db_prefix'];
+        $aAllowedKeys = ['title', 'type', 'uri', 'db_prefix'];
         $a = BxDolModuleQuery::getInstance()->getModules();
         $aModules = [];
         foreach ($a as $r) {
             if ($r['enabled'] != 1)
                 continue;
 
-            if ('system' == $r['name']) {
-                $aModules[$r['name']]['content_module'] = true;
-            }
-            else {
-                $aModules[$r['name']]['content_module'] = BxDolContentInfo::getObjectInstance($r['name']) ? true : false;
-            }
-            
+            $isContentModule = 'system' == $r['name'] ? true : (BxDolContentInfo::getObjectInstance($r['name']) ? true : false);
+            if ($bContentModulesOnly && !$isContentModule)
+                continue;
+
+            $aModules[$r['name']]['content_module'] = $isContentModule;
+    
             foreach ($aAllowedKeys as $sKey) {
                 if (isset($r[$sKey])) {
                     $aModules[$r['name']][$sKey] = $r[$sKey];
@@ -167,12 +167,14 @@ class BxBaseServiceContent extends BxDol
      * @subsection bx_system_general-content-objects Content Objects
      * @subsubsection bx_system_general_cnt-modules_fields Get modules fields
      * 
-     * @code bx_srv('system', 'modules_fields', [], 'TemplServiceContent'); @endcode
-     * @code {{~system:modules_fields:TemplServiceContent~}} @endcode
+     * @code bx_srv('system', 'content_modules_fields', [], 'TemplServiceContent'); @endcode
+     * @code {{~system:content_modules_fields:TemplServiceContent~}} @endcode
      *
      * Get mcontent odules fields
-     * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/modules_fields/TemplServiceContent" @endcode
+     * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/content_modules_fields/TemplServiceContent" @endcode
      * 
+     * @param $sModule module name or 'all' for all modules
+     * @param $bVerbose if true - return all fields info, if false - return only short list of fields info
      * @return content objects info array 
      * 
      * @see BxBaseServiceContent::serviceContentModulesFields
@@ -180,14 +182,15 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-modules_fields "Get content fields"
      */
-    public function serviceContentModulesFields ($sModule = false, $bVerbose = false)
+    public function serviceContentModulesFields ($sModule = 'all', $bVerbose = false)
     {
         $a = BxDolContentInfo::getSystems();
         $a['system'] = [
             'db_table' => 'sys_accounts',
             'db_table_fields' => BxDolDb::getInstance()->getFields('sys_accounts')['original'],
         ];
-        if ($sModule) {
+
+        if ($sModule != 'all') {
             if (isset($a[$sModule])) {
                 $a = [$sModule => $a[$sModule]];
             }
