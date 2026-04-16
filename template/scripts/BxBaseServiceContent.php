@@ -268,7 +268,7 @@ class BxBaseServiceContent extends BxDol
      */
     public function serviceGetInfo ($sContentObject, $iContentId, $bRawInfo = false)
     {
-        if ('sys_account' == $sContentObject) {
+        if ('sys_account' == $sContentObject || 'system' == $sContentObject) {
             $o = BxDolAccount::getInstance($iContentId);
             if (!$o)
                 return false;

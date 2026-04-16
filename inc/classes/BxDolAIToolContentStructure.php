@@ -44,8 +44,6 @@ class BxDolAIToolContentStructure extends Tool
         else
             $s .= "\n" . $this->formatStructureOutputForLLM($aStructure);
 
-        echoDbgLog($module . 's content structure: ' . $s);
-
         return $s;
     }
 
