@@ -16,7 +16,7 @@ class BxDolAIToolContentStructure extends Tool
     public function __construct()
     {
         parent::__construct(
-            'get_content_fields',
+            'content_structure',
             'Retrieve the structure of content fields for a given module.',
         );
     }
@@ -35,6 +35,8 @@ class BxDolAIToolContentStructure extends Tool
 
     public function __invoke(string $module): string
     {        
+        echoDbgLog("content_structure tool called with module: {$module}");
+
         $aContentModules = bx_srv('system', 'modules_list', [true], 'TemplServiceContent');
         $s = $this->formatModulesOutputForLLM($aContentModules);
 

@@ -16,8 +16,8 @@ class BxDolAIToolContentGet extends Tool
     public function __construct()
     {
         parent::__construct(
-            'get_content_info',
-            'Retrieve content info for a given module and content id.',
+            'content_get',
+            'Retrieve content info for a given module and content id, including author info and URL. If needed, prepend base URL to links: ' . BX_DOL_URL_ROOT,
         );
     }
     
