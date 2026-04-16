@@ -462,6 +462,8 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_std_show_header_right_site', '_adm_stg_cpt_option_sys_std_show_header_right_site', '', 'checkbox', '', '', '', '', 282),
 (@iCategoryId, 'sys_std_show_launcher_left', '_adm_stg_cpt_option_sys_std_show_launcher_left', '', 'checkbox', '', '', '', '', 285),
 
+(@iCategoryId, 'sys_std_pgt_etemplates_editor', '_adm_stg_cpt_option_sys_std_pgt_etemplates_editor', 'on', 'checkbox', '', '', '', '', 290),
+
 (@iCategoryId, 'sys_maintenance_mode', '_adm_stg_cpt_option_sys_maintenance_mode', '', 'checkbox', '', '', '', '', 400),
 (@iCategoryId, 'sys_maintenance_mode_html', '_adm_stg_cpt_option_sys_maintenance_mode_html', '', 'code', '', '', '', '', 402);
 

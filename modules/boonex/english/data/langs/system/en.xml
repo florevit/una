@@ -1398,6 +1398,7 @@
 	<string name="_adm_pgt_txt_text"><![CDATA[Text]]></string>
         <string name="_adm_pgt_txt_et_c_content"><![CDATA[Message itself will be here.]]></string>
 	<string name="_adm_pgt_txt_et_hf_inf"><![CDATA[Note, that improper use of HTML may break the email message's layout. Also make sure that {unsubscribe} marker presents in at least one of the templates (header and/or footer).]]></string>
+        <string name="_adm_pgt_btn_et_hf_editor"><![CDATA[Use visual editor]]></string>
 	<string name="_adm_pgt_btn_et_hf_submit"><![CDATA[Submit]]></string>
 	<string name="_adm_pgt_scs_et_hf_save"><![CDATA[The changes were successfully saved.]]></string>
 	<string name="_adm_pgt_err_et_hf_save"><![CDATA[Cannot save changes.]]></string>
@@ -1895,6 +1896,7 @@
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_search"><![CDATA[Studio: Show search in header right]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_site"><![CDATA[Studio: Show 'site' link in header]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_launcher_left"><![CDATA[Studio: Show left area with menu in Launcher]]></string>
+    <string name="_adm_stg_cpt_option_sys_std_pgt_etemplates_editor"><![CDATA[Studio Polyglot: Enable visual editor]]></string>
     <string name="_adm_stg_cpt_option_sys_maintenance_mode"><![CDATA[Maintenance mode]]></string>
     <string name="_adm_stg_cpt_option_sys_maintenance_mode_html"><![CDATA[Maintenance mode custom HTML code]]></string>
 

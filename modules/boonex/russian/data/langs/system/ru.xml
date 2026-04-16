@@ -1380,6 +1380,7 @@
 	<string name="_adm_pgt_txt_text"><![CDATA[Текст]]></string>
         <string name="_adm_pgt_txt_et_c_content"><![CDATA[Само сообщение будет здесь.]]></string>
         <string name="_adm_pgt_txt_et_hf_inf"><![CDATA[Внимание. Неправильное применение HTML может повредить дизайн email сообщения. Также убедитесь в том, что маркер {unsubscribe} присутствует хотя бы в одном из темплейтов (заголовок и/или основание).]]></string>
+        <string name="_adm_pgt_btn_et_hf_editor"><![CDATA[Использовать визуальный редактор]]></string>
         <string name="_adm_pgt_btn_et_hf_submit"><![CDATA[Выполнить]]></string>
         <string name="_adm_pgt_scs_et_hf_save"><![CDATA[Изменения сохранены.]]></string>
         <string name="_adm_pgt_err_et_hf_save"><![CDATA[Невозможно сохранить изменения.]]></string>
@@ -1870,6 +1871,8 @@
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_search"><![CDATA[Студия: Показать поиск в заголовке справа]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_site"><![CDATA[Студия: Показывать ссылку 'сайт' в заголовке]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_launcher_left"><![CDATA[Студия: Показать левую область с меню в лаунчере]]></string>
+    <string name="_adm_stg_cpt_option_sys_std_pgt_etemplates_editor"><![CDATA[Полиглот в Студии: Включить визуальный редактор]]></string>
+
     <string name="_adm_stg_cpt_option_sys_maintenance_mode"><![CDATA[Режим технического обслуживания]]></string>
     <string name="_adm_stg_cpt_option_sys_maintenance_mode_html"><![CDATA[Пользовательский HTML-код для режима обслуживания]]></string>
     
