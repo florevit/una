@@ -1634,7 +1634,7 @@ BLAH;
         }
 
         $aTmplVarsSwitcher = [];
-        if($bHtmlEditor && ($aHtmlEditor = $this->getHtmlEditorInfo($aInput['html'], $aInput, $sUniq))) {
+        if(($aInput['html_toggle'] ?? false) && $bHtmlEditor && ($aHtmlEditor = $this->getHtmlEditorInfo($aInput['html'], $aInput, $sUniq))) {
             if(($sJsInit = ($aHtmlEditor['js_call_init'] ?? false)) && ($sJsDestroy = ($aHtmlEditor['js_call_destroy'] ?? false))) {
                 $aInputSwitcher = [
                     'type' => 'switcher',

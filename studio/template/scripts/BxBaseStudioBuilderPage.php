@@ -1554,6 +1554,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                         'value' => $aBlock['content'],
                         'required' => '0',
                         'html' => 2,
+                        'html_toggle' => true,
                         'attrs' => [
                             'id' => $this->aHtmlIds['edit_block_editor_id']
                         ],
@@ -1616,6 +1617,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                         'value' => $aBlock['content'],
                         'required' => '0',
                         'html' => 2,
+                        'html_toggle' => true,
                         'db' => [
                             'pass' => 'XssHtml',
                         ],
