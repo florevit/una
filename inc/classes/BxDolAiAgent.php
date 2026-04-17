@@ -8,12 +8,21 @@
  */
 
 use NeuronAI\RAG\RAG;
+use NeuronAI\Observability\InspectorObserver;
 
 class BxDolAiAgent extends RAG
 {
     public function __construct(protected array $aAgent, protected array $aParams = [])
     {
         parent::__construct();
+
+        $sKey = getParam('sys_agents_inspector_key');
+        if ($sKey) {
+            $this->observe(InspectorObserver::instance(
+                key: $sKey,
+                autoFlush: true,
+            ));
+        }
     }
 
     protected function provider(): NeuronAI\Providers\AIProviderInterface

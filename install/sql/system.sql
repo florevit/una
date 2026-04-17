@@ -926,10 +926,8 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `hidden`, `order`) VALUES (@iTypeId, 'agents_general', '_adm_stg_cpt_category_agents_general', 1, 1);
 SET @iCategoryId = LAST_INSERT_ID();
 
-INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, 'sys_agents_api_key', '_adm_stg_cpt_option_sys_agents_api_key', '', 'digit', '', '', '', 0),
-(@iCategoryId, 'sys_agents_model', '_adm_stg_cpt_option_sys_agents_model', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:24:"get_options_agents_model";s:5:"class";s:13:"TemplServices";}', '', '', 10),
-(@iCategoryId, 'sys_agents_profile', '_adm_stg_cpt_option_sys_agents_profile', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:26:"get_options_agents_profile";s:5:"class";s:13:"TemplServices";}', '', '', 20);
+INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+(@iCategoryId, 'sys_agents_inspector_key', '_adm_stg_cpt_option_sys_agents_inspector_key', '_adm_stg_cpt_option_sys_agents_inspector_key_info', '', 'digit', '', '', '', 0);
 
 --
 -- CATEGORY (HIDDEN): Agents (usage)
