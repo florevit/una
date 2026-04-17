@@ -38,11 +38,7 @@ class BxDolAiAgent extends RAG
     protected function instructions(): string
     {
         $aToolsUsage = !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : [];
-        $aToolsUsage[] = "For any tool that requires `profile_id`:
-1. Check if the user request contains an explicit profile_id.
-2. If yes — use the user-provided profile_id.
-3. If no — use {$this->aAgent['profile_id']}.
-Never omit profile_id when the tool supports it. Never use current profile or 0, unless it\'s explicitly requested.";
+        $aToolsUsage[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
 
         $oPrompt = new NeuronAI\Agent\SystemPrompt(
             background: [$this->aAgent['prompt_system']],
