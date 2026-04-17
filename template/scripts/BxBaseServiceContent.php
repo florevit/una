@@ -290,6 +290,48 @@ class BxBaseServiceContent extends BxDol
      * @page service Service Calls
      * @section bx_system_general System Services 
      * @subsection bx_system_general-content-objects Content Objects
+     * @subsubsection bx_system_general_cnt-search Search content
+     * 
+     * @code bx_srv('system', 'search', ["test"], 'TemplServiceContent'); @endcode
+     * @code {{~system:search:TemplServiceContent["test"]~}} @endcode
+     *
+     * Search for posts containing the keyword "test":
+     * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/search/TemplServiceContent&params[]=test" @endcode
+     * 
+     * @param $sKeyword keyword to search for
+     * @param $mixedSections content sections to search in, for example ['bx_posts', 'bx_persons'], if empty - search in all sections
+     * @param $per_page number of results per page
+     * @param $start start showing from result number
+     * @return content info array on success or empty array on error or not found
+     * 
+     * @see BxBaseServiceContent::serviceSearch
+     */
+    /** 
+     * @ref bx_system_general_cnt-search "Search content"
+     */
+    public function serviceSearch (string $sKeyword, array|string $mixedSections = '', ?int $per_page = 5, ?int $start = 0): array
+    {
+        $sClass = bx_get_search_class_name();
+        $o = new $sClass($mixedSections);
+
+        $o->setApiOutput(true);
+        $o->setLiveSearch(true);
+        $o->setDataProcessing(true);
+        $o->setCustomSearchCondition(['keyword' => $sKeyword]);
+        $o->setCustomCurrentCondition([
+            'paginate' => [
+                'forceStart' => $start,
+                'perPage' => $per_page,
+            ]
+        ]);
+
+        return $o->response();
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_system_general System Services 
+     * @subsection bx_system_general-content-objects Content Objects
      * @subsubsection bx_system_general_cnt-get_link Get content link
      * 
      * @code bx_srv('system', 'get_link', ["bx_posts", 123], 'TemplServiceContent'); @endcode

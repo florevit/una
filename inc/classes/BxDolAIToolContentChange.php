@@ -19,10 +19,16 @@ class BxDolAIToolContentChange extends Tool
     {
         parent::__construct(
             'content_change',
-            'Use this tool ]to add, update or delete content. Never pass empty values for data field for "update" and "add" actions, always pass all required fields. Always user "content_structure" tool if it\'s available to get knowledge about content modules fields for add and update actions.',
+            'Use this tool to add, update or delete content. Never pass empty values for data field for "update" and "add" actions, always pass all required fields. Always user "content_structure" tool if it\'s available to get knowledge about content modules fields for add and update actions. Available modules: ' . self::getModules() . '.',
         );
     }
     
+    static public function getModules(): string
+    {
+        $aModules = $aContentModules = bx_srv('system', 'modules_list', [true], 'TemplServiceContent');
+        return implode(',', array_keys($aModules));
+    }
+
     protected function properties(): array
     {
         return [

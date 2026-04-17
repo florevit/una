@@ -39,12 +39,13 @@ class BxDolAIToolContentGet extends Tool
         ];
     }
 
-    public function __invoke(string $module, int $content_id): string
+    public function __invoke(string $module, int $content_id): array
     {
+echoDbgLog("Invoking content get tool with module: {$module}, content_id: {$content_id}");
         $a = bx_srv('system', 'get_info', [$module, $content_id], 'TemplServiceContent');
         if (!$a)
-            return "Error: content item was not found";
+            return ["error" => "Content item was not found"];
 
-        return json_encode($a);
+        return $a;
     }
 }

@@ -2907,6 +2907,22 @@ function bx_mem_cache_set(string $sKey, mixed $mixedData): mixed
     return $GLOBALS['glMemCache'][$sKey] = $mixedData;
 }
 
+function bx_get_search_class_name(): string
+{
+    $sClass = 'BxTemplSearch';
+
+    $sElsName = 'bx_elasticsearch';
+    $sElsMethod = 'is_configured';
+    if (BxDolRequest::serviceExists($sElsName, $sElsMethod) && BxDolService::call($sElsName, $sElsMethod)) {
+         $oModule = BxDolModule::getInstance($sElsName);
+
+         bx_import('Search', $oModule->_aModule);
+         $sClass = 'BxElsSearch';
+    }
+
+    return $sClass;
+}
+
 function bx_ai_process_agents_call_queue($bFinishRequest = true, $bExit = true)
 {
     if ($bFinishRequest) {
@@ -2924,7 +2940,10 @@ function bx_ai_process_agents_call_queue($bFinishRequest = true, $bExit = true)
         foreach ($GLOBALS['glAgentsCallQueue'] as $r) 
         {
             $sMessage = $oAi->callAgent($r['type'], $r['agent'], $r['params']);
-
+            if (null == $sMessage) {
+                // TODO: maybe reply with some empty message
+                continue;
+            }
             $oParsedown = new Parsedown();
             $oParsedown->setSafeMode(true);
             $sMessageHtml = $oParsedown->text($sMessage);
