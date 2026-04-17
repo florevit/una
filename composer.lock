@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bca2e3a30fbd906066387ec4f852af2e",
+    "content-hash": "8f564e30ede1cd007042f79796804f51",
     "packages": [
         {
             "name": "achingbrain/php5-akismet",

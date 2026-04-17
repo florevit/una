@@ -19,7 +19,7 @@ class BxDolAIToolContentChange extends Tool
     {
         parent::__construct(
             'content_change',
-            'Use this tool to add, update or delete content. Never pass empty values for data field for "update" and "add" actions, always pass all required fields. Always user "content_structure" tool if it\'s available to get knowledge about content modules fields for add and update actions. Available modules: ' . self::getModules() . '.',
+            'Use this tool to add, update or delete content. Always use "content_structure" tool if it\'s available to get knowledge about content modules fields for "add" and "update" actions. ALL module fields MUST be placed inside data - no exceptions, flat fields are invalid. Available modules: ' . self::getModules() . '.',
         );
     }
     
@@ -53,7 +53,7 @@ class BxDolAIToolContentChange extends Tool
             new ToolProperty(
                 name: 'data',
                 type: PropertyType::OBJECT,
-                description: 'The data to update the content item with, as key-value pairs, where key is the field name and value is the value. Skip this parameter for delete action, for create and update actions this is required.',
+                description: 'The data to update the content item with, as key-value pairs, where key is the field name and value is the value. Skip this parameter for delete action, for "create" and "update" actions this is mandatory.',
                 required: false
             ),
             new ToolProperty(

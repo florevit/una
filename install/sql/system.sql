@@ -7736,3 +7736,19 @@ INSERT INTO `sys_std_pages_widgets`(`page_id`, `widget_id`, `order`) VALUES(@iId
 INSERT INTO `sys_std_widgets`(`page_id`, `module`, `type`, `url`, `click`, `icon`, `caption`, `cnt_notices`, `cnt_actions`) VALUES
 (@iIdAgents, 'system', 'configuration', '{url_studio}agents.php', '', 'wi-agents.svg', '_adm_wgt_cpt_agents', '', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:11:"get_actions";s:6:"params";a:0:{}s:5:"class";s:18:"TemplStudioModules";}');
 INSERT INTO `sys_std_pages_widgets`(`page_id`, `widget_id`, `order`) VALUES(@iIdHome, LAST_INSERT_ID(), 15);
+
+-- Logger 
+
+CREATE TABLE `sys_logger` (
+    `id`         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `level`      VARCHAR(16)     NOT NULL,
+    `message`    TEXT            NOT NULL,
+    `context`    TEXT            NULL,
+    `channel`    VARCHAR(64)     NOT NULL DEFAULT 'system',
+    `created_at` DATETIME(3)     NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`),
+    INDEX `idx_level`      (`level`),
+    INDEX `idx_channel`    (`channel`),
+    INDEX `idx_created_at` (`created_at`)
+);

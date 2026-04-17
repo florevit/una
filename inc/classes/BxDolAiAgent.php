@@ -9,6 +9,7 @@
 
 use NeuronAI\RAG\RAG;
 use NeuronAI\Observability\InspectorObserver;
+use NeuronAI\Observability\LogObserver;
 
 class BxDolAiAgent extends RAG
 {
@@ -21,7 +22,11 @@ class BxDolAiAgent extends RAG
             $this->observe(InspectorObserver::instance(
                 key: $sKey,
                 autoFlush: true,
-            ));
+            ));            
+        }
+        else {
+            $logger = new BxDolLoggerDb('sys_agents_' . $this->aAgent['id']);
+            $this->observe(new LogObserver($logger));
         }
     }
 
