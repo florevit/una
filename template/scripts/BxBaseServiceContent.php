@@ -189,6 +189,7 @@ class BxBaseServiceContent extends BxDol
             'db_table' => 'sys_accounts',
             'db_table_fields' => BxDolDb::getInstance()->getFields('sys_accounts')['original'],
         ];
+        $a['system']['db_table_fields'][] = 'auto_send_confrmation_email';
 
         if ($sModule != 'all') {
             if (isset($a[$sModule])) {
@@ -350,19 +351,19 @@ class BxBaseServiceContent extends BxDol
         if ('sys_account' == $sContentObject) {
             $o = BxDolAccount::getInstance($iContentId);
             if (!$o)
-                return false;
+                return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
             return $o->delete(isset($aParams['with_content']) ? $aParams['with_content'] : true, isset($aParams['scheduled']) ? $aParams['scheduled'] : false);
         }
         if (in_array($sContentObject, ['bx_persons', 'bx_organizations'])) {
             $o = BxDolProfile::getInstanceByContentAndType($iContentId, $sContentObject);
             if (!$o)
-                return false;
+                return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
             return $o->delete(false, isset($aParams['with_content']) ? $aParams['with_content'] : true, isset($aParams['force']) ? $aParams['force'] : false);
         }
 
         $o = BxDolContentInfo::getObjectInstance($sContentObject);
         if (!$o)
-            return false;
+            return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
         if ($sErrorMsg = $o->deleteContent($iContentId))
             return ['code' => 500, 'error' => $sErrorMsg];
         else
@@ -387,6 +388,8 @@ class BxBaseServiceContent extends BxDol
      * @param $sContentObject content object name
      * @param $iContentId content id
      * @param $aValues key value pairs to update
+     * @param $sDisplay form display name to use
+     * @param $iProfileId profile ID to perform action on behalf of
      * @return array with code = 0 on success, or array with code != 0 and error message
      * 
      * @see BxBaseServiceContent::serviceUpdate
@@ -394,31 +397,56 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-update "Update content"
      */
-    public function serviceUpdate ($sContentObject, $iContentId, $aValues, $sDisplay = false)
+    public function serviceUpdate ($sContentObject, $iContentId, $aValues, $sDisplay = false, $iProfileId = 0)
     {
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = $iProfileId;
+        }
+        $a = null;
         if ('sys_account' == $sContentObject) {
             $o = BxDolAccount::getInstance($iContentId);
-            if (!$o)
-                return false;
-            $oQuery = BxDolAccountQuery::getInstance();
-            foreach ($aValues as $k => $v) {
-                if (!$oQuery->isFieldExists('sys_accounts', $k))
-                    return ['code' => 500, 'error' => _t('_sys_txt_forms_unknown_field_err', $k)];
+            if (!$o) {
+                $a = ['code' => 404, 'error' => _t('_sys_txt_not_found')];
             }
-            foreach ($aValues as $k => $v) {
-                if (!$oQuery->_updateField($o->id(), $k, $v))
-                    return ['code' => 500, 'error' => _t('_error occured')];
+            else {
+                $oQuery = BxDolAccountQuery::getInstance();
+                foreach ($aValues as $k => $v) {
+                    if (!$oQuery->isFieldExists('sys_accounts', $k)) {
+                        $a = ['code' => 500, 'error' => _t('_sys_txt_forms_unknown_field_err', $k)];
+                        break;
+                    }
+                }
+                if (!$a) {
+                    foreach ($aValues as $k => $v) {
+                        if (!$oQuery->_updateField($o->id(), $k, $v)) {
+                            $a = ['code' => 500, 'error' => _t('_error occured')];
+                            break;
+                        }
+                    }
+                }
+                if (!$a) {
+                    $a = ['code' => 0]; // success
+                }
             }
-            return true;
+        }
+        else {
+            $o = BxDolContentInfo::getObjectInstance($sContentObject);
+            if (!$o) {
+                $a = ['code' => 404, 'error' => _t('_sys_txt_not_found')];
+            }
+            else {
+                if ($sErrorMsg = $o->updateContent($iContentId, $aValues, $sDisplay))
+                    $a = ['code' => 500, 'error' => $sErrorMsg];
+                else
+                    $a = ['code' => 0]; // success
+            }
         }
 
-        $o = BxDolContentInfo::getObjectInstance($sContentObject);
-        if (!$o)
-            return false;
-        if ($sErrorMsg = $o->updateContent($iContentId, $aValues, $sDisplay))
-            return ['code' => 500, 'error' => $sErrorMsg];
-        else
-            return ['code' => 0];
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = 0;
+        }
+
+        return $a;
     }
 
     /**
@@ -436,6 +464,7 @@ class BxBaseServiceContent extends BxDol
      * 
      * @param $sContentObject content object name
      * @param $aValues key value pairs to add
+     * @param $iProfileId profile ID to perform action on behalf of
      * @return array with code = 0 on success, or array with code != 0 and error message
      * 
      * @see BxBaseServiceContent::serviceAdd
@@ -443,11 +472,19 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-add "Add content"
      */
-    public function serviceAdd ($sContentObject, $aValues)
+    public function serviceAdd ($sContentObject, $aValues, $iProfileId = 0)
     {
-        if ('sys_account' == $sContentObject) {
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = $iProfileId;
+        }
+                
+        $a = [];
+        if (bx_get_logged_profile_id() == 0) {
+            $a = ['code' => 403, 'error' => 'Permission denied. Please login first.'];
+        }
+        elseif ('sys_account' == $sContentObject || 'system' == $sContentObject) {
             $o = new BxTemplAccountForms();
-            $a = $o->createAccount ($aValues);
+            $a = $o->createAccount ($aValues, BX_PROFILE_ACTION_EXTERNAL, false);
             if (isset($a['account_id']) && isset($aValues['email_confirmed'])) {
                 $o = BxDolAccount::getInstance($a['account_id']);
                 if ($o) {
@@ -460,21 +497,27 @@ class BxBaseServiceContent extends BxDol
                     $o->updatePhoneConfirmed($aValues['phone_confirmed']);
                 }
             }
-            return $a;
+        }
+        else {
+            $o = BxDolContentInfo::getObjectInstance($sContentObject);
+            if (!$o) {
+                $a = ['code' => 404, 'error' => 'Content object(module) not found'];
+            }
+            else {
+                $a = $o->addContent($aValues);
+                if (!(isset($a['code']) && !$a['code'] && isset($a['content']))) {
+                    $a['code'] = 500 + $a['code'];
+                    $a['error'] = $a['message'];
+                    $a['data'] = $a['errors'];
+                }
+            }
         }
 
-        $o = BxDolContentInfo::getObjectInstance($sContentObject);
-        if (!$o)
-            return false;
-        $a = $o->addContent($aValues);
-        if (isset($a['code']) && !$a['code'] && isset($a['content'])) {
-            return $a;
-        } else {
-            $a['code'] = 500 + $a['code'];
-            $a['error'] = $a['message'];
-            $a['data'] = $a['errors'];
-            return $a;
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = 0;
         }
+
+        return $a;
     }
 
     /**

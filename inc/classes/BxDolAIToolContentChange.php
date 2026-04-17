@@ -19,7 +19,7 @@ class BxDolAIToolContentChange extends Tool
     {
         parent::__construct(
             'content_change',
-            'Use this tool to add, update or delete content.  If needed, use info from "content_structure" tool to get knowledge about content modules fields for add and update actions.',
+            'Use this tool ]to add, update or delete content. Never pass empty values for data field for "update" and "add" actions, always pass all required fields. Always user "content_structure" tool if it\'s available to get knowledge about content modules fields for add and update actions.',
         );
     }
     
@@ -41,7 +41,7 @@ class BxDolAIToolContentChange extends Tool
             new ToolProperty(
                 name: 'content_id',
                 type: PropertyType::INTEGER,
-                description: 'The ID of the content item to delete or update, use 0 for creating new content.',
+                description: 'The ID of the content item to delete or update, use 0 for creating new content, never pass 0 for update and delete actions.',
                 required: true
             ),
             new ToolProperty(
@@ -49,13 +49,22 @@ class BxDolAIToolContentChange extends Tool
                 type: PropertyType::OBJECT,
                 description: 'The data to update the content item with, as key-value pairs, where key is the field name and value is the value. Skip this parameter for delete action, for create and update actions this is required.',
                 required: false
+            ),
+            new ToolProperty(
+                name: 'profile_id',
+                type: PropertyType::INTEGER,
+                description: 'The ID of the profile to perform the action on behalf of.',
+                required: false
             )
         ];
     }
 
-    public function __invoke(string $action, string $module, ?int $content_id = 0, ?array $data = null): string
+    public function __invoke(string $action, string $module, ?int $content_id = 0, ?array $data = null, ?int $profile_id = 0): string
     {
-        echoDbgLog("content_change tool called with action: {$action}, module: {$module}, content_id: {$content_id}, data: " . json_encode($data));
+        if ($profile_id) {
+            $GLOBALS['glForceCurrentProfileId'] = $profile_id;
+        }
+
         switch ($action) {
             case 'update':
                 $a = bx_srv('system', 'update', [$module, $content_id, $data], 'TemplServiceContent');
@@ -67,8 +76,10 @@ class BxDolAIToolContentChange extends Tool
                 $a = bx_srv('system', 'delete', [$module, $content_id], 'TemplServiceContent');
                 break;
             default:
-                return "Error: Invalid action";
+                $a = ['code' => 400, 'error' => 'Error: Invalid action'];
         }
+
+        $GLOBALS['glForceCurrentProfileId'] = 0;
 
         return json_encode($a);
     }

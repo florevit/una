@@ -116,8 +116,12 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
     {
         $oQuery = BxDolProfileQuery::getInstance();
 
-        if (!$mixedProfileId)
-            $mixedProfileId = $oQuery->getCurrentProfileByAccount(getLoggedId(), $bClearCache);
+        if (!$mixedProfileId) {
+            if (isset($GLOBALS['glForceCurrentProfileId']) && $GLOBALS['glForceCurrentProfileId'] > 0)
+                $mixedProfileId = $GLOBALS['glForceCurrentProfileId'];
+            else
+                $mixedProfileId = $oQuery->getCurrentProfileByAccount(getLoggedId(), $bClearCache);
+        }
 
         $aProfileInfo = $oQuery->getInfoById($mixedProfileId);
         if (empty($aProfileInfo['id']) || !BxDolModuleDb::getInstance()->isEnabledByName($aProfileInfo['type']))

@@ -34,9 +34,7 @@ class BxDolAIToolContentStructure extends Tool
     }
 
     public function __invoke(string $module): string
-    {        
-        echoDbgLog("content_structure tool called with module: {$module}");
-
+    {
         $aContentModules = bx_srv('system', 'modules_list', [true], 'TemplServiceContent');
         $s = $this->formatModulesOutputForLLM($aContentModules);
 
@@ -65,10 +63,13 @@ class BxDolAIToolContentStructure extends Tool
 
     protected function formatStructureOutputForLLM(array $aStructure): string
     {
-
         $s = "# Content modules fields structure\n\n";
 
         foreach ($aStructure as $sModule => $a) {
+            if ($sModule == 'bx_timeline') {
+                // TODO: timeline is broken with PHP error when trying to get fields
+                continue;
+            }
             $s .= "## " . $sModule . "\n\n";
             $s .= $a['db_table'] ? "DB table: " . $a['db_table'] . "\n" : "";
             $s .= $a['db_table_fields'] ? "DB table fields: " . implode(', ', $a['db_table_fields']) . "\n" : "";
