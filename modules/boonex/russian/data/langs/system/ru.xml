@@ -2402,6 +2402,7 @@
         <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Дополнительные метаданные в формате JSON для каждого фрагмента.]]></string>
         <string name="_sys_agents_vector_store_field_files"><![CDATA[Файлы]]></string>
         <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Файлы данных для загрузки в хранилище векторов.]]></string>
+        <string name="_sys_agents_vector_store_data_queued"><![CDATA[Данные поставлены в очередь для обработки хранилища векторов]]></string>
         
         <string name="_sys_agents_assistants_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_assistants_txt_name"><![CDATA[Название]]></string>

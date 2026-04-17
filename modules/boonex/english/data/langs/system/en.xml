@@ -2426,6 +2426,7 @@
     <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Additional metadata in JSON format for each chunk.]]></string>
     <string name="_sys_agents_vector_store_field_files"><![CDATA[Files]]></string>
     <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Data files to upload to the vector store.]]></string>
+    <string name="_sys_agents_vector_store_data_queued"><![CDATA[Data queued for vector store processing]]></string>
     
     <string name="_sys_agents_assistants_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_assistants_txt_name"><![CDATA[Name]]></string>
