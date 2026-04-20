@@ -8,18 +8,17 @@
  */
 
 use NeuronAI\Tools\PropertyType;
-use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 use NeuronAI\Tools\ArrayProperty;
 use NeuronAI\Tools\ObjectProperty;
 
-class BxDolAIToolContentUpdate extends Tool
+class BxDolAIToolContentUpdate extends BxDolAITool
 {
     public function __construct()
     {
         parent::__construct(
             'content_update',
-            'Use this tool to update content. Always use "content_structure" tool to get knowledge about content modules fields. Available modules: ' . bx_srv('system', 'modules_list', [true, true], 'TemplServiceContent') . '.',
+            'Use this tool to update content. Always use "content_structure" tool to get knowledge about content modules fields. Available modules: ' . $this->getContentModules() . '.',
         );
     }
 
@@ -38,11 +37,17 @@ class BxDolAIToolContentUpdate extends Tool
                 description: 'Content ID to update.',
                 required: true
             ),
-            new ToolProperty(
+            new ArrayProperty(
                 name: 'data',
-                type: PropertyType::OBJECT,
-                description: 'The data to update, as key-value pairs.',
-                required: true
+                description: 'Key-value pairs of data fields to add, where keys match the field names. Never use fields what aren\'t defined in content structure.',
+                required: true,
+                items: new ObjectProperty(
+                    name: 'parameter',
+                    properties: [
+                        new ToolProperty('name', PropertyType::STRING, 'Parameter name', true),
+                        new ToolProperty('value', PropertyType::STRING, 'Parameter value', true),
+                    ]
+                )
             ),
             new ToolProperty(
                 name: 'profile_id',
@@ -53,13 +58,13 @@ class BxDolAIToolContentUpdate extends Tool
         ];
     }
 
-    public function __invoke(string $module, int $content_id, array $data, int $profile_id): string
+    public function __invoke(string $module, int $content_id, array $data, int $profile_id): array
     {
         if ($profile_id) {
             $GLOBALS['glForceCurrentProfileId'] = $profile_id;
         }
 
-        $a = bx_srv('system', 'update', [$module, $content_id, $data], 'TemplServiceContent');
+        $a = bx_srv('system', 'update', [$module, $content_id, $this->convertArrayToKeyValue($data)], 'TemplServiceContent');
 
         $GLOBALS['glForceCurrentProfileId'] = 0;
 

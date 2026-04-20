@@ -19,10 +19,11 @@ class BxDolAiAgent extends RAG
 
         $sKey = getParam('sys_agents_inspector_key');
         if ($sKey) {
-            $this->observe(InspectorObserver::instance(
+            $logger = InspectorObserver::instance(
                 key: $sKey,
                 autoFlush: true,
-            ));            
+            );
+            $this->observe($logger);
         }
         else {
             $logger = new BxDolLoggerDb('sys_agents_' . $this->aAgent['id']);
@@ -95,7 +96,6 @@ class BxDolAiAgent extends RAG
 
     protected function getСhatHistoryThreadId(): string
     {
-        echoDbgLog($this->aParams);
         $s = $this->aAgent['trigger'] . ':' . $this->aAgent['id'];
         if (isset($this->aParams['chat_history_subindex']))
             $s .=  ':' . $this->aParams['chat_history_subindex'];

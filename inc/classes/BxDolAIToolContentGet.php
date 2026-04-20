@@ -8,10 +8,9 @@
  */
 
 use NeuronAI\Tools\PropertyType;
-use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 
-class BxDolAIToolContentGet extends Tool
+class BxDolAIToolContentGet extends BxDolAITool
 {
     public function __construct()
     {
@@ -41,7 +40,6 @@ class BxDolAIToolContentGet extends Tool
 
     public function __invoke(string $module, int $content_id): array
     {
-echoDbgLog("Invoking content get tool with module: {$module}, content_id: {$content_id}");
         $a = bx_srv('system', 'get_info', [$module, $content_id], 'TemplServiceContent');
         if (!$a)
             return ["error" => "Content item was not found"];

@@ -8,10 +8,9 @@
  */
 
 use NeuronAI\Tools\PropertyType;
-use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 
-class BxDolAIToolContentStructure extends Tool
+class BxDolAIToolContentStructure extends BxDolAITool
 {
     public function __construct()
     {

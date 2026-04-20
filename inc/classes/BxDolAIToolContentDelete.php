@@ -8,18 +8,17 @@
  */
 
 use NeuronAI\Tools\PropertyType;
-use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 use NeuronAI\Tools\ArrayProperty;
 use NeuronAI\Tools\ObjectProperty;
 
-class BxDolAIToolContentChange extends Tool
+class BxDolAIToolContentDelete extends BxDolAITool
 {
     public function __construct()
     {
         parent::__construct(
             'content_delete',
-            'Use this tool to delete content. Available modules: ' . bx_srv('system', 'modules_list', [true, true], 'TemplServiceContent') . '.',
+            'Use this tool to delete content. Available modules: ' . $this->getContentModules() . '.',
         );
     }
 
@@ -41,9 +40,9 @@ class BxDolAIToolContentChange extends Tool
         ];
     }
 
-    public function __invoke(string $module, int $content_id = 0): string
+    public function __invoke(string $module, int $content_id = 0): array
     {        
         $a = bx_srv('system', 'delete', [$module, $content_id], 'TemplServiceContent');
-        return json_encode($a);
+        return $a;
     }
 }
