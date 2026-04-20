@@ -7279,8 +7279,10 @@ INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`
 ('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0),
 ('content_structure', 'Content modules structure', 'This tool allows agents to understand the structure of content modules fields,  allowing them to call content adding and editing with correct data. It provide knowledge of what content modules are available and what the fields in them, event if fields are changed in fields builder.', '{}', NULL, 0, 0, 1),
 ('content_get', 'Content modules get', 'This tool allows agents to get info about specific content by module name and content id.', '{}', NULL, 0, 0, 1),
-('content_change', 'Content modules change', 'This tool allows agents to add, update or delete content. It works with the "content_structure" tool to get knowledge about content modules fields for add and update actions.', '{}', NULL, 0, 0, 1),
-('content_search', 'Content modules search', 'This tool allows agents to search for content items based on a keyword and optional sections.', '{}', NULL, 0, 0, 1);
+('content_search', 'Content modules search', 'This tool allows agents to search for content items based on a keyword and optional sections.', '{}', NULL, 0, 0, 1),
+('content_delete', 'Content modules delete', 'This tool allows agents to delete content. ', '{}', NULL, 0, 0, 1),
+('content_add', 'Content modules add', 'This tool allows agents to add new content. It works with the "content_structure" tool to get knowledge about content modules fields for add actions.', '{}', NULL, 0, 0, 1),
+('content_update', 'Content modules update', 'This tool allows agents to update existing content. It works with the "content_structure" tool to get knowledge about content modules fields for update actions.', '{}', NULL, 0, 0, 1);
 
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

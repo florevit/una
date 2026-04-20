@@ -129,6 +129,7 @@ class BxBaseServiceContent extends BxDol
      * @code curl -s --cookie "memberSession=SESSIONIDHERE" -H "Authorization: Bearer APIKEYHERE" "http://example.com/api.php?r=system/modules_list/TemplServiceContent" @endcode
      * 
      * @param $bContentModulesOnly if true - return only modules with content objects, if false - return all modules
+     * @param $bNamesOnly if true - return only module names, if false - return full module info
      * @return content objects info array 
      * 
      * @see BxBaseServiceContent::serviceModulesList
@@ -136,7 +137,7 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-modules_list "Get modules list"
      */
-    public function serviceModulesList ($bContentModulesOnly = false)
+    public function serviceModulesList ($bContentModulesOnly = false, $bNamesOnly = false)
     {
         $aAllowedKeys = ['title', 'type', 'uri', 'db_prefix'];
         $a = BxDolModuleQuery::getInstance()->getModules();
@@ -158,7 +159,7 @@ class BxBaseServiceContent extends BxDol
             }  
         }
 
-        return $aModules;
+        return $bNamesOnly ? array_keys($aModules) : $aModules;
     }
 
     /**
