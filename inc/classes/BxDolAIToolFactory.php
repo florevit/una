@@ -47,11 +47,17 @@ class BxDolAIToolFactory extends BxDolFactory
             case 'content_get':
                 $o = BxDolAIToolContentGet::make();
                 break;
-            case 'content_change':
-                $o = BxDolAIToolContentChange::make();
-                break;
             case 'content_search':
                 $o = BxDolAIToolContentSearch::make();
+                break;
+            case 'content_add':
+                $o = BxDolAIToolContentAdd::make();
+                break;
+            case 'content_update':
+                $o = BxDolAIToolContentUpdate::make();
+                break;
+            case 'content_delete':
+                $o = BxDolAIToolContentDelete::make();
                 break;
             default:
                 bx_log('sys_agents', "Tool type {$a['type']} is not supported", BX_LOG_ERR);
