@@ -64,7 +64,9 @@
 	<string name="_Incorrect Email"><![CDATA[Введите правильный адрес электронной почты]]></string>
 	<string name="_Info"><![CDATA[Инфо]]></string>
 	<string name="_Keyword"><![CDATA[Ключевое слово]]></string>
+	<string name="_Level"><![CDATA[Уровень]]></string>
         <string name="_lifetime"><![CDATA[пожизненно]]></string>
+        <string name="_Logs"><![CDATA[Логи]]></string>
 	<string name="_LookinFemale"><![CDATA[Женщина]]></string>
 	<string name="_LookinMale"><![CDATA[Мужчина]]></string>
 	<string name="_MEMBERSHIP_EXPIRES_IN_DAYS"><![CDATA[окончание срока: через {0} дней]]></string>
@@ -2473,6 +2475,7 @@
         <string name="_sys_agents_assistants_popup_add_knowledge"><![CDATA[Добавить знания]]></string>
         <string name="_sys_agents_assistants_popup_ask"><![CDATA[Ask Assistant]]></string>
         <string name="_sys_agents_assistants_msg_knowledge_added"><![CDATA[Знания были добавлены.]]></string>
+        <string name="_sys_agents_logs_popup"><![CDATA[Логи агента "{0}"]]></string>
         <string name="_sys_agents_err_failed"><![CDATA[Произошла ошибка. Попробуйте проверить файл журнала для получения дополнительной информации.]]></string>
 
   <string name="_sys_audit_content_info_popup_title"><![CDATA[Информация]]></string>
