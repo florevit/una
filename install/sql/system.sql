@@ -5839,7 +5839,8 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 ('sys_studio_agents_agents', 'bulk', 'delete', '_Delete', '', 0, 1, 1),
 ('sys_studio_agents_agents', 'single', 'manual', '_Run', 'play', 1, 0, 1),
 ('sys_studio_agents_agents', 'single', 'edit', '_Edit', 'pencil-alt', 1, 0, 2),
-('sys_studio_agents_agents', 'single', 'delete', '_Delete', 'remove', 1, 1, 3),
+('sys_studio_agents_agents', 'single', 'wipe_chat_history', '_sys_agents_agents_act_wipe_chat_history', 'eraser', 1, 1, 3),
+('sys_studio_agents_agents', 'single', 'delete', '_Delete', 'remove', 1, 1, 5),
 ('sys_studio_agents_agents', 'independent', 'add', '_adm_form_btn_field_add', '', 0, 0, 1);
 
 -- GRID: Agents Tools

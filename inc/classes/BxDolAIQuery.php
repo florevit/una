@@ -935,6 +935,13 @@ class BxDolAIQuery extends BxDolDb
         $sQuery = "SELECT `id`, `title` FROM `sys_agents_tools` WHERE `active` = 1 ORDER BY `title` ASC";
         return $this->getPairs($sQuery, 'id', 'title'); 
     }
+
+    public function wipeAgentChatHistory($aAgent) 
+    {
+        $sQuery = "DELETE FROM `sys_agents_chat_history` WHERE `thread_id` LIKE :val";
+        return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
+    }
+
 }
 
 /** @} */

@@ -54,6 +54,22 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         echoJson(['msg' => $sHtml]);
     }
 
+    public function performActionWipeChatHistory()
+    {
+        $iId = $this->_getId();        
+        $aAgent = BxDolAiQuery::getAgentObject($iId);
+        if (!$aAgent) {
+            echoJson(['msg' => _t('_sys_txt_error_occured')]);
+            return;
+        }
+
+        $oDb = new BxDolAIQuery();
+        $oDb->wipeAgentChatHistory($aAgent);
+
+        $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
+        echoJson($aRes);
+    }
+
     public function performActionAdd()
     {
         $sAction = 'add';
