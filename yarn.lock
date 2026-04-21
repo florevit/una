@@ -1787,10 +1787,10 @@ htmx-ext-preload@^2.1.2:
   dependencies:
     htmx.org "^2.0.3"
 
-htmx.org@^2.0.2, htmx.org@^2.0.3, htmx.org@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.8.tgz#8ac8ba87c141b7bfda7576117476062eeb4aceda"
-  integrity sha512-fm297iru0iWsNJlBrjvtN7V9zjaxd+69Oqjh4F/Vq9Wwi2kFisLcrLCiv5oBX0KLfOX/zG8AUo9ROMU5XUB44Q==
+htmx.org@^2.0.2, htmx.org@^2.0.3, htmx.org@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.9.tgz#a87e28330dff30f9bec292d56529702f9cc05723"
+  integrity sha512-Vd8ZlGSshz2W2ej+gNpMqxX2PM0dfOn4lRgkTXgCT+cqZE/GwBQoYm3zGvlqf+hHXYCMYmmgae33m4/RPdTS0Q==
 
 http-cache-semantics@^4.1.1:
   version "4.2.0"
