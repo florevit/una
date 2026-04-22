@@ -67,7 +67,15 @@ class BxCnvFormEntry extends BxBaseModTextFormEntry
          *      - `where` - [string] module name
          * @hook @ref hook-system-check_spam
          */
-        bx_alert('system', 'check_spam', 0, getLoggedId(), array('is_spam' => &$bSpam, 'content' => &$sValue, 'where' => $this->MODULE));
+        bx_alert('system', 'check_spam', 0, getLoggedId(), array(
+            'is_spam' => &$bSpam, 
+            'content' => &$sValue, 
+
+            'is_spam_ref' => &$bSpam, 
+            'content_ref' => &$sValue, 
+
+            'where' => $this->MODULE
+        ));
         self::setSubmittedValue($CNF['FIELD_TEXT'], $sValue, $this->aFormAttrs['method']);
 
         if($iContentId) {
@@ -141,7 +149,13 @@ class BxCnvFormEntry extends BxBaseModTextFormEntry
                      *      - `where` - [string] module name
                      * @hook @ref hook-profile-check_contact
                      */
-                    bx_alert('profile', 'check_contact', 0, false, array('can_contact' => &$bCanContact, 'sender' => $iSender, 'recipient' => $iRecipient, 'where' => $this->MODULE));
+                    bx_alert('profile', 'check_contact', 0, false, array(
+                        'can_contact' => &$bCanContact, 
+                        'can_contact_ref' => &$bCanContact, 
+                        'sender' => $iSender, 
+                        'recipient' => $iRecipient, 
+                        'where' => $this->MODULE
+                    ));
                     if(!$bCanContact)
                         $iFolder = BX_CNV_FOLDER_SPAM;
                 }

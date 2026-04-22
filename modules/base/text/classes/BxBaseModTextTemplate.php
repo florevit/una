@@ -76,8 +76,12 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'check_private_content' => $isCheckPrivateContent,
             'template' => $sTemplateName,
             'params' => $aParams,
+
             'tmpl_name' => &$sTemplateName,
-            'tmpl_vars' => &$aTemplateVars
+            'tmpl_vars' => &$aTemplateVars,
+
+            'tmpl_name_ref' => &$sTemplateName,
+            'tmpl_vars_ref' => &$aTemplateVars,
         ]);
 
         return $this->parseHtmlByName($sTemplateName, $aTemplateVars);
@@ -318,7 +322,9 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
                 'field' => $aImageParams['field'],
                 'is_background' => false,
                 'add_class' => &$sAddClassPicture,
-                'add_code' => &$sAddCode
+                'add_code' => &$sAddCode,
+                'add_class_ref' => &$sAddClassPicture,
+                'add_code_ref' => &$sAddCode,
             ]); 
         }
 

@@ -126,6 +126,7 @@ class BxAnalyticsModule extends BxDolModule
          */
         bx_alert($this->_aModule['name'], 'get_modules', 0, 0, array(
             'list' => &$aResult,
+            'list_ref' => &$aResult,
         ));
         
         return $aResult;
@@ -184,6 +185,7 @@ class BxAnalyticsModule extends BxDolModule
         bx_alert($this->_aModule['name'], 'get_reports', 0, 0, array(
             'module' => $sModuleName,
             'list' => &$aRv,
+            'list_ref' => &$aRv,
         ));
         
         echo json_encode($aRv);
@@ -358,10 +360,13 @@ class BxAnalyticsModule extends BxDolModule
                     'module' => $sModuleName,
                     'report_name' => $sReportName,
                     'report_type' => &$sReportType,
+                    'report_type_ref' => &$sReportType,
                     'date_from' => $iDateFrom,
                     'date_to' => $iDateTo,
                     'data' => &$aData,
+                    'data_ref' => &$aData,
                     'prev_value' => &$iValuePrev,
+                    'prev_value_ref' => &$iValuePrev,
                 ));
                 
                 

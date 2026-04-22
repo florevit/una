@@ -563,6 +563,7 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
                         'param_value' => $sSeoParamValue,
                         'title' => $sSeoTitle,
                         'uri' => &$sUri,
+                        'uri_ref' => &$sUri,
                     ]);
 
                     BxDolPageQuery::insertSeoLink($sPageModule, $sPageUri, $sSeoParamName, $sSeoParamValue, $sUri);

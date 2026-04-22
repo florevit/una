@@ -179,7 +179,7 @@ class BxBaseModConnectModule extends BxBaseModGeneralModule
 
         /**
          * @hooks
-         * @hookdef hook-bx_base_connect-fields_converted '{module_name}', 'fields_converted' - hook before a profile was created, which allows to modify account and/or profile fields before creation
+         * @hookdef hook-bx_base_connect-fields_converted '{module_name}', 'fields_converted' - hook before a profile is created, which allows to modify account and/or profile fields before creation
          * - $unit_name - module name
          * - $action - equals `fields_converted`
          * - $object_id - not used
@@ -239,8 +239,10 @@ class BxBaseModConnectModule extends BxBaseModGeneralModule
          */
         bx_alert('account', 'check_join', 0, false, [
             'error_msg' => &$sErrorMsg, 
+            'error_msg_ref' => &$sErrorMsg, 
             'email' => $aFieldsAccount['email'], 
-            'approve' => &$bSetPendingApproval
+            'approve' => &$bSetPendingApproval,
+            'approve_ref' => &$bSetPendingApproval
         ]);
         if ($sErrorMsg)
             return $sErrorMsg;

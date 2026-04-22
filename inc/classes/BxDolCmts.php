@@ -2648,6 +2648,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
             'data' => $aData,
             'params' => $aParams,
             'data_api' => &$aDataApi,
+            'data_api_ref' => &$aDataApi,
         ];
 
         /**

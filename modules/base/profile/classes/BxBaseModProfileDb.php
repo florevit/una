@@ -47,7 +47,8 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
          */
         bx_alert('profile', 'content_info_by_id', $iContentId, 0, [
             'module' => $this->_oConfig->getName(), 
-            'info' => &$aInfo
+            'info' => &$aInfo,
+            'info_ref' => &$aInfo
         ]);
 
         return $aInfo;
@@ -74,7 +75,8 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
          */
         bx_alert('profile', 'content_info_by_profile_id', $iProfileId, 0, [
             'module' => $this->_oConfig->getName(), 
-            'info' => &$aInfo
+            'info' => &$aInfo,
+            'info_ref' => &$aInfo
         ]);
         return $aInfo;
     }
@@ -152,11 +154,18 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
             'module' => $this->_oConfig->getName(), 
             'params' => $mixedParams['search_params'] ?? '',
             'table' => $this->_oConfig->CNF['TABLE_ENTRIES'], 
+
             'select' => &$sSelect,  
             'join' => &$sJoin, 
             'where' => &$sWhere, 
             'order_by' => &$sOrderBy,
-            'limit' => &$sLimit
+            'limit' => &$sLimit,
+
+            'select_ref' => &$sSelect,  
+            'join_ref' => &$sJoin, 
+            'where_ref' => &$sWhere, 
+            'order_by_ref' => &$sOrderBy,
+            'limit_ref' => &$sLimit
         ]);
 
         return $this->getAll("SELECT " . $sSelect . " FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` " . $sJoin . " WHERE " . $sWhere . $sOrderBy . $sLimit, $aBindings);

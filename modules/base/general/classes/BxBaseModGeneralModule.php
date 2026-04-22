@@ -1718,6 +1718,7 @@ class BxBaseModGeneralModule extends BxDolModule
         bx_alert('system', 'get_forms_helper', 0, 0, [
             'module' => $this->getName(),
             'class' => &$sClass,
+            'class_ref' => &$sClass,
             'object' => &$oObject
         ]);
 
@@ -3738,7 +3739,12 @@ class BxBaseModGeneralModule extends BxDolModule
             'mode' => &$sMode,
             'params' => &$aParams,
             'class' => &$sClass,
-            'object' => &$oObject
+            'object' => &$oObject,
+
+            'mode_ref' => &$sMode,
+            'params_ref' => &$aParams,
+            'class_ref' => &$sClass,
+            'object_ref' => &$oObject
         ]);
 
         if($oObject !== null) 
@@ -4362,6 +4368,7 @@ class BxBaseModGeneralModule extends BxDolModule
             'data' => $aData,
             'params' => $aParams,
             'data_api' => &$aDataApi,
+            'data_api_ref' => &$aDataApi,
         ];
 
         /**
@@ -4518,8 +4525,12 @@ class BxBaseModGeneralModule extends BxDolModule
             'content_id' => $iContentId,
             'content_info' => $aContentInfo,
             'form' => $oForm,
+
             'email_template' => &$sETemplate,
-            'email_params' => &$aEParams
+            'email_params' => &$aEParams,
+
+            'email_template_ref' => &$sETemplate,
+            'email_params_ref' => &$aEParams
         ]);
 
         return sendMailTemplate($sETemplate, 0, $aContentInfo[$CNF['FIELD_AUTHOR']], $aEParams);

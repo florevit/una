@@ -589,6 +589,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         bx_alert($this->_oModule->getName(), 'redirect_after_delete', 0, false, [
             'content' => $aContentInfo,
             'markers' => &$aMarkers,
+            'markers_ref' => &$aMarkers,
             'override_result' => &$sUrl,
         ]);
 

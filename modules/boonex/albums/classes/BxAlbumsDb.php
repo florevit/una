@@ -126,7 +126,9 @@ class BxAlbumsDb extends BxBaseModTextDb
                 BxDolSearchExtended::processParams($aParams['search_params'], [
                     'table' => $CNF['TABLE_FILES2ENTRIES'],
                     'bindings' => &$aMethod['params'][1],
-                    'where_clause' => &$sWhereClause
+                    'where_clause' => &$sWhereClause,
+                    'bindings_ref' => &$aMethod['params'][1],
+                    'where_clause_ref' => &$sWhereClause
                 ]);
 
                 $sOrderClause .=  "`{$CNF['TABLE_FILES2ENTRIES']}`.`id` ASC";

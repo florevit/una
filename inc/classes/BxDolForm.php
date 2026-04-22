@@ -885,6 +885,7 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
          */
         bx_alert('system', 'form_check', 0, 0, [
             'object' => &$this,
+            'inputs_ref' => &$this->aInputs,
         ]);
     }
 
@@ -931,6 +932,7 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
                 'module' => isset($this->aParams['module']) ? $this->aParams['module'] : '',
                 'entry_id' => $iRes,
                 'form_object' => &$this,
+                'inputs_ref' => &$this->aInputs,
             ]);
 
             return $iRes;
@@ -968,6 +970,7 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
             'module' => isset($this->aParams['module']) ? $this->aParams['module'] : '',
             'entry_id' => $val,
             'form_object' => &$this,
+            'inputs_ref' => &$this->aInputs,
         ]);
 
         return $bRes;
@@ -1824,6 +1827,10 @@ class BxDolFormCheckerHelper
         bx_alert('system', 'check_spam', 0, getLoggedId(), [
             'is_spam' => &$bSpam, 
             'content' => &$val, 
+
+            'is_spam_ref' => &$bSpam, 
+            'content_ref' => &$val,
+
             'where' => 'form', 
             'type' => $sType
         ]);

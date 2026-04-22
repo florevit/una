@@ -305,7 +305,8 @@ class BxDolConnectionRelation extends BxTemplConnection
             'initiator' => (int)$iInitiator,
             'content' => (int)$iContent,
             'pre_list' => $this->_sPreList,
-            'relations' => &$aRelations
+            'relations' => &$aRelations,
+            'relations_ref' => &$aRelations
         ]);
 
         if($this->isConnected($iContent, $iInitiator)) {

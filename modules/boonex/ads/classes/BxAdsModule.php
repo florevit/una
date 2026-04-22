@@ -1378,10 +1378,16 @@ class BxAdsModule extends BxBaseModTextModule
         bx_alert($sModule, 'license_register_notif', 0, false, [
             'entry_id' => $iEntryId,
             'order' => $sOrder,
+
             'recipient_id' => &$iClientId,
             'email_template' => &$sEmailTemplate,
             'email_params' => &$aEmailParams,
-            'cancel' => &$bCancel
+            'cancel' => &$bCancel,
+
+            'recipient_id_ref' => &$iClientId,
+            'email_template_ref' => &$sEmailTemplate,
+            'email_params_ref' => &$aEmailParams,
+            'cancel_ref' => &$bCancel
         ]);
 
         if(!$bCancel)

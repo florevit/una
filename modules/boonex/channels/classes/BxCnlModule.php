@@ -141,7 +141,8 @@ class BxCnlModule extends BxBaseModGroupsModule
             'action' => 'hashtag_added_notif', 
             'object_id' => $mixedCnlId, 
             'sender_id' => $iCnlProfileId, 
-            'extras' => &$aParams
+            'extras' => &$aParams,
+            'extras_ref' => &$aParams
         ]);
         
         /**

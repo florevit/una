@@ -90,6 +90,13 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
             'object' => &$sJsObject,
             'class' => &$sJsClass,
             'params' => &$aParams,
+
+            'mask_ref' => &$sMask,
+            'mask_markers_ref' => &$aMaskMarkers,
+            'object_ref' => &$sJsObject,
+            'class_ref' => &$sJsClass,
+            'params_ref' => &$aParams,
+
             'override_result' => &$sContent,
         ]);
 
