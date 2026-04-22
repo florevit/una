@@ -671,7 +671,10 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
 
         bx_alert('system', 'get_logo', 0, 0, [
             'tmpl_name' => &$sTmplName,
-            'tmpl_vars' => &$aTmplVars
+            'tmpl_vars' => &$aTmplVars,
+
+            'tmpl_name_ref' => &$sTmplName,
+            'tmpl_vars_ref' => &$aTmplVars,
         ]);
 
         return $this->_oTemplate->parseHtmlByName($sTmplName, $aTmplVars);

@@ -674,6 +674,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
          */
         bx_alert($this->_oConfig->getName(), 'get_events_before', 0, 0, [
             'params' => &$aParams,
+            'params_ref' => &$aParams,
         ]);
 
         $sTable = isset($aParams['from_cache']) && $aParams['from_cache'] === true ? $this->_sTableSlice : $this->_sTable;
@@ -717,12 +718,20 @@ class BxTimelineDb extends BxBaseModNotificationsDb
             'params' => $aAlertParams,
             'table' => $sTable,
             'table_alias' => $sTableAlias,
+
             'method' => &$sMethod,
             'select_clause' => &$sSelectClause,
             'join_clause' => &$mixedJoinClause,
             'where_clause' => &$mixedWhereClause,
             'order_clause' => &$sOrderClause,
-            'limit_clause' => &$sLimitClause
+            'limit_clause' => &$sLimitClause,
+
+            'method_ref' => &$sMethod,
+            'select_clause_ref' => &$sSelectClause,
+            'join_clause_ref' => &$mixedJoinClause,
+            'where_clause_ref' => &$mixedWhereClause,
+            'order_clause_ref' => &$sOrderClause,
+            'limit_clause_ref' => &$sLimitClause,
         ]);
 
         $sSqlMask = "SELECT {select}
@@ -1439,6 +1448,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
             'params' => $aAlertParams,
             'table' => isset($aParams['from_cache']) && $aParams['from_cache'] === true ? $this->_sTableSlice : $this->_sTable,
             'table_alias' => $sTableAlias,
+
             'join_clause' => &$mixedJoinClause,
             'join_subclause' => &$mixedJoinSubclause,
             'where_clause' => &$mixedWhereClause,
@@ -1451,7 +1461,21 @@ class BxTimelineDb extends BxBaseModNotificationsDb
             'where_clause_muted' => &$sWhereClauseMuted,
             'where_clause_unpublished' => &$sWhereClauseUnpublished,
             'where_clause_cf' => &$sWhereClauseCf,
-            'where_subclause' => &$mixedWhereSubclause
+            'where_subclause' => &$mixedWhereSubclause,
+
+            'join_clause_ref' => &$mixedJoinClause,
+            'join_subclause_ref' => &$mixedJoinSubclause,
+            'where_clause_ref' => &$mixedWhereClause,
+            'where_clause_status_ref' => &$sWhereClauseStatus,
+            'where_clause_filter_ref' => &$sWhereClauseFilter,
+            'where_clause_timeline_ref' => &$sWhereClauseTimeline,
+            'where_clause_modules_ref' => &$sWhereClauseModules,
+            'where_clause_hidden_ref' => &$sWhereClauseHidden,
+            'where_clause_medias_ref' => &$sWhereClauseMedias,
+            'where_clause_muted_ref' => &$sWhereClauseMuted,
+            'where_clause_unpublished_ref' => &$sWhereClauseUnpublished,
+            'where_clause_cf_ref' => &$sWhereClauseCf,
+            'where_subclause_ref' => &$mixedWhereSubclause,
         ]);
 
         $mixedWhereClause .= $sWhereClauseStatus;

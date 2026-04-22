@@ -45,7 +45,8 @@ class BxGoogleTagManModule extends BxDolModule
             );
 
             bx_alert($this->getName(), 'get_data_layer', 0, 0, [
-                'data' => &$aDataLayer
+                'data' => &$aDataLayer,
+                'data_ref' => &$aDataLayer
             ]);
 
             $sDataLayer = json_encode($aDataLayer);

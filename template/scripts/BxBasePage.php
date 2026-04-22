@@ -331,6 +331,7 @@ class BxBasePage extends BxDolPage
             'page_object' => $this,
             'page_query' => $this->_oQuery,
             'page_code' => &$sPageCode,
+            'page_code_ref' => &$sPageCode,
             'sub_page' => $this->_bSubPage,
         ]);
 

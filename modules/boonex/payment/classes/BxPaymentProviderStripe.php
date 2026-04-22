@@ -309,8 +309,12 @@ class BxPaymentProviderStripe extends BxPaymentProviderStripeBasic implements iB
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_create_customer', 0, $aClient['id'], [
             'type' => $sType,
+
             'customer_object' => &$oCustomer, 
-            'customer_params' => &$aCustomer
+            'customer_params' => &$aCustomer,
+
+            'customer_object_ref' => &$oCustomer, 
+            'customer_params_ref' => &$aCustomer,
         ]);
 
         try {
@@ -361,7 +365,8 @@ class BxPaymentProviderStripe extends BxPaymentProviderStripeBasic implements iB
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_create_charge', $iPendingId, false, [
             'charge_object' => &$oCharge, 
-            'charge_params' => &$aCharge
+            'charge_params' => &$aCharge,
+            'charge_params_ref' => &$aCharge,
         ]);
 
         try {
@@ -429,8 +434,12 @@ class BxPaymentProviderStripe extends BxPaymentProviderStripeBasic implements iB
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_create_subscription', $iPendingId, false, [
             'customer' => &$this->_oCustomer,
+
             'subscription_object' => &$oSubscription, 
-            'subscription_params' => &$aSubscription
+            'subscription_params' => &$aSubscription,
+
+            'subscription_object_ref' => &$oSubscription, 
+            'subscription_params_ref' => &$aSubscription,
         ]);
 
         try {
@@ -516,7 +525,10 @@ class BxPaymentProviderStripe extends BxPaymentProviderStripeBasic implements iB
          */
     	bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_get_button', 0, $iClientId, [
             'type' => &$sType, 
-            'public_key' => &$sPublicKey
+            'public_key' => &$sPublicKey,
+
+            'type_ref' => &$sType, 
+            'public_key_ref' => &$sPublicKey,
         ]);
 
         $sJsMethod = '';

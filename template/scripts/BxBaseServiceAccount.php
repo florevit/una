@@ -483,6 +483,10 @@ class BxBaseServiceAccount extends BxDol
                     bx_alert('account', 'before_confirm_phone_send_sms', $oAccount->id(), bx_get_logged_profile_id(), [
                         'phone_number' => &$sPhoneNumber, 
                         'sms_text' => &$sActivationText, 
+
+                        'phone_number_ref' => &$sPhoneNumber, 
+                        'sms_text_ref' => &$sActivationText, 
+
                         'override_result' => &$mixedResult
                     ]);
 
@@ -716,6 +720,10 @@ class BxBaseServiceAccount extends BxDol
                 bx_alert('account', 'before_forgot_password_send_sms', $aAccountInfo['id'], false, [
                     'phone_number' => &$sPhone, 
                     'sms_text' => &$sSmsText, 
+
+                    'phone_number_ref' => &$sPhone, 
+                    'sms_text_ref' => &$sSmsText, 
+
                     'override_result' => &$mixedOverrideResult
                 ]);
 

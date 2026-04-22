@@ -521,7 +521,7 @@ class BxMassMailerModule extends BxBaseModGeneralModule
         $sLetterCode = $this->_oDb->addLetter($iCampaignId, $sEmail);
         
         $aMarkers = $this->addMarkers($iAccountId, $sLetterCode);
-        bx_alert($this->_aModule['name'], 'user_fields', $iCampaignId, $iAccountId, array('email' => $sEmail, 'markers' => &$aMarkers));
+        bx_alert($this->_aModule['name'], 'user_fields', $iCampaignId, $iAccountId, array('email' => $sEmail, 'markers' => &$aMarkers, 'markers_ref' => &$aMarkers));
         if ($bTrackKinks){
             $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
             $aTemplate['Body'] = preg_replace_callback("/$regexp/siU",

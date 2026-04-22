@@ -261,6 +261,7 @@ class BxBaseCmts extends BxDolCmts
             'id' => $this->getId(),
             'params_browse' => $aBp,
             'params_display' => $aDp,
+
             'post_form_top' => &$sPostFormTop,
             'content_before' => &$sContentBefore,
             'comments' => &$sComments,
@@ -270,6 +271,16 @@ class BxBaseCmts extends BxDolCmts
             'js_content' => &$sJsContent,
             'block_title' => &$sBlockTitle,
             'block_menu' => &$sBlockMenu,
+
+            'post_form_top_ref' => &$sPostFormTop,
+            'content_before_ref' => &$sContentBefore,
+            'comments_ref' => &$sComments,
+            'comments_pinned_ref' => &$sCommentsPinned,
+            'content_after_ref' => &$sContentAfter,
+            'post_form_bottom_ref'  => &$sPostFormBottom,
+            'js_content_ref' => &$sJsContent,
+            'block_title_ref' => &$sBlockTitle,
+            'block_menu_ref' => &$sBlockMenu,
         ]);
 
         $sContent = $this->_oTemplate->parseHtmlByName('comments_block.html', [

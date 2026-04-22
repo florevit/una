@@ -215,7 +215,7 @@ class BxDolAlerts extends BxDol
         $oDb = BxDolDb::getInstance();
         $aExtraRefs = [];
         foreach($this->aExtras as $sKey => $mixedValue) {
-            if (preg_match('/^(ref|override|return)_/', $sKey) || preg_match('/_(ref|override|return)$/', $sKey) || $sKey == 'result' || $sKey == 'return' || $sKey == 'ret') {
+            if (preg_match('/^(ref|override|return)_/', $sKey) || preg_match('/_(ref|override|return)$/', $sKey) || $sKey == 'result' || $sKey == 'res' || $sKey == 'return' || $sKey == 'ret' || $sKey == 'check_result') {
                 $aExtraRefs[] = $sKey;
             }
         }

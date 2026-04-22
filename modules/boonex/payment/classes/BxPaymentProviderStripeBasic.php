@@ -372,8 +372,12 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_retrieve_customer', 0, false, [
             'type' => $sType,
+
             'customer_id' => &$sId,
-            'customer_object' => &$oCustomer
+            'customer_object' => &$oCustomer,
+
+            'customer_id_ref' => &$sId,
+            'customer_object_ref' => &$oCustomer,
         ]);
 
         try {
@@ -412,7 +416,10 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_retrieve_charge', 0, false, [
             'charge_id' => &$sId,
-            'charge_object' => &$oCharge
+            'charge_object' => &$oCharge,
+
+            'charge_id_ref' => &$sId,
+            'charge_object_ref' => &$oCharge,
         ]);
 
         try {

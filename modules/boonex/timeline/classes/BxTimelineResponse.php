@@ -97,7 +97,8 @@ class BxTimelineResponse extends BxBaseModNotificationsResponse
                     'unit' => $oAlert->sUnit,
                     'action' => $oAlert->sAction,
                     'alert' => $oAlert,
-                    'data' => &$aEvent
+                    'data' => &$aEvent,
+                    'data_ref' => &$aEvent,
                 ]);
 
                 $iId = $this->_oModule->_oDb->insertEvent($aEvent);
@@ -166,8 +167,12 @@ class BxTimelineResponse extends BxBaseModNotificationsResponse
                     'unit' => $oAlert->sUnit,
                     'action' => $oAlert->sAction,
                     'alert' => $oAlert,
+
                     'data' => &$aParamsSet,
-                    'data_by_source' => &$aParamsSetBySource
+                    'data_by_source' => &$aParamsSetBySource,
+
+                    'data_ref' => &$aParamsSet,
+                    'data_by_source_ref' => &$aParamsSetBySource,
                 ]);
 
                 $this->_oModule->_oDb->updateEvent($aParamsSet, ['id' => $aEvent[$CNF['FIELD_ID']]]);

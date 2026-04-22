@@ -120,7 +120,8 @@ class BxBaseAcl extends BxDolAcl
             'block_owner' => $iProfileId,
             'block_tmpl_name' => $sTmplName,
             'block_tmpl_vars' => $aTmplVars,
-            'block_code' => &$sContent
+            'block_code' => &$sContent,
+            'block_code_ref' => &$sContent,
         ]);
 
         $oTemplate->addCss(['acl.css']);
