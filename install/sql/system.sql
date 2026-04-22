@@ -2304,6 +2304,23 @@ SET @iIdHandler = LAST_INSERT_ID();
 INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_messenger', 'got_jot', @iIdHandler);
 
+
+CREATE TABLE `sys_alerts_log` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `unit` varchar(128) NOT NULL DEFAULT '',
+  `action` varchar(32) NOT NULL DEFAULT 'none',
+  `object` varchar(128) NOT NULL,
+  `sender` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `extra` text NOT NULL,
+  `extra_refs` text NOT NULL,
+  `ts` int(10) UNSIGNED NOT NULL,
+  `counter_total` int(10) UNSIGNED NOT NULL,
+  `counter_24h` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unit_action` (`unit`,`action`)
+);
+
+
 -- --------------------------------------------------------
 
 
