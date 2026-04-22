@@ -182,7 +182,7 @@ class BxBaseAccountForms extends BxDolProfileForms
 
     }
 
-    public function createAccount ($aValues)
+    public function createAccount ($aValues, $iAction = BX_PROFILE_ACTION_MANUAL, $bNeedToLogin = true)
     {
         $oForm = $this->getObjectFormAdd ();
         if (!$oForm)
@@ -203,7 +203,7 @@ class BxBaseAccountForms extends BxDolProfileForms
         if (!$iAccountId)
             return array('code' => 500, 'error' => _t('_sys_txt_error_account_creation'));
 
-        $iProfileId = $this->onAccountCreated($iAccountId, $oForm->isSetPendingApproval());
+        $iProfileId = $this->onAccountCreated($iAccountId, $oForm->isSetPendingApproval(), $iAction, $bNeedToLogin);
 
         return [
             'account_id' => $iAccountId,

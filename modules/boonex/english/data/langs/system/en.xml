@@ -66,7 +66,9 @@
 	<string name="_Incorrect Email"><![CDATA[Incorrect Email]]></string>
 	<string name="_Info"><![CDATA[Info]]></string>
 	<string name="_Keyword"><![CDATA[Keyword]]></string>
+	<string name="_Level"><![CDATA[Level]]></string>
         <string name="_lifetime"><![CDATA[lifetime]]></string>
+        <string name="_Logs"><![CDATA[Logs]]></string>
 	<string name="_LookinFemale"><![CDATA[Woman]]></string>
 	<string name="_LookinMale"><![CDATA[Man]]></string>
 	<string name="_MEMBERSHIP_EXPIRES_IN_DAYS"><![CDATA[expires: in {0} day(s)]]></string>
@@ -1859,9 +1861,8 @@
     <string name="_adm_stg_cpt_option_sys_api_root_page_splash"><![CDATA[Splash]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_email"><![CDATA[Site main URL in email notifications]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_push"><![CDATA[Site main URL in push notifications]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_api_key"><![CDATA[Default API key]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_model"><![CDATA[Default model]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_profile"><![CDATA[Profile]]></string>
+    <string name="_adm_stg_cpt_option_sys_agents_inspector_key"><![CDATA[Inspector key]]></string>
+    <string name="_adm_stg_cpt_option_sys_agents_inspector_key_info"><![CDATA[Get key at https://app.inspector.dev/]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_asst_chats_trans_del"><![CDATA[Auto delete transient chats everyday]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_sa"><![CDATA[Assistant for Studio]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_lsa"><![CDATA[Assistant for Live search]]></string>
@@ -2426,6 +2427,7 @@
     <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Additional metadata in JSON format for each chunk.]]></string>
     <string name="_sys_agents_vector_store_field_files"><![CDATA[Files]]></string>
     <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Data files to upload to the vector store.]]></string>
+    <string name="_sys_agents_vector_store_data_queued"><![CDATA[Data queued for vector store processing]]></string>
     
     <string name="_sys_agents_assistants_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_assistants_txt_name"><![CDATA[Name]]></string>
@@ -2468,6 +2470,7 @@
     <string name="_sys_agents_assistants_chats_btn_chat"><![CDATA[Chat]]></string>
     <string name="_sys_agents_assistants_chats_btn_store"><![CDATA[Store for future usage]]></string>
     <string name="_sys_agents_assistants_chats_btn_unstore"><![CDATA[Remove from store]]></string>
+    <string name="_sys_agents_agents_act_wipe_chat_history"><![CDATA[Wipe chat history]]></string>
     <string name="_sys_agents_assistants_chats_field_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_assistants_chats_field_description"><![CDATA[Description]]></string>
     <string name="_sys_agents_assistants_chats_popup_add"><![CDATA[Add chat]]></string>
@@ -2496,6 +2499,7 @@
     <string name="_sys_agents_assistants_popup_add_knowledge"><![CDATA[Add Knowledge]]></string>
     <string name="_sys_agents_assistants_popup_ask"><![CDATA[Ask Assistant]]></string>
     <string name="_sys_agents_assistants_msg_knowledge_added"><![CDATA[Knowledge was added.]]></string>
+    <string name="_sys_agents_logs_popup"><![CDATA["{0}" agent logs]]></string>
     <string name="_sys_agents_err_failed"><![CDATA[Error occurred. Try to check log file for more info.]]></string>
 
   <string name="_sys_audit_content_info_popup_title"><![CDATA[Information]]></string>

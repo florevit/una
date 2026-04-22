@@ -8,12 +8,27 @@
  */
 
 use NeuronAI\RAG\RAG;
+use NeuronAI\Observability\InspectorObserver;
+use NeuronAI\Observability\LogObserver;
 
 class BxDolAiAgent extends RAG
 {
     public function __construct(protected array $aAgent, protected array $aParams = [])
     {
         parent::__construct();
+
+        $sKey = getParam('sys_agents_inspector_key');
+        if ($sKey) {
+            $logger = InspectorObserver::instance(
+                key: $sKey,
+                autoFlush: true,
+            );
+            $this->observe($logger);
+        }
+        else {
+            $logger = new BxDolLoggerDb('sys_agents_' . $this->aAgent['id']);
+            $this->observe(new LogObserver($logger));
+        }
     }
 
     protected function provider(): NeuronAI\Providers\AIProviderInterface
@@ -23,11 +38,14 @@ class BxDolAiAgent extends RAG
 
     protected function instructions(): string
     {
+        $aToolsUsage = !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : [];
+        $aToolsUsage[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
+
         $oPrompt = new NeuronAI\Agent\SystemPrompt(
             background: [$this->aAgent['prompt_system']],
             steps: !empty($this->aAgent['prompt_steps']) ? [$this->aAgent['prompt_steps']] : [],
             output: !empty($this->aAgent['prompt_output']) ? [$this->aAgent['prompt_output']] : [],
-            toolsUsage: !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : []
+            toolsUsage: $aToolsUsage
         );
         return (string) $oPrompt;
     }
@@ -78,7 +96,6 @@ class BxDolAiAgent extends RAG
 
     protected function getСhatHistoryThreadId(): string
     {
-        echoDbgLog($this->aParams);
         $s = $this->aAgent['trigger'] . ':' . $this->aAgent['id'];
         if (isset($this->aParams['chat_history_subindex']))
             $s .=  ':' . $this->aParams['chat_history_subindex'];

@@ -8,7 +8,7 @@
  * @{
  */
 
-class BxBaseStudioAgentsModels extends BxDolStudioAgentsModels
+class BxBaseStudioAgentsModels extends BxDolStudioAgentsGrid
 {
     protected $_sUrlPage;
 

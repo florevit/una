@@ -893,22 +893,22 @@ class BxDolAIQuery extends BxDolDb
 
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction, $bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `alert_unit` = :unit AND `alert_action` = :action AND `active` = :active", ['unit' => $sUnit, 'action' => $sAction, 'active' => $bActiveOnly ? 1 : 0]);
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'alert' AND `alert_unit` = :unit AND `alert_action` = :action AND `active` = :active", ['unit' => $sUnit, 'action' => $sAction, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function getAgentsByProfileId($iProfileId, $bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `profile_id` = :profile AND `active` = :active", ['profile' => $iProfileId, 'active' => $bActiveOnly ? 1 : 0]);
-    }
-
-    public function getAgentsByTriggerType($sTrigger, $bActiveOnly = true)
-    {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = :trigger AND `active` = :active", ['trigger' => $sTrigger, 'active' => $bActiveOnly ? 1 : 0]);
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'message' AND `profile_id` = :profile AND `active` = :active", ['profile' => $iProfileId, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function getAgentByTriggerWebhookKey($sKey, $bActiveOnly = true)
     {
-        return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);
+        return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'scheduler' AND `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);
+    }
+    
+    public function getAgentsByTriggerType($sTrigger, $bActiveOnly = true)
+    {
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = :trigger AND `active` = :active", ['trigger' => $sTrigger, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function updateAgentField($iId, $sField, $sValue)
@@ -935,6 +935,13 @@ class BxDolAIQuery extends BxDolDb
         $sQuery = "SELECT `id`, `title` FROM `sys_agents_tools` WHERE `active` = 1 ORDER BY `title` ASC";
         return $this->getPairs($sQuery, 'id', 'title'); 
     }
+
+    public function wipeAgentChatHistory($aAgent) 
+    {
+        $sQuery = "DELETE FROM `sys_agents_chat_history` WHERE `thread_id` LIKE :val";
+        return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
+    }
+
 }
 
 /** @} */

@@ -54,6 +54,22 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         echoJson(['msg' => $sHtml]);
     }
 
+    public function performActionWipeChatHistory()
+    {
+        $iId = $this->_getId();        
+        $aAgent = BxDolAiQuery::getAgentObject($iId);
+        if (!$aAgent) {
+            echoJson(['msg' => _t('_sys_txt_error_occured')]);
+            return;
+        }
+
+        $oDb = new BxDolAIQuery();
+        $oDb->wipeAgentChatHistory($aAgent);
+
+        $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
+        echoJson($aRes);
+    }
+
     public function performActionAdd()
     {
         $sAction = 'add';
@@ -166,6 +182,27 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             'form' => $oForm->getCode(true),
             'object' => $this->_sObject,
             'action' => $sAction
+        ]));
+
+        return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
+    }
+
+    public function performActionLogs()
+    {
+        $iId = $this->_getId();
+        $aAgent = BxDolAiQuery::getAgentObject($iId);
+        if (!$aAgent) {
+            echoJson(['msg' => _t('_sys_txt_error_occured')]);
+            return;
+        }
+
+        $oGrid = BxDolGrid::getObjectInstance('sys_studio_agents_logs');
+        $oGrid->addMarkers(['agent_id' => $iId]);
+        $oGrid->setBrowseParams(['agent_id' => $iId]);
+        $sGrid = $oGrid->getCode();
+
+        $sContent = BxTemplStudioFunctions::getInstance()->popupBox('popup_files_' . $iId, _t('_sys_agents_logs_popup', $aAgent['name']), $this->_oTemplate->parseHtmlByName('agents_popup_grid.html', [
+            'grid' => $sGrid,
         ]));
 
         return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);

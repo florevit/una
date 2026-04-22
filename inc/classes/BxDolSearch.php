@@ -38,7 +38,8 @@ define('BX_DOL_SEARCH_KEYWORD_PAGE', 'site-search-page');
 class BxDolSearch extends BxDol
 {
     protected $_bIsApi;
-
+    protected $_bAssitantForLiveSearch = true;
+        
     protected $aClasses = array(); ///< array of all search classes
     protected $aChoice  = array(); ///< array of current search classes which were choosen in search area
     protected $_bRawProcessing = false; ///< display search results without design box and paginate
@@ -61,16 +62,7 @@ class BxDolSearch extends BxDol
 
         $this->_bIsApi = bx_is_api();
 
-        $this->aClasses = BxDolDb::getInstance()->fromCache('sys_objects_search', 'getAllWithKey',
-           'SELECT `ID` as `id`,
-                   `Title` as `title`,
-                   `ClassName` as `class`,
-                   `ClassPath` as `file`,
-                   `ObjectName`,
-                   `GlobalSearch`
-            FROM `sys_objects_search`
-            ORDER BY `Order` ASC', 'ObjectName'
-        );
+        $this->aClasses = self::getSections();
 
         if (is_array($aChoice) && !empty($aChoice)) {
             foreach ($aChoice as $sValue) {
@@ -82,6 +74,35 @@ class BxDolSearch extends BxDol
         }
     }
 
+    public static function getSections($bGlobal = null) 
+    {
+        $sWhere = '';
+        if ($bGlobal != null)
+            $sWhere = ' AND `GlobalSearch` = ' . ($bGlobal ? '1' : '0');
+
+        return BxDolDb::getInstance()->fromCache('sys_objects_search', 'getAllWithKey',
+           'SELECT `ID` as `id`,
+                   `Title` as `title`,
+                   `ClassName` as `class`,
+                   `ClassPath` as `file`,
+                   `ObjectName`,
+                   `GlobalSearch`
+            FROM `sys_objects_search`
+            WHERE 1 ' . $sWhere . '
+            ORDER BY `Order` ASC', 'ObjectName'
+        );
+    }
+
+    public function setApiOutput($bIsApi)
+    {
+        $this->_bIsApi = $bIsApi;
+    }   
+
+    public function setAssistantForLiveSearch($bAssistantForLiveSearch)
+    {
+        $this->_bAssitantForLiveSearch = $bAssistantForLiveSearch;
+    }  
+
     /**
      * create units for all classes and calling their processing methods
      */
@@ -89,7 +110,7 @@ class BxDolSearch extends BxDol
     {
         $sCode = $this->_bDataProcessing ? [] : '';
 
-        if($this->_bLiveSearch && ($iAssistant = BxDolAI::getAssistantForLiveSearch()) != 0) {
+        if($this->_bAssitantForLiveSearch && $this->_bLiveSearch && ($iAssistant = BxDolAI::getAssistantForLiveSearch()) != 0) {
             $sKeyword = '';
             if(($sKeyword = bx_get('keyword')) !== false)
                 $sKeyword = bx_process_input($sKeyword);

@@ -346,7 +346,7 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
     /**
      * functions for limiting maximal string length
      */
-    function getStringWithLimitedLength($mixedString, $iWidth = 45, $isPopupOnOverflow = false, $bReturnString = true)
+    function getStringWithLimitedLength($mixedString, $iWidth = 45, $isPopupOnOverflow = false, $bReturnString = true, $sPopupString = null)
     {
         if(is_array($mixedString))
             list($sStrPlane, $sStrOriginal) = $mixedString;
@@ -386,7 +386,7 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
         // add button width popup
         $sId = 'bx-str-limit-' . rand(1, PHP_INT_MAX);
         $sPopup = '<a class="bx-str-limit pl-2" href="javascript:void(0)" onclick="$(\'#' . $sId . '\').dolPopup({pointer:{el:$(this), offset:\'10 1\'}})"><i class="sys-icon ellipsis-h"></i></a>';
-        $sPopup .= BxTemplFunctions::getInstance()->transBox($sId, '<div class="bx-def-padding">' . $sStrOriginal . '</div>', true);
+        $sPopup .= BxTemplFunctions::getInstance()->transBox($sId, '<div class="bx-def-padding">' . ($sPopupString ?? $sStrOriginal) . '</div>', true);
 
         return $bReturnString ? $sResult . $sPopup : [$sResult, $sPopup];
     }

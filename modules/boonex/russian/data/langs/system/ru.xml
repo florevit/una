@@ -64,7 +64,9 @@
 	<string name="_Incorrect Email"><![CDATA[Введите правильный адрес электронной почты]]></string>
 	<string name="_Info"><![CDATA[Инфо]]></string>
 	<string name="_Keyword"><![CDATA[Ключевое слово]]></string>
+	<string name="_Level"><![CDATA[Уровень]]></string>
         <string name="_lifetime"><![CDATA[пожизненно]]></string>
+        <string name="_Logs"><![CDATA[Логи]]></string>
 	<string name="_LookinFemale"><![CDATA[Женщина]]></string>
 	<string name="_LookinMale"><![CDATA[Мужчина]]></string>
 	<string name="_MEMBERSHIP_EXPIRES_IN_DAYS"><![CDATA[окончание срока: через {0} дней]]></string>
@@ -1834,9 +1836,8 @@
     <string name="_adm_stg_cpt_option_sys_api_root_page_splash"><![CDATA[Заставка]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_email"><![CDATA[Основной URL-адрес сайта в уведомлениях по электронной почте]]></string>
     <string name="_adm_stg_cpt_option_sys_api_url_root_push"><![CDATA[Основной URL-адрес сайта в push-уведомлениях]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_api_key"><![CDATA[API-ключ по умолчанию]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_model"><![CDATA[Модель по умолчанию]]></string>
-    <string name="_adm_stg_cpt_option_sys_agents_profile"><![CDATA[Профиль]]></string>
+    <string name="_adm_stg_cpt_option_sys_agents_inspector_key"><![CDATA[Ключ Inspector]]></string>
+    <string name="_adm_stg_cpt_option_sys_agents_inspector_key_info"><![CDATA[Получить ключ на https://app.inspector.dev/]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_asst_chats_trans_del"><![CDATA[Автоматическое удаление временных чатов каждый день]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_sa"><![CDATA[Помощник по студии]]></string>
     <string name="_adm_stg_cpt_option_sys_agents_lsa"><![CDATA[Помощник для интерактивного поиска]]></string>
@@ -2402,6 +2403,7 @@
         <string name="_sys_agents_vector_store_field_metadata_info"><![CDATA[Дополнительные метаданные в формате JSON для каждого фрагмента.]]></string>
         <string name="_sys_agents_vector_store_field_files"><![CDATA[Файлы]]></string>
         <string name="_sys_agents_vector_store_field_files_info"><![CDATA[Файлы данных для загрузки в хранилище векторов.]]></string>
+        <string name="_sys_agents_vector_store_data_queued"><![CDATA[Данные поставлены в очередь для обработки хранилища векторов]]></string>
         
         <string name="_sys_agents_assistants_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_assistants_txt_name"><![CDATA[Название]]></string>
@@ -2444,6 +2446,7 @@
         <string name="_sys_agents_assistants_chats_btn_chat"><![CDATA[Беседовать]]></string>
         <string name="_sys_agents_assistants_chats_btn_store"><![CDATA[Сохранить для будущего использования]]></string>
         <string name="_sys_agents_assistants_chats_btn_unstore"><![CDATA[Удалить из хранилища]]></string>
+        <string name="_sys_agents_agents_act_wipe_chat_history"><![CDATA[Очистить историю чата]]></string>
         <string name="_sys_agents_assistants_chats_field_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_assistants_chats_field_description"><![CDATA[Описание]]></string>
         <string name="_sys_agents_assistants_chats_popup_add"><![CDATA[Добавить чат]]></string>
@@ -2472,6 +2475,7 @@
         <string name="_sys_agents_assistants_popup_add_knowledge"><![CDATA[Добавить знания]]></string>
         <string name="_sys_agents_assistants_popup_ask"><![CDATA[Ask Assistant]]></string>
         <string name="_sys_agents_assistants_msg_knowledge_added"><![CDATA[Знания были добавлены.]]></string>
+        <string name="_sys_agents_logs_popup"><![CDATA[Логи агента "{0}"]]></string>
         <string name="_sys_agents_err_failed"><![CDATA[Произошла ошибка. Попробуйте проверить файл журнала для получения дополнительной информации.]]></string>
 
   <string name="_sys_audit_content_info_popup_title"><![CDATA[Информация]]></string>
