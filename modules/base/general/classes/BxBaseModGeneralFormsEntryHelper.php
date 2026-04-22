@@ -642,9 +642,14 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
          *      - `content` - [array] by ref, content info array as key&value pairs, can be overridden in hook processing
          * @hook @ref hook-bx_base_general-deleted
          */
-        bx_alert($this->_oModule->getName(), 'deleted', $aContentInfo[$CNF['FIELD_ID']], false, [
+        $aAlertParams = [
             'content' => &$aContentInfo
-        ]);
+        ];
+
+        if(!empty($CNF['FIELD_ALLOW_VIEW_TO']) && isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
+            $aAlertParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+
+        bx_alert($this->_oModule->getName(), 'deleted', $aContentInfo[$CNF['FIELD_ID']], false, $aAlertParams);
 
         return '';
     }

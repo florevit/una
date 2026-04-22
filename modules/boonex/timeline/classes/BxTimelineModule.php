@@ -5401,15 +5401,14 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     	$sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
     	$sCommonPostComment = $this->_oConfig->getObject('comment');
 
+        $bIsSystem = $this->_oConfig->isSystem($aEvent[$CNF['FIELD_TYPE']], $aEvent[$CNF['FIELD_ACTION']]);
+        
         //--- Delete related flags.
         $this->_oDb->deleteEventFlags($aEvent[$CNF['FIELD_ID']]);
 
     	//--- Delete comments for Common posts.
-    	if($this->_oConfig->isCommon($aEvent['type'], $aEvent['action'])) {
-            $oComments = $this->getCmtsObject($sCommonPostComment, $aEvent[$CNF['FIELD_ID']]);
-            if($oComments !== false)
-                $oComments->onObjectDelete($aEvent[$CNF['FIELD_ID']]);
-    	}
+    	if(!$bIsSystem && ($oComments = $this->getCmtsObject($sCommonPostComment, $aEvent[$CNF['FIELD_ID']])) !== false)
+            $oComments->onObjectDelete($aEvent[$CNF['FIELD_ID']]);
 
     	//--- Delete attached photos, videos and links when common event was deleted.
     	if($aEvent['type'] == $sCommonPostPrefix . BX_TIMELINE_PARSE_TYPE_POST) {
@@ -5456,11 +5455,9 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         }
 
         //--- Delete associated meta for Common events.
-        if($this->_oConfig->isCommon($aEvent['type'], $aEvent['action'])) {
-            $oMetatags = BxDolMetatags::getObjectInstance($this->_oConfig->getObject('metatags'));
+        if(!$bIsSystem && ($oMetatags = BxDolMetatags::getObjectInstance($this->_oConfig->getObject('metatags'))) !== false)
             $oMetatags->onDeleteContent($aEvent[$CNF['FIELD_ID']]);
-        }
-        
+
         //--- Delete item cache.
         $this->deleteCacheItem($aEvent[$CNF['FIELD_ID']]);
 
@@ -5477,14 +5474,17 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             bx_alert($this->_oConfig->getObject('alert'), 'delete_repost', $aReposted[$CNF['FIELD_ID']], $iUserId, [
                 'repost_id' => $aEvent[$CNF['FIELD_ID']],
             ]);
-        else
+        else if(!$bIsSystem)
             /**
              * @hooks
-             * @hookdef hook-bx_timeline-delete 'bx_timeline', 'delete' - hook after post (event) was deleted
+             * @hookdef hook-bx_timeline-delete 'bx_timeline', 'delete' - hook after 'common' post (event) was deleted
              * It's equivalent to @ref hook-bx_timeline-hide
              * @hook @ref hook-bx_timeline-delete
              */
-            bx_alert($this->_oConfig->getObject('alert'), 'delete', $aEvent[$CNF['FIELD_ID']], $iUserId);
+            bx_alert($this->_oConfig->getObject('alert'), 'delete', $aEvent[$CNF['FIELD_ID']], $iUserId, [
+                'object_author_id' => (int)$aEvent['object_id'],
+                'privacy_view' => $aEvent[$CNF['FIELD_OBJECT_PRIVACY_VIEW']]
+            ]);
         //--- Event -> Delete for Alerts Engine ---//
 
         if(($oSockets = BxDolSockets::getInstance()) && $oSockets->isEnabled())
