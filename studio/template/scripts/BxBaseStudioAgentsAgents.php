@@ -362,6 +362,19 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_alert_sample'),
                     'content' => isset($aAgent['alert_sample']) ? $aAgent['alert_sample'] : _t('_sys_agents_waiting_for_sample_data'),
                 ],
+
+                'alert' => [
+                    'type' => 'custom',
+                    'name' => 'alert',
+                    'caption' => _t('_sys_agents_field_alert'),
+                    'info' => _t('_sys_agents_field_alert_info'),
+                    'content' => $this->_oTemplate->parseHtmlByName('agents_agents_alerts_select.html', $this->_getAlertValues($aAgent['alert'])),
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+
+                /*
                 'alert_unit' => [
                     'type' => 'text',
                     'name' => 'alert_unit',
@@ -381,13 +394,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ],
                 ],
+                */
 
-                'scheduler_section' => array(
+                'scheduler_section' => [
                     'type' => 'block_header',
                     'caption' => 'Trigger - scheduler',
                     'collapsable' => true,
                     'collapsed' => true,
-                ),
+                ],
 
                 'scheduler_cron' => [
                     'type' => 'text',
@@ -541,6 +555,38 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         return $aForm;
     }
 
+    protected function _getAlertValues($sValue)
+    {
+        $aAlerts = $this->_oDb->getAlerts();
+        $a = [
+            'bx_repeat:alerts' => [
+                [
+                    'name' => _t('_sys_please_select'), 
+                    'value' => '', 
+                    'desc' => '', 
+                    'bx_if:sel' => [
+                        'condition' => false,
+                        'content' => ['sel' => '']
+                    ]
+                ]
+            ]
+        ];
+        foreach ($aAlerts as $k => $r) {
+            $a['bx_repeat:alerts'][] = [
+                'name' => $r['name'],
+                'value' => $r['key'],
+                'desc' => bx_html_attribute($r['desc']),
+                'bx_if:sel' => [
+                    'condition' => $sValue == $r['key'],
+                    'content' => [
+                        'sel' => $sValue == $r['key'] ? 'selected' : '',
+                    ]
+                ]
+            ];
+        }
+        return $a;
+    }
+
     protected function _getUniqName($sName)
     {
         return uriGenerate($sName, 'sys_agents_automators', 'name', ['lowercase' => false]);
@@ -634,6 +680,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         }
 
         return null;
+    }
+
+    protected function _addJsCss()
+    {
+        parent::_addJsCss();
+
+        $this->_oTemplate->addJs(['select2/js/select2.min.js']);
+        $this->_oTemplate->addCss([BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'select2/css/|select2.min.css']);
     }
 }
 

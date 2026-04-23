@@ -2276,8 +2276,8 @@
         <string name="_sys_agents_field_trigger_info"><![CDATA[Триггер, который запускает агента. Alert — системное событие. Scheduler — запуск по расписанию. Webhook — HTTP внешний вызов. Manual — ручной запуск. Agent — запуск другим агентом. Message — сообщение пользователя.]]></string>
         <string name="_sys_agents_field_alert_sample"><![CDATA[Alert - пример данных]]></string>
         <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Ожидание примера данных...]]></string>
-        <string name="_sys_agents_field_alert_unit"><![CDATA[Alert - тип события]]></string>
-        <string name="_sys_agents_field_alert_unit_info"><![CDATA[Тип события, которое вызывает агента, обычно 'system' - для системных событий, 'имя_модуля' - для модульных событий]]></string>
+        <string name="_sys_agents_field_alert"><![CDATA[Alert - событие]]></string>
+        <string name="_sys_agents_field_alert_info"><![CDATA[Событие, запускающее агента. Обычно начинается с system или module_name. Показаны только уже произошедшие события.]]></string>
         <string name="_sys_agents_field_alert_action"><![CDATA[Alert - действие события]]></string>
         <string name="_sys_agents_field_scheduler_cron"><![CDATA[Scheduler - Планировщик (CRON)]]></string>
         <string name="_sys_agents_field_scheduler_cron_info"><![CDATA[Scheduler - CRON строка для планирования агента.]]></string>
