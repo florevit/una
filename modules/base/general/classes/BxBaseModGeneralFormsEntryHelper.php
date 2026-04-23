@@ -644,7 +644,8 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
          * @hook @ref hook-bx_base_general-deleted
          */
         $aAlertParams = [
-            'content' => &$aContentInfo
+            'content' => &$aContentInfo,
+            'content_ref' => &$aContentInfo
         ];
 
         if(!empty($CNF['FIELD_ALLOW_VIEW_TO']) && isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))

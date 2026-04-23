@@ -183,8 +183,10 @@ class BxBaseFormAccount extends BxTemplFormView
          */
         bx_alert('account', 'check_join', 0, false, [
             'error_msg' => &$sErrorMsg, 
+            'error_msg_ref' => &$sErrorMsg, 
             'email' => $this->getCleanValue('email'), 
-            'approve' => &$this->_bSetPendingApproval
+            'approve' => &$this->_bSetPendingApproval,
+            'approve_ref' => &$this->_bSetPendingApproval,
         ]);
         if ($sErrorMsg)
             $this->_setCustomError ($sErrorMsg);
