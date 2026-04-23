@@ -893,7 +893,7 @@ class BxDolAIQuery extends BxDolDb
 
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction, $bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'alert' AND `alert_unit` = :unit AND `alert_action` = :action AND `active` = :active", ['unit' => $sUnit, 'action' => $sAction, 'active' => $bActiveOnly ? 1 : 0]);
+        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'alert' AND `alert` = :alert AND `active` = :active", ['alert' => $sUnit . ':' . $sAction, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function getAgentsByProfileId($iProfileId, $bActiveOnly = true)
@@ -942,6 +942,36 @@ class BxDolAIQuery extends BxDolDb
         return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
     }
 
+    public function getAlerts()
+    {
+        $aValues = [];
+        $aAlerts = $this->getAll("SELECT `unit`, `action` FROM `sys_alerts_log` ORDER BY `unit`, `action`");
+        foreach ($aAlerts as $a) {
+            $sKey = $a['unit'] . ':' . $a['action'];
+            $aValues[$sKey] = [
+                'key' => $sKey,
+                'unit' => $a['unit'],
+                'action' => $a['action'],
+                'name' => $a['unit'] . ' - ' . $a['action'],
+                'desc' => $this->getAlertDesc($a['unit'], $a['action']),
+            ];
+        }
+        return $aValues;
+    }
+
+    public function getAlertDesc($sUnit, $sAction) 
+    {
+        $sDesc = $this->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` = :unit AND `action` = :action LIMIT 1", [
+            'unit' => $sUnit,
+            'action' => $sAction,
+        ]);
+        if (!$sDesc) {
+            $this->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` LIKE '{%}' AND `action` = :action LIMIT 1", [
+                'action' => $sAction,
+            ]);
+        }
+        return $sDesc;
+    }
 }
 
 /** @} */
