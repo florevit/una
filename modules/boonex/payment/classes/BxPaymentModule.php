@@ -858,9 +858,14 @@ class BxPaymentModule extends BxBaseModPaymentModule
         $this->alert('before_authorize', 0, $this->_iUserId, array(
             'client_id' => $this->_iUserId,
             'seller_id' => $iSellerId, 
+
             'type' => &$sType,
             'provider' => &$sProvider,
             'cart_info' => &$aInfo,
+
+            'type_ref' => &$sType,
+            'provider_ref' => &$sProvider,
+            'cart_info_ref' => &$aInfo,
         ));
 
         $iPendingId = $this->_oDb->insertOrderPending($this->_iUserId, $sType, $sProvider, $aInfo);
@@ -914,9 +919,14 @@ class BxPaymentModule extends BxBaseModPaymentModule
             'order_auth' => $sOrderAuth,
             'client_id' => $iClientId,
             'seller_id' => $iSellerId, 
+
             'type' => &$sType,
             'provider' => &$sProvider,
             'cart_info' => &$aInfo,
+
+            'type_ref' => &$sType,
+            'provider_ref' => &$sProvider,
+            'cart_info_ref' => &$aInfo,
         ));
 
         $aResult = $oProvider->captureAuthorizedCheckout($sOrderAuth, $aPending, $aInfo, $sRedirect);
@@ -934,8 +944,12 @@ class BxPaymentModule extends BxBaseModPaymentModule
             'pending' => $aPending,
             'transactions' => $this->_oDb->getOrderProcessed(array('type' => 'pending_id', 'pending_id' => (int)$aPending['id'])),
             'provider' => $oProvider,
+
             'message' => &$aResult['message'],
             'result' => &$aResult,
+
+            'message_ref' => &$aResult['message'],
+            'result_ref' => &$aResult,
         ));
 
         if(empty($aResult['redirect']) && $oProvider->needRedirect())
@@ -1047,10 +1061,16 @@ class BxPaymentModule extends BxBaseModPaymentModule
         $this->alert('before_pending', 0, bx_get_logged_profile_id(), array(
             'client_id' => $this->_iUserId,
             'seller_id' => $iSellerId, 
+
             'type' => &$sType,
             'provider' => &$sProvider,
             'cart_info' => &$aInfo,
             'custom' => &$aCustoms,
+
+            'type_ref' => &$sType,
+            'provider_ref' => &$sProvider,
+            'cart_info_ref' => &$aInfo,
+            'custom_ref' => &$aCustoms,
         ));
 
         $iPendingId = $this->_oDb->insertOrderPending($this->_iUserId, $sType, $sProvider, $aInfo, $aCustoms);
@@ -1169,8 +1189,12 @@ class BxPaymentModule extends BxBaseModPaymentModule
             'pending' => $aPending,
             'transactions' => $this->_oDb->getOrderProcessed(array('type' => 'pending_id', 'pending_id' => (int)$aPending['id'])),
             'provider' => $oProvider,
+
             'message' => &$aResult['message'],
             'result' => &$aResult,
+
+            'message_ref' => &$aResult['message'],
+            'result_ref' => &$aResult,
         ));
 
         if($oProvider->needRedirect()) 

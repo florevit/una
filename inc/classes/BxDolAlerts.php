@@ -145,6 +145,9 @@ class BxDolAlerts extends BxDol
             }
         }
 
+        // log alert
+        $this->logAlert();
+
         // call agents
         $oAi = BxDolAI::getInstance();
         if($aAgents = $oAi->getAgentsByAlertUnitAndAction($this->sUnit, $this->sAction)) {
@@ -205,6 +208,51 @@ class BxDolAlerts extends BxDol
             ];
 
         return $aResult;
+    }
+
+    public function logAlert()
+    {
+        $oDb = BxDolDb::getInstance();
+        $aExtraRefs = [];
+        foreach($this->aExtras as $sKey => $mixedValue) {
+            if (preg_match('/^(ref|override|return)_/', $sKey) || preg_match('/_(ref|override|return)$/', $sKey) || $sKey == 'result' || $sKey == 'res' || $sKey == 'return' || $sKey == 'ret' || $sKey == 'check_result') {
+                $aExtraRefs[] = $sKey;
+            }
+        }
+        $aBind = [
+            'unit' => $this->sUnit,
+            'action' => $this->sAction,
+            'object' => $this->iObject,
+            'sender' => $this->iSender,
+            'extra' => json_encode($this->aExtras),
+            'extra_refs' => json_encode($aExtraRefs)
+        ];
+        $oDb->query("
+            INSERT INTO sys_alerts_log
+            SET
+                unit  = :unit,
+                action = :action,
+                object = :object,
+                sender = :sender,
+                extra  = :extra,
+                extra_refs  = :extra_refs,
+                ts     = UNIX_TIMESTAMP(),
+                counter_total = 1,
+                counter_24h = 1
+            ON DUPLICATE KEY UPDATE
+                object = :object,
+                sender = :sender,
+                extra  = :extra,
+                ts     = UNIX_TIMESTAMP(),
+                counter_total = counter_total + 1,
+                counter_24h = counter_24h + 1
+        ", $aBind);
+    }
+
+    static public function resetAlertsCounter24h()
+    {
+        $oDb = BxDolDb::getInstance();
+        $oDb->query("UPDATE sys_alerts_log SET counter_24h = 0");
     }
 }
 

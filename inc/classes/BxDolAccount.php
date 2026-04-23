@@ -561,7 +561,7 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
          *      - `display_name` - [string] by ref, account display name,  can be overridden in hook processing
          * @hook @ref hook-account-account_name
          */
-        bx_alert('account', 'account_name', $iAccountId, 0, array('info' => $aInfo, 'display_name' => &$sDisplayName));
+        bx_alert('account', 'account_name', $iAccountId, 0, array('info' => $aInfo, 'display_name' => &$sDisplayName, 'display_name_ref' => &$sDisplayName));
 
         return bx_process_output($sDisplayName);
     }
@@ -811,7 +811,7 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
          *      - `number` - [int] by ref, account limit on the number of profiles,  can be overridden in hook processing
          * @hook @ref hook-account-get_limit_profiles_number
          */
-        bx_alert('account', 'get_limit_profiles_number', 0, 0, array('account_id' => $this->_iAccountID, 'number' => &$iProfilesLimit));
+        bx_alert('account', 'get_limit_profiles_number', 0, 0, array('account_id' => $this->_iAccountID, 'number' => &$iProfilesLimit, 'number_ref' => &$iProfilesLimit));
         if (!isAdmin() && $iProfilesLimit && ($iProfilesNum = $this->getProfilesNumber()) && $iProfilesNum >= $iProfilesLimit)
             return true;
 
@@ -891,7 +891,7 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
          *      - `stop_deletion` - [bool] by ref, if it set to true account deletion will stopped, can be overridden in hook processing
          * @hook @ref hook-account-before_delete
          */
-        bx_alert('account', 'before_delete', $this->_iAccountID, 0, array('delete_with_content' => $bDeleteWithContent, 'stop_deletion' => &$isStopDeletion));
+        bx_alert('account', 'before_delete', $this->_iAccountID, 0, array('delete_with_content' => $bDeleteWithContent, 'stop_deletion' => &$isStopDeletion, 'stop_deletion_ref' => &$isStopDeletion));
         if ($isStopDeletion)
             return false;
 

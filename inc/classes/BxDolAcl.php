@@ -344,7 +344,12 @@ class BxDolAcl extends BxDolFactory implements iBxDolSingleton
             'perform' => &$bPerformAction,
             'result' => &$aResult,
             'lang' => &$aLangFileParams,
-            'continue' => &$bContinue
+            'continue' => &$bContinue,
+            'action_ref' => &$aAction,
+            'perform_ref' => &$bPerformAction,
+            'result_ref' => &$aResult,
+            'lang_ref' => &$aLangFileParams,
+            'continue_ref' => &$bContinue
         ));
 
         if (!$bContinue)

@@ -1276,7 +1276,8 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'module' => $this->_oConfig->getName(),
             'type' => $sType,
             'params' => $aParams,
-            'form' => &$oForm
+            'form' => &$oForm,
+            'form_inputs_ref' => &$oForm->aInputs,
         ));
 
     	return $oForm;
@@ -4518,7 +4519,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
              * @hook @ref hook-bx_base_profile-timeline_post
              */
             bx_alert($oProfileOwner->getModule(), $this->_oConfig->getUri() . '_post', $oProfileOwner->id(), $iUserId, [
-                'check_result' => &$aCheckResult
+                'check_result' => &$aCheckResult,
             ]);
         }
 
@@ -5987,6 +5988,8 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         bx_alert($oProfileOwner->getModule(), $this->_oConfig->getUri() . '_view', $this->_iOwnerId, $this->getUserId(), [
             'params' => &$aParams,
             'menu' => &$aMenu,
+            'params_ref' => &$aParams,
+            'menu_ref' => &$aMenu,
             'override_content' => &$mixedContent,
         ]);
 

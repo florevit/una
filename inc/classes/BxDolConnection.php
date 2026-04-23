@@ -372,6 +372,11 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
             'initiator' => &$iInitiator,
             'content' => &$iContent,
             'mutual' => &$iMutual,
+
+            'initiator_ref' => &$iInitiator,
+            'content_ref' => &$iContent,
+            'mutual_ref' => &$iMutual,
+
             'object' => $this,
             'override_result' => &$iOverrideResult,
         ];
@@ -489,6 +494,11 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
             'initiator' => &$iInitiator,
             'content' => &$iContent,
             'mutual' => &$iMutual,
+
+            'initiator_ref' => &$iInitiator,
+            'content_ref' => &$iContent,
+            'mutual_ref' => &$iMutual,
+
             'object' => $this,
         ];
         if(!empty($aParams['alert_extras']) && is_array($aParams['alert_extras']))

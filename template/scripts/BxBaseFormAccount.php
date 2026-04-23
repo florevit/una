@@ -69,6 +69,7 @@ class BxFormAccountCheckerHelper extends BxDolFormCheckerHelper
             'info' => $aInfo,
             'pwd' => $s,
             'password' => &$sPassCheck,
+            'password_ref' => &$sPassCheck,
         ]);
 
         return $aInfo['password'] == $sPassCheck;

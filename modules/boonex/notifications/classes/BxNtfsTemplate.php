@@ -239,11 +239,18 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
          */
         bx_alert($this->_oConfig->getName(), 'get_notification', 0, 0, [
             'browse_params' => $aBrowseParams,
+
             'event' => &$aEvent, 
             'event_parsed' => &$bEventParsed, 
             'event_canceled' => &$bEventCanceled,
             'owner' => &$oOwner, 
-            'owner_unit' => &$sOwnerUnit
+            'owner_unit' => &$sOwnerUnit,
+
+            'event_ref' => &$aEvent, 
+            'event_parsed_ref' => &$bEventParsed, 
+            'event_canceled_ref' => &$bEventCanceled,
+            'owner_ref' => &$oOwner, 
+            'owner_unit_ref' => &$sOwnerUnit,
         ]);
         
         if ($bEventCanceled)

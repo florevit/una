@@ -283,6 +283,8 @@ class BxEventsModule extends BxBaseModGroupsModule implements iBxDolCalendarServ
             'end' =>  $sEnd,
             'sql_part' => &$aSQLPart,
             'data' => &$aEntries,
+            'sql_part_ref' => &$aSQLPart,
+            'data_ref' => &$aEntries,
         ));
 
         return [

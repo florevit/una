@@ -103,6 +103,7 @@ class BxNtfsDb extends BxBaseModNotificationsDb
          */
         bx_alert($this->_oConfig->getName(), 'get_events_before', 0, 0, [
             'params' => &$aParams,
+            'params_ref' => &$aParams,
         ]);
 
         if($aParams['browse'] != 'list' || $aParams['type'] != BX_NTFS_TYPE_OBJECT_OWNER_AND_CONNECTIONS)
@@ -193,6 +194,7 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             'browse' => $aParams['browse'],
             'params' => $aAlertParams,
             'table' => $this->_sTable,
+
             'method' => &$sUnionMethod,
             'select_clause' => &$sSelectClause,
             'join_clause_po' => &$sJoinClausePo,
@@ -205,6 +207,19 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             'limit_clause' => &$sUnionLimitClause,
             'query_po' => &$sQueryOwner,
             'query_pc' => &$sQueryConnections,
+
+            'method_ref' => &$sUnionMethod,
+            'select_clause_ref' => &$sSelectClause,
+            'join_clause_po_ref' => &$sJoinClausePo,
+            'join_clause_pc_ref' => &$sJoinClausePc,
+            'where_clause_po_ref' => &$sWhereClausePo,
+            'where_clause_pc_ref' => &$sWhereClausePc,
+            'order_clause_po_ref' => &$sOrderClausePo,
+            'order_clause_pc_ref' => &$sOrderClausePc,
+            'order_clause_ref' => &$sUnionOrderClause,
+            'limit_clause_ref' => &$sUnionLimitClause,
+            'query_po_ref' => &$sQueryOwner,
+            'query_pc_ref' => &$sQueryConnections,
         ]);
 
         $sQuery = "(" . $sQueryOwner . ") UNION (" . $sQueryConnections . ") {order} {limit}";
@@ -413,6 +428,7 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             'owner_id' => $aParams['owner_id'],
             'params' => $aAlertParams,
             'table' => $this->_sTable,
+
             'join_clause' => &$sJoinClause,
             'where_clause' => &$sWhereClause,
             'where_clause_start_from' => &$sWhereClauseStartFrom,
@@ -420,7 +436,16 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             'where_clause_modules' => &$sWhereClauseModules,
             'where_clause_new' => &$sWhereClauseNew,
             'where_clause_settings' => &$sWhereClauseSettings,
-            'where_clause_type' => &$sWhereClauseType
+            'where_clause_type' => &$sWhereClauseType,
+
+            'join_clause_ref' => &$sJoinClause,
+            'where_clause_ref' => &$sWhereClause,
+            'where_clause_start_from_ref' => &$sWhereClauseStartFrom,
+            'where_clause_status_ref' => &$sWhereClauseStatus,
+            'where_clause_modules_ref' => &$sWhereClauseModules,
+            'where_clause_new_ref' => &$sWhereClauseNew,
+            'where_clause_settings_ref' => &$sWhereClauseSettings,
+            'where_clause_type_ref' => &$sWhereClauseType,
         ]);
 
         $sWhereClause .= $sWhereClauseStartFrom;

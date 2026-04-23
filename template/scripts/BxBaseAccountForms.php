@@ -39,7 +39,8 @@ class BxBaseAccountForms extends BxDolProfileForms
          * @hook @ref hook-account-add_form_get
          */
         bx_alert('account', 'add_form_get', 0, 0, [
-            'form_object' => &$oForm
+            'form_object' => &$oForm,
+            'form_inputs_ref' => &$oForm->aInputs,
         ]);
 
         return $oForm;
@@ -83,7 +84,8 @@ class BxBaseAccountForms extends BxDolProfileForms
          * @hook @ref hook-account-add_form_check
          */
         bx_alert('account', 'add_form_check', 0, 0, array(
-            'form_object' => &$oForm
+            'form_object' => &$oForm,
+            'form_inputs_ref' => &$oForm->aInputs,
         ));
 
         if (!$oForm->isSubmittedAndValid()) {
@@ -104,7 +106,9 @@ class BxBaseAccountForms extends BxDolProfileForms
              */
             bx_alert('account', 'add_form', 0, 0, array(
                     'form_object' => &$oForm,
-                    'form_code' => &$sCode
+                    'form_inputs_ref' => &$oForm->aInputs,
+                    'form_code' => &$sCode,
+                    'form_code_ref' => &$sCode,
             ));
             
             if($bIsApi){

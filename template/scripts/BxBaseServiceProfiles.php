@@ -1277,12 +1277,20 @@ class BxBaseServiceProfiles extends BxDol
         
         bx_alert('system', 'account_profile_switcher', 0, false, array(
             'account_id' => $iAccountId,
+
             'active_profile_id' => &$iActiveProfileId,
             'url_profile_action' => &$sUrlProfileAction,
             'show_all' => &$bShowAll,
             'button_title' => &$sButtonTitle,
             'profile_template' => &$sProfileTemplate,
-            'profiles' => &$aProfiles
+            'profiles' => &$aProfiles,
+
+            'active_profile_id_ref' => &$iActiveProfileId,
+            'url_profile_action_ref' => &$sUrlProfileAction,
+            'show_all_ref' => &$bShowAll,
+            'button_title_ref' => &$sButtonTitle,
+            'profile_template_ref' => &$sProfileTemplate,
+            'profiles_ref' => &$aProfiles,
         ));
 
         $aProfilesData = [];

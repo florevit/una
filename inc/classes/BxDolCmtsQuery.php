@@ -307,7 +307,10 @@ class BxDolCmtsQuery extends BxDolDb
             'system' => $this->_oMain->getSystemInfo(), 
             'join_clause' => &$sJoinClause, 
             'where_clause' => &$sWhereClause, 
-            'params' => &$aBindings
+            'params' => &$aBindings,
+            'join_clause_ref' => &$sJoinClause, 
+            'where_clause_ref' => &$sWhereClause, 
+            'params_ref' => &$aBindings
         ]);
         
         $sQuery = "SELECT
@@ -365,7 +368,11 @@ class BxDolCmtsQuery extends BxDolDb
             'select_clause' => &$sSelectClause, 
             'join_clause' => &$sJoinClause, 
             'where_clause' => &$sWhereClause,  
-            'params' => &$aBindings
+            'params' => &$aBindings,
+            'select_clause_ref' => &$sSelectClause, 
+            'join_clause_ref' => &$sJoinClause, 
+            'where_clause_ref' => &$sWhereClause,  
+            'params_ref' => &$aBindings
         ]);
         
         $sQuery = "SELECT
@@ -479,7 +486,13 @@ class BxDolCmtsQuery extends BxDolDb
             'where_clause' => &$sWhereClause, 
             'order_clause' => &$sOrder, 
             'limit_clause' => &$sLimit, 
-            'params' => &$aBindings
+            'params' => &$aBindings,
+            'select_clause_ref' => &$sQuery, 
+            'join_clause_ref' => &$sJoin, 
+            'where_clause_ref' => &$sWhereClause, 
+            'order_clause_ref' => &$sOrder, 
+            'limit_clause_ref' => &$sLimit, 
+            'params_ref' => &$aBindings
         ]);
 
         $sQuery = $sQuery . $sJoin . " WHERE `{$this->_sTable}`.`cmt_object_id`=:cmt_object_id AND (ISNULL(`p`.`status`) OR `p`.`status`='active' OR `{$this->_sTable}`.`cmt_replies`!=0)" . $sWhereClause . $sOrder . $sLimit;
@@ -614,7 +627,9 @@ class BxDolCmtsQuery extends BxDolDb
                 BxDolSearchExtended::processParams($aParams['search_params'], [
                     'table' => $this->_sTable,
                     'bindings' => &$aMethod['params'][1],
-                    'where_clause' => &$sWhereClause
+                    'where_clause' => &$sWhereClause,
+                    'bindings_ref' => &$aMethod['params'][1],
+                    'where_clause_ref' => &$sWhereClause
                 ]);
 
                 if(($oCf = $this->_oMain->getObjectContentFilter()) !== false)

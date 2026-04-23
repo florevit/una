@@ -549,6 +549,7 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
          */
         bx_alert('meta_keyword', 'url', 0, false, [
             'url' => &$sUrl,
+            'url_ref' => &$sUrl,
             'keyword' => $sKeyword,
             'id' => $iId,
             'object' => $this->_sObject,
@@ -1180,6 +1181,7 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
          */
         bx_alert('meta_' . $sAlertName, 'before_add_multiple', 'mention' == $sAlertName ? 0 : $iId, bx_get_logged_profile_id(), [
             'metas' => &$aMetas,
+            'metas_ref' => &$aMetas,
             'text' => $s,
             'content_id' => $iId, 
             'object' => $this->_sObject
@@ -1211,6 +1213,7 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
                  */
                 bx_alert('meta_' . $sAlertName, 'before_added', $iObjectId, bx_get_logged_profile_id(), [
                     'meta' => &$sMeta, 
+                    'meta_ref' => &$sMeta, 
                     'content_id' => $iId, 
                     'object' => $this->_sObject
                 ]);

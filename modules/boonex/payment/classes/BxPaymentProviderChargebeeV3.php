@@ -308,7 +308,10 @@ class BxPaymentProviderChargebeeV3 extends BxPaymentProviderChargebee
          */
     	bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_get_js_code', 0, 0, [
             'site' => &$sSite,
-            'params' => &$aParams
+            'params' => &$aParams,
+
+            'site_ref' => &$sSite,
+            'param_ref' => &$aParams
     	]);
 
     	return $this->_oModule->_oTemplate->getJsCode($this->_sName, array_merge(array(
@@ -397,7 +400,11 @@ class BxPaymentProviderChargebeeV3 extends BxPaymentProviderChargebee
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_get_button', 0, $iClientId, [
             'type' => &$sType, 
             'site' => &$sSite,
-            'params' => &$aParams
+            'params' => &$aParams,
+
+            'type_ref' => &$sType, 
+            'site_ref' => &$sSite,
+            'params_ref' => &$aParams,
         ]);
 
         $sJsMethod = '';

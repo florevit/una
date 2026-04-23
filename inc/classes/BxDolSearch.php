@@ -812,6 +812,7 @@ class BxDolSearchResult implements iBxDolReplaceable
          */
         bx_alert('simple_search', 'before_get_data', 0, false, [
             'object' => &$this->aCurrent, 
+            'object_ref' => &$this->aCurrent, 
             'mode' => $this->_sMode
         ]);
 
@@ -836,8 +837,10 @@ class BxDolSearchResult implements iBxDolReplaceable
          */
         bx_alert('simple_search', 'get_data', 0, false, [
             'object' => &$this->aCurrent, 
+            'object_ref' => &$this->aCurrent, 
             'mode' => $this->_sMode, 
-            'search_results' => &$aData
+            'search_results' => &$aData,
+            'search_results_ref' => &$aData
         ]);
 
         return $aData;
@@ -878,9 +881,11 @@ class BxDolSearchResult implements iBxDolReplaceable
          */
         bx_alert('simple_search', 'get_query', 0, false, [
             'object' => &$this->aCurrent, 
+            'object_ref' => &$this->aCurrent, 
             'mode' => $this->_sMode, 
             'search_object' => $sObject,
-            'search_query' => &$aQuery
+            'search_query' => &$aQuery,
+            'search_query_ref' => &$aQuery
         ]);
 
         return $aQuery;

@@ -1614,7 +1614,13 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
              *      - `where` - [string]  equal redirect
              * @hook @ref hook-system-check_spam_url
              */
-            bx_alert('system', 'check_spam_url', 0, getLoggedId(), array('is_spam' => &$bSpam, 'content' => &$sUrl, 'where' => 'redirect'));
+            bx_alert('system', 'check_spam_url', 0, getLoggedId(), array(
+                'is_spam' => &$bSpam, 
+                'content' => &$sUrl, 
+                'is_spam_ref' => &$bSpam, 
+                'content_ref' => &$sUrl, 
+                'where' => 'redirect'
+            ));
 
             $sLangKey = $bSpam ? '_sys_redirect_confirmation_harmful' : '_sys_redirect_confirmation';
             return BxDolTemplate::getInstance()->parseHtmlByName('redirect.html', [
@@ -1720,7 +1726,7 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
          *      - `override_result` - [string] by ref, class name for search, can be overridden in hook processing
          * @hook @ref hook-system-search_keyword
          */
-        bx_alert('system', 'search_keyword', 0, 0, array('class' => &$sClass));
+        bx_alert('system', 'search_keyword', 0, 0, array('class' => &$sClass, 'class_name_ref' => &$sClass));
 
         $oSearch = new $sClass(bx_get('section'));
         $oSearch->setLiveSearch(bx_get('live_search') ? 1 : 0);

@@ -453,7 +453,8 @@ class BxPaymentProviderStripeV3 extends BxPaymentProviderStripeBasic implements 
          */
         bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_create_tax', 0, false, [
             'tax_object' => &$oTax, 
-            'tax_params' => &$aTax
+            'tax_params' => &$aTax,
+            'tax_params_ref' => &$aTax,
         ]);
 
         try {
@@ -1055,9 +1056,14 @@ class BxPaymentProviderStripeV3 extends BxPaymentProviderStripeBasic implements 
     	bx_alert($this->_oModule->_oConfig->getName(), $this->_sName . '_get_button', 0, $iClientId, [
             'client_id' => $iClientId,
             'vendor_id' => $iVendorId,
+
             'type' => &$sType, 
             'public_key' => &$sPublicKey,
-            'connected_account_id' => &$sConnectedAccountId
+            'connected_account_id' => &$sConnectedAccountId,
+
+            'type_ref' => &$sType, 
+            'public_key_ref' => &$sPublicKey,
+            'connected_account_id_ref' => &$sConnectedAccountId,
         ]);
 
         $sJsMethod = '';

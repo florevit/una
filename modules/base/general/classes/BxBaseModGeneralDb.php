@@ -107,7 +107,15 @@ class BxBaseModGeneralDb extends BxDolModuleDb
                     'where_clause' => &$sWhereClause, 
                     'order_clause' => &$sOrderClause, 
                     'limit_clause' => &$sLimitClause, 
-                    'bindings' => &$aMethod['params'][1]
+                    'bindings' => &$aMethod['params'][1],
+
+                    'params_ref' => &$aParams, 
+                    'select_clause_ref' => &$sSelectClause, 
+                    'join_clause_ref' => &$sJoinClause, 
+                    'where_clause_ref' => &$sWhereClause, 
+                    'order_clause_ref' => &$sOrderClause, 
+                    'limit_clause_ref' => &$sLimitClause, 
+                    'bindings_ref' => &$aMethod['params'][1]
                 ]);
                 break;
 

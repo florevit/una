@@ -167,8 +167,12 @@ class BxBaseSearchExtended extends BxDolSearchExtended
          */
         bx_alert('search', 'get_data', 0, false, [
             'object' => $this->_aObject, 
+
             'search_params' => &$aParamsSearch, 
-            'search_results' => &$aResults
+            'search_results' => &$aResults,
+
+            'search_params_ref' => &$aParamsSearch, 
+            'search_results_ref' => &$aResults,
         ]);
 
     	if($aResults === false)

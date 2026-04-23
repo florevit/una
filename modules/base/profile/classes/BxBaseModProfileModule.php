@@ -555,7 +555,8 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
          */
         bx_alert($this->getName(), 'profile_name', $aContentInfo['profile_id'], 0, [
             'info' => $aContentInfo, 
-            'display_name' => &$sDisplayName
+            'display_name' => &$sDisplayName,
+            'display_name_ref' => &$sDisplayName
         ]);
         
         return $sDisplayName;
@@ -668,7 +669,8 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
          */
         bx_alert('system', 'get_participating_profiles', $iProfileId, false, [
             'module' => $this->_oConfig->getName(),
-            'profiles' => &$aRet
+            'profiles' => &$aRet,
+            'profiles_ref' => &$aRet
         ]);
 
         return $aRet;

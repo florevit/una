@@ -698,6 +698,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         bx_alert($sModuleName, 'add_live_update', 0, 0, [
             'browse_params' => $aParams,
             'live_update_params' => &$aLiveUpdateParams,
+            'live_update_params_ref' => &$aLiveUpdateParams,
             'override_result' => &$sLiveUpdateCode,
         ]);
 
@@ -751,13 +752,22 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         bx_alert($sModuleName, 'get_view', 0, 0, [
             'params' => $aParams,
             'event_first' => $iEvent,
+
             'back' => &$sBack,
             'empty' => &$sEmpty,
             'content_before' => &$sContentBefore,
             'content' => &$sContent,
             'content_after' => &$sContentAfter,
             'load_more' => &$sLoadMore,
-            'js_content' => &$sJsContent
+            'js_content' => &$sJsContent,
+
+            'back_ref' => &$sBack,
+            'empty_ref' => &$sEmpty,
+            'content_before_ref' => &$sContentBefore,
+            'content_ref' => &$sContent,
+            'content_after_ref' => &$sContentAfter,
+            'load_more_ref' => &$sLoadMore,
+            'js_content_ref' => &$sJsContent,
         ]);
 
         $sJsObjectFilters = '';
@@ -1577,7 +1587,8 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         bx_alert($this->_oConfig->getName(), 'get_reposted_by', 0, 0, [
             'content_id' => $iId,
             'user_ids' => $aUserIds,
-            'users' => &$aTmplUsers
+            'users' => &$aTmplUsers,
+            'users_ref' => &$aTmplUsers,
         ]);
         
         if(empty($aTmplUsers))
@@ -2251,8 +2262,12 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
             'type' => $sType,
             'event' => $aEvent,
             'browse_params' => $aBrowseParams,
+
             'tmpl_code' => &$sTmplCode,
-            'tmpl_vars' => &$aTmplVars
+            'tmpl_vars' => &$aTmplVars,
+
+            'tmpl_code_ref' => &$sTmplCode,
+            'tmpl_vars_ref' => &$aTmplVars,
         ]);
 
         return $this->parseHtmlByContent($sTmplCode, $aTmplVars);
@@ -2401,8 +2416,12 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
             'type' => $sType,
             'event' => $aEvent,
             'browse_params' => $aBrowseParams,
+
             'tmpl_code' => &$sTmplCode,
-            'tmpl_vars' => &$aTmplVars
+            'tmpl_vars' => &$aTmplVars,
+
+            'tmpl_code_ref' => &$sTmplCode,
+            'tmpl_vars_ref' => &$aTmplVars,
         ]);
 
         return $this->parseHtmlByContent($sTmplCode, $aTmplVars);

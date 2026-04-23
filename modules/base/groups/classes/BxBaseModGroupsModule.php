@@ -2440,10 +2440,16 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
          */
         bx_alert('system', 'prepare_alert_params', 0, 0, [
             'unit'=> $sModule, 
+            
             'action' => &$sAction, 
             'object_id' => &$iId, 
             'sender_id' => &$iAuthorId, 
-            'extras' => &$aParams
+            'extras' => &$aParams,
+
+            'action_ref' => &$sAction, 
+            'object_id_ref' => &$iId, 
+            'sender_id_ref' => &$iAuthorId, 
+            'extras_ref' => &$aParams
         ]);
         /**
          * @hooks

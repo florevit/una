@@ -246,7 +246,7 @@ class BxMailchimpModule extends BxDolModule
         if(($sResetPasswordUrl = bx_get_reset_password_link($sEmail)) !== false)
             $aMarkers['RPASS_URL'] = $sResetPasswordUrl;
 
-        bx_alert($this->_aModule['name'], 'user_fields', $iAccountId, $iProfileId, array('email' => $sEmail, 'markers' => &$aMarkers));	
+        bx_alert($this->_aModule['name'], 'user_fields', $iAccountId, $iProfileId, array('email' => $sEmail, 'markers' => &$aMarkers, 'markers_ref' => &$aMarkers));
 
         return array (
             'email_address' => $oAccount->getEmail(),

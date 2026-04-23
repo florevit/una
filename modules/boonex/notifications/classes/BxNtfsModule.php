@@ -473,7 +473,9 @@ class BxNtfsModule extends BxBaseModNotificationsModule
             bx_alert($sModule, 'is_notification', 0, 0, [
                 'browse_params' => $aBrowseParams,
                 'event' => &$aEvent, 
-                'event_canceled' => &$bEventCanceled
+                'event_canceled' => &$bEventCanceled,
+                'event_ref' => &$aEvent, 
+                'event_canceled_ref' => &$bEventCanceled
             ]);
 
             if($bEventCanceled)
@@ -659,9 +661,14 @@ class BxNtfsModule extends BxBaseModNotificationsModule
          */
         bx_alert($this->_aModule['name'], 'before_send_notification_push', 0, 0, [
             'profile_id' => $iProfile, 
+
             'content' => &$aContent, 
             'setting' => &$aSettings, 
-            'subject' => &$sSubject
+            'subject' => &$sSubject,
+
+            'content_ref' => &$aContent, 
+            'setting_ref' => &$aSettings, 
+            'subject_ref' => &$sSubject,
         ]);
         
         if (!$aContent)

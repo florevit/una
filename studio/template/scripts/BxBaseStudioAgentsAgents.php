@@ -81,6 +81,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
 
+        if ($oForm->isSubmitted() && $oForm->getCleanValue('trigger') == 'message') {
+            $aAgent = $this->_getAgentWithProfile($oForm->getCleanValue('profile_id'));
+            if ($aAgent) {
+                 $oForm->aInputs['profile_id']['error'] = _t('_sys_agents_form_field_err_profile_has_agent', $aAgent['name']);
+                 $oForm->setValid(false);
+            }
+        }
+
         if($oForm->isSubmittedAndValid()) {
             $aValsToAdd = [
                 'added' => time()
@@ -141,6 +149,14 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         $aForm = $this->_getFormEdit($sAction, $aAgent);
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
+
+        if ($oForm->isSubmitted() && $oForm->getCleanValue('trigger') == 'message') {
+            $aAgent = $this->_getAgentWithProfile($oForm->getCleanValue('profile_id'), $iId);
+            if ($aAgent) {
+                 $oForm->aInputs['profile_id']['error'] = _t('_sys_agents_form_field_err_profile_has_agent', $aAgent['name']);
+                 $oForm->setValid(false);
+            }
+        }
 
         if($oForm->isSubmittedAndValid()) {
             $aValsToAdd = [];
@@ -607,6 +623,17 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         if ($aRow['trigger'] != 'manual' && $aRow['trigger'] != 'scheduler')
             return '';
         return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
+
+    protected function _getAgentWithProfile($iProfileId, $iExcludeAgentId = 0)
+    {
+        $aAgents = BxDolAi::getInstance()->getAgentsByProfileId($iProfileId);
+        foreach($aAgents as $aAgent) {
+            if($aAgent['id'] != $iExcludeAgentId)
+                return $aAgent;
+        }
+
+        return null;
     }
 }
 

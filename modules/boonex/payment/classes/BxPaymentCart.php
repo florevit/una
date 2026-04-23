@@ -208,6 +208,10 @@ class BxPaymentCart extends BxBaseModPaymentCart
 
             'cart' => &$aCart,
             'cart_items' => &$sCartItems,
+
+            'cart_ref' => &$aCart,
+            'cart_items_ref' => &$sCartItems,
+
             'override_result' => &$sCartItemsResult,
         ]);
 

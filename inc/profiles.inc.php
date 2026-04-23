@@ -300,6 +300,7 @@ function bx_check_password($sLogin, $sPassword, $iRole = BX_DOL_ROLE_MEMBER)
             'info' => $aAccountInfo,
 			'pwd' => $sPassword,
             'password' => &$sPassCheck,
+            'password_ref' => &$sPassCheck,
         ));
     
     if ($sErrorMsg = bx_check_login($aAccountInfo['id'], $sPassCheck, $iRole)){

@@ -367,7 +367,11 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
          *      - `display_name` - [bool] by ref, display profile name, can be overridden in hook processing
          * @hook @ref hook-profile-profile_name
          */
-        bx_alert('profile', 'profile_name', $iProfileId, 0, array('info' => $aInfo, 'display_name' => &$sDisplayName));
+        bx_alert('profile', 'profile_name', $iProfileId, 0, array(
+            'info' => $aInfo, 
+            'display_name' => &$sDisplayName,
+            'display_name_ref' => &$sDisplayName
+        ));
         return $sDisplayName;
     }
     
@@ -576,7 +580,7 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
          *      - `type` - [string] module name
          * @hook @ref hook-profile-before_delete
          */
-        bx_alert('profile', 'before_delete', $ID, 0, array('delete_with_content' => $bDeleteWithContent, 'stop_deletion' => &$isStopDeletion, 'type' => $aProfileInfo['type']));
+        bx_alert('profile', 'before_delete', $ID, 0, array('delete_with_content' => $bDeleteWithContent, 'stop_deletion' => &$isStopDeletion, 'stop_deletion_ref' => &$isStopDeletion, 'type' => $aProfileInfo['type']));
         if ($isStopDeletion)
             return false;
 
@@ -661,7 +665,7 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
          *      - `profile_id` - [int] by ref, iprofile_id, can be overridden in hook processing
          * @hook @ref hook-profile-add
          */
-        bx_alert('profile', 'add', $iProfileId, 0, array('module' => $sType, 'content' => $iContentId, 'account' => $iAccountId, 'status' => $sStatus, 'action' => $iAction, 'profile_id' => &$iProfileId));
+        bx_alert('profile', 'add', $iProfileId, 0, array('module' => $sType, 'content' => $iContentId, 'account' => $iAccountId, 'status' => $sStatus, 'action' => $iAction, 'profile_id' => &$iProfileId, 'profile_id_ref' => &$iProfileId));
         return $iProfileId;
     }
 
@@ -759,7 +763,13 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
          *      - `send_email_notification` - [bool] by ref, if need to send notification about changed status = true, otherwise false, can be overridden in hook processing
          * @hook @ref hook-profile-approve
          */
-        bx_alert('profile', $sAlertActionName, $iProfileId, false, array('action' => $iAction, 'status' => &$sStatus, 'send_email_notification' => &$bSendEmailNotification));
+        bx_alert('profile', $sAlertActionName, $iProfileId, false, array(
+            'action' => $iAction, 
+            'status' => &$sStatus, 
+            'status_ref' => &$sStatus, 
+            'send_email_notification' => &$bSendEmailNotification,
+            'send_email_notification_ref' => &$bSendEmailNotification
+        ));
         
         $this->doAudit('_sys_audit_action_set_status_' . $sStatus);
         

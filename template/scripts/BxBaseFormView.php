@@ -350,7 +350,11 @@ class BxBaseFormView extends BxDolForm
             'dynamic' => $this->_bDynamicMode,
             'object' => &$this,
             'code' => &$this->sCode,
-            'include' => &$sInclude
+            'include' => &$sInclude,
+
+            'code_ref' => &$this->sCode,
+            'include_ref' => &$sInclude,
+            'form_inputs_ref' => &$this->aInputs,
         ]);
 
         if($this->sCode === false)
@@ -383,6 +387,8 @@ class BxBaseFormView extends BxDolForm
             'dynamic' => $this->_bDynamicMode,
             'object' => &$this,
             'code' => &$this->sCode,
+            'code_ref' => &$this->sCode,
+            'form_inputs_ref' => &$this->aInputs,
         ]);
 
         if($this->sCode === false) {

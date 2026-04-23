@@ -67,7 +67,7 @@ class BxIntercomModule extends BxDolModule
             $aSettings['all profiles'] = $sProfiles;
         }
 
-        bx_alert('bx_intercom', 'integration', $oProfile ? $oProfile->id() : 0, $oProfile ? $oProfile->id() : 0, array('settings' => &$aSettings));
+        bx_alert('bx_intercom', 'integration', $oProfile ? $oProfile->id() : 0, $oProfile ? $oProfile->id() : 0, array('settings' => &$aSettings, 'settings_ref' => &$aSettings));
         
         $sSettings = json_encode($aSettings);
 

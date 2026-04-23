@@ -167,6 +167,10 @@ class BxDonationsTemplate extends BxBaseModGeneralTemplate
         bx_alert($this->_oConfig->getName(), 'donate', 0, 0, [
             'tmpl_name' => &$sTmplName,
             'tmpl_vars' => &$aTmplVars,
+
+            'tmpl_name_ref' => &$sTmplName,
+            'tmpl_vars_ref' => &$aTmplVars,
+
             'override_result' => &$sResult
         ]);
         if($sResult !== null)

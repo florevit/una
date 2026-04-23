@@ -130,8 +130,16 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'check_private_content' => $isCheckPrivateContent,
             'template' => $mixedTemplate,
             'params' => $aParams,
+
             'tmpl_name' => &$sTemplate,
-            'tmpl_vars' => &$aVars
+            'tmpl_vars' => &$aVars,
+            'tmpl_name_ref' => &$sTemplate,
+            'tmpl_vars_ref' => &$aVars,
+
+            'tmpl_name_ref' => &$sTemplate,
+            'tmpl_vars_ref' => &$aVars,
+            'tmpl_name_ref' => &$sTemplate,
+            'tmpl_vars_ref' => &$aVars
         ];
         
         /**
@@ -489,8 +497,12 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                    'transcoder' => $CNF['OBJECT_IMAGES_TRANSCODER_COVER'],
                    'field' => $CNF['FIELD_COVER'],
                    'is_background' => true,
+
                    'add_class' => &$sAddClassCover,
-                   'add_code' => &$sAddCode
+                   'add_code' => &$sAddCode,
+
+                   'add_class_ref' => &$sAddClassCover,
+                   'add_code_ref' => &$sAddCode
                 ]);
             }
             
@@ -562,8 +574,12 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                    'transcoder' => $CNF['OBJECT_IMAGES_TRANSCODER_AVATAR_BIG'],
                    'field' => $CNF['FIELD_PICTURE'],
                    'is_background' => false,
+
                    'add_class' => &$sAddClassPicture,
-                   'add_code' => &$sAddCode
+                   'add_code' => &$sAddCode,
+
+                   'add_class_ref' => &$sAddClassPicture,
+                   'add_code_ref' => &$sAddCode,
                 ]); 
             }
             

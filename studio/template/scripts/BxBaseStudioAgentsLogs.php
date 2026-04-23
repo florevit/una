@@ -64,14 +64,7 @@ class BxBaseStudioAgentsLogs extends BxDolStudioAgentsGrid
 
     protected function _getCellContext ($mixedValue, $sKey, $aField, $aRow) 
     {
-        $sPopupString = '<pre>' . $mixedValue . '</pre>';
-        /*
-        if (preg_match('/^\[message\]\s{/', $mixedValue)) {
-            // $sPopupString = json_encode(json_decode(preg_replace('/^\[message\]\s/', '', $mixedValue), true), JSON_PRETTY_PRINT);
-            $sPopupString = preg_replace('/^\[message\]\s/', '', $mixedValue);
-            //$sPopupString = json_last_error_msg();//json_encode(json_decode(preg_replace('/^\[message\]\s/', '', $mixedValue), true), JSON_PRETTY_PRINT);
-        } 
-        */
+        $sPopupString = '<div style="width: 100vw; max-width: 800px;"><textarea class="bx-def-font-inputs bx-form-input-textarea">' . $mixedValue . '</textarea></div>';
         $mixedValue = BxTemplFunctions::getInstance()->getStringWithLimitedLength($mixedValue, 55, true, true, $sPopupString);
         return parent::_getCellDefault ($mixedValue, $sKey, $aField, $aRow);
     } 

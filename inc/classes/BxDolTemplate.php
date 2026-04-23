@@ -3077,6 +3077,8 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
                         'system' => $bSystem,
                         'url' => &$sUrl,
                         'path' => &$sPath,
+                        'url_ref' => &$sUrl,
+                        'path_ref' => &$sPath,
                     ]);
 
                     if($bDynamic)
@@ -3858,7 +3860,12 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
          *      - `page_content` - [array] by ref, page content values, can be overridden in hook processing
          * @hook @ref hook-system-design_before_output
          */
-        bx_alert('system', 'design_before_output', 0, 0, ['page' => &$this->aPage, 'page_content' => &$this->aPageContent]);
+        bx_alert('system', 'design_before_output', 0, 0, [
+            'page' => &$this->aPage, 
+            'page_content' => &$this->aPageContent,
+            'page_ref' => &$this->aPage, 
+            'page_content_ref' => &$this->aPageContent
+        ]);
 
         header( 'Content-type: text/html; charset=utf-8' );
         $sXFrameOpts = getParam('sys_x_frame_options');
