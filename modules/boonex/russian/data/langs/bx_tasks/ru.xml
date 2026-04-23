@@ -147,7 +147,6 @@
 
     <string name="_bx_tasks_form_pv_input_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_pv_input_color"><![CDATA[Цвет]]></string>
-    <string name="_bx_tasks_form_pv_input_color_inf"><![CDATA[Используйте цветовую кодировку RGB.]]></string>
     <string name="_bx_tasks_form_pv_input_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_tasks_form_pv_input_cancel"><![CDATA[Отменить]]></string>
     <string name="_bx_tasks_form_pv_input_err"><![CDATA[This field is essential. Please, fill it in.]]></string>

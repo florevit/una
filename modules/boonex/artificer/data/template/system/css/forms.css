@@ -412,6 +412,15 @@ import url(../../../../../../../template/css/forms.css);
     -webkit-appearance:none;
 }
 
+/* MiniColors plug-in */
+.bx-form-input-wrapper.bx-form-input-wrapper-text .minicolors-theme-bootstrap .minicolors-swatch {
+    top: 0.5rem;
+    left: 0.5rem;
+
+    width: 1.5625rem;
+    height: 1.5625rem;
+}
+
 /* tiny mce */
 .bx-form-input-wrapper-html .gray-theme.fr-toolbar.fr-top{
    border-radius: .375rem .375rem 0 0 !important; 

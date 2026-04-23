@@ -206,14 +206,14 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     protected function genCustomViewRowValueStickers (&$aInput)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
         if(empty($aInput['value']) || !is_array($aInput['value']))
-            return '';
+            return null;
 
         $aStickers = $this->_oModule->getStickers($aInput['value'], $this->_iContextId);
+        if(!$aStickers)
+            return null;
 
-        return $aStickers ? $this->_oModule->_oTemplate->getStickers($aStickers) : '';
+        return $this->_oModule->_oTemplate->getStickers($aStickers);
     }
 
     protected function genCustomViewRowValueGhIssueUrl(&$aInput)

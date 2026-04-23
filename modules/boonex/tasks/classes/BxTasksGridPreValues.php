@@ -11,11 +11,8 @@
 class BxTasksGridPreValues extends BxBaseModGeneralGrid
 {
     protected $_iContextPid;
-    
-    protected $_sFilter1Name;   //--- list
-    protected $_sFilter1Value;
-    protected $_aFilter1Values;
 
+    protected $_sList;
     protected $_aListInfo;
 
     public function __construct ($aOptions, $oTemplate = false)
@@ -26,20 +23,9 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
 
         if(($sFfName = 'profile_id') && ($iValue = bx_get($sFfName)) !== false) 
             $this->setContextPid($iValue);
-
-        /*
-         * Filter by list
-         */
-        $this->_initFilter(1, $this->_oModule->getPreLists());
-
-        if(($sFfName = 'filter') && ($sValue = bx_get($sFfName)) !== false) 
-            $this->_parseFilterValue($sValue);
-
-        if($this->_sFilter1Value)
-            $this->_aListInfo = $this->_oModule->_oDb->getPreLists([
-                'sample' => 'name', 
-                'name' => $this->_sFilter1Value
-            ]);
+        
+        if(($sFfName = 'list') && ($sValue = bx_get($sFfName)) !== false) 
+            $this->setList($sValue);
     }
 
     public function setContextPid($iContextPid)
@@ -48,9 +34,20 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         $this->_aQueryAppend['profile_id'] = $this->_iContextPid;
     }
 
+    public function setList($sList)
+    {
+        $this->_sList = bx_process_input($sList);
+        $this->_aQueryAppend['list'] = $this->_sList;
+
+        $this->_aListInfo = $this->_oModule->_oDb->getPreLists([
+            'sample' => 'name', 
+            'name' => $this->_sList
+        ]);
+    }
+
     public function performActionAdd()
     {
-        if(!$this->_sFilter1Value)
+        if(!$this->_sList)
             return echoJson(['msg' => _t('_bx_tasks_txt_err_empty_pre_list')]);
 
         $sAction = 'add';
@@ -58,7 +55,7 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         $oForm = $this->_getForm($sAction);
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            if(($iId = (int)$oForm->insert(['context_id' => $this->_iContextPid])) != 0)
+            if(($iId = (int)$oForm->insert(['context_id' => $this->_iContextPid, 'list' => $this->_sList])) != 0)
                 $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
             else
                 $aRes = ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
@@ -105,28 +102,34 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
     }
 
+    protected function _getActionAdd($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
+    {
+        if(!$this->_sList)
+            $isDisabled = true;
+
+        return parent::_getActionDefault($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
+
     protected function _getFilterOnChange()
     {
-        return $this->_oModule->_oConfig->getJsObject('pre_values') . '.onChangeFilter(this)';
+        return $this->_oModule->_oConfig->getJsObject('pre_values') . '.onChangeList(this)';
     }
 
     protected function _getFilterControls()
     {
         parent::_getFilterControls();
 
-        $sContent = $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values, '_bx_tasks_grid_filter_item_title_pv_select_one_list');
+        $sContent = $this->_getFilterSelectOne('list', $this->_sList, $this->_oModule->getPreLists(), '_bx_tasks_grid_filter_item_title_pv_select_one_list');
         $sContent .= $this->_getSearchInput();
         return $sContent;
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
-        $this->_parseFilterValue($sFilter);
-
-        if(!$this->_iContextPid || !$this->_sFilter1Value)
+        if(!$this->_iContextPid || !$this->_sList)
             return [];
 
-        $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND `context_id`=? AND `list`=?', $this->_iContextPid, $this->_sFilter1Value);
+        $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND `context_id`=? AND `list`=?', $this->_iContextPid, $this->_sList);
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }
@@ -139,7 +142,7 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
             'o' => $this->_sObject, 
             'a' => $sAction,
             'profile_id' => $this->_iContextPid,
-            $this->_sFilter1Name => $this->_sFilter1Value
+            'list' => $this->_sList
         ];
 
         if($aItem)
@@ -161,24 +164,26 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
                 ],
             ],
             'inputs' => [
-                'list' => [
-                    'type' => 'hidden',
-                    'name' => 'list',
-                    'value' => $this->_sFilter1Value,
-                    'db' => [
-                        'pass' => 'Xss',
-                    ],
-                ],
                 'value' => [
                     'type' => 'hidden',
                     'name' => 'value',
                     'value' => (int)$this->_oModule->_oDb->getPreValues([
                         'sample' => 'value_to_use', 
                         'context_id' => $this->_iContextPid, 
-                        'list' => $this->_sFilter1Value
+                        'list' => $this->_sList
                     ]),
                     'db' => [
                         'pass' => 'Int',
+                    ]
+                ],
+                'color' => [
+                    'type' => 'rgb',
+                    'name' => 'color',
+                    'caption' => _t('_bx_tasks_form_pv_input_color'),
+                    'value' => '',
+                    'required' => '0',
+                    'db' => [
+                        'pass' => 'Xss',
                     ]
                 ],
                 'title' => [
@@ -195,17 +200,6 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
                         'params' => [],
                         'error' => _t('_bx_tasks_form_pv_input_err'),
                     ],
-                ],
-                'color' => [
-                    'type' => 'text',
-                    'name' => 'color',
-                    'caption' => _t('_bx_tasks_form_pv_input_color'),
-                    'info' => _t('_bx_tasks_form_pv_input_color_inf'),
-                    'value' => '',
-                    'required' => '0',
-                    'db' => [
-                        'pass' => 'Xss',
-                    ]
                 ],
                 'controls' => [
                     'name' => 'controls',

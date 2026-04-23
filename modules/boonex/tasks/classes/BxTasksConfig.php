@@ -104,6 +104,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'URL_UPDATED' => 'page.php?i=tasks-updated',
             'URL_MANAGE_COMMON' => 'page.php?i=tasks-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=tasks-administration',
+            'URL_CONTEXT_VALUES' => 'page.php?i=tasks-context-values',
 
             // some params
             'PARAM_AUTO_APPROVE' => 'bx_tasks_enable_auto_approve',

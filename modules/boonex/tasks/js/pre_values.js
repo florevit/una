@@ -12,15 +12,20 @@ function BxTasksPreValues(oOptions)
     BxBaseModTextManageTools.call(this, oOptions);
 
     this._sObjName = oOptions.sObjName == undefined ? 'oBxTasksPreValues' : oOptions.sObjName;
+    this._sPageUrl = oOptions.sPageUrl == undefined ? '' : oOptions.sPageUrl;
+    
 }
 
 BxTasksPreValues.prototype = Object.create(BxBaseModTextManageTools.prototype);
 BxTasksPreValues.prototype.constructor = BxTasksPreValues;
 
+BxTasksPreValues.prototype.onChangeList = function(oElement) {
+    var sList = $(oElement).val();
+    document.location.href = this._sPageUrl + (sList.length > 0 ? '&list=' + sList : ''); 
+};
+
 BxTasksPreValues.prototype.onChangeFilter = function(oFilter) {
     var $this = this;
-    var oFilter1 = $('#bx-grid-filter1-' + this._sObjNameGrid);
-    var sValueFilter1 = oFilter1.length > 0 ? oFilter1.val() : '';
 
     var oSearch = $('#bx-grid-search-' + this._sObjNameGrid);
     var sValueSearch = oSearch.length > 0 ? oSearch.val() : '';
@@ -29,7 +34,7 @@ BxTasksPreValues.prototype.onChangeFilter = function(oFilter) {
 
     clearTimeout($this._iSearchTimeoutId);
     $this._iSearchTimeoutId = setTimeout(function () {
-        glGrids[$this._sObjNameGrid].setFilter(sValueFilter1 + $this._sParamsDivider + sValueSearch, true);
+        glGrids[$this._sObjNameGrid].setFilter(sValueSearch, true);
     }, 500);
 };
 

@@ -519,6 +519,7 @@ class BxTasksDb extends BxBaseModTextDb
                     ];
 
                     $sWhereClause = "AND `tpv`.`context_id` = :context_id AND `tpv`.`list` = :list";
+                    $sOrderClause = "`tpv`.`order` ASC";
                     break;
             }
 

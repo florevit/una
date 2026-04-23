@@ -476,7 +476,8 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $this->_oTemplate->addJsTranslation(['_sys_grid_search']);
         $aResult = [
             'content' => $this->_oTemplate->getJsCode('pre_values', [
-                'sObjNameGrid' => $sGrid
+                'sObjNameGrid' => $sGrid,
+                'sPageUrl' => BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink($CNF['URL_CONTEXT_VALUES'], ['profile_id' => $iContextPid])
             ]) . $oGrid->getCode()
         ];
 
