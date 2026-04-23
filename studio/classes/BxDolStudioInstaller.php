@@ -981,6 +981,9 @@ class BxDolStudioInstaller extends BxDolInstallerUtils
         // delete SEO links
         BxDolPage::deleteSeoLinkByModule($this->_aConfig['name']);
 
+        // delete alerts
+        BxDolAlerts::deleteModuleAlerts($this->_aConfig['name']);
+
         // queue for deletion storage files
         if(!empty($this->_aConfig['storages']) && is_array($this->_aConfig['storages']))        
             foreach($this->_aConfig['storages'] as $s)
