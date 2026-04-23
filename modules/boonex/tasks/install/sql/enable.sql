@@ -110,6 +110,13 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 ('bx_tasks_context_time_administration', 2, 'bx_tasks', '_bx_tasks_page_block_title_sys_menu_in_context', '_bx_tasks_page_block_title_menu_in_context', 13, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:22:"get_block_menu_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 1),
 ('bx_tasks_context_time_administration', 3, 'bx_tasks', '_bx_tasks_page_block_title_sys_entries_time_in_context_administration', '_bx_tasks_page_block_title_entries_time_in_context_administration', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:2:{i:0;s:14:"administration";i:1;s:12:"{profile_id}";}}', 0, 0, 1, 1);
 
+-- PAGE: pre lists and values
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_context_pre_values', '_bx_tasks_page_title_sys_context_pre_values', '_bx_tasks_page_title_context_pre_values', 'bx_tasks', 5, 2147483647, 1, 'tasks-context-values', 'page.php?i=tasks-context-values', '', '', '', 0, 1, 0, 'BxTasksPageAuthor', 'modules/boonex/tasks/classes/BxTasksPageAuthor.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_tasks_context_pre_values', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_context_pre_values', '_bx_tasks_page_block_title_context_pre_values', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:20:"get_block_pre_values";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 1, 0);
+
 -- PAGE: manage own entries
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_manage', '_bx_tasks_page_title_sys_manage', '_bx_tasks_page_title_manage', 'bx_tasks', 5, 2147483647, 1, 'tasks-manage', 'page.php?i=tasks-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
@@ -233,6 +240,17 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_tasks_view_context_submenu', 'bx_tasks', 'tasks-context-time', '_bx_tasks_menu_item_title_system_view_context_time', '_bx_tasks_menu_item_title_view_context_time', 'page.php?i=tasks-context-time&profile_id={profile_id}', '', '', '', '', 2147483647, '', 1, 0, 2),
 ('bx_tasks_view_context_submenu', 'bx_tasks', 'tasks-context-time-administration', '_bx_tasks_menu_item_title_system_view_context_time_administration', '_bx_tasks_menu_item_title_view_context_time_administration', 'page.php?i=tasks-context-time-administration&profile_id={profile_id}', '', '', '', '', 2147483647, 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:31:"check_allowed_manage_in_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 3);
 
+-- MENU: manage context sub-menu
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_manage_context_submenu', '_bx_tasks_menu_title_manage_context_submenu', 'bx_tasks_manage_context_submenu', 'bx_tasks', 6, 0, 1, 'BxTasksMenuManageContext', 'modules/boonex/tasks/classes/BxTasksMenuManageContext.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_tasks_manage_context_submenu', 'bx_tasks', '_bx_tasks_menu_set_title_manage_context_submenu', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES 
+('bx_tasks_manage_context_submenu', 'bx_tasks', 'tasks-context-values', '_bx_tasks_menu_item_title_system_manage_context_pre_values', '_bx_tasks_menu_item_title_manage_context_pre_values', 'page.php?i=tasks-context-values&profile_id={context_pid}', '', '', '', '', 2147483647, '', 1, 0, 1),
+('bx_tasks_manage_context_submenu', 'bx_tasks', 'tasks-context-settings', '_bx_tasks_menu_item_title_system_manage_context_settings', '_bx_tasks_menu_item_title_manage_context_settings', 'javascript:void(0)', '{js_object_view}.processContext({context_pid}, this)', '', '', '', 2147483647, '', 1, 0, 2);
+
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_manage_tools_submenu', '_bx_tasks_menu_title_manage_tools_submenu', 'bx_tasks_manage_tools_submenu', 'bx_tasks', 26, 0, 1, '', '');
@@ -258,6 +276,13 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 --('bx_tasks_menu_manage_tools', 'bx_tasks', 'delete-with-content', '_bx_tasks_menu_item_title_system_delete_with_content', '_bx_tasks_menu_item_title_delete_with_content', 'javascript:void(0)', 'javascript:{js_object}.onClickDeleteWithContent({content_id});', '_self', 'far trash-alt', '', 128, 1, 0, 0);
 
 -- MENU: browse
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_browse', '_bx_tasks_menu_title_browse', 'bx_tasks_browse', 'bx_tasks', 32, 0, 1, 'BxTasksMenuBrowse', 'modules/boonex/tasks/classes/BxTasksMenuBrowse.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_tasks_browse', 'bx_tasks', '_bx_tasks_menu_set_title_browse', 0);
+
+-- MENU: 
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_browse', '_bx_tasks_menu_title_browse', 'bx_tasks_browse', 'bx_tasks', 32, 0, 1, 'BxTasksMenuBrowse', 'modules/boonex/tasks/classes/BxTasksMenuBrowse.php');
 
@@ -469,8 +494,23 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 ('bx_tasks_time_context_common', 'single', 'edit', '_bx_tasks_grid_action_title_tm_edit', 'pencil-alt', 1, 0, 1),
 ('bx_tasks_time_context_common', 'single', 'delete', '_bx_tasks_grid_action_title_tm_delete', 'remove', 1, 1, 2);
 
--- UPLOADERS
+-- GRIDS: pre lists and values
+INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
+('bx_tasks_pre_values', 'Sql', 'SELECT `tpv`.*, `tpl`.`title` AS `list_title`, `tpl`.`use_color` AS `list_color`, `tpl`.`use_multiselect` AS `list_multiselect` FROM `bx_tasks_pre_values` AS `tpv` INNER JOIN `bx_tasks_pre_lists` AS `tpl` ON `tpv`.`list`=`tpl`.`name` WHERE 1 ', 'bx_tasks_pre_values', 'id', 'order', '', '', 20, NULL, 'start', '', 'tpv`.`name,tpv`.`title,tpl`.`title', '', 'like', '', '', 2147483647, 'BxTasksGridPreValues', 'modules/boonex/tasks/classes/BxTasksGridPreValues.php');
 
+INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
+('bx_tasks_pre_values', 'order', '', '10%', 0, 0, '', 1),
+('bx_tasks_pre_values', 'title', '_bx_tasks_grid_column_title_pv_title', '70%', 0, 0, '', 2),
+('bx_tasks_pre_values', 'actions', '', '20%', 0, 0, '', 3);
+
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
+('bx_tasks_pre_values', 'independent', 'add', '_bx_tasks_grid_action_title_pv_add', '', 0, 0, 1),
+('bx_tasks_pre_values', 'bulk', 'delete', '_bx_tasks_grid_action_title_pv_delete', '', 0, 1, 1),
+('bx_tasks_pre_values', 'single', 'edit', '_bx_tasks_grid_action_title_pv_edit', 'pencil-alt', 1, 0, 1),
+('bx_tasks_pre_values', 'single', 'delete', '_bx_tasks_grid_action_title_pv_delete', 'remove', 1, 1, 2);
+
+
+-- UPLOADERS
 INSERT INTO `sys_objects_uploader` (`object`, `active`, `override_class_name`, `override_class_file`) VALUES
 ('bx_tasks_html5', 1, 'BxTasksUploaderHTML5', 'modules/boonex/tasks/classes/BxTasksUploaderHTML5.php'),
 ('bx_tasks_record_video', 1, 'BxTasksUploaderRecordVideo', 'modules/boonex/tasks/classes/BxTasksUploaderRecordVideo.php'),

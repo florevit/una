@@ -242,9 +242,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $oModule = $this->getModule();
 
-        $_iContextId = abs($iContextId);
-        $bAllowAdd = $oModule->isAllowAdd($_iContextId);
-        $bAllowManage = $oModule->isAllowManageByContext($_iContextId);
+        $bAllowAdd = $oModule->isAllowAdd($iContextId);
+        $bAllowManage = $oModule->isAllowManageByContext($iContextId);
 
         $aTmplVarsFilterItems = [];
 
@@ -314,9 +313,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $aPriorities = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_PRIORITIES']);
         $aStates = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_STATES']);
 
-        $_iContextId = abs($iContextId);
-        $bAllowAdd = $oModule->isAllowAdd($_iContextId);
-        $bAllowManage = $oModule->isAllowManageByContext($_iContextId);
+        $bAllowAdd = $oModule->isAllowAdd($iContextId);
+        $bAllowManage = $oModule->isAllowManageByContext($iContextId);
 
         $aTmplVarsLists = [];
 
@@ -427,6 +425,25 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         return $this->parseHtmlByName('tasks.html', [
             'html_id' => $this->_oConfig->getHtmlIds('tasks'),
             'bx_repeat:task_lists' => $aTmplVarsLists,
+        ]);
+    }
+
+    public function getStickers($aStickers)
+    {
+        $aTmplVarsStickers = [];
+        foreach($aStickers as $aSticker)
+            $aTmplVarsStickers[] = [
+                'title' => $aSticker['title'],
+                'bx_if:show_color' => [
+                    'condition' => $aSticker['color'] != '',
+                    'content' => [
+                        'color' => $aSticker['color']
+                    ]
+                ]
+            ];
+
+        return $this->parseHtmlByName('stickers.html', [
+            'bx_repeat:stickers' => $aTmplVarsStickers
         ]);
     }
 }

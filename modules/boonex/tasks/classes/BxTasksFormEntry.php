@@ -8,6 +8,14 @@
  * @{
  */
 
+class BxTasksFormEntryChecker extends BxDolFormChecker
+{
+    public function isTrackableField($aInput)
+    {
+        return parent::isTrackableField($aInput) || in_array($aInput['name'], ['stickers', 'type']);
+    }
+}
+
 /**
  * Create/Edit entry form
  */
@@ -23,6 +31,9 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     {
         $this->MODULE = 'bx_tasks';
 
+        $aInfo['params'] ??= [];
+        $aInfo['params']['checker'] = 'BxTasksFormEntryChecker';
+
         parent::__construct($aInfo, $oTemplate);
 
         $this->_aProperties = $this->_oModule->_oConfig->getProperties();
@@ -30,7 +41,41 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     public function setContextId($iContextId)
     {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
         $this->_iContextId = $iContextId;
+
+        if(($sKf = 'FIELD_TYPE') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])){
+            $aItems = $this->_oModule->_oDb->getPreValues([
+                'sample' => 'context_list', 
+                'context_id' => $this->_iContextId, 
+                'list' => 'type'
+            ]);
+
+            if($aItems && is_array($aItems)) {
+                $this->aInputs[$CNF[$sKf]]['values'] = [
+                    '' => _t('_sys_please_select')
+                ];
+
+                foreach($aItems as $aItem)
+                    $this->aInputs[$CNF[$sKf]]['values'][$aItem['value']] = $aItem['title'];
+            }
+        }
+
+        if(($sKf = 'FIELD_STICKERS') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])){
+            $aItems = $this->_oModule->_oDb->getPreValues([
+                'sample' => 'context_list', 
+                'context_id' => $this->_iContextId, 
+                'list' => 'sticker'
+            ]);
+
+            if($aItems && is_array($aItems)) {
+                $this->aInputs[$CNF[$sKf]]['values'] = [];
+
+                foreach($aItems as $aItem)
+                    $this->aInputs[$CNF[$sKf]]['values'][$aItem['value']] = $aItem['title'];
+            }
+        }
     }
 
     public function genViewRowValue(&$aInput)
@@ -157,6 +202,18 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             $o->onObjectDelete();
 
         return parent::delete($iContentId);
+    }
+
+    protected function genCustomViewRowValueStickers (&$aInput)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(empty($aInput['value']) || !is_array($aInput['value']))
+            return '';
+
+        $aStickers = $this->_oModule->getStickers($aInput['value'], $this->_iContextId);
+
+        return $aStickers ? $this->_oModule->_oTemplate->getStickers($aStickers) : '';
     }
 
     protected function genCustomViewRowValueGhIssueUrl(&$aInput)

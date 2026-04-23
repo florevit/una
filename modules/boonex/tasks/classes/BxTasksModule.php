@@ -85,13 +85,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function actionProcessContextForm($iContextId)
     {
-        $_iContextId = abs($iContextId);
-        if(!$this->isAllowManageByContext($_iContextId))
+        if(!$this->isAllowManageByContext($iContextId))
             return;
 
         $CNF = &$this->_oConfig->CNF;
 
-        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $_iContextId]);
+        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $iContextId]);
         $bContext = !empty($aContext) && is_array($aContext);
 
         $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_CONTEXT'], $CNF['OBJECT_FORM_CONTEXT_DISPLAY_EDIT']);
@@ -99,9 +98,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $oForm->initChecker($aContext);
         if($oForm->isSubmittedAndValid()) {
             if(!$bContext)
-                $oForm->insert(['id' => $_iContextId]);
+                $oForm->insert(['id' => $iContextId]);
             else
-                $oForm->update($_iContextId);
+                $oForm->update($iContextId);
 
             echoJson([
                 'eval' => $this->_oConfig->getJsObject('tasks') . '.hidePopup(oData, ' . $iContextId . ')',
@@ -197,9 +196,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 	
     public function actionProcessTaskForm($iContextId, $iListId)
     {
-        $_iContextId = abs($iContextId);
-
-        if(!$this->isAllowAdd($_iContextId))
+        if(!$this->isAllowAdd($iContextId))
             return echoJson([]);
 
         $CNF = &$this->_oConfig->CNF;
@@ -209,11 +206,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             return echoJson([]);
 
         $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/');
-        $oForm->setContextId($_iContextId);
+        $oForm->setContextId($iContextId);
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
+            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => -$iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
             if($iContentId)
                 $this->onPublished($iContentId);
 
@@ -452,6 +449,40 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $oMenu->getCode();
     }
 
+    public function serviceGetBlockPreValues($iContextPid = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(!$this->isAllowManageByContext($iContextPid))
+            return $this->_bIsApi ? [] : '';
+
+        $bContextPid = !empty($iContextPid);
+        
+        $sGrid = $CNF['OBJECT_GRID_PRE_VALUES'];
+        $oGrid = BxDolGrid::getObjectInstance($sGrid);
+        if(!$oGrid)
+            return $this->_bIsApi ? [] : '';
+
+        if($bContextPid)
+            $oGrid->setContextPid($iContextPid);
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
+
+        $this->_oTemplate->addCss(['manage_tools.css']);
+        $this->_oTemplate->addJs(['modules/base/text/js/|manage_tools.js', 'pre_values.js']);
+        $this->_oTemplate->addJsTranslation(['_sys_grid_search']);
+        $aResult = [
+            'content' => $this->_oTemplate->getJsCode('pre_values', [
+                'sObjNameGrid' => $sGrid
+            ]) . $oGrid->getCode()
+        ];
+
+        return $aResult;
+    }
+    
     public function serviceGetBlockManageTime($sType = 'common', $iContextPid = 0)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -807,7 +838,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$iContextPid)
             return MsgBox(_t('_Empty'));
 
-        $sContent = $this->serviceBrowseTasks(-$iContextPid);
+        $sContent = $this->serviceBrowseTasks($iContextPid);
         
         if($sContent && ($oProfile = BxDolProfile::getInstance($iContextPid)) !== false)
             return [
@@ -828,12 +859,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$iProfileId)
             return '';
 
-        return $this->serviceBrowseTasks (-$iProfileId, $aParams);
+        return $this->serviceBrowseTasks ($iProfileId, $aParams);
     }
 
     public function serviceBrowseTasks($iContextId = 0, $aParams = [])
     {
-        if(!$this->isAllowView(abs($iContextId)))
+        if(!$this->isAllowView($iContextId))
             return '';
 
         return $this->_oTemplate->getEntriesList($iContextId, $aParams);
@@ -860,6 +891,18 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(($oProfile = BxDolProfile::getInstance()) !== false && ($aIds = $this->_oDb->getTimeTracks(['sample' => 'assignees'])))
             foreach($aIds as $iId)
                 $aResults[] = ['key' => $iId, 'value' => $oProfile->getDisplayName($iId)];
+
+        return $aResults;
+    }
+    
+    public function getPreLists()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aResults = [];
+        if(($aPreLists = $this->_oDb->getPreLists(['sample' => 'all'])) && is_array($aPreLists))
+            foreach($aPreLists as $aPreList)
+                $aResults[$aPreList['name']] = _t($aPreList['title']);
 
         return $aResults;
     }
@@ -892,7 +935,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $CNF = &$this->_oConfig->CNF;
 
         $aEntries = [];
-        if(($aTasks = $this->_oDb->getTasks(-$iContextPid)) && is_array($aTasks))
+        if(($aTasks = $this->_oDb->getTasks($iContextPid)) && is_array($aTasks))
             foreach($aTasks as $aTask)
                 $aEntries[$aTask[$CNF['FIELD_ID']]] = $aTask[$CNF['FIELD_TITLE']];
 
@@ -937,11 +980,39 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $CNF = &$this->_oConfig->CNF;
 
         if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0) {
-            $mixedRepo = $this->_oDb->getContextRepository(abs($iContextId));
+            $iContextId = abs($iContextId);
+
+            $mixedRepo = $this->_oDb->getContextRepository($iContextId);
             if($mixedRepo !== false && ($sMl = 'bx_github') && ($sMd = 'create_issue') && bx_is_srv($sMl, $sMd)) {
                 list($sGhUsername, $sGhRepository) = $mixedRepo;
 
-                $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']]]);
+                $aFldLoc2Repo = [
+                    $CNF['FIELD_STICKERS'] => 'labels', 
+                    $CNF['FIELD_TYPE'] => 'type', 
+                ];
+
+                $aGhFields = [];
+                foreach($aFldLoc2Repo as $sLocField => $sRepoField)
+                    if(($sLocValue = $aContentInfo[$sLocField] ?? false))
+                        switch($sLocField) {
+                            case $CNF['FIELD_STICKERS']:
+                                $aStickers = $this->getStickers($sLocValue, $iContextId);
+                                if($aStickers && is_array($aStickers)) {
+                                    $aGhFields[$sRepoField] = [];
+                                    foreach($aStickers as $aSticker)
+                                        $aGhFields[$sRepoField][] = $aSticker['title'];
+                                }
+                                break;
+
+                            case $CNF['FIELD_TYPE']:
+                                $aGhFields[$sRepoField] = $this->getType($sLocValue, $iContextId);
+                                break;
+
+                            default:
+                                $aGhFields[$sRepoField] = $sLocValue;
+                        }
+
+                $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']], $aGhFields]);
                 if($aIssue && is_array($aIssue) && ($iNumber = (int)($aIssue['number'] ?? 0)) != 0 && ($sUrl = $aIssue['html_url'] ?? '') != '') {
                     $this->_oDb->updateEntriesBy([
                         $CNF['FIELD_GH_ISSUE'] => $iNumber,
@@ -1131,12 +1202,103 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $oCmts->addAuto($aMessage);
     }
 
+    public function ghUpdateIssue($mixedContent, $aGhFields = [])
+    {
+        $aContentInfo = is_array($mixedContent) ? $mixedContent : $this->_oDb->getContentInfoById((int)$mixedContent);
+        if(!$aContentInfo || !is_array($aContentInfo))
+            return false;
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
+        $iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+        if($iContextId >= 0) 
+            return false;
+
+        $mixedRepo = $this->_oDb->getContextRepository(abs($iContextId));
+        if($mixedRepo === false) 
+            return false;
+
+        list($sGhUsername, $sGhRepository) = $mixedRepo;
+
+        $iGhIssue = (int)$aContentInfo[$CNF['FIELD_GH_ISSUE']];
+
+        $sMl = 'bx_github';
+        if($aGhFields && ($sMd = 'update_issue') && bx_is_srv($sMl, $sMd))
+            if(bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $iGhIssue, $aGhFields]) !== false) 
+                $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_synced', 'markers' => [
+                    'ghi_link' => $aContentInfo[$CNF['FIELD_GH_ISSUE_URL']],
+                    'ghi_number' => $iGhIssue
+                ]]);
+
+        return true;
+    }
+
+    public function getStickers($mixedValues, $iContextId = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aValues = is_array($mixedValues) ? $mixedValues : BxDolFormCheckerHelper::displaySet($mixedValues);
+
+        $aResults = [];
+        if($iContextId) {
+            $aStickers = $this->_oDb->getPreValues([
+                'sample' => 'context_list', 
+                'context_id' => $iContextId, 
+                'list' => 'sticker'
+            ]);
+
+            foreach($aValues as $sValue)
+                if(($aSticker = $aStickers[$sValue] ?? false))
+                    $aResults[] = [
+                        'title' => $aSticker['title'],
+                        'color' => $aSticker['color']
+                    ];
+        }
+
+        if(!$aResults) {
+            $aStickers = BxDolForm::getDataItems($CNF['OBJECT_PRE_LIST_STICKERS']);
+            foreach($aValues as $sValue)
+                $aResults[] = [
+                    'title' => $aStickers[$sValue],
+                    'color' => ''
+                ];
+        }
+
+        return $aResults;
+    }
+
+    public function getType($mixedValue, $iContextId = 0)
+    {
+        $sResult = '';
+
+        if($iContextId) {
+            $aType = $this->_oDb->getPreValues([
+                'sample' => 'context_list_value', 
+                'context_id' => $iContextId, 
+                'list' => 'type',
+                'value' => $mixedValue
+            ]);
+
+            if($aType && is_array($aType))
+                $sResult = $aType['title'];
+        }
+        
+        if(!$sResult && ($sTypeTitle = $this->_oConfig->getTypeTitle($mixedValue)) != '')
+            $sResult = _t($sTypeTitle);
+
+        return $sResult;
+    }
+
     /**
      * Internal methods
      */
     protected function _onEditProperty($aContentInfo, $sProperty, &$oForm)
     {
         $CNF = &$this->_oConfig->CNF;
+        $aPropLoc2Repo = [
+            $CNF['FIELD_TYPE'] => 'type',
+        ];
 
         $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
 
@@ -1145,6 +1307,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             $mixedValue = $this->_oConfig->$sMethod($mixedValue);
 
         $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_edit_' . $sProperty, 'markers' => ['value' => $mixedValue]]);
+
+        if(($sPropRepo = $aPropLoc2Repo[$sProperty] ?? false))
+            $this->ghUpdateIssue($aContentInfo, [
+                $sPropRepo => _t($mixedValue)
+            ]);        
     }
 
     protected function _onEditState($aContentInfo, &$oForm)

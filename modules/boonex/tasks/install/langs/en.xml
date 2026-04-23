@@ -41,6 +41,8 @@
     <string name="_bx_tasks_form_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_entry_input_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_stickers"><![CDATA[Labels]]></string>
+    <string name="_bx_tasks_form_entry_input_stickers"><![CDATA[Labels]]></string>
     <string name="_bx_tasks_form_entry_input_sys_type"><![CDATA[Type]]></string>
     <string name="_bx_tasks_form_entry_input_type"><![CDATA[Type]]></string>
     <string name="_bx_tasks_form_entry_input_sys_priority"><![CDATA[Priority]]></string>
@@ -142,6 +144,15 @@
     <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
     <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Edit Time]]></string>    
+
+    <string name="_bx_tasks_form_pv_input_title"><![CDATA[Title]]></string>
+    <string name="_bx_tasks_form_pv_input_color"><![CDATA[Color]]></string>
+    <string name="_bx_tasks_form_pv_input_color_inf"><![CDATA[Use RGB color code.]]></string>
+    <string name="_bx_tasks_form_pv_input_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_pv_input_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_tasks_form_pv_input_err"><![CDATA[This field is essential. Please, fill it in.]]></string>
+    <string name="_bx_tasks_popup_pv_title_add"><![CDATA[Add Value]]></string>
+    <string name="_bx_tasks_popup_pv_title_edit"><![CDATA[Edit Value]]></string>
 
     <string name="_bx_tasks_category_form_entry"><![CDATA[Categories Form]]></string>
     <string name="_bx_tasks_category_display_add"><![CDATA[Add category]]></string>
@@ -275,6 +286,10 @@
     <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[My Time in <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
     <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[All Time in <a href="{profile_link}">{display_name}</a>]]></string>
+    <string name="_bx_tasks_page_title_sys_context_pre_values"><![CDATA[Lists and values in context]]></string>
+    <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Lists and values]]></string>
     <string name="_bx_tasks_page_block_title_system_menu_browse"><![CDATA[Browse menu]]></string>
     <string name="_bx_tasks_page_block_title_menu_browse"><![CDATA[Browse]]></string>
 
@@ -354,6 +369,12 @@
     <string name="_bx_tasks_menu_item_title_view_context_time"><![CDATA[My Time]]></string>
     <string name="_bx_tasks_menu_item_title_system_view_context_time_administration"><![CDATA[All Time]]></string>
     <string name="_bx_tasks_menu_item_title_view_context_time_administration"><![CDATA[All Time]]></string>
+    <string name="_bx_tasks_menu_title_manage_context_submenu"><![CDATA[Manage Context Submenu]]></string>
+    <string name="_bx_tasks_menu_set_title_manage_context_submenu"><![CDATA[Manage Context Submenu]]></string>
+    <string name="_bx_tasks_menu_item_title_system_manage_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_menu_item_title_system_manage_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_menu_item_title_manage_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_menu_title_manage_tools_submenu"><![CDATA[Manage Tools Submenu]]></string>
     <string name="_bx_tasks_menu_set_title_manage_tools_submenu"><![CDATA[Manage Tools Submenu]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_common"><![CDATA[My Tasks]]></string>
@@ -401,6 +422,14 @@
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_context_module"><![CDATA[Any Module]]></string>
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Any Task]]></string>
 
+    <string name="_bx_tasks_grid_column_title_pv_title"><![CDATA[Title]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_add"><![CDATA[Add]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_edit"><![CDATA[Edit]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_delete"><![CDATA[Delete]]></string>
+    <string name="_bx_tasks_grid_filter_item_title_pv_select_one_list"><![CDATA[Select list...]]></string>
+
+
+    <!-- Charts -->
     <string name="_bx_tasks_chart_growth"><![CDATA[Tasks: Growth]]></string>
     <string name="_bx_tasks_chart_growth_speed"><![CDATA[Tasks: Growth Speed]]></string>
 
@@ -419,6 +448,12 @@
     <string name="_bx_tasks_type_1"><![CDATA[Bug]]></string>
     <string name="_bx_tasks_type_2"><![CDATA[Feature]]></string>
     <string name="_bx_tasks_type_3"><![CDATA[Chore]]></string>
+    <string name="_bx_tasks_pre_lists_stickers"><![CDATA[Labels]]></string>
+    <string name="_bx_tasks_sticker_1"><![CDATA[Bug]]></string>
+    <string name="_bx_tasks_sticker_2"><![CDATA[Feature]]></string>
+    <string name="_bx_tasks_sticker_3"><![CDATA[Improvement]]></string>
+    <string name="_bx_tasks_sticker_4"><![CDATA[Investigation]]></string>
+    <string name="_bx_tasks_sticker_5"><![CDATA[Discussion]]></string>
     <string name="_bx_tasks_pre_lists_priorities"><![CDATA[Priorities]]></string>
     <string name="_bx_tasks_priority_1"><![CDATA[Urgent]]></string>
     <string name="_bx_tasks_priority_2"><![CDATA[High]]></string>
@@ -492,7 +527,6 @@
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Task isn't published because video conversion failed, edit video to fix the issue.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Task publishing date is {date_publish_uf}]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New Task List]]></string>
-    <string name="_bx_tasks_txt_new_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
@@ -505,11 +539,10 @@
     <string name="_bx_tasks_txt_timer_log"><![CDATA[Log]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
-    <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
+    <string name="_bx_tasks_txt_err_empty_pre_list"><![CDATA[Please select a list to add items to.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
     <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
-
     <string name="_bx_tasks_txt_msg_format"><![CDATA[{0} &#183; <span>{1}</span>]]></string>
     <string name="_bx_tasks_txt_msg_synced"><![CDATA[The task was synced with GitHub: <b><a href="{ghi_link}" target="_blank">#{ghi_number}</a></b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_type"><![CDATA[<a href="{author_link}">{author_name}</a> changed type to <b>{value}</b>]]></string>

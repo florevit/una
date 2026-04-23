@@ -101,7 +101,7 @@ class BxTasksDb extends BxBaseModTextDb
         $sJoinClause = $sWhereClause = "";
 
         if(($sField = $CNF['FIELD_ALLOW_VIEW_TO']) && $iContextId) {
-            $aBindings[$sField] = $iContextId;
+            $aBindings[$sField] = -$iContextId;
             $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
         }
 
@@ -436,6 +436,101 @@ class BxTasksDb extends BxBaseModTextDb
             return false;
 
         return $this->query("DELETE FROM `" . $CNF['TABLE_TIMERS'] . "` WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
+    }
+
+    public function getPreLists($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`tpl`.*';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'name':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'name' => $aParams['name']
+                    ];
+
+                    $sWhereClause = "AND `tpl`.`name` = :name";
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_PRE_LISTS'] . "` AS `tpl` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
+    public function getPreValues($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`tpv`.*';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'value_to_use':
+                    $aMethod['name'] = 'getOne';
+                    $aMethod['params'][1] = [
+                        'context_id' => $aParams['context_id'],
+                        'list' => $aParams['list']
+                    ];
+
+                    $sSelectClause = "IF(ISNULL(MAX(`tpv`.`value`)), 0, MAX(`tpv`.`value`)) + 1";
+                    $sWhereClause = "AND `tpv`.`context_id` = :context_id AND `tpv`.`list` = :list";
+                    break;
+
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `tpv`.`id` = :id";
+                    break;
+
+                case 'context_list_value':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'context_id' => $aParams['context_id'],
+                        'list' => $aParams['list'],
+                        'value' => $aParams['value']
+                    ];
+
+                    $sWhereClause = "AND `tpv`.`context_id` = :context_id AND `tpv`.`list` = :list AND `tpv`.`value` = :value";
+                    break;
+
+                case 'context_list':
+                    $aMethod['name'] = 'getAllWithKey';
+                    $aMethod['params'][1] = 'value';
+                    $aMethod['params'][2] = [
+                        'context_id' => $aParams['context_id'],
+                        'list' => $aParams['list']
+                    ];
+
+                    $sWhereClause = "AND `tpv`.`context_id` = :context_id AND `tpv`.`list` = :list";
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_PRE_VALUES'] . "` AS `tpv` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
     /**

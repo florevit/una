@@ -40,6 +40,8 @@ class BxTasksConfig extends BxBaseModTextConfig
             'TABLE_TIME' => $aModule['db_prefix'] . 'time',
             'TABLE_TIME_TRACK' => $aModule['db_prefix'] . 'time_track',
             'TABLE_TIMERS' => $aModule['db_prefix'] . 'timers',
+            'TABLE_PRE_LISTS' => $aModule['db_prefix'] . 'pre_lists',
+            'TABLE_PRE_VALUES' => $aModule['db_prefix'] . 'pre_values',
             'TABLE_POLLS' => '',
             'TABLE_ENTRIES_FULLTEXT' => 'title_text',
 
@@ -52,6 +54,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_TITLE' => 'title',
             'FIELD_TEXT' => 'text',
             'FIELD_TEXT_ID' => 'post-text',
+            'FIELD_STICKERS' => 'stickers',
             'FIELD_TYPE' => 'type',
             'FIELD_PRIORITY' => 'priority',
             'FIELD_ESTIMATE' => 'estimate',
@@ -179,11 +182,12 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_GRID_TIME_COMMON' => 'bx_tasks_time_common',
             'OBJECT_GRID_TIME_CONTEXT_ADMINISTRATION' => 'bx_tasks_time_context_administration',
             'OBJECT_GRID_TIME_CONTEXT_COMMON' => 'bx_tasks_time_context_common',
-            'OBJECT_GRID_CATEGORIES' => 'bx_tasks_categories',
+            'OBJECT_GRID_PRE_VALUES' => 'bx_tasks_pre_values',
             'OBJECT_UPLOADERS' => array('bx_tasks_simple', 'bx_tasks_html5'),
             'OBJECT_CONTENT_INFO' => 'bx_tasks',
             'OBJECT_CMTS_CONTENT_INFO' => 'bx_tasks_cmts',
             'OBJECT_PRE_LIST_TYPES' => 'bx_tasks_types',
+            'OBJECT_PRE_LIST_STICKERS' => 'bx_tasks_stickers',
             'OBJECT_PRE_LIST_PRIORITIES' => 'bx_tasks_priorities',
             'OBJECT_PRE_LIST_STATES' => 'bx_tasks_states',
             
@@ -257,7 +261,8 @@ class BxTasksConfig extends BxBaseModTextConfig
             'categories' => 'BxDolCategories',
             'tasks' => 'BxTasksView',
             'time' => 'BxTasksTime',
-            'timer' => 'BxTasksTimer'
+            'timer' => 'BxTasksTimer',
+            'pre_values' => 'BxTasksPreValues',
         ]);
 
         $this->_aJsObjects = array_merge($this->_aJsObjects, [
@@ -265,7 +270,8 @@ class BxTasksConfig extends BxBaseModTextConfig
             'categories' => 'oBxDolCategories',
             'tasks' => 'oBxTasksView',
             'time' => 'oBxTasksTime',
-            'timer' => 'oBxTasksTimer'
+            'timer' => 'oBxTasksTimer',
+            'pre_values' => 'oBxTasksPreValues',
         ]);
 
         $this->_aGridObjects = [
@@ -275,6 +281,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'time_administration' => $this->CNF['OBJECT_GRID_TIME_ADMINISTRATION'],
             'time_context_common' => $this->CNF['OBJECT_GRID_TIME_CONTEXT_COMMON'],
             'time_context_administration' => $this->CNF['OBJECT_GRID_TIME_CONTEXT_ADMINISTRATION'],
+            'pre_values' => $this->CNF['OBJECT_GRID_PRE_VALUES'],
         ];
 
         $sPrefix = str_replace('_', '-', $this->_sName);
@@ -284,6 +291,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'total_popup' => $sPrefix . '-total-popup',
             'timer' => $sPrefix . '-timer-',
             'timer_actions' => $sPrefix . '-timer-actions',
+            'pre_values_popup' => $sPrefix . '-pv-popup-',
         ]);
 
         $this->_bAttachmentsInTimeline = true;

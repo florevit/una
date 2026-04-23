@@ -1583,7 +1583,7 @@ class BxDolFormChecker
             $aValsToUpdate[$sKey] = $valClean;
             $aInputs[$k]['db']['value'] = $valClean;
 
-            if (null !== $aTrackTextFieldsChanges && isset(BxDolForm::$TYPES_TEXT[$aInputs[$k]['type']]) && isset($aTrackTextFieldsChanges['data'][$a['name']]) && $aTrackTextFieldsChanges['data'][$a['name']] != $valClean)
+            if (null !== $aTrackTextFieldsChanges && $this->isTrackableField($a) && isset($aTrackTextFieldsChanges['data'][$a['name']]) && $aTrackTextFieldsChanges['data'][$a['name']] != $valClean)
                 $aTrackTextFieldsChanges['changed_fields'][] = $a['name'];
         }
 
@@ -1662,6 +1662,11 @@ class BxDolFormChecker
                     $aInputs[$k]['value'] = $aValues[$k];
             }
         }
+    }
+
+    function isTrackableField($aInput)
+    {
+        return isset(BxDolForm::$TYPES_TEXT[$aInput['type']]);
     }
 }
 

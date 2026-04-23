@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_tasks` (
   `published` int(11) NOT NULL,
   `thumb` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `stickers` int(11) NOT NULL default '0',
   `type` int(11) NOT NULL default '0',
   `priority` int(11) NOT NULL default '0',
   `estimate` int(11) NOT NULL default '0',
@@ -68,6 +69,33 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_assignments` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `initiator` (`initiator`,`content`),
   KEY `content` (`content`)
+);
+
+-- TABLE: lists and values
+CREATE TABLE IF NOT EXISTS `bx_tasks_pre_lists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `use_color` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `use_multiselect` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+);
+
+INSERT INTO `bx_tasks_pre_lists` (`name`, `title`, `use_color`, `use_multiselect`) VALUES
+('type', '_bx_tasks_pre_lists_types', 0, 0),
+('sticker', '_bx_tasks_pre_lists_stickers', 1, 1);
+
+CREATE TABLE IF NOT EXISTS `bx_tasks_pre_values` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `context_id` int(11) NOT NULL DEFAULT '0',
+  `list` varchar(32) NOT NULL DEFAULT '',
+  `value` varchar(255) NOT NULL DEFAULT '',
+  `order` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `color` text NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `list_value` (`list`, `value`)
 );
 
 -- TABLE: filters
@@ -470,6 +498,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks', 'bx_tasks', 'files', 'a:1:{i:0;s:20:"bx_tasks_files_html5";}', 'a:1:{s:20:"bx_tasks_files_html5";s:25:"_sys_uploader_html5_title";}', 0, 'files', '_bx_tasks_form_entry_input_sys_files', '_bx_tasks_form_entry_input_files', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'text', '', '', 0, 'textarea', '_bx_tasks_form_entry_input_sys_text', '_bx_tasks_form_entry_input_text', '', 0, 0, 2, '', '', '', '', '', '', 'XssHtml', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'title', '', '', 0, 'text', '_bx_tasks_form_entry_input_sys_title', '_bx_tasks_form_entry_input_title', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_tasks_form_entry_input_title_err', 'Xss', '', 1, 0),
+('bx_tasks', 'bx_tasks', 'stickers', '', '#!bx_tasks_stickers', 0, 'checkbox_set', '_bx_tasks_form_entry_input_sys_stickers', '_bx_tasks_form_entry_input_stickers', '', 0, 0, 0, '', '', '', '', '', '', 'Set', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'type', '', '#!bx_tasks_types', 0, 'select', '_bx_tasks_form_entry_input_sys_type', '_bx_tasks_form_entry_input_type', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'priority', '', '#!bx_tasks_priorities', 0, 'select', '_bx_tasks_form_entry_input_sys_priority', '_bx_tasks_form_entry_input_priority', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'state', '', '#!bx_tasks_states', 0, 'select', '_bx_tasks_form_entry_input_sys_state', '_bx_tasks_form_entry_input_state', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
@@ -492,12 +521,13 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_add', 'text', 2147483647, 1, 2),
 ('bx_tasks_entry_add', 'initial_members', 192, 1, 3),
 ('bx_tasks_entry_add', 'due_date', 192, 1, 4),
-('bx_tasks_entry_add', 'type', 2147483647, 1, 5),
-('bx_tasks_entry_add', 'priority', 2147483647, 1, 6),
-('bx_tasks_entry_add', 'estimate', 2147483647, 1, 7),
-('bx_tasks_entry_add', 'controls', 2147483647, 1, 8),
-('bx_tasks_entry_add', 'do_publish', 2147483647, 1, 9),
-('bx_tasks_entry_add', 'do_cancel', 2147483647, 1, 10),
+('bx_tasks_entry_add', 'stickers', 2147483647, 1, 5),
+('bx_tasks_entry_add', 'type', 2147483647, 1, 6),
+('bx_tasks_entry_add', 'priority', 2147483647, 1, 7),
+('bx_tasks_entry_add', 'estimate', 2147483647, 1, 8),
+('bx_tasks_entry_add', 'controls', 2147483647, 1, 9),
+('bx_tasks_entry_add', 'do_publish', 2147483647, 1, 10),
+('bx_tasks_entry_add', 'do_cancel', 2147483647, 1, 11),
 
 ('bx_tasks_entry_delete', 'delete_confirm', 2147483647, 1, 1),
 ('bx_tasks_entry_delete', 'do_submit', 2147483647, 1, 2),
@@ -512,12 +542,13 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit', 'cf', 2147483647, 1, 8),
 ('bx_tasks_entry_edit', 'initial_members', 192, 1, 9),
 ('bx_tasks_entry_edit', 'due_date', 192, 1, 10),
-('bx_tasks_entry_edit', 'type', 2147483647, 1, 11),
-('bx_tasks_entry_edit', 'priority', 2147483647, 1, 12),
-('bx_tasks_entry_edit', 'estimate', 2147483647, 1, 13),
-('bx_tasks_entry_edit', 'controls_edit', 2147483647, 1, 14),
-('bx_tasks_entry_edit', 'do_submit', 2147483647, 1, 15),
-('bx_tasks_entry_edit', 'do_cancel_edit', 2147483647, 1, 16),
+('bx_tasks_entry_edit', 'stickers', 2147483647, 1, 11),
+('bx_tasks_entry_edit', 'type', 2147483647, 1, 12),
+('bx_tasks_entry_edit', 'priority', 2147483647, 1, 13),
+('bx_tasks_entry_edit', 'estimate', 2147483647, 1, 14),
+('bx_tasks_entry_edit', 'controls_edit', 2147483647, 1, 15),
+('bx_tasks_entry_edit', 'do_submit', 2147483647, 1, 16),
+('bx_tasks_entry_edit', 'do_cancel_edit', 2147483647, 1, 17),
 
 ('bx_tasks_entry_edit_body', 'title', 2147483647, 1, 1),
 ('bx_tasks_entry_edit_body', 'text', 2147483647, 1, 2),
@@ -548,15 +579,16 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit_due_date', 'do_submit', 2147483647, 1, 3),
 ('bx_tasks_entry_edit_due_date', 'do_cancel', 2147483647, 1, 4),
 
-('bx_tasks_entry_view', 'type', 2147483647, 1, 1),
-('bx_tasks_entry_view', 'priority', 2147483647, 1, 2),
-('bx_tasks_entry_view', 'estimate', 2147483647, 1, 3),
-('bx_tasks_entry_view', 'cat', 2147483647, 1, 4),
-('bx_tasks_entry_view', 'added', 2147483647, 1, 5),
-('bx_tasks_entry_view', 'changed', 2147483647, 1, 6),
-('bx_tasks_entry_view', 'due_date', 192, 1, 7),
-('bx_tasks_entry_view', 'state', 2147483647, 1, 8),
-('bx_tasks_entry_view', 'gh_issue_url', 2147483647, 1, 9);
+('bx_tasks_entry_view', 'stickers', 2147483647, 1, 1),
+('bx_tasks_entry_view', 'type', 2147483647, 1, 2),
+('bx_tasks_entry_view', 'priority', 2147483647, 1, 3),
+('bx_tasks_entry_view', 'estimate', 2147483647, 1, 4),
+('bx_tasks_entry_view', 'cat', 2147483647, 1, 5),
+('bx_tasks_entry_view', 'added', 2147483647, 1, 6),
+('bx_tasks_entry_view', 'changed', 2147483647, 1, 7),
+('bx_tasks_entry_view', 'due_date', 192, 1, 8),
+('bx_tasks_entry_view', 'state', 2147483647, 1, 9),
+('bx_tasks_entry_view', 'gh_issue_url', 2147483647, 1, 10);
 
 
 -- FORMS: entry (tasklist)
@@ -660,6 +692,17 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_tasks_types', '1', 1, '_bx_tasks_type_1', ''),
 ('bx_tasks_types', '2', 2, '_bx_tasks_type_2', ''),
 ('bx_tasks_types', '3', 3, '_bx_tasks_type_3', '');
+
+INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES
+('bx_tasks_stickers', '_bx_tasks_pre_lists_stickers', 'bx_tasks', '1');
+
+INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALUES
+('bx_tasks_stickers', '', 0, '_sys_please_select', ''),
+('bx_tasks_stickers', '1', 1, '_bx_tasks_sticker_1', ''),
+('bx_tasks_stickers', '2', 2, '_bx_tasks_sticker_2', ''),
+('bx_tasks_stickers', '3', 3, '_bx_tasks_sticker_3', ''),
+('bx_tasks_stickers', '4', 4, '_bx_tasks_sticker_4', ''),
+('bx_tasks_stickers', '5', 5, '_bx_tasks_sticker_5', '');
 
 INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES
 ('bx_tasks_priorities', '_bx_tasks_pre_lists_priorities', 'bx_tasks', '0');

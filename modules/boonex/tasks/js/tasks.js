@@ -42,6 +42,8 @@ BxTasksView.prototype._setCompleted = function (iId, iValue, onComplete) {
 };
 
 BxTasksView.prototype.processContext = function (iContextId, obj) {
+    $('.bx-popup-applied:visible').dolPopupHide();
+
     var $this = this;
     $(window).dolPopupAjax({
         url: $this._oOptions.sActionUrl + 'process_context_form/' + iContextId + '/',

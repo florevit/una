@@ -94,6 +94,11 @@
     width: 800px;
 }
 
+/*--- View Task ---*/
+.bx-tasks-stickers .bx-def-label {
+    color: #ffffff;
+}
+
 /*--- View Task: Comments List ---*/
 .cmts .cmt.cmt-auto {
     margin-bottom: 0.25rem;
