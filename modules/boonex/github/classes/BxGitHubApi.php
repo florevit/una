@@ -105,10 +105,18 @@ class BxGitHubApi extends BxDol
 
     public function createIssue($sUsername, $sRepository, $sTitle, $sText = '', $aParams = [])
     {
+        $aIssue = [];
         if(!$this->authenticate())
-            return false;
+            return $aIssue;
 
-        return $this->_oClient->api('issue')->create($sUsername, $sRepository, array_merge(['title' => $sTitle, 'body' => $sText], $aParams));
+        try {
+            $aIssue = $this->_oClient->api('issue')->create($sUsername, $sRepository, array_merge(['title' => $sTitle, 'body' => $sText], $aParams));
+        }
+        catch (Exception $oException) {
+            $this->_processException('Create Issue:', $oException);
+        }
+
+        return $aIssue;
     }
 
     public function updateIssue($sUsername, $sRepository, $iIssue, $aParams)
@@ -126,6 +134,27 @@ class BxGitHubApi extends BxDol
         }
 
         return $aIssue;
+    }
+
+    public function createLabel($sUsername, $sRepository, $mixedLabel, $bAuthenticate = true)
+    {
+        $aResult = [];
+        if($bAuthenticate && !$this->authenticate())
+            return $aResult;
+
+        return $this->_oClient->api('issue')->labels()->create($sUsername, $sRepository, is_array($mixedLabel) ? $mixedLabel : [
+            'name' => $mixedLabel
+        ]);
+    }
+    
+    public function addLabel($sUsername, $sRepository, $iIssue, $mixedLabel)
+    {
+        if(!$this->authenticate() || !$mixedLabel)
+            return false;
+
+        return $this->_oClient->api('issue')->labels()->add($sUsername, $sRepository, $iIssue, is_array($mixedLabel) ? $mixedLabel : [
+            'name' => $mixedLabel
+        ]);
     }
 
     protected function _processException($sMessage, &$oException)

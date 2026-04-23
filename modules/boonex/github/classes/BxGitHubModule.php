@@ -95,7 +95,22 @@ class BxGitHubModule extends BxBaseModGeneralModule
 
         return $this->_oApi->updateIssue($sUsername, $sRepository, $iIssue, ['state' => 'open']);
     }
-     
+
+    public function serviceCreateLabel($sUsername, $sRepository, $mixedLabel, $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->createLabel($sUsername, $sRepository, $mixedLabel);
+    }
+
+    public function serviceAddLabel($sUsername, $sRepository, $iIssue, $mixedLabel, $iProfileId = 0)
+    {
+        if($iProfileId && $iProfileId != $this->_iLoggedId)
+            $this->_oApi->init($iProfileId);
+
+        return $this->_oApi->addLabel($sUsername, $sRepository, $iIssue, $mixedLabel);
+    }
     /*
      * COMMON METHODS
      */
