@@ -585,6 +585,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'name' => $r['name'],
                 'value' => $r['key'],
                 'desc' => bx_html_attribute($r['desc']),
+                'count' => bx_html_attribute(_t('_sys_agents_count_today', $r['counter_24h'])),
                 'bx_if:sel' => [
                     'condition' => $sValue == $r['key'],
                     'content' => [

@@ -2259,6 +2259,7 @@
         <string name="_sys_agents_automators_btn_tune"><![CDATA[Настройка]]></string>
         <string name="_sys_agents_automators_btn_approve"><![CDATA[Одобрить]]></string>
         <string name="_sys_agents_automators_popup_add"><![CDATA[Добавить автоматизатор]]></string>
+        <string name="_sys_agents_count_today"><![CDATA[{0} вызовов сегодня]]></string>
         <string name="_sys_agents_popup_edit"><![CDATA[Редактировать автоматизатор]]></string>
         <string name="_sys_agents_field_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_field_name_info"><![CDATA[Уникальное название агента.]]></string>

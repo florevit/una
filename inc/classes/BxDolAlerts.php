@@ -241,20 +241,17 @@ class BxDolAlerts extends BxDol
         $oDb->query("
             INSERT INTO sys_alerts_log
             SET
-                unit  = :unit,
+                unit = :unit,
                 action = :action,
                 object = :object,
                 sender = :sender,
-                extra  = :extra,
-                extra_refs  = :extra_refs,
-                ts     = UNIX_TIMESTAMP(),
+                extra = :extra,
+                extra_refs = :extra_refs,
+                ts = UNIX_TIMESTAMP(),
                 counter_total = 1,
                 counter_24h = 1
             ON DUPLICATE KEY UPDATE
-                object = :object,
-                sender = :sender,
-                extra  = :extra,
-                ts     = UNIX_TIMESTAMP(),
+                ts = UNIX_TIMESTAMP(),
                 counter_total = counter_total + 1,
                 counter_24h = counter_24h + 1
         ", $aBind);
