@@ -2275,7 +2275,7 @@
         <string name="_sys_agents_field_trigger"><![CDATA[Триггер]]></string>
         <string name="_sys_agents_field_trigger_info"><![CDATA[Триггер, который запускает агента. Alert — системное событие. Scheduler — запуск по расписанию. Webhook — HTTP внешний вызов. Manual — ручной запуск. Agent — запуск другим агентом. Message — сообщение пользователя.]]></string>
         <string name="_sys_agents_field_alert_sample"><![CDATA[Alert - пример данных]]></string>
-        <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Ожидание примера данных...]]></string>
+        <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Пожалуйста, выберите алерт, чтобы увидеть его данные.]]></string>
         <string name="_sys_agents_field_alert"><![CDATA[Alert - событие]]></string>
         <string name="_sys_agents_field_alert_info"><![CDATA[Событие, запускающее агента. Обычно начинается с system или module_name. Показаны только уже произошедшие события.]]></string>
         <string name="_sys_agents_field_alert_action"><![CDATA[Alert - действие события]]></string>

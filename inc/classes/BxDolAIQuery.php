@@ -942,6 +942,16 @@ class BxDolAIQuery extends BxDolDb
         return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
     }
 
+    public function getAlert($s) {
+        if (!$s)
+            return false;
+        $a = explode(':', $s);
+        return $this->getRow("SELECT * FROM `sys_alerts_log` WHERE `unit` = :unit AND `action` = :action", [
+            'unit' => $a[0] ?? '',
+            'action' => $a[1] ?? '',
+        ]);
+    }
+
     public function getAlerts()
     {
         $aValues = [];
@@ -953,14 +963,15 @@ class BxDolAIQuery extends BxDolDb
                 'unit' => $a['unit'],
                 'action' => $a['action'],
                 'name' => $a['unit'] . ' - ' . $a['action'],
-                'desc' => $this->getAlertDesc($a['unit'], $a['action']),
+                'desc' => $this->getAlertDesc($a['unit'] . ':' . $a['action']),
             ];
         }
         return $aValues;
     }
 
-    public function getAlertDesc($sUnit, $sAction) 
+    public function getAlertDesc($sAlert) 
     {
+        [$sUnit, $sAction] = explode(':', $sAlert);
         $sDesc = $this->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` = :unit AND `action` = :action LIMIT 1", [
             'unit' => $sUnit,
             'action' => $sAction,
