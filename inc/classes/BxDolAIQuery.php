@@ -973,6 +973,8 @@ class BxDolAIQuery extends BxDolDb
 
     static public function getAlertDesc($sAlert) 
     {
+        if (!$sAlert)
+            return '';
         $oDb = BxDolDb::getInstance();
         [$sUnit, $sAction] = explode(':', $sAlert);
         $sDesc = $oDb->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` = :unit AND `action` = :action LIMIT 1", [
