@@ -78,6 +78,8 @@
     <string name="_bx_ads_form_entry_price_year_display_view"><![CDATA[С указанием цены и года: Просмотреть]]></string>
 
     <string name="_bx_ads_form_entry_input_author"><![CDATA[Автор]]></string>
+    <string name="_bx_ads_form_entry_input_sys_do_select"><![CDATA[Выбирать]]></string>
+    <string name="_bx_ads_form_entry_input_do_select"><![CDATA[Выбирать]]></string>
     <string name="_bx_ads_form_entry_input_sys_do_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_ads_form_entry_input_do_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_ads_form_entry_input_sys_title"><![CDATA[Заголовок]]></string>

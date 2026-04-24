@@ -535,9 +535,12 @@ class BxAdsModule extends BxBaseModTextModule
     {
         $iCategory = is_numeric($sParams) ? (int)$sParams : 0;
 
+        if($this->_bIsApi && ($iCategory = bx_get('category_select')) !== false)
+            $iCategory = (int)$iCategory;
+
         if(($sDisplay = $this->getCategoryDisplay('add', $iCategory)) !== false) {
             if(empty($sParams) || !is_array($sParams))
-                $sParams = array();
+                $sParams = [];
 
             $sParams['display'] = $sDisplay;
         }
@@ -547,7 +550,7 @@ class BxAdsModule extends BxBaseModTextModule
 
         return parent::serviceEntityCreate($sParams);
     }
-    
+
     public function serviceEntityEditBudget ($iContentId = 0, $sDisplay = false)
     {
         $CNF = &$this->_oConfig->CNF;

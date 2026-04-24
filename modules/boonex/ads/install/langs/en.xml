@@ -79,6 +79,8 @@
     <string name="_bx_ads_form_entry_price_year_display_view"><![CDATA[With Price and Year: View]]></string>
 
     <string name="_bx_ads_form_entry_input_author"><![CDATA[Author]]></string>
+    <string name="_bx_ads_form_entry_input_sys_do_select"><![CDATA[Select]]></string>
+    <string name="_bx_ads_form_entry_input_do_select"><![CDATA[Select]]></string>
     <string name="_bx_ads_form_entry_input_sys_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_ads_form_entry_input_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_ads_form_entry_input_sys_title"><![CDATA[Title]]></string>

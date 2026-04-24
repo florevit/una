@@ -88,13 +88,9 @@ class BxAdsFormEntry extends BxBaseModTextFormEntry
         if(isset($this->aInputs[$CNF['FIELD_SEG_COUNTRY']]))
             $this->aInputs[$CNF['FIELD_SEG_COUNTRY']]['values'] = array_merge(['' => _t('_bx_ads_form_entry_input_seg_country_all')], $this->aInputs[$CNF['FIELD_SEG_COUNTRY']]['values']);
 
-        if($this->aParams['display'] == $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD'] && isset($this->aInputs['do_submit']))
-            $this->aInputs['do_submit'] = array_merge($this->aInputs['do_submit'], [
-                'type' => 'button',
-                'attrs' => [
-                    'onclick' => $sJsObject . '.selectCategory(this);'
-                ]
-            ]);
+        $this->addMarkers([
+            'js_object' => $sJsObject
+        ]);
     }
 
     function getCode($bDynamicMode = false)
@@ -427,7 +423,7 @@ class BxAdsFormEntry extends BxBaseModTextFormEntry
 
         return bx_get_logged_profile_id();
     }
-    
+
     protected function _getSourceType()
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
@@ -443,6 +439,11 @@ class BxAdsFormEntry extends BxBaseModTextFormEntry
         
         $iAuthorId = $this->_getAuthorId();
         return $this->_oModule->serviceGetSource($iAuthorId);
+    }
+
+    protected function _genInputButtonAttrs(&$aInput)
+    {
+        return $this->_replaceMarkers(parent::_genInputButtonAttrs($aInput));
     }
 }
 

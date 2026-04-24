@@ -819,6 +819,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_ads', 'bx_ads', 'cf', '1', '#!sys_content_filter', 0, 'select', '_sys_form_entry_input_sys_cf', '_sys_form_entry_input_cf', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_ads', 'bx_ads', 'allow_view_to', '', '', 0, 'custom', '_bx_ads_form_entry_input_sys_allow_view_to', '_bx_ads_form_entry_input_allow_view_to', '', 1, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_ads', 'bx_ads', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_ads_form_entry_input_sys_delete_confirm', '_bx_ads_form_entry_input_delete_confirm', '_bx_ads_form_entry_input_delete_confirm_info', 1, 0, 0, '', '', '', 'Avail', '', '_bx_ads_form_entry_input_delete_confirm_error', '', '', 1, 0),
+('bx_ads', 'bx_ads', 'do_select', '_bx_ads_form_entry_input_do_select', '', 0, 'button', '_bx_ads_form_entry_input_sys_do_select', '', '', 0, 0, 0, 'a:1:{s:7:"onclick";s:32:"{js_object}.selectCategory(this)";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_ads', 'bx_ads', 'do_submit', '_bx_ads_form_entry_input_do_submit', '', 0, 'submit', '_bx_ads_form_entry_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_ads', 'bx_ads', 'do_cancel', '_sys_form_input_cancel', '', 0, 'button', '_sys_form_input_sys_cancel', '', '', 0, 0, 0, 'a:2:{s:7:"onclick";s:41:"window.open(''{edit_cancel_url}'', ''_self'')";s:5:"class";s:22:"bx-def-margin-sec-left";}', '', '', '', '', '', '', '', 0, 0),
 ('bx_ads', 'bx_ads', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '_sys_form_input_sys_controls', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
@@ -858,7 +859,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
 ('bx_ads_entry_add', 'category_select', 2147483647, 1, 1),
-('bx_ads_entry_add', 'do_submit', 2147483647, 1, 2),
+('bx_ads_entry_add', 'do_select', 2147483647, 1, 2),
 
 ('bx_ads_entry_edit_budget', 'budget_total', 2147483647, 1, 1),
 ('bx_ads_entry_edit_budget', 'budget_daily', 2147483647, 1, 2),
