@@ -254,6 +254,12 @@ class BxDolAlerts extends BxDol
         $oDb = BxDolDb::getInstance();
         $oDb->query("UPDATE sys_alerts_log SET counter_24h = 0");
     }
+
+    static public function deleteModuleAlerts($sUnit)
+    {
+        $oDb = BxDolDb::getInstance();
+        $oDb->query("DELETE FROM sys_alerts_log WHERE unit = :unit", ['unit' => $sUnit]);
+    }
 }
 
 class BxDolAlertsResponse extends BxDol

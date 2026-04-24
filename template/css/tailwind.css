@@ -1588,3 +1588,65 @@
         @apply leading-6 text-base font-medium text-gray-700 dark:text-gray-300;
     }
 }
+
+/* Select2 dark/light styles */
+
+/* Base container */
+.select2-container .select2-selection--single {
+    @apply h-10 flex items-center border rounded-md px-3;
+}
+
+/* Light mode */
+.select2-container--default .select2-selection--single {
+    @apply bg-white border-gray-300 text-gray-900;
+}
+
+/* Dark mode */
+.dark .select2-container--default .select2-selection--single .select2-selection__rendered,
+.dark .select2-container--default .select2-selection--single {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+}
+
+/* Dropdown */
+.select2-dropdown {
+    @apply rounded-md border shadow-lg;
+}
+
+/* Light dropdown */
+.select2-container--default .select2-dropdown {
+    @apply bg-white border-gray-300;
+}
+
+/* Dark dropdown */
+.dark .select2-container--default .select2-dropdown {
+    @apply bg-gray-800 border-gray-600;
+}
+
+/* Options */
+.select2-results__option {
+    @apply px-3 py-2 cursor-pointer;
+}
+
+/* Hover / active */
+.select2-results__option--highlighted {
+    @apply bg-blue-500 text-white;
+}
+
+/* Selected item */
+.select2-results__option[aria-selected=true] {
+    @apply bg-blue-100;
+}
+
+.dark .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable,
+.dark .select2-results__option[aria-selected=true] {
+    @apply bg-blue-700 text-white;
+}
+
+/* Search input */
+.select2-search__field {
+    @apply w-full px-2 py-1 border rounded-md;
+}
+
+.dark .select2-search__field {
+    @apply bg-gray-700 border-gray-600 text-white;
+}

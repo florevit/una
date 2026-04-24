@@ -2298,11 +2298,10 @@
     <string name="_sys_agents_automators_field_type_webhook"><![CDATA[Webhook]]></string>
     <string name="_sys_agents_field_trigger"><![CDATA[Trigger]]></string>
     <string name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message.]]></string>
-    <string name="_sys_agents_field_alert_sample"><![CDATA[Alert: sample data]]></string>
-    <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Waiting for sample data...]]></string>
-    <string name="_sys_agents_field_alert_unit"><![CDATA[Alert: event type]]></string>
-    <string name="_sys_agents_field_alert_unit_info"><![CDATA[Type of event that triggers the agent, usually 'system' for system events, 'module_name' for modules events.]]></string>
-    <string name="_sys_agents_field_alert_action"><![CDATA[Alert: event action]]></string>
+    <string name="_sys_agents_field_alert_sample"><![CDATA[Alert: payload]]></string>
+    <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Please select an alert to see its payload.]]></string>
+    <string name="_sys_agents_field_alert"><![CDATA[Alert: event name]]></string>
+    <string name="_sys_agents_field_alert_info"><![CDATA[Event that triggers the agent. Usually starts with system or module_name. Only events that have occurred at least once are shown.]]></string>
     <string name="_sys_agents_field_scheduler_cron"><![CDATA[Scheduler (CRON)]]></string>
     <string name="_sys_agents_field_scheduler_cron_info"><![CDATA[CRON expression for scheduling the agent.]]></string>
     <string name="_sys_agents_field_webhook_key"><![CDATA[Webhook: key]]></string>
