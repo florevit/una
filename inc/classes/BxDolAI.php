@@ -379,7 +379,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         $sParams = is_string($mixedParams) ? $mixedParams : json_encode($mixedParams);
 
         // update sample data
-        $a = ['alert' => 'alert_sample', 'webhook' => 'webhook_sample'];
+        $a = ['webhook' => 'webhook_sample'];
         if (isset($a[$sType]) && empty($aAgent[$a[$sType]])) {
             $this->_oDb->updateAgentField($aAgent['id'], $a[$sType], $sParams);
         }

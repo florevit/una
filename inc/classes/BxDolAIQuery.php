@@ -942,11 +942,12 @@ class BxDolAIQuery extends BxDolDb
         return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
     }
 
-    public function getAlert($s) {
+    static public function getAlert($s) {
         if (!$s)
-            return false;
+            return false;        
         $a = explode(':', $s);
-        return $this->getRow("SELECT * FROM `sys_alerts_log` WHERE `unit` = :unit AND `action` = :action", [
+        $oDb = BxDolDb::getInstance();
+        return $oDb->getRow("SELECT * FROM `sys_alerts_log` WHERE `unit` = :unit AND `action` = :action", [
             'unit' => $a[0] ?? '',
             'action' => $a[1] ?? '',
         ]);
@@ -969,15 +970,16 @@ class BxDolAIQuery extends BxDolDb
         return $aValues;
     }
 
-    public function getAlertDesc($sAlert) 
+    static public function getAlertDesc($sAlert) 
     {
+        $oDb = BxDolDb::getInstance();
         [$sUnit, $sAction] = explode(':', $sAlert);
-        $sDesc = $this->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` = :unit AND `action` = :action LIMIT 1", [
+        $sDesc = $oDb->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` = :unit AND `action` = :action LIMIT 1", [
             'unit' => $sUnit,
             'action' => $sAction,
         ]);
         if (!$sDesc) {
-            $this->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` LIKE '{%}' AND `action` = :action LIMIT 1", [
+            $oDb->getOne("SELECT `description` FROM `sys_alerts_desc` WHERE `unit` LIKE '{%}' AND `action` = :action LIMIT 1", [
                 'action' => $sAction,
             ]);
         }

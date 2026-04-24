@@ -56,7 +56,6 @@ class BxDolAIToolContentSearch extends BxDolAITool
 
     public function __invoke(string $keyword, array $sections, ?int $limit = 5): array
     {
-echoDbgLog("Invoking content search tool with keyword: {$keyword}, sections: " . implode(',', $sections) . ", limit: {$limit}");
         $a = bx_srv('system', 'search', [$keyword, $sections, $limit], 'TemplServiceContent');
         if (!$a)
             return ["error" => "No content items found"];

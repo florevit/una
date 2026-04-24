@@ -375,7 +375,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'text' => _t('_sys_agents_waiting_for_sample_data'),
 
                         'payload-visibility' => !empty($aAgent['alert']) ? 'block' : 'none',
-                        'desc' => $this->_oDb->getAlertDesc($aAgent['alert']),
+                        'desc' => $aAgent ? $this->_oDb->getAlertDesc($aAgent['alert']) : '',
                         'payload' => !empty($aAgent['alert']) ? json_encode($this->_getAlertPayload($aAgent['alert']), JSON_PRETTY_PRINT) : '',
                     ]),
                 ],
