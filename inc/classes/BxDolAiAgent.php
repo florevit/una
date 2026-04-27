@@ -38,14 +38,27 @@ class BxDolAiAgent extends RAG
 
     protected function instructions(): string
     {
-        $aToolsUsage = !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : [];
-        $aToolsUsage[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
+        $aPromptSystem = !empty($this->aAgent['prompt_system']) ? [$this->aAgent['prompt_system']] : [];
+        $aPromptSteps = !empty($this->aAgent['prompt_steps']) ? [$this->aAgent['prompt_steps']] : [];
+        $aPromptTools = !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : [];
+        $aPromptOutput = !empty($this->aAgent['prompt_output']) ? [$this->aAgent['prompt_output']] : [];
+
+        $aPromptTools[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
+
+        if ('alert' == $this->aAgent['trigger']) {
+            $aPromptTools[] = "Return array only, modified version of 'extra' array. Modifyable keys: " . $this->getAlertTriggerModifyableKeys() . ".";             
+
+            $sDesc = trim(BxDolAiQuery::getAlertDesc($this->aAgent['alert']));
+            if ('.' != mb_substr($sDesc, -1))
+                $sDesc .= '.';
+            $aPromptSystem[] = $sDesc;
+        }
 
         $oPrompt = new NeuronAI\Agent\SystemPrompt(
-            background: [$this->aAgent['prompt_system']],
-            steps: !empty($this->aAgent['prompt_steps']) ? [$this->aAgent['prompt_steps']] : [],
-            output: !empty($this->aAgent['prompt_output']) ? [$this->aAgent['prompt_output']] : [],
-            toolsUsage: $aToolsUsage
+            background: $aPromptSystem,
+            steps: $aPromptSteps,
+            output: $aPromptOutput,
+            toolsUsage: $aPromptTools
         );
         return (string) $oPrompt;
     }
@@ -100,5 +113,21 @@ class BxDolAiAgent extends RAG
         if (isset($this->aParams['chat_history_subindex']))
             $s .=  ':' . $this->aParams['chat_history_subindex'];
         return $s;
+    }
+
+    protected function getAlertTriggerModifyableKeys(): string
+    {
+        if ('alert' != $this->aAgent['trigger'])
+            return 'none';
+
+        $aAlert = BxDolAiQuery::getAlert($this->aAgent['alert']);
+        if (!$aAlert)
+            return 'none';
+
+        $aKeys = json_decode($aAlert['extra_refs']);
+        if (!$aKeys)
+            return 'none';
+
+        return implode(',', $aKeys);
     }
 }

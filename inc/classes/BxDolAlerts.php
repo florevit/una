@@ -152,14 +152,25 @@ class BxDolAlerts extends BxDol
         $oAi = BxDolAI::getInstance();
         if($aAgents = $oAi->getAgentsByAlertUnitAndAction($this->sUnit, $this->sAction)) {
             foreach($aAgents as $a) {
-                $oAi->callAgent('alert', $a, [
+                $sExtraJSON = $oAi->callAgent('alert', $a, [
                     'trigger' => 'alert',
-                    'object' => $this->iObject,
-                    'sender' => $this->iSender,
+                    'object_id' => $this->iObject,
+                    'sender_profile_id' => $this->iSender,
                     'unit' => $this->sUnit, 
                     'action' => $this->sAction,
-                    'extra' => $this->aExtras
+                    'extra' => $this->aExtras,
                 ]);
+
+                $aExtra = [];
+                if ($sExtraJSON && 0 === bx_mb_strpos($sExtraJSON, '{'))
+                    $aExtra = json_decode($sExtraJSON, true);
+                
+                if ($aExtra && is_array($aExtra)) {
+                    foreach ($aExtra as $k => $v) {
+                        if (isset($this->aExtras[$k]))
+                            $this->aExtras[$k] = $v;
+                    }
+                }
             }
         }
 
@@ -230,20 +241,17 @@ class BxDolAlerts extends BxDol
         $oDb->query("
             INSERT INTO sys_alerts_log
             SET
-                unit  = :unit,
+                unit = :unit,
                 action = :action,
                 object = :object,
                 sender = :sender,
-                extra  = :extra,
-                extra_refs  = :extra_refs,
-                ts     = UNIX_TIMESTAMP(),
+                extra = :extra,
+                extra_refs = :extra_refs,
+                ts = UNIX_TIMESTAMP(),
                 counter_total = 1,
                 counter_24h = 1
             ON DUPLICATE KEY UPDATE
-                object = :object,
-                sender = :sender,
-                extra  = :extra,
-                ts     = UNIX_TIMESTAMP(),
+                ts = UNIX_TIMESTAMP(),
                 counter_total = counter_total + 1,
                 counter_24h = counter_24h + 1
         ", $aBind);

@@ -375,7 +375,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'text' => _t('_sys_agents_waiting_for_sample_data'),
 
                         'payload-visibility' => !empty($aAgent['alert']) ? 'block' : 'none',
-                        'desc' => $this->_oDb->getAlertDesc($aAgent['alert']),
+                        'desc' => $aAgent ? $this->_oDb->getAlertDesc($aAgent['alert']) : '',
                         'payload' => !empty($aAgent['alert']) ? json_encode($this->_getAlertPayload($aAgent['alert']), JSON_PRETTY_PRINT) : '',
                     ]),
                 ],
@@ -585,6 +585,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'name' => $r['name'],
                 'value' => $r['key'],
                 'desc' => bx_html_attribute($r['desc']),
+                'count' => bx_html_attribute(_t('_sys_agents_count_today', $r['counter_24h'])),
                 'bx_if:sel' => [
                     'condition' => $sValue == $r['key'],
                     'content' => [
