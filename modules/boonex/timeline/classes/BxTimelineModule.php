@@ -1611,14 +1611,20 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(empty($iProfileId) && isLogged())
             $iProfileId = bx_get_logged_profile_id();
 
+        if($this->_bIsApi && ($aParams = bx_get('params')) !== false) {
+            $iContextId = (int)($aParams['context_id'] ?? 0);
+            if($iContextId)
+                $iProfileId = abs($iContextId);
+        }
+
         if(!$iProfileId)
-            return array();
+            return [];
 
         $sType = BX_BASE_MOD_NTFS_TYPE_OWNER;
-        return $this->_getBlockPost($iProfileId, array(
+        return $this->_getBlockPost($iProfileId, [
             'type' => $sType,
             'form_display' => $this->_oConfig->getPostFormDisplay($sType)
-        ));
+        ]);
     }
 
     /**
@@ -5924,8 +5930,10 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     {
         $this->_iOwnerId = $iProfileId;
 
-        if($this->isAllowedPost() !== true)
-            return [];
+        if(($mixedResult = $this->isAllowedPost()) !== true)
+            return $this->_bIsApi ? [
+                bx_api_get_msg($mixedResult)
+            ] : [];
         
         $mixedResult = $this->_oTemplate->getPostBlock($this->_iOwnerId, $aParams);
 

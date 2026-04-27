@@ -1608,9 +1608,17 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
 
         // for groups based profiles we do have a Role permissions which have a higher priority than the site-wide permissions.
         if (method_exists($this, 'isAllowedModuleActionByProfile')) {
-            $bResult = $this->isAllowedModuleActionByProfile($iContentId, $sPostModule, 'post');
+            $iProfileId = $this->_iProfileId;
+
+            if(($sPrivacy = $CNF['OBJECT_PRIVACY_POST'] ?? false)) {
+                $oPrivacy = BxDolPrivacy::getObjectInstance($sPrivacy);
+                if($oPrivacy && !$oPrivacy->check($iContentId, $iProfileId))
+                    return _t('_sys_access_denied_to_private_content');
+            }
+
             // if a profile is having a role and a role is having permissions set then it overrides the site-wide setting.
-            if ($bResult !== NULL) return $bResult;
+            if (($bResult = $this->isAllowedModuleActionByProfile($iContentId, $sPostModule, 'post', $iProfileId)) !== NULL) 
+                return $bResult;
         }
 
         return $this->serviceCheckAllowedWithContent('Post', $iContentId);
