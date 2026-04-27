@@ -1717,6 +1717,13 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             return '';
 
         $iProfileId = $this->getProfileId();
+
+        if($this->_bIsApi && ($aParams = bx_get('params')) !== false) {
+            $iContextId = (int)($aParams['context_id'] ?? 0);
+            if($iContextId)
+                $iProfileId = abs($iContextId);
+        }
+
         $sType = BX_TIMELINE_TYPE_FEED;
         return $this->_getBlockPost($iProfileId, array(
             'type' => $sType,
