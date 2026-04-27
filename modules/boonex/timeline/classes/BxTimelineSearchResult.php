@@ -34,6 +34,7 @@ class BxTimelineSearchResult extends BxBaseModNotificationsSearchResult
             'paginate' => array('perPage' => getParam('bx_timeline_events_per_page'), 'start' => 0),
             'sorting' => 'last',
             'ident' => 'id',
+            'added' => 'date'
         );
 
         $this->sFilterName = 'bx_timeline_filter';
