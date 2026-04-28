@@ -7168,6 +7168,7 @@ CREATE TABLE `sys_agents_agents` (
   `prompt_output` text NOT NULL,
   `prompt_tools` text NOT NULL,
   `tools` varchar(255) NOT NULL DEFAULT '',
+  `tools_max_run` int(11) NOT NULL DEFAULT 10,
   `chat_history_context` int(11) NOT NULL DEFAULT 50000,
   `vector_store_id` int(11) NOT NULL,
   `trigger` enum('alert','scheduler','webhook','manual','agent','message') NOT NULL DEFAULT 'message',

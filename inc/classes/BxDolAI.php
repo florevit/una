@@ -94,6 +94,9 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         $o = BxDolAiAgent::make($a, $aParams);
 
+        if ((int)$a['tools_max_run'] > 0)
+            $o->toolMaxRuns($a['tools_max_run']);
+
         if ($a['vector_store_id']) {
             $aVectorStore = BxDolAIQuery::getVectorStoreObject($a['vector_store_id']);
             if ($aVectorStore && $aVectorStore['embedding_provider_id']) {
@@ -391,13 +394,22 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         }
 
         // call agent
-        $o = self::getAgentInstance($aAgent['id'], $aParams);
-        if (!$o)
-            return false;
+        $mixed = '';
+        try {                        
+            $o = self::getAgentInstance($aAgent['id'], $aParams);
+            if (!$o)
+                return false;
 
-        $oMessage = $o->chat(new NeuronAI\Chat\Messages\UserMessage($sParams))->getMessage();
+            $oMessage = $o->chat(new NeuronAI\Chat\Messages\UserMessage($sParams))->getMessage();
 
-        return $oMessage->getContent();
+            $mixed = $oMessage->getContent();
+
+        } catch (Exception $exception) {            
+            bx_log('sys_agents', "Exception in '{$aAgent['name']}' agent: " . $exception->getMessage() . " INPUT:" . $sParams, BX_LOG_ERR);
+            $mixed = _t('_sys_agents_exception');
+        }
+
+        return $mixed;
     }
 
     public function sendMessengerMessage ($iSender, $iRecipient, $sMsg) 

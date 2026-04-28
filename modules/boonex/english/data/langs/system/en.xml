@@ -2314,6 +2314,8 @@
     <string name="_sys_agents_field_vector_store_id_info"><![CDATA[Vector store for knowledge retrieval.]]></string>
     <string name="_sys_agents_field_tools"><![CDATA[Tools]]></string>
     <string name="_sys_agents_field_tools_info"><![CDATA[Tools available for the agent to use.]]></string>
+    <string name="_sys_agents_field_tools_max_run"><![CDATA[Max tool calls]]></string>
+    <string name="_sys_agents_field_tools_max_run_info"><![CDATA[Limits how many times the AI can call external tools (such as search or actions) while completing a task. Higher values may increase execution time.]]></string>
     <string name="_sys_agents_field_prompt_system"><![CDATA[System Prompt]]></string>
     <string name="_sys_agents_field_prompt_system_info"><![CDATA[System prompt for the agent.]]></string>
     <string name="_sys_agents_field_prompt_steps"><![CDATA[Steps Prompt]]></string>
@@ -2502,6 +2504,7 @@
     <string name="_sys_agents_assistants_msg_knowledge_added"><![CDATA[Knowledge was added.]]></string>
     <string name="_sys_agents_logs_popup"><![CDATA["{0}" agent logs]]></string>
     <string name="_sys_agents_err_failed"><![CDATA[Error occurred. Try to check log file for more info.]]></string>
+    <string name="_sys_agents_exception"><![CDATA[The AI encountered an error while completing your request. Please try again or rephrase your input.]]></string>
 
   <string name="_sys_audit_content_info_popup_title"><![CDATA[Information]]></string>
   <string name="_sys_audit_action_edit_content"><![CDATA[Content edited]]></string>

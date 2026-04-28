@@ -35,11 +35,9 @@ class BxBaseStudioAgentsLogs extends BxDolStudioAgentsGrid
     protected function _getCellMessage ($mixedValue, $sKey, $aField, $aRow) 
     {
         switch ($mixedValue) {
-            case 'workflow-end':
-                $mixedValue = '⏹️ ' . $mixedValue;
-                break;
             case 'workflow-start':
-                $mixedValue = '▶️ ' . $mixedValue;
+            case 'workflow-end':            
+                $mixedValue = '❇️ ' . $mixedValue . ' ❇️';
                 break;
             case 'error':
                 $mixedValue = '❗️ ' . $mixedValue;

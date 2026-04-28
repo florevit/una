@@ -489,6 +489,17 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'info' => _t('_sys_agents_field_tools_info'),
                     'value' => '',
                 ],
+                'tools_max_run' => [
+                    'type' => 'text',
+                    'name' => 'tools_max_run',
+                    'caption' => _t('_sys_agents_field_tools_max_run'),
+                    'info' => _t('_sys_agents_field_tools_max_run_info'),
+                    'value' => isset($aAgent['tools_max_run']) ? $aAgent['tools_max_run'] : '10',
+                    'required' => '1',
+                    'db' => [
+                        'pass' => 'Int',
+                    ],
+                ],
                 'prompt_system' => [
                     'type' => 'textarea',
                     'name' => 'prompt_system',
