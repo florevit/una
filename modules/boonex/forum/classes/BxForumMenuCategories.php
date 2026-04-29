@@ -30,29 +30,29 @@ class BxForumMenuCategories extends BxTemplMenu
     public function getMenuItems ()
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-        
-        $aItems = [];
-        
-        $aCategoriest = bx_srv('system', 'categories_list', ['bx_forum_cats', ['show_empty' => true]], 'TemplServiceCategory');
-        
-        if (!($o = BxDolCategory::getObjectInstance('bx_forum_cats')))
-            return $aItems;
 
-		$aCategories = $o->getCategoriesList(false, true);
-        
-		if(!isset($aCategories['bx_repeat:cats']))
-			return $aItems;
-        
+        $oCategory = BxDolCategory::getObjectInstance('bx_forum_cats');
+        if(!$oCategory)
+            return [];
+
+        $aCategories = $oCategory->getCategoriesList(false, true);
+        if($this->_bIsApi && $aCategories && is_array($aCategories))
+            return reset($aCategories)['data'];
+
+        if(!isset($aCategories['bx_repeat:cats']))
+            return [];
+
         $iCount = 0;
         foreach ($aCategories['bx_repeat:cats'] as $sKey => $aCategory) {
             $iCount +=  $aCategories['bx_repeat:cats'][$sKey]['num'];
         }
-        
-        $aItems[] =  [
+
+        $aItems = [[
             'class_add' => 'bx-psmi-show-0' .  (bx_get('category') == '' ? ' bx-menu-item-active' : ''),
             'name' => 'show-0',
             'title' => _t('_bx_forum_txt_all_categories'),
             'link' => BxDolPermalinks::getInstance()->permalink($CNF['URL_HOME']),
+            'icon' => '',
             'bx_if:onclick' => [
                 'condition' => false,
                 'content' => [
@@ -84,25 +84,26 @@ class BxForumMenuCategories extends BxTemplMenu
                 'condition' => true,
                 'content' => ['addon' => $iCount]
             ]
-        ];
+        ]];
 
         foreach ($aCategories['bx_repeat:cats'] as $sKey => $aCategory) {
             $aCategoryData = $this->_oModule->_oDb->getCategories(['type' => 'by_category', 'category' => $aCategory['value']]);
             if(empty($aCategoryData) || (!empty($aCategoryData['visible_for_levels']) && BxDolAcl::getInstance()->isMemberLevelInSet($aCategoryData['visible_for_levels']))) {
-                
+
                 $aCategories['bx_repeat:cats'][$sKey]['icon'] = $this->_oTemplate->getImage(isset($aCategoryData['icon']) ? $aCategoryData['icon'] : 'folder', array('class' => 'sys-icon sys-colored'));
-                
+
                 if (!isset($aCategoryData['icon']) || $aCategoryData['icon'] == '')
                     $aCategoryData['icon'] = 'folder';
-                
+
                 list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = BxTemplFunctions::getInstance()->getIcon($aCategoryData['icon']);
-                
+
                 $aItems[] =  [
                     // TODO
                     'class_add' => 'bx-psmi-show-' . $aCategories['bx_repeat:cats'][$sKey]['value'] . (bx_get('category') == $aCategories['bx_repeat:cats'][$sKey]['value'] ? ' bx-menu-item-active' : ''),
                     'name' => 'show-' . $aCategories['bx_repeat:cats'][$sKey]['value'],
                     'title' => $aCategories['bx_repeat:cats'][$sKey]['name'],
                     'link' => $aCategories['bx_repeat:cats'][$sKey]['url'],
+                    'icon' => $aCategoryData['icon'],
                     'bx_if:onclick' => [
                         'condition' => false,
                         'content' => [

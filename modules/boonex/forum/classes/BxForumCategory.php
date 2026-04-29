@@ -14,6 +14,8 @@ class BxForumCategory extends BxTemplCategory
     protected $_sModule;
     protected $_oModule;
 
+    protected $_aCategories;
+
     public function __construct($aObject, $oTemplate = null)
     {
     	$this->_sModule = 'bx_forum';
@@ -26,6 +28,8 @@ class BxForumCategory extends BxTemplCategory
         $this->_sBrowseUrl = bx_append_url_params(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_CATEGORY_ENTRIES']), array(
             'category' => '{keyword}'
         ), true, ['{keyword}']);
+
+        $this->_aCategories = $this->_oModule->_oDb->getCategories(['type' => 'all_with_key']);
     }
 
     public function getCategoryIcon($sValue)
@@ -33,6 +37,18 @@ class BxForumCategory extends BxTemplCategory
         $aCategoryData = $this->_oModule->_oDb->getCategories(['type' => 'by_category', 'category' => $sValue]);
 
         return isset($aCategoryData['icon']) ? $aCategoryData['icon'] : '';
+    }
+
+    protected function _getCategoryData($aCategory)
+    {
+        $iCategory = (int)$aCategory['Value'];
+        if(!isset($this->_aCategories[$iCategory]))
+            return [];
+
+        return [
+            'use' => 'icon',
+            'icon' => $this->_aCategories[$iCategory]['icon']
+        ];
     }
 }
 

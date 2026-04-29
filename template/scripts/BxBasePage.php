@@ -1342,8 +1342,16 @@ class BxBasePage extends BxDolPage
      */
     protected function _getBlockMenu ($aBlock)
     {
+        $bIsApi = bx_is_api();
+
         $oMenu = BxTemplMenu::getObjectInstance($aBlock['content']);
-        return $oMenu ? $oMenu->getCode () : '';
+        if(!$oMenu)
+            return $bIsApi ? [] : '';
+
+        if($bIsApi)
+            return [bx_api_get_block('menu', ['title' => _t($aBlock['title']), 'content' => $oMenu->getCodeAPI()])];
+
+        return $oMenu ? $oMenu->getCode() : '';
     }
 
     /**

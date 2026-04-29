@@ -87,40 +87,40 @@ class BxForumDb extends BxBaseModTextDb
 
     public function getUnrepliedDiscussionsNum ($iProfileId)
     {
-    	$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
         $sQuery = $this->prepare("SELECT COUNT(`te`.`id`)
             FROM `" . $CNF['TABLE_ENTRIES'] . "` AS `te`
             WHERE `te`.`author`=? AND `te`.`lr_profile_id`<>?", $iProfileId, $iProfileId);
 
-		return $this->getOne($sQuery);
+        return $this->getOne($sQuery);
     }
 
-	public function updateStatus($sAction, $aContentInfo)
-	{
-		$CNF = &$this->_oConfig->CNF;
+    public function updateStatus($sAction, $aContentInfo)
+    {
+        $CNF = &$this->_oConfig->CNF;
 
-		$aActions = array(
-			'stick' => array($CNF['FIELD_STICK'] => 1),
-			'unstick' => array($CNF['FIELD_STICK'] => 0),
-			'lock' =>  array($CNF['FIELD_LOCK'] => 1),
-			'unlock' =>  array($CNF['FIELD_LOCK'] => 0),
+        $aActions = array(
+            'stick' => array($CNF['FIELD_STICK'] => 1),
+            'unstick' => array($CNF['FIELD_STICK'] => 0),
+            'lock' =>  array($CNF['FIELD_LOCK'] => 1),
+            'unlock' =>  array($CNF['FIELD_LOCK'] => 0),
             'resolve' =>  array($CNF['FIELD_RESOLVE'] => 1),
-			'unresolve' =>  array($CNF['FIELD_RESOLVE'] => 0),
-			'hide' =>  array($CNF['FIELD_STATUS_ADMIN'] => 'hidden'),
-			'unhide' =>  array($CNF['FIELD_STATUS_ADMIN'] => 'active')
-		);
+            'unresolve' =>  array($CNF['FIELD_RESOLVE'] => 0),
+            'hide' =>  array($CNF['FIELD_STATUS_ADMIN'] => 'hidden'),
+            'unhide' =>  array($CNF['FIELD_STATUS_ADMIN'] => 'active')
+        );
 
-		return $this->updateEntries($aActions[$sAction], array($CNF['FIELD_ID'] => $aContentInfo[$CNF['FIELD_ID']]));
-	}
+        return $this->updateEntries($aActions[$sAction], array($CNF['FIELD_ID'] => $aContentInfo[$CNF['FIELD_ID']]));
+    }
 
-	public function insertCategory($aSet)
+    public function insertCategory($aSet)
     {
         $sQuery = "INSERT INTO `" . $this->getPrefix() . "categories` SET " . $this->arrayToSQL($aSet);
         return (int)$this->query($sQuery) > 0;
     }
 
-	public function getCategories($aParams)
+    public function getCategories($aParams)
     {
         $aMethod = array('name' => 'getAll', 'params' => array(0 => 'query'));
         $sSelectClause = $sJoinClause = $sWhereClause = $sGroupClause = $sOrderClause = $sLimitClause = "";
@@ -132,17 +132,22 @@ class BxForumDb extends BxBaseModTextDb
             case 'by_category':
                 $aMethod['name'] = 'getRow';
                 $aMethod['params'][1] = array(
-                	'category' => $aParams['category']
+                        'category' => $aParams['category']
                 );
 
                 $sWhereClause = " AND `tc`.`category`=:category ";
                 break;
 
             case 'all_pairs':
-            	$aMethod['name'] = 'getPairs';
+                $aMethod['name'] = 'getPairs';
                 $aMethod['params'][1] = 'category';
                 $aMethod['params'][2] = 'visible_for_levels';
-            	break;
+                break;
+
+            case 'all_with_key':
+                $aMethod['name'] = 'getAllWithKey';
+                $aMethod['params'][1] = 'category';
+                break;
         }
 
         $aMethod['params'][0] = "SELECT 
