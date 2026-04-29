@@ -939,7 +939,10 @@ class BxDolAIQuery extends BxDolDb
     public function wipeAgentChatHistory($aAgent) 
     {
         $sQuery = "DELETE FROM `sys_agents_chat_history` WHERE `thread_id` LIKE :val";
-        return $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
+        $iAffected = 0;
+        $iAffected += $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id'] . ':%']);
+        $iAffected += $this->query($sQuery, ['val' => $aAgent['trigger'] . ':' . $aAgent['id']]);
+        return $iAffected;
     }
 
     static public function getAlert($s) {
