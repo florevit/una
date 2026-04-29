@@ -287,6 +287,13 @@ class BxResourcesModule extends BxBaseModTextModule
     {
         return $this->isAllowManage($aDataEntry) ? CHECK_ACTION_RESULT_ALLOWED : _t('_sys_txt_access_denied');
     }
+    
+    public function decodeDataAPI($aData, $aParams = [])
+    {
+        return array_merge(parent::decodeDataAPI($aData, $aParams), [
+            'url' => $this->_oTemplate->getUnitLink($aData)
+        ]);
+    }
 }
 
 /** @} */

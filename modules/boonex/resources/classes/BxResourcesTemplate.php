@@ -33,7 +33,14 @@ class BxResourcesTemplate extends BxBaseModTextTemplate
     {
         $CNF = &$this->_oConfig->CNF;
 
-        return $aData[$CNF['FIELD_LINK']] ?? parent::getUnitLink($aData, $aParams);
+        $sLink = $aData[$CNF['FIELD_LINK']] ?? '';
+        if(!$sLink) {
+            $sLink = parent::getUnitLink($aData, $aParams);
+            if($this->_bIsApi)
+                $sLink = bx_api_get_relative_url($sLink);
+        }
+
+        return $sLink;
     }
 
     public function getUnitTitle ($aData, $aParams = [])
