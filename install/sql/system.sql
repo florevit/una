@@ -7168,6 +7168,7 @@ CREATE TABLE `sys_agents_agents` (
   `prompt_output` text NOT NULL,
   `prompt_tools` text NOT NULL,
   `tools` varchar(255) NOT NULL DEFAULT '',
+  `tools_max_run` int(11) NOT NULL DEFAULT 10,
   `chat_history_context` int(11) NOT NULL DEFAULT 50000,
   `vector_store_id` int(11) NOT NULL,
   `trigger` enum('alert','scheduler','webhook','manual','agent','message') NOT NULL DEFAULT 'message',
@@ -7305,19 +7306,27 @@ CREATE TABLE IF NOT EXISTS `sys_agents_tools` (
   `duplicate` tinyint(4) NOT NULL DEFAULT 1,
   `changed` int(11) NOT NULL DEFAULT 0,
   `active` tinyint(4) NOT NULL DEFAULT 0,
+  `class_name` varchar(255) NOT NULL DEFAULT '',
+  `class_file` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`, `duplicate`, `changed`, `active`) VALUES
-('mysql_schema', 'MySQL Schema', 'This tool allows agents to understand the structure of the database, enabling them to construct intelligent queries without requiring you to hardcode table structures or relationships into the prompts. This tool essentially gives your agent the equivalent of a database administrator''s understanding of your schema, allowing it to craft queries that respect your data model and take advantage of existing indexes.  \r\nIt reads all tables by default, but it''s possible to limit it to a certain number of tables by providing the list in the `tables` parameter. By limiting the schema scope, you can create specialized agents that focus on specific areas of the site.', '{\"tables\":[]}', NULL, 0, 0, 1),
-('mysql_select', 'MySQL Select', 'Use this tool to make your agent able to run SELECT query against the database. It''s like read-only access without ability to change anything in the DB. It works the best in par of MySQL Schema tool.  \r\nNo parameters are needed for this tool.', '{}', NULL, 0, 0, 1),
-('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0),
-('content_structure', 'Content modules structure', 'This tool allows agents to understand the structure of content modules fields,  allowing them to call content adding and editing with correct data. It provide knowledge of what content modules are available and what the fields in them, event if fields are changed in fields builder.', '{}', NULL, 0, 0, 1),
-('content_get', 'Content modules get', 'This tool allows agents to get info about specific content by module name and content id.', '{}', NULL, 0, 0, 1),
-('content_search', 'Content modules search', 'This tool allows agents to search for content items based on a keyword and optional sections.', '{}', NULL, 0, 0, 1),
-('content_delete', 'Content modules delete', 'This tool allows agents to delete content. ', '{}', NULL, 0, 0, 1),
-('content_add', 'Content modules add', 'This tool allows agents to add new content. It works with the "content_structure" tool to get knowledge about content modules fields for add actions.', '{}', NULL, 0, 0, 1),
-('content_update', 'Content modules update', 'This tool allows agents to update existing content. It works with the "content_structure" tool to get knowledge about content modules fields for update actions.', '{}', NULL, 0, 0, 1);
+INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`, `duplicate`, `changed`, `active`, `class_name`, `class_file`) VALUES
+('mysql_schema', 'MySQL Schema', 'This tool allows agents to understand the structure of the database, enabling them to construct intelligent queries without requiring you to hardcode table structures or relationships into the prompts. This tool essentially gives your agent the equivalent of a database administrator''s understanding of your schema, allowing it to craft queries that respect your data model and take advantage of existing indexes.  \r\nIt reads all tables by default, but it''s possible to limit it to a certain number of tables by providing the list in the `tables` parameter. By limiting the schema scope, you can create specialized agents that focus on specific areas of the site.', '{\"tables\":[]}', NULL, 0, 0, 1, '', ''),
+('mysql_select', 'MySQL Select', 'Use this tool to make your agent able to run SELECT query against the database. It''s like read-only access without ability to change anything in the DB. It works the best in par of MySQL Schema tool.  \r\nNo parameters are needed for this tool.', '{}', NULL, 0, 0, 1, '', ''),
+('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0, '', ''),
+
+('content_structure', 'Content modules structure', 'This tool allows agents to understand the structure of content modules fields,  allowing them to call content adding and editing with correct data. It provide knowledge of what content modules are available and what the fields in them, event if fields are changed in fields builder.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentStructure', ''),
+('content_get', 'Content modules get', 'This tool allows agents to get info about specific content by module name and content id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentGet', ''),
+('content_search', 'Content modules search', 'This tool allows agents to search for content items based on a keyword and optional sections.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentSearch', ''),
+('content_delete', 'Content modules delete', 'This tool allows agents to delete content. ', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentDelete', ''),
+('content_add', 'Content modules add', 'This tool allows agents to add new content. It works with the "content_structure" tool to get knowledge about content modules fields for add actions.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentAdd', ''),
+('content_update', 'Content modules update', 'This tool allows agents to update existing content. It works with the "content_structure" tool to get knowledge about content modules fields for update actions.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentUpdate', ''),
+
+('comments_get', 'Comments get', 'This tool allows agents to get comments for specific content by module name and content id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsGet', ''),
+('comments_add', 'Comments add', 'This tool allows agents to post comments for specific content.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsAdd', ''),
+('comments_update', 'Comments update', 'This tool allows agents to edit comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsUpdate', ''),
+('comments_delete', 'Comments delete', 'This tool allows agents to delete comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsDelete', '');
 
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

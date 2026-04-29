@@ -1663,7 +1663,12 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
 
     public function add($aValues)
     {
-        return $this->_getFormAdd($aValues);
+        return $this->_getFormDirectAdd($aValues);
+    }
+
+    public function edit($aValues, $iCmtId)
+    {
+        return $this->_getFormDirectEdit($aValues, $iCmtId);
     }
 
     public function actionResumeLiveUpdate()

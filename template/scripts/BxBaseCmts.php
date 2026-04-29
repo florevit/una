@@ -1230,12 +1230,29 @@ class BxBaseCmts extends BxDolCmts
         ));
     }
 
-    protected function _getFormAdd($aValues)
+    protected function _getFormDirectEdit($aValues, $iCmtId)
     {
+        return $this->_getFormManual($aValues, $iCmtId);
+    } 
+
+    protected function _getFormDirectAdd($aValues) 
+    {
+        return $this->_getFormManual($aValues);
+    }
+
+    protected function _getFormManual($aValues, $iEditedCmtId = 0)
+    {
+        $aCmt = []; 
+        if ($iEditedCmtId) {
+            $aCmt = $this->getCommentSimple($iEditedCmtId);
+            if(!$aCmt)
+                return bx_is_api() ? bx_api_get_msg(_t('_No such comment')) : array('msg' => _t('_No such comment'));
+        }
+
         $iCmtAuthorId = isset($aValues['cmt_author_id']) ? (int)$aValues['cmt_author_id'] : $this->_getAuthorId();
         $iCmtParentId = isset($aValues['cmt_parent_id']) ? (int)$aValues['cmt_parent_id'] : 0;
 
-        $oForm = $this->_getForm(BX_CMT_ACTION_POST, $iCmtParentId);
+        $oForm = $this->_getForm($iEditedCmtId ? BX_CMT_ACTION_EDIT : BX_CMT_ACTION_POST, $iCmtParentId);
         $oForm->aFormAttrs['method'] = BX_DOL_FORM_METHOD_SPECIFIC;
         $oForm->aParams['csrf']['disable'] = true;
         $oForm->aInputs['cmt_parent_id']['value'] = $iCmtParentId;
@@ -1277,7 +1294,15 @@ class BxBaseCmts extends BxDolCmts
             $iCmtVisualParentId = $iLevel > $this->getMaxLevel() ? $aParent['cmt_vparent_id'] : $iCmtParentId;
         }
 
-        $iCmtId = (int)$oForm->insert(array('cmt_vparent_id' => $iCmtVisualParentId, 'cmt_object_id' => $this->_iId, 'cmt_author_id' => $iCmtAuthorId, 'cmt_level' => $iLevel, 'cmt_time' => time()));
+        $iCmtId = 0;
+        if ($iEditedCmtId) {
+            $bRes = $oForm->update($iEditedCmtId);
+            if ($bRes)
+                $iCmtId = $iEditedCmtId;
+        } else {
+            $iCmtId = (int)$oForm->insert(array('cmt_vparent_id' => $iCmtVisualParentId, 'cmt_object_id' => $this->_iId, 'cmt_author_id' => $iCmtAuthorId, 'cmt_level' => $iLevel, 'cmt_time' => time()));
+        }
+
         if(!$iCmtId) {
             if(!$oForm->isValid())
                 return array('code' => 1, 'message' => '_sys_txt_error_occured');
@@ -1285,12 +1310,24 @@ class BxBaseCmts extends BxDolCmts
                 return array('code' => 2, 'message' => '_cmt_err_cannot_perform_action');
         }
 
-        $iCmtUniqId = $this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId, [
-            'author_id' => $iCmtAuthorId, 
-            'status_admin' => $this->getStatusAdmin()
-        ]);
+        $iCmtUniqId = 0;
+        if ($iEditedCmtId) {
+                $iCmtUniqId = $this->_oQuery->getUniqId($this->_aSystem['system_id'], $iEditedCmtId, [
+                    'author_id' => (int)$aCmt['cmt_author_id']
+                ]);
+                
+                $sStatusAdmin = $this->getStatusAdmin();
+                if($sStatusAdmin !== BX_CMT_STATUS_ACTIVE)
+                    $this->_oQuery->updateUniqId(['status_admin' => $sStatusAdmin], ['id' => $iCmtUniqId]);
+        } 
+        else {
+            $iCmtUniqId = $this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId, [
+                'author_id' => $iCmtAuthorId, 
+                'status_admin' => $this->getStatusAdmin()
+            ]);
+        }
 
-        if($iCmtParentId) {
+        if($iCmtParentId && !$iEditedCmtId) {
             $this->_oQuery->updateRepliesCount($iCmtParentId, 1);
 
             if(!BxDolModuleQuery::getInstance()->isEnabledByName('bx_notifications'))
@@ -1302,7 +1339,13 @@ class BxBaseCmts extends BxDolCmts
         if($this->_sMetatagsObj && ($oMetatags = BxDolMetatags::getObjectInstance($this->_sMetatagsObj)) !== false)
             $oMetatags->metaAdd($iCmtUniqId, $aValues['cmt_text']);
 
-        $mixedResult = $this->onPostAfter($iCmtId);
+        $mixedResult = false;
+        if ($iEditedCmtId) {
+            $mixedResult = $this->onEditAfter($iCmtId);
+        }
+        else {
+            $mixedResult = $this->onPostAfter($iCmtId);
+        }
         if($mixedResult === false)
             return array('code' => 2, 'message' => '_cmt_err_cannot_perform_action');
 

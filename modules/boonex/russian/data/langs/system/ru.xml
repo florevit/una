@@ -2264,7 +2264,7 @@
         <string name="_sys_agents_field_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_field_name_info"><![CDATA[Уникальное название агента.]]></string>
         <string name="_sys_agents_field_model_id"><![CDATA[Модель]]></string>
-        <string name="_sys_agents_field_model_id_info"><![CDATA[Модель тьи для использования этим агентом.]]></string>
+        <string name="_sys_agents_field_model_id_info"><![CDATA[Модель для использования этим агентом.]]></string>
         <string name="_sys_agents_automators_field_profile_id"><![CDATA[Профиль]]></string>
         <string name="_sys_agents_automators_field_profile_id_inf"><![CDATA[Оставьте пустым, чтобы использовать значение по умолчанию.]]></string>
         <string name="_sys_agents_field_profile_id"><![CDATA[Профиль]]></string>
@@ -2291,6 +2291,8 @@
         <string name="_sys_agents_field_vector_store_id_info"><![CDATA[Хранилище векторов для получения знаний.]]></string>
         <string name="_sys_agents_field_tools"><![CDATA[Инструменты]]></string>
         <string name="_sys_agents_field_tools_info"><![CDATA[Инструменты, доступные для использования агентом.]]></string>
+        <string name="_sys_agents_field_tools_max_run"><![CDATA[Макс. число вызовов инструментов]]></string>
+        <string name="_sys_agents_field_tools_max_run_info"><![CDATA[Ограничивает, сколько раз ИИ может вызывать внешние инструменты (например, поиск или действия) при выполнении задачи. Чем больше значение, тем дольше может выполняться запрос.]]></string>
         <string name="_sys_agents_field_prompt_system"><![CDATA[Системная инструкция]]></string>
         <string name="_sys_agents_field_prompt_system_info"><![CDATA[Системная инструкция для агента.]]></string>
         <string name="_sys_agents_field_prompt_steps"><![CDATA[Инструкция по шагам]]></string>
@@ -2479,6 +2481,7 @@
         <string name="_sys_agents_assistants_msg_knowledge_added"><![CDATA[Знания были добавлены.]]></string>
         <string name="_sys_agents_logs_popup"><![CDATA[Логи агента "{0}"]]></string>
         <string name="_sys_agents_err_failed"><![CDATA[Произошла ошибка. Попробуйте проверить файл журнала для получения дополнительной информации.]]></string>
+        <string name="_sys_agents_exception"><![CDATA[ИИ столкнулся с ошибкой при выполнении вашего запроса. Пожалуйста, повторите попытку или переформулируйте ваш ввод.]]></string>
 
   <string name="_sys_audit_content_info_popup_title"><![CDATA[Информация]]></string>
   <string name="_sys_audit_action_edit_content"><![CDATA[Контент изменен]]></string>

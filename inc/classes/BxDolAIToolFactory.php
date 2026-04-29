@@ -41,27 +41,16 @@ class BxDolAIToolFactory extends BxDolFactory
                     pdo: BxDolDb::getInstance()->getLink(),
                 );
                 break;
-            case 'content_structure':
-                $o = BxDolAIToolContentStructure::make();
-                break;
-            case 'content_get':
-                $o = BxDolAIToolContentGet::make();
-                break;
-            case 'content_search':
-                $o = BxDolAIToolContentSearch::make();
-                break;
-            case 'content_add':
-                $o = BxDolAIToolContentAdd::make();
-                break;
-            case 'content_update':
-                $o = BxDolAIToolContentUpdate::make();
-                break;
-            case 'content_delete':
-                $o = BxDolAIToolContentDelete::make();
-                break;
             default:
-                bx_log('sys_agents', "Tool type {$a['type']} is not supported", BX_LOG_ERR);
-                throw new Exception("Tool type {$a['type']} is not supported");
+                if (!empty($a['class_name'])) {
+                    if (!empty($aObject['class_file']))
+                        require_once(BX_DIRECTORY_PATH_ROOT . $aObject['class_file']);
+                    $o = $a['class_name']::make();
+                }
+                else {
+                    bx_log('sys_agents', "Tool type {$a['type']} is not supported", BX_LOG_ERR);
+                    throw new Exception("Tool type {$a['type']} is not supported");
+                }
         }
 
         $GLOBALS['bxDolClasses'][__CLASS__ . '_AiAgentTool_' . $iId] = $o;
