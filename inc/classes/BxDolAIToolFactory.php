@@ -41,6 +41,29 @@ class BxDolAIToolFactory extends BxDolFactory
                     pdo: BxDolDb::getInstance()->getLink(),
                 );
                 break;
+
+            case 'tavily_web_search':
+                $o = NeuronAI\Tools\Toolkits\Tavily\TavilySearchTool::make(
+                    key: $aParameters['key'] ?? ''
+                );
+                break;
+            case 'tavily_extract':
+                $o = NeuronAI\Tools\Toolkits\Tavily\TavilyExtractTool::make(
+                    key: $aParameters['key'] ?? ''
+                );
+                break;
+
+            case 'jina_web_search':
+                $o = NeuronAI\Tools\Toolkits\Jina\JinaWebSearch::make(
+                    key: $aParameters['key'] ?? ''
+                );
+                break;
+            case 'jina_url_reader':
+                $o = NeuronAI\Tools\Toolkits\Jina\JinaUrlReader::make(
+                    key: $aParameters['key'] ?? ''
+                );
+                break;
+
             default:
                 if (!empty($a['class_name'])) {
                     if (!empty($aObject['class_file']))

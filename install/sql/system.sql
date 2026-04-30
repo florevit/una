@@ -7316,6 +7316,12 @@ INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`
 ('mysql_select', 'MySQL Select', 'Use this tool to make your agent able to run SELECT query against the database. It''s like read-only access without ability to change anything in the DB. It works the best in par of MySQL Schema tool.  \r\nNo parameters are needed for this tool.', '{}', NULL, 0, 0, 1, '', ''),
 ('mysql_write', 'MySQL Write', 'Use this tool to make your agent able to performs write operations against the database (INSERT, UPDATE, DELETE). It works the best in par of MySQL Schema tool.   \r\nNo parameters are needed for this tool.  \r\n**USE WITH CAUTION**', '{}', NULL, 0, 0, 0, '', ''),
 
+('tavily_web_search', 'Tavily Web Search', 'This tool makes your Agent able to search the web. It requires Tavily API key - https://tavily.com/', '{\"key\":"TAVILY_API_KEY_HERE"}', NULL, 0, 0, 1, '', ''),
+('tavily_extract', 'Tavily Extract URL', 'This tool makes your Agent to extract web page content from an URL. It requires Tavily API key - https://tavily.com/', '{\"key\":"TAVILY_API_KEY_HERE"}', NULL, 0, 0, 1, '', ''),
+
+('jina_web_search', 'Jina Web Search', 'This tool makes your Agent able to search the web. It requires Jina API key - https://jina.ai/', '{\"key\":"JINA_API_KEY_HERE"}', NULL, 0, 0, 1, '', ''),
+('jina_url_reader', 'Jina URL Reader', 'This tool makes your Agent to extract web page content from an URL. It requires Jina API key - https://jina.ai/', '{\"key\":"JINA_API_KEY_HERE"}', NULL, 0, 0, 1, '', ''),
+
 ('content_structure', 'Content modules structure', 'This tool allows agents to understand the structure of content modules fields,  allowing them to call content adding and editing with correct data. It provide knowledge of what content modules are available and what the fields in them, event if fields are changed in fields builder.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentStructure', ''),
 ('content_get', 'Content modules get', 'This tool allows agents to get info about specific content by module name and content id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentGet', ''),
 ('content_search', 'Content modules search', 'This tool allows agents to search for content items based on a keyword and optional sections.', '{}', NULL, 0, 0, 1, 'BxDolAIToolContentSearch', ''),
@@ -7326,7 +7332,9 @@ INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`
 ('comments_get', 'Comments get', 'This tool allows agents to get comments for specific content by module name and content id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsGet', ''),
 ('comments_add', 'Comments add', 'This tool allows agents to post comments for specific content.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsAdd', ''),
 ('comments_update', 'Comments update', 'This tool allows agents to edit comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsUpdate', ''),
-('comments_delete', 'Comments delete', 'This tool allows agents to delete comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsDelete', '');
+('comments_delete', 'Comments delete', 'This tool allows agents to delete comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsDelete', ''),
+
+('email_send', 'E-mail send', 'This tool allows agents to send e-mails.', '{}', NULL, 0, 0, 1, 'BxDolAIToolEmailSend', '');
 
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
