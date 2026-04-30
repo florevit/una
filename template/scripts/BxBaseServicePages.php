@@ -165,6 +165,24 @@ class BxBaseServicePages extends BxDol
             
             $mixed = BxDolPage::getObjectInstanceByURI();
         }
+        else if (($sK = 'wiki') && substr_count($sRequest, $sK . '/') > 0) {
+            $sUri = str_replace($sK . '/', '', $sRequest);
+
+            if(($oWiki = BxDolWiki::getObjectInstanceByUri($sK)) !== false) {
+                $oPage = BxDolPage::getObjectInstanceByModuleAndURI($oWiki->getObjectName(), $sUri);
+                if($oPage !== false) {
+                    $_GET['i'] = $sUri;
+                    
+                    /*
+                    $aParams = json_decode($sParams, true);
+                    if(!empty($aParams) && is_array($aParams))
+                        $_GET = array_merge($_GET, $aParams);
+                    */
+                    
+                    $mixed = $oPage;
+                }
+            }
+        }
         else{
             if(!empty($sParams)) {
                 $aParams = json_decode($sParams, true);

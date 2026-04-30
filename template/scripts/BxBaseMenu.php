@@ -334,7 +334,7 @@ class BxBaseMenu extends BxDolMenu
                 'primary' => isset($a['primary']) ? $a['primary'] : 0,
                 'persistent' => isset($a['persistent']) ? $a['persistent'] : 0,
             ];
-            
+
             if(!empty($a['onclick']))
                 $aResult = array_merge($aResult, [
                     'display_type' => 'callback',
@@ -349,6 +349,17 @@ class BxBaseMenu extends BxDolMenu
 
             if(!empty($aResult['link']))
                 $aResult['link'] = $this->_oPermalinks->permalink($aResult['link']);
+
+            if($this->isMultilevel() && !empty($a['subitems'])) {
+                $aSubitems = [];
+                foreach($a['subitems'] as $aSubitem) {
+                    $aSubitem = $this->_getMenuItem($aSubitem);
+                    if($aSubitem !== false)
+                        $aSubitems[] = $aSubitem;
+                }
+
+                $aResult['subitems'] = $aSubitems;
+            }
 
             return $aResult;
         }

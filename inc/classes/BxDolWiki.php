@@ -42,6 +42,8 @@
  */
 class BxDolWiki extends BxDolFactory implements iBxDolFactoryObject
 {
+    protected $_bIsApi;
+
     protected $_sObject;
     protected $_aObject;
     protected $_oQuery;
@@ -56,6 +58,8 @@ class BxDolWiki extends BxDolFactory implements iBxDolFactoryObject
     protected function __construct($aObject)
     {
         parent::__construct();
+
+        $this->_bIsApi = bx_is_api();
 
         $this->_sObject = $aObject['object'];
         $this->_aObject = $aObject;
@@ -170,7 +174,8 @@ class BxDolWiki extends BxDolFactory implements iBxDolFactoryObject
             $s = _t('_sys_wiki_error_no_revs');
         }
 
-        if ($aWikiVer || (!$aWikiVer && $this->isAllowed('edit'))) {
+        $sControls = '';
+        if (!$this->_bIsApi && ($aWikiVer || $this->isAllowed('edit'))) {
             $sControls = BxDolService::call('system', 'wiki_controls', array($this, $aWikiVer, $aWikiLatest, $iBlockId), 'TemplServiceWiki');
         }
 

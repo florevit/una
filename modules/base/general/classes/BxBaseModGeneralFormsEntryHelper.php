@@ -688,9 +688,9 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
 
         // display profile
         $oForm->initChecker($aContentInfo, $aSpecificValues);
-        
+
         if ($this->_bIsApi)
-            return [bx_api_get_block('entity_info', $oForm->getCodeAPI())];
+            return ($aForm = $oForm->getCodeAPI()) ? [bx_api_get_block('entity_info', $aForm)] : [];
         
         return $oForm->getCode();
     }
