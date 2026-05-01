@@ -1266,7 +1266,7 @@ class BxBasePage extends BxDolPage
         }
 
         if (bx_is_api()){
-            return [bx_api_get_block('html', ['title' => _t($aBlock['title']), 'content' => strip_tags($sContent, '<h1><h2><h3><h4><p><ol><ul><li>')])];
+            return [bx_api_get_block('html', ['title' => _t($aBlock['title']), 'content' => strip_tags($sContent, '<h1><h2><h3><h4><p><ol><ul><li><code><pre><img>')])];
         }
 
         $s = '<div id="bx-page-wiki-container-' . $aBlock['id'] . '" class="bx-page-wiki-container markdown-body bx-def-vanilla-html">' . $sContent . '</div>';
@@ -1353,7 +1353,7 @@ class BxBasePage extends BxDolPage
             return $bIsApi ? [] : '';
 
         if($bIsApi)
-            return [bx_api_get_block('menu', ['title' => _t($aBlock['title']), 'content' => $oMenu->getCodeAPI()])];
+            return [bx_api_get_block('menu' . ($this->_sObject == 'sys_sub_wiki_pages_list' ? '_wiki' : ''), ['title' => _t($aBlock['title']), 'content' => $oMenu->getCodeAPI()])];
 
         return $oMenu ? $oMenu->getCode() : '';
     }

@@ -25,7 +25,7 @@ class BxBasePageWiki extends BxTemplPage
         if($aPagesList && ($aCell = $aPagesList['elements']['cell_center'] ?? false))
             $aPage['elements']['cell_left'] = $aCell;
 
-        return $aResult;
+        return $aPage;
     }
 
     protected function _getPageCodeVars ()
