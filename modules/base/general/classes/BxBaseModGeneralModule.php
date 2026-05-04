@@ -3781,6 +3781,9 @@ class BxBaseModGeneralModule extends BxDolModule
             $bBrowseSimple = $sContentType == 'browse_simple';
 
             $a = $o->processingAPI($bBrowseSimple);
+            if($a && is_array($a))
+                $a['hide_empty_msg'] = !(bool)$bDisplayEmptyMsg;
+
             return !$bBrowseSimple || $a['data'] ? [bx_api_get_block($sContentType, $a)] : [];
         }
         else
