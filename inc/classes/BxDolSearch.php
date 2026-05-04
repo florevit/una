@@ -115,7 +115,8 @@ class BxDolSearch extends BxDol
             if(($sKeyword = bx_get('keyword')) !== false)
                 $sKeyword = bx_process_input($sKeyword);
 
-            $sCode .= BxDolAIAssistant::getObjectInstance($iAssistant)->getAskButton($sKeyword);
+            if($this->_bIsApi)
+                $sCode .= BxDolAIAssistant::getObjectInstance($iAssistant)->getAskButton($sKeyword);
         }
 
         $bSingle = count($this->aChoice) == 1;
