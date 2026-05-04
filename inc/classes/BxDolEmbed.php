@@ -99,25 +99,29 @@ class BxDolEmbed extends BxDolFactoryObject
         // override this function in particular embed provider class
     }
 
-    public function getData ($sUrl, $sTheme)
+    public function getData ($sUrl, $sTheme, $bForcedly = false)
     {
         $sUrl = $this->cleanYoutubeUrl($sUrl);
 
-        $aLocal = $this->_oDb->getLocalInfo($sUrl, $sTheme);
-        
-        $bRevalidate = false;
-        if($this->_iLifetime && (int)$aLocal['added'] + $this->_iLifetime < time()) {
-            $this->_oDb->deleteLocal([
-                'url' => $sUrl,
-                'theme' => $sTheme
-            ]);
+        if($this->_sTableData) {
+            $aLocal = $this->_oDb->getLocalInfo($sUrl, $sTheme);
 
-            $bRevalidate = true;
+            $bRevalidate = false;
+            if($this->_iLifetime && (int)$aLocal['added'] + $this->_iLifetime < time()) {
+                $this->_oDb->deleteLocal([
+                    'url' => $sUrl,
+                    'theme' => $sTheme
+                ]);
+
+                $bRevalidate = true;
+            }
+
+            $sData = false;
+            if($bRevalidate || (($sKey = 'data') && !($sData = $aLocal[$sKey] ?? false)))
+                $sData = $this->{'_getData' . ($sData !== false ? 'Empty' : ($this->_bAsync && !$bForcedly ? 'Async' : ''))}($sUrl, $sTheme);
         }
-
-        $sData = false;
-        if($bRevalidate || (($sKey = 'data') && !($sData = $aLocal[$sKey] ?? false)))
-            $sData = $this->{'_getData' . ($sData !== false ? 'Empty' : ($this->_bAsync ? 'Async' : ''))}($sUrl, $sTheme);
+        else
+            $sData = $this->_getData($sUrl, $sTheme);
 
         return json_decode($sData, true);
     }
