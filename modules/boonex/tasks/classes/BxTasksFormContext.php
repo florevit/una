@@ -20,6 +20,22 @@ class BxTasksFormContext extends BxTemplFormView
 
         parent::__construct($aInfo, $oTemplate);
     }
+
+    public function setProfileId($iProfileId)
+    {
+        if(($sKey = 'gh_app_id') && isset($this->aInputs[$sKey])) {
+            $sModule = 'bx_github';
+            $sMethod = 'get_apps';
+            if(bx_is_srv($sModule, $sMethod)) {
+                $aApps = bx_srv($sModule, $sMethod, [$iProfileId]);
+                foreach($aApps as $aApp)
+                    $this->aInputs[$sKey]['values'][] = [
+                        'key' => $aApp['id'],
+                        'value' => $aApp['title'],
+                    ];
+            }
+        }
+    }
 }
 
 /** @} */

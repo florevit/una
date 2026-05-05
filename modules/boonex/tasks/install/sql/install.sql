@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_lists` (
 -- TABLE: contexts
 CREATE TABLE IF NOT EXISTS `bx_tasks_contexts` (
   `id` int(11) NOT NULL DEFAULT '0',
+  `gh_app_id` int(11) NOT NULL DEFAULT '0',
   `gh_username` varchar(64) NOT NULL DEFAULT '',
   `gh_repository` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
@@ -624,6 +625,7 @@ INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `v
 ('bx_tasks_context_edit', 'bx_tasks', 'bx_tasks_context', '_bx_tasks_form_display_context_edit', 0);
 
 INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES
+('bx_tasks_context', 'bx_tasks', 'gh_app_id', '', '', 0, 'select', '_bx_tasks_form_context_input_sys_gh_app_id', '_bx_tasks_form_context_input_gh_app_id', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 0, 0),
 ('bx_tasks_context', 'bx_tasks', 'gh_username', '', '', 0, 'text', '_bx_tasks_form_context_input_sys_gh_username', '_bx_tasks_form_context_input_gh_username', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_tasks_context', 'bx_tasks', 'gh_repository', '', '', 0, 'text', '_bx_tasks_form_context_input_sys_gh_repository', '_bx_tasks_form_context_input_gh_repository', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_tasks_context', 'bx_tasks', 'do_submit', '_bx_tasks_form_context_input_do_submit', '', 0, 'submit', '_bx_tasks_form_context_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
@@ -631,11 +633,10 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_tasks_context', 'bx_tasks', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '_bx_tasks_form_context_input_sys_controls', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
-('bx_tasks_context_edit', 'gh_username', 2147483647, 1, 1),
-('bx_tasks_context_edit', 'gh_repository', 2147483647, 1, 2),
-('bx_tasks_context_edit', 'controls', 2147483647, 1, 3),
-('bx_tasks_context_edit', 'do_submit', 2147483647, 1, 4),
-('bx_tasks_context_edit', 'do_cancel', 2147483647, 1, 5);
+('bx_tasks_context_edit', 'gh_app_id', 2147483647, 1, 1),
+('bx_tasks_context_edit', 'gh_username', 2147483647, 1, 2),
+('bx_tasks_context_edit', 'gh_repository', 2147483647, 1, 3),
+('bx_tasks_context_edit', 'do_submit', 2147483647, 1, 4);
 
 -- FORMS: time
 INSERT INTO `sys_objects_form` (`object`, `module`, `title`, `action`, `form_attrs`, `submit_name`, `table`, `key`, `uri`, `uri_title`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES

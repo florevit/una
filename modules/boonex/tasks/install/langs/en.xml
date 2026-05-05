@@ -106,6 +106,8 @@
 
     <string name="_bx_tasks_form_context"><![CDATA[Context]]></string>
     <string name="_bx_tasks_form_display_context_edit"><![CDATA[Edit Context]]></string>
+    <string name="_bx_tasks_form_context_input_sys_gh_app_id"><![CDATA[GitHub App]]></string>
+    <string name="_bx_tasks_form_context_input_gh_app_id"><![CDATA[GitHub App]]></string>
     <string name="_bx_tasks_form_context_input_sys_gh_username"><![CDATA[GitHub Username]]></string>
     <string name="_bx_tasks_form_context_input_gh_username"><![CDATA[GitHub Username]]></string>
     <string name="_bx_tasks_form_context_input_sys_gh_repository"><![CDATA[GitHub Repository]]></string>
@@ -289,6 +291,12 @@
     <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Lists and values]]></string>
     <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Lists and values]]></string>
     <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_page_title_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_authorize"><![CDATA[Authorize GitHub]]></string>
+    <string name="_bx_tasks_page_block_title_context_authorize"><![CDATA[Authorize GitHub]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_page_block_title_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_page_block_title_system_menu_browse"><![CDATA[Browse menu]]></string>
     <string name="_bx_tasks_page_block_title_menu_browse"><![CDATA[Browse]]></string>
 
@@ -374,13 +382,17 @@
     <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Lists and values]]></string>
     <string name="_bx_tasks_menu_item_title_system_manage_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_menu_item_title_manage_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_menu_title_use_tools_submenu"><![CDATA[Usage Tools Submenu]]></string>
+    <string name="_bx_tasks_menu_set_title_use_tools_submenu"><![CDATA[Usage Tools Submenu]]></string>
+    <string name="_bx_tasks_menu_item_title_ut_submenu_home"><![CDATA[My Tasks]]></string>
+    <string name="_bx_tasks_menu_item_title_ut_submenu_timers"><![CDATA[My Timers]]></string>
     <string name="_bx_tasks_menu_title_manage_tools_submenu"><![CDATA[Manage Tools Submenu]]></string>
+    <string name="_bx_tasks_menu_title_public_manage_tools_submenu"><![CDATA[Manage]]></string>
     <string name="_bx_tasks_menu_set_title_manage_tools_submenu"><![CDATA[Manage Tools Submenu]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_common"><![CDATA[My Tasks]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_administration"><![CDATA[All Tasks]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[My Time]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[All Time]]></string>
-    <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[My Timers]]></string>
     <string name="_bx_tasks_menu_title_browse"><![CDATA[Browse Tasks]]></string>
     <string name="_bx_tasks_menu_set_title_browse"><![CDATA[Browse Tasks]]></string>
 
@@ -525,6 +537,7 @@
     <string name="_bx_tasks_txt_processing_awaiting"><![CDATA[Scheduled for publishing as soon as video conversion is complete.]]></string>
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Task isn't published because video conversion failed, edit video to fix the issue.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Task publishing date is {date_publish_uf}]]></string>
+    <string name="_bx_tasks_txt_list_title"><![CDATA[{0} ({1})]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New Task List]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
@@ -539,6 +552,7 @@
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_err_empty_pre_list"><![CDATA[Please select a list to add items to.]]></string>
+    <string name="_bx_tasks_txt_msg_perform_action"><![CDATA[The action was performed.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
     <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>

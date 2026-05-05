@@ -41,6 +41,9 @@ BxTasksView.prototype._setCompleted = function (iId, iValue, onComplete) {
     });
 };
 
+/*
+ * Moved from popup to page
+ * 
 BxTasksView.prototype.processContext = function (iContextId, obj) {
     $('.bx-popup-applied:visible').dolPopupHide();
 
@@ -51,6 +54,7 @@ BxTasksView.prototype.processContext = function (iContextId, obj) {
         removeOnClose: true
     });   
 };
+*/
 
 BxTasksView.prototype.processTaskList = function (iContextId, iId, obj) {
     var $this = this;
@@ -61,10 +65,10 @@ BxTasksView.prototype.processTaskList = function (iContextId, iId, obj) {
     });   
 };
 
-BxTasksView.prototype.deleteTaskList = function (iId, iContextId, obj) {
+BxTasksView.prototype.deleteTaskList = function (iContextId, iId, obj) {
     var $this = this;
     bx_confirm($this._oOptions.t_confirm_block_deletion, function () {
-        $.getJSON($this._oOptions.sActionUrl + 'delete_task_list/' + iId + '/' + iContextId + '/', {}, function (oData) {
+        $.getJSON($this._oOptions.sActionUrl + 'delete_task_list/' + iContextId + '/' + iId + '/', {}, function (oData) {
             $this.reloadData(oData, iContextId)
         });
     });

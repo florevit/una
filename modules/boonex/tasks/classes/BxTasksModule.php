@@ -83,6 +83,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         ]);
     }
 
+    /*
+     * Moved from popup to page
+     * 
     public function actionProcessContextForm($iContextId)
     {
         if(!$this->isAllowManageByContext($iContextId))
@@ -121,6 +124,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             echo $sContent;
         }
     }
+     */
 
     public function actionProcessTaskListForm($iContextId, $iId)
     {
@@ -175,7 +179,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         }
     }
     
-    public function actionDeleteTaskList($iId, $iContextId)
+    public function actionDeleteTaskList($iContextId, $iId)
     {
         if (!$this->isAllowManageByContext($iContextId))
             return;
@@ -449,7 +453,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $oMenu->getCode();
     }
 
-    public function serviceGetBlockPreValues($iContextPid = 0)
+    public function serviceGetBlockContextPreValues($iContextPid = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -483,13 +487,62 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         return $aResult;
     }
-    
+
+    public function serviceGetBlockContextAuthorize($iContextPid = 0)
+    {
+        $sModule = 'bx_github';
+        $sMethod = 'get_block_authorize';
+        if(!bx_is_srv($sModule, $sMethod))
+            return '';
+
+        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $iContextPid]);
+        if(empty($aContext) || !is_array($aContext) || empty($aContext['gh_app_id']) || empty($aContext['gh_username']) || empty($aContext['gh_repository']))
+            return '';
+
+        return bx_srv($sModule, $sMethod, [$aContext['gh_app_id']]);
+    }
+
+    public function serviceGetBlockContextSettings($iContextPid = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iContextAuthorPid = 0;
+        if(!$this->isAllowManageByContext($iContextPid) || !($iContextAuthorPid = $this->getContextAuthorId($iContextPid)))
+            return $this->_bIsApi ? [] : '';
+
+        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $iContextPid]);
+        $bContext = !empty($aContext) && is_array($aContext);
+
+        $sMessageText = '';
+        $iMessageTimer = 0;
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_CONTEXT'], $CNF['OBJECT_FORM_CONTEXT_DISPLAY_EDIT']);
+        $oForm->setProfileId($iContextAuthorPid);
+        $oForm->initChecker($aContext);
+        if($oForm->isSubmittedAndValid()) {
+            if(!$bContext)
+                $bResult = $oForm->insert(['id' => $iContextPid]);
+            else
+                $bResult = $oForm->update($iContextPid) !== false;
+
+            $sMessageText = '_bx_tasks_txt' . (!$bResult ? '_err_cannot' : '_msg') . '_perform_action';
+            $iMessageTimer = $bResult ? 3 : 0;
+        }
+
+        return $this->_bIsApi ? bx_api_get_block('form', $oForm->getCodeAPI(), [
+            'ext' => [
+                'name' => $oForm->getName(),
+                'request' => ['url' => '/api.php?r=' . $this->MODULE . '/get_block_context_settings&profile_id=' . $iContextPid, 'immutable' => true]
+            ]
+        ]) : (!empty($sMessageText) ? MsgBox(_t($sMessageText), $iMessageTimer) : '') . $oForm->getCode();
+    }
+
     public function serviceGetBlockManageTime($sType = 'common', $iContextPid = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
         $bContextPid = !empty($iContextPid);
-        
+
         $sGrid = $CNF['OBJECT_GRID_TIME_' . ($bContextPid ? 'CONTEXT_' : '') . strtoupper($sType)];
         $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
@@ -522,12 +575,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceGetBlockTimers()
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        return [
-            'content' => $this->_oTemplate->getBlockTimers($this->_iProfileId),
-            'menu' => BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])
-        ];
+        return $this->_oTemplate->getBlockTimers($this->_iProfileId);
     }
 
     /**
@@ -835,22 +883,22 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceBrowseHome($aParams = [])
     {
-        $iContextPid = bx_process_input(bx_get('context_pid'), BX_DATA_INT);
-        if(!$iContextPid)
-            return MsgBox(_t('_Empty'));
+        $sContent = '';
+        if(($iContextPid = bx_process_input(bx_get('context_pid'), BX_DATA_INT))) {
+            $sContent = $this->serviceBrowseTasks($iContextPid);
+            if($sContent && ($oProfile = BxDolProfile::getInstance($iContextPid)) !== false)
+                return [
+                    'title' => bx_replace_markers(_t('_bx_tasks_page_block_title_entries_in_context'), [
+                        'display_name' => $oProfile->getDisplayName(),
+                        'profile_link' => $oProfile->getUrl()
+                    ]),
+                    'content' => $sContent
+                ];
+        }
+        else
+            $sContent = $this->serviceBrowseTasksByProfile();
 
-        $sContent = $this->serviceBrowseTasks($iContextPid);
-        
-        if($sContent && ($oProfile = BxDolProfile::getInstance($iContextPid)) !== false)
-            return [
-                'title' => bx_replace_markers(_t('_bx_tasks_page_block_title_entries_in_context'), [
-                    'display_name' => $oProfile->getDisplayName(),
-                    'profile_link' => $oProfile->getUrl()
-                ]),
-                'content' => $sContent
-            ];
-
-        return $sContent;
+        return $sContent ?: MsgBox(_t('_Empty'));
     }
 
     public function serviceBrowseContext($iProfileId = 0, $aParams = [])
@@ -869,6 +917,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             return '';
 
         return $this->_oTemplate->getEntriesList($iContextId, $aParams);
+    }
+
+    public function serviceBrowseTasksByProfile($iProfileId = 0, $aParams = [])
+    {
+        if(!$iProfileId && $this->_iProfileId)
+            $iProfileId = $this->_iProfileId;
+
+        return $this->_oTemplate->getEntriesList(0, array_merge($aParams, [
+            'for_profile' => $iProfileId
+        ]));
     }
 
     /**
@@ -919,6 +977,15 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $aContexts; 
     }
     
+    public function getContextAuthorId($iContextPid)
+    {
+        $iContextAuthorPid = 0;
+        if(($oContext = BxDolProfile::getInstance($iContextPid)) !== false)
+            $iContextAuthorPid = bx_srv($oContext->getModule(), 'get_author', [$oContext->getContentId()]);
+        
+        return $iContextAuthorPid;
+    }
+
     public function getContextMembers($iContextPid)
     {
         $aMembers = [];

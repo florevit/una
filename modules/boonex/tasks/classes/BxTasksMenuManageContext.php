@@ -33,6 +33,21 @@ class BxTasksMenuManageContext extends BxTemplMenu
             $this->_sParamName => $this->_iParamValue
         ]);
     }
+
+    protected function _isVisible($a)
+    {
+        if(!parent::_isVisible($a))
+            return false;
+
+        $bResult = true;
+        switch ($a['name']) {
+            case 'tasks-context-values':
+                $bResult = $this->_oModule->isAllowManageByContext($this->_iParamValue);
+                break;
+        }
+
+        return $bResult;
+    }
 }
 
 /** @} */

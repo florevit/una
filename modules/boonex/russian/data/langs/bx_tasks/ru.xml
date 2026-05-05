@@ -106,6 +106,8 @@
 
     <string name="_bx_tasks_form_context"><![CDATA[Контекст]]></string>
     <string name="_bx_tasks_form_display_context_edit"><![CDATA[Редактировать контекст]]></string>
+    <string name="_bx_tasks_form_context_input_sys_gh_app_id"><![CDATA[GitHub: Приложение]]></string>
+    <string name="_bx_tasks_form_context_input_gh_app_id"><![CDATA[GitHub: Приложение]]></string>
     <string name="_bx_tasks_form_context_input_sys_gh_username"><![CDATA[GitHub: Имя пользователя]]></string>
     <string name="_bx_tasks_form_context_input_gh_username"><![CDATA[GitHub: Имя пользователя]]></string>
     <string name="_bx_tasks_form_context_input_sys_gh_repository"><![CDATA[GitHub: Репозиторий]]></string>
@@ -289,6 +291,12 @@
     <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Списки и значения]]></string>
     <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Списки и значения]]></string>
     <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Списки и значения]]></string>
+    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Настройки]]></string>
+    <string name="_bx_tasks_page_title_context_settings"><![CDATA[Настройки]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_authorize"><![CDATA[Авторизовать GitHub]]></string>
+    <string name="_bx_tasks_page_block_title_context_authorize"><![CDATA[Авторизовать GitHub]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_settings"><![CDATA[Настройки]]></string>
+    <string name="_bx_tasks_page_block_title_context_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_page_block_title_system_menu_browse"><![CDATA[Меню просмотра]]></string>
     <string name="_bx_tasks_page_block_title_menu_browse"><![CDATA[Просмотр задач]]></string>
 
@@ -372,13 +380,17 @@
     <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Списки и значения]]></string>
     <string name="_bx_tasks_menu_item_title_system_manage_context_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_menu_item_title_manage_context_settings"><![CDATA[Настройки]]></string>
+    <string name="_bx_tasks_menu_title_use_tools_submenu"><![CDATA[Инструменты - Подменю]]></string>
+    <string name="_bx_tasks_menu_set_title_use_tools_submenu"><![CDATA[Инструменты - Подменю]]></string>
+    <string name="_bx_tasks_menu_item_title_ut_submenu_home"><![CDATA[Мои задания]]></string>
+    <string name="_bx_tasks_menu_item_title_ut_submenu_timers"><![CDATA[Мои таймеры]]></string>
     <string name="_bx_tasks_menu_title_manage_tools_submenu"><![CDATA[Инструменты управления - Подменю]]></string>
+    <string name="_bx_tasks_menu_title_public_manage_tools_submenu"><![CDATA[Управление]]></string>
     <string name="_bx_tasks_menu_set_title_manage_tools_submenu"><![CDATA[Инструменты управления - Подменю]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_common"><![CDATA[Мои задания]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_entries_administration"><![CDATA[Все задания]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_common"><![CDATA[Моё время]]></string>
     <string name="_bx_tasks_menu_item_title_mt_submenu_time_administration"><![CDATA[Всё время]]></string>
-    <string name="_bx_tasks_menu_item_title_mt_submenu_timers"><![CDATA[Мои таймеры]]></string>
     <string name="_bx_tasks_menu_title_browse"><![CDATA[Просмотр задач]]></string>
     <string name="_bx_tasks_menu_set_title_browse"><![CDATA[Просмотр задач]]></string>
 
@@ -521,6 +533,7 @@
     <string name="_bx_tasks_txt_processing_awaiting"><![CDATA[Задание будет опубликовано как только сконвертируется видео.]]></string>
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Задание не была опубликовано, тк произошла ошибка при конвертации видео. Обновите видео, чтобы решить проблему.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Дата публикации:  {date_publish_uf}]]></string>
+    <string name="_bx_tasks_txt_list_title"><![CDATA[{0} ({1})]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[Новый список заданий]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[Новое Задание]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
