@@ -454,6 +454,10 @@
     <string name="_bx_dev_bp_txt_sys_block_title"><![CDATA[Title]]></string>
     <string name="_bx_dev_bp_txt_block_title"><![CDATA[Title]]></string>
     <string name="_bx_dev_bp_err_block_title"><![CDATA[You need to enter a value here]]></string>
+    <string name="_bx_dev_bp_txt_sys_block_description"><![CDATA[Description]]></string>
+    <string name="_bx_dev_bp_txt_block_description"><![CDATA[Description]]></string>
+    <string name="_bx_dev_bp_txt_sys_block_icon"><![CDATA[Icon]]></string>
+    <string name="_bx_dev_bp_txt_block_icon"><![CDATA[Icon]]></string>
     <string name="_bx_dev_bp_txt_sys_block_designbox_id"><![CDATA[Layout]]></string>
     <string name="_bx_dev_bp_txt_block_designbox_id"><![CDATA[Layout]]></string>
     <string name="_bx_dev_bp_err_block_designbox_id"><![CDATA[You need to select a layout]]></string>

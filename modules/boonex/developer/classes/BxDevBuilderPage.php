@@ -408,6 +408,11 @@ class BxDevBuilderPage extends BxTemplStudioBuilderPage
         $oForm->aFormAttrs['action'] = sprintf($this->sPageUrl, $this->sType, $this->sPage) . '&bp_action=' . $this->sActionBlockEdit;
         $oForm->aInputs['module']['values'] = array_merge(array('' => _t('_bx_dev_bp_txt_select_module')), BxDolStudioUtils::getModules());
 
+        if(($sKey = 'icon') && isset($oForm->aInputs[$sKey]))
+            $oForm->aInputs[$sKey] = array_merge($oForm->aInputs[$sKey], [
+                'code' => 1
+            ]);
+
         $aDBoxes = array();
         $this->oDb->getDesignBoxes(array('type' => 'ordered'), $aDBoxes, false);
         foreach($aDBoxes as $aDBox)
