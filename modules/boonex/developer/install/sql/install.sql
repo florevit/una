@@ -659,7 +659,7 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_developer_bp_block', @sName, 'title_system', '', '', 0, 'text', '_bx_dev_bp_txt_sys_block_title_system', '_bx_dev_bp_txt_block_title_system', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_bp_block', @sName, 'title', '', '', 0, 'text', '_bx_dev_bp_txt_sys_block_title', '_bx_dev_bp_txt_block_title', '', 1, 0, 0, '', '', '', 'Length', 'a:2:{s:3:"min";i:6;s:3:"max";i:100;}', '_bx_dev_bp_err_block_title', 'Xss', '', 0, 0),
 ('bx_developer_bp_block', @sName, 'description', '', '', 0, 'text', '_bx_dev_bp_txt_sys_block_description', '_bx_dev_bp_txt_block_description', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
-('bx_developer_bp_block', @sName, 'icon', '', '', 0, 'textarea', '_bx_dev_bp_txt_sys_block_icon', '_bx_dev_bp_txt_block_icon', '', 1, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_developer_bp_block', @sName, 'icon', '', '', 0, 'textarea', '_bx_dev_bp_txt_sys_block_icon', '_bx_dev_bp_txt_block_icon', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_bp_block', @sName, 'designbox_id', '', '', 0, 'select', '_bx_dev_bp_txt_sys_block_designbox_id', '_bx_dev_bp_txt_block_designbox_id', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_dev_bp_err_block_designbox_id', 'Xss', '', 0, 0),
 ('bx_developer_bp_block', @sName, 'content_empty', '', '', 0, 'text', '_bx_dev_bp_txt_sys_block_content_empty', '_bx_dev_bp_txt_block_content_empty', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_bp_block', @sName, 'help', '', '', 0, 'text', '_bx_dev_bp_txt_sys_block_help', '_bx_dev_bp_txt_block_help', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
