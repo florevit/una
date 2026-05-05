@@ -424,8 +424,38 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
                 'caption_item' => $sMenu
             ];
 
+        $sDescription = $sIcon = $sIconHtml = '';
+        if(is_array($sTitle)) {
+            list($sTitle, $sDescription, $sIcon) = $sTitle;
+
+            if($sIcon) {
+                list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->getIcon($sIcon);
+
+                if($sIcon)
+                    $sIcon = BxDolIconset::getObjectInstance()->getIcon($sIcon);
+            }
+        }
+
         return $this->_oTemplate->parseHtmlByName('designbox_' . (int)$iTemplateNum . '.html', array_merge([
+                'bx_if:show_db_icon' => [
+                    'condition' => !empty($sIcon),
+                    'content' =>  [
+                        'icon' => $sIcon,
+                    ]
+                ],
+                'bx_if:show_db_icon_html' => [
+                    'condition' => !empty($sIconHtml),
+                    'content' =>  [
+                        'icon_html' => $sIconHtml,
+                    ]
+                ],
                 'title' => $sTitle,
+                'bx_if:show_db_description' => [
+                    'condition' => !empty($sDescription),
+                    'content' =>  [
+                        'description' => $sDescription,
+                    ]
+                ],
                 'designbox_content' => $sContent,
             ], ($bNoTitle ? [
                 'bx_if:show_db_menu' => [

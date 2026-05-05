@@ -509,6 +509,8 @@
 	<string name="_adm_bp_dsc_block_content_rss_length"><![CDATA[Enter a number of displayed items here]]></string>
 	<string name="_adm_bp_dsc_block_content_rss_url"><![CDATA[Enter URL to RSS resource here]]></string>
         <string name="_adm_bp_dsc_block_content_empty"><![CDATA[Leave empty to use default one]]></string>
+        <string name="_adm_bp_dsc_block_description"><![CDATA[Short description for the block, visible in block header.]]></string>
+        <string name="_adm_bp_dsc_block_icon"><![CDATA[An icon (font icon, SVG or Emoji code) for the block, visible in block header.]]></string>
 	<string name="_adm_bp_dsc_block_title"><![CDATA[Short name for the block, visible in block header.]]></string>
 	<string name="_adm_bp_dsc_block_visible_for_levels"><![CDATA[Select user levels that can see this block]]></string>
 	<string name="_adm_bp_dsc_page_cache_lifetime"><![CDATA[Store page in cache for this number of seconds]]></string>
@@ -567,6 +569,7 @@
 	<string name="_adm_bp_txt_block_content_service_method"><![CDATA[Method]]></string>
 	<string name="_adm_bp_txt_block_content_service_module"><![CDATA[Module]]></string>
         <string name="_adm_bp_txt_block_content_empty"><![CDATA[Placeholder text for empty block]]></string>
+        <string name="_adm_bp_txt_block_description"><![CDATA[Description]]></string>
 	<string name="_adm_bp_txt_block_designbox"><![CDATA[Block Layout]]></string>
 	<string name="_adm_bp_txt_block_designbox_empty"><![CDATA[Select layout...]]></string>
         <string name="_adm_bp_txt_block_class"><![CDATA[CSS Class]]></string>
@@ -576,6 +579,7 @@
 	<string name="_adm_bp_txt_block_hidden_on_tablet"><![CDATA[tablet]]></string>
 	<string name="_adm_bp_txt_block_hidden_on_desktop"><![CDATA[desktop]]></string>
         <string name="_adm_bp_txt_block_hidden_on_mobile"><![CDATA[mobile app]]></string>
+        <string name="_adm_bp_txt_block_icon"><![CDATA[Icon]]></string>
 	<string name="_adm_bp_txt_block_selected"><![CDATA[blocks selected]]></string>
         <string name="_adm_bp_txt_block_submenu"><![CDATA[Block submenu]]></string>
         <string name="_adm_bp_txt_block_tabs"><![CDATA[Use 'tabs' based block submenu]]></string>

@@ -465,6 +465,24 @@ class BxBasePage extends BxDolPage
     }
 
     /**
+     * Get block description.
+     * @return string
+     */
+    public function getBlockDescription ($aBlock)
+    {
+        return $this->_replaceMarkers(_t($aBlock['description']), ['block_id' => $aBlock['id']]);
+    }
+
+    /**
+     * Get block icon.
+     * @return string
+     */
+    public function getBlockIcon ($aBlock)
+    {
+        return $aBlock['icon'] ?? '';
+    }
+
+    /**
      * Get help control if help is available for the block.
      * @return string
      */
@@ -799,8 +817,20 @@ class BxBasePage extends BxDolPage
                     continue;
                 }
 
+                $sIcon = '';
+                if(($sIcon = $this->getBlockIcon($aBlock))) {
+                    list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->_oTemplate->getTemplateFunctions()->getIcon($sIcon);
+                    
+                    if($sIcon)
+                        $sIcon = BxDolIconset::getObjectInstance()->getIcon($sIcon);
+                    else if($sIconHtml)
+                        $sIcon = $sIconHtml;
+                }
+
                 $aCells[$sKey][$i] = array_merge($aCells[$sKey][$i], [
                     'title' => isset($mBlock['title']) ? $mBlock['title'] : $this->getBlockTitle($aBlock),
+                    'description' => isset($mBlock['description']) ? $mBlock['description'] : $this->getBlockDescription($aBlock),
+                    'icon' => $sIcon,
                     'content' => isset($mBlock['content']) ? $mBlock['content'] : $mBlock,
                     'menu' => isset($mBlock['menu']) ? $mBlock['menu'] : '',
                     'source' => $sSource
@@ -957,6 +987,8 @@ class BxBasePage extends BxDolPage
         $aDbNoTitle = [BX_DB_CONTENT_ONLY, BX_DB_PADDING_CONTENT_ONLY, BX_DB_NO_CAPTION, BX_DB_PADDING_NO_CAPTION];
 
         $sTitle = $this->getBlockTitle($aBlock);
+        $sDescription = $this->getBlockDescription($aBlock);
+        $sIcon = $this->getBlockIcon($aBlock);
         $sHelp = $this->getBlockHelp($aBlock);
 
         $sFunc = '_getBlock' . ucfirst($aBlock['type']);
@@ -971,11 +1003,11 @@ class BxBasePage extends BxDolPage
                 $sHelpContent = $sHelp;
 
             $sContent = $this->getBlockAsyncCode($aBlock, $iAsync);
-            $aParams = array(
-                $sTitle . $sHelpTitle,
+            $aParams = [
+                ($sBlTitle = $sTitle . $sHelpTitle) && ($sDescription || $sIcon) ? [$sBlTitle, $sDescription, $sIcon] : $sBlTitle,
                 $sContent . $sHelpContent,
                 $iDesignboxId
-            );
+            ];
             $sContentWithBox = call_user_func_array(array($oFunctions, 'designBoxContent'), $aParams);
         } 
         elseif ($bBlockVisible && method_exists($this, $sFunc)) {
@@ -999,6 +1031,7 @@ class BxBasePage extends BxDolPage
                     $this->addMarkers($mixedContent['markers']);
 
                     $sTitle = $this->getBlockTitle($aBlock);
+                    $sDescription = $this->getBlockDescription($aBlock);
                 }
 
                 $sHelpTitle = $sHelpContent = '';
@@ -1007,11 +1040,11 @@ class BxBasePage extends BxDolPage
                 else
                     $sHelpContent = $sHelp;
 
-                $aParams = array(
-                    (isset($mixedContent['title']) ? $mixedContent['title'] : $sTitle) . $sHelpTitle,
+                $aParams = [
+                    ($sBlTitle = ($mixedContent['title'] ?? $sTitle) . $sHelpTitle) && ($sDescription || $sIcon) ? [$sBlTitle, $sDescription, $sIcon] : $sBlTitle,
                     $mixedContent['content'] . $sHelpContent,
                     $iDesignboxId
-                );
+                ];
 
                 $mixedMenu = false;
                 if(isset($mixedContent['menu']))
@@ -1038,7 +1071,7 @@ class BxBasePage extends BxDolPage
                     $sHelpContent = $sHelp;
 
                 $aParams = array(
-                    $sTitle . $sHelpTitle,
+                    ($sBlTitle = $sTitle . $sHelpTitle) && ($sDescription || $sIcon) ? [$sBlTitle, $sDescription, $sIcon] : $sBlTitle,
                     $mixedContent . $sHelpContent,
                     $iDesignboxId
                 );

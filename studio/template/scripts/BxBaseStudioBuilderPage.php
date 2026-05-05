@@ -642,6 +642,30 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                         'error' => _t('_adm_bp_err_block_title'),
                     ),
                 ),
+                'description' => array(
+                    'type' => 'text_translatable',
+                    'name' => 'description',
+                    'caption' => _t('_adm_bp_txt_block_description'),
+                    'info' => _t('_adm_bp_dsc_block_description'),
+                    'value' => $aBlock['description'],
+                    'required' => '0',
+                    'db' => array (
+                        'pass' => 'Xss',
+                    ),
+                ),
+                'icon' => array(
+                    'type' => 'textarea',
+                    'name' => 'icon',
+                    'caption' => _t('_adm_bp_txt_block_icon'),
+                    'info' => _t('_adm_bp_dsc_block_icon'),
+                    'value' => $aBlock['icon'],
+                    'code' => 1,
+                    'required' => '0',
+                    'db' => array (
+                        'pass' => 'Xss',
+                    ),
+                    'attrs' => array('class' => 'bx-form-input-textarea-small'),
+                ),
                 'designbox_id' => array(
                     'type' => 'select',
                     'name' => 'designbox_id',
