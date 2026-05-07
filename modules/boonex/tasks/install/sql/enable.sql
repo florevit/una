@@ -302,13 +302,6 @@ INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `templat
 INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
 ('bx_tasks_browse', 'bx_tasks', '_bx_tasks_menu_set_title_browse', 0);
 
--- MENU: 
-INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
-('bx_tasks_browse', '_bx_tasks_menu_title_browse', 'bx_tasks_browse', 'bx_tasks', 32, 0, 1, 'BxTasksMenuBrowse', 'modules/boonex/tasks/classes/BxTasksMenuBrowse.php');
-
-INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
-('bx_tasks_browse', 'bx_tasks', '_bx_tasks_menu_set_title_browse', 0);
-
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('trigger_group_view_submenu', 'bx_tasks', 'tasks-context', '_bx_tasks_menu_item_title_system_view_entries_in_context', '_bx_tasks_menu_item_title_view_entries_in_context', 'page.php?i=tasks-context&profile_id={profile_id}', '', '', 'tasks', '', 510, 1, 0, 0);
