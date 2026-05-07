@@ -1409,6 +1409,7 @@
 	<string name="_adm_prm_dsc_actions_avail"><![CDATA[Оставьте пустым, если действие всегда доступно]]></string>
 	<string name="_adm_prm_dsc_actions_number"><![CDATA[Оставьте пустым для бесконечных действий]]></string>
 	<string name="_adm_prm_dsc_actions_reset"><![CDATA[В часах. Оставьте пустым, если не хотите сбрасывать счётчик]]></string>
+        <string name="_adm_prm_dsc_level_unavailable_to"><![CDATA[Не выбирайте ничего, если уровень должен быть доступен для всех типов профилей.]]></string>
 	<string name="_adm_prm_dsc_level_description"><![CDATA[Краткое описание достоинств и правил данного членства.]]></string>
 	<string name="_adm_prm_dsc_level_icon"><![CDATA[Здесь можно использовать иконку шрифта]]></string>
 	<string name="_adm_prm_dsc_level_icon_image"><![CDATA[или загрузить изображение.]]></string>
@@ -1445,6 +1446,7 @@
 	<string name="_adm_prm_txt_level_account"><![CDATA[Аккаунт]]></string>
 	<string name="_adm_prm_txt_level_actions_copy"><![CDATA[Скопировать действия из]]></string>
 	<string name="_adm_prm_txt_level_administrator"><![CDATA[Администратор]]></string>
+        <string name="_adm_prm_txt_level_unavailable_to"><![CDATA[Недоступно для]]></string>
 	<string name="_adm_prm_txt_level_create_popup"><![CDATA[Добавить новый уровень]]></string>
 	<string name="_adm_prm_txt_level_description"><![CDATA[Описание]]></string>
 	<string name="_adm_prm_txt_level_edit_popup"><![CDATA[Редактировать "{0}" уровень]]></string>

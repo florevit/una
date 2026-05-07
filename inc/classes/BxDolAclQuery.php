@@ -90,6 +90,9 @@ class BxDolAclQuery extends BxDolDb implements iBxDolSingleton
                     MEMBERSHIP_ID_SUSPENDED
                     
                 )) . ")";
+
+                if(($sAvailableTo = $aParams['available_to'] ?? false))
+                    $sWhereClause .= " AND `tal`.`UnavailableTo` NOT LIKE " . $this->escape('%|' . $aParams['available_to'] . '|%');
                 break;
 
             case 'all_pair':
@@ -122,6 +125,7 @@ class BxDolAclQuery extends BxDolDb implements iBxDolSingleton
                 `tal`.`Active` AS `active`,
                 `tal`.`Purchasable` AS `purchasable`,
                 `tal`.`Removable` AS `removable`,
+                `tal`.`UnavailableTo` AS `unavailable_to`,
                 `tal`.`QuotaSize` AS `quota_size`,
                 `tal`.`QuotaNumber` AS `quota_number`,
                 `tal`.`QuotaMaxFileSize` AS `quota_max_file_size`,

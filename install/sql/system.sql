@@ -1391,6 +1391,7 @@ CREATE TABLE `sys_acl_levels` (
   `Active` enum('yes','no') NOT NULL default 'no',
   `Purchasable` enum('yes','no') NOT NULL default 'yes',
   `Removable` enum('yes','no') NOT NULL default 'yes',
+  `UnavailableTo` varchar(255) NOT NULL default '',
   `QuotaSize` bigint(20) NOT NULL,
   `QuotaNumber` int(11) NOT NULL,
   `QuotaMaxFileSize` bigint(20) NOT NULL,

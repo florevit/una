@@ -231,6 +231,14 @@ class BxAclGridView extends BxAclGridLevels
     	return parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
 
+    protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
+    {
+        if($this->_iLogged && ($oLogged = BxDolProfile::getInstance($this->_iLogged)) !== false)
+            $this->_aOptions['source'] .= "AND `tl`.`UnavailableTo` NOT LIKE " . $this->_oModule->_oDb->escape('%|' . $oLogged->getModule() . '|%') . " ";
+
+        return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);;
+    }
+
     protected function _isLifetime($aRow)
     {
         return empty($aRow['period']) && empty($aRow['period_unit']);

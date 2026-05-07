@@ -1427,6 +1427,7 @@
 	<string name="_adm_prm_dsc_actions_avail"><![CDATA[Leave it blank if the action is always available]]></string>
 	<string name="_adm_prm_dsc_actions_number"><![CDATA[Leave it blank for unlimited actions]]></string>
 	<string name="_adm_prm_dsc_actions_reset"><![CDATA[In hours. Leave it blank if you don't want to reset counter]]></string>
+        <string name="_adm_prm_dsc_level_unavailable_to"><![CDATA[Select nothing if a level should be available to all profile types.]]></string>
 	<string name="_adm_prm_dsc_level_description"><![CDATA[Brief overview of terms and advantages of this level.]]></string>
 	<string name="_adm_prm_dsc_level_icon"><![CDATA[You may use font icon here]]></string>
 	<string name="_adm_prm_dsc_level_icon_image"><![CDATA[or upload an image.]]></string>
@@ -1467,6 +1468,7 @@
 	<string name="_adm_prm_txt_level_account"><![CDATA[Account]]></string>
 	<string name="_adm_prm_txt_level_actions_copy"><![CDATA[Copy actions from]]></string>
 	<string name="_adm_prm_txt_level_administrator"><![CDATA[Administrator]]></string>
+        <string name="_adm_prm_txt_level_unavailable_to"><![CDATA[Unavailable for]]></string>
 	<string name="_adm_prm_txt_level_create_popup"><![CDATA[Add New Level]]></string>
 	<string name="_adm_prm_txt_level_description"><![CDATA[Description]]></string>
 	<string name="_adm_prm_txt_level_edit_popup"><![CDATA[Edit "{0}" Level]]></string>

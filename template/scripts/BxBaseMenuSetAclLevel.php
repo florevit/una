@@ -66,11 +66,14 @@ class BxBaseMenuSetAclLevel extends BxTemplMenu
                     'o' => 'sys_set_acl_level', 
                 ]);
 
-                $oForm->aInputs['profile_id']['value'] = $mixedProfileId;
+                $oProfile = BxDolProfile::getInstance($mixedProfileId);
+                $bProfile = $oProfile !== false;
+
+                $oForm->aInputs['profile_id']['value'] = $bProfile ? $oProfile->id() : $mixedProfileId;
                 $oForm->aInputs['card']['value'] = 0;
 
                 $oAcl = BxDolAcl::getInstance();
-                $aAclLevels = $oAcl->getMembershipsBy(array('type' => 'all_active_not_automatic_pair'));
+                $aAclLevels = $oAcl->getMembershipsBy(['type' => 'all_active_not_automatic_pair', 'available_to' => $bProfile ? $oProfile->getModule() : '']);
 		foreach ($aAclLevels as $k => $s)
                     $oForm->aInputs['level_id']['values'][] = ['key' => $k, 'value' => _t($s)];
 
