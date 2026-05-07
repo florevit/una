@@ -102,22 +102,23 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_pre_values` (
 -- TABLE: filters
 CREATE TABLE IF NOT EXISTS `bx_tasks_filters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `context_id` int(11) NOT NULL DEFAULT '0',
   `author` int(11) NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
   `conditions` text NOT NULL,
+  `permanent` TINYINT NOT NULL DEFAULT '0',
   `active` TINYINT NOT NULL DEFAULT '1',
-  `order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `bx_tasks_filters` (`author`, `added`, `title`, `conditions`, `active`, `order`) VALUES
+INSERT INTO `bx_tasks_filters` (`author`, `added`, `title`, `conditions`, `permanent`, `active`) VALUES
 ('0', '0', '_bx_tasks_filter_title_by_author', '{"where":{"cnd":true,"t":"te","f":"author","v":"{logged_pid}","o":"="}}', 1, 1), 
-('0', '0', '_bx_tasks_filter_title_by_author_uncompleted', '{"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"te","f":"author","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"0","o":"="}]}}', 1, 2),
-('0', '0', '_bx_tasks_filter_title_by_author_completed', '{"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"te","f":"author","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"1","o":"="}]}}', 1, 3),
-('0', '0', '_bx_tasks_filter_title_by_assignee', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="}}', 1, 4),
-('0', '0', '_bx_tasks_filter_title_by_assignee_uncompleted', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"0","o":"="}]}}', 1, 5),
-('0', '0', '_bx_tasks_filter_title_by_assignee_completed', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"1","o":"="}]}}', 1, 6);
+('0', '0', '_bx_tasks_filter_title_by_author_uncompleted', '{"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"te","f":"author","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"0","o":"="}]}}', 1, 1),
+('0', '0', '_bx_tasks_filter_title_by_author_completed', '{"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"te","f":"author","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"1","o":"="}]}}', 1, 1),
+('0', '0', '_bx_tasks_filter_title_by_assignee', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="}}', 1, 1),
+('0', '0', '_bx_tasks_filter_title_by_assignee_uncompleted', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"0","o":"="}]}}', 1, 1),
+('0', '0', '_bx_tasks_filter_title_by_assignee_completed', '{"join":{"cnd":true,"j":"LEFT","tj":"bx_tasks_assignments","taj":"ta","fj":"content","tam":"te","fm":"id"},"where":{"grp":true,"o":"AND","cnds":[{"cnd":true,"t":"ta","f":"initiator","v":"{logged_pid}","o":"="},{"cnd":true,"t":"te","f":"completed","v":"1","o":"="}]}}', 1, 1);
 
 -- TABLE: storages & transcoders
 CREATE TABLE IF NOT EXISTS `bx_tasks_covers` (

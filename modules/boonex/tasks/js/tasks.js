@@ -160,6 +160,32 @@ BxTasksView.prototype.onApplyFilter = function (oData) {
     }
 };
 
+BxTasksView.prototype.createFilter = function (oSource, iContextId) {
+    var $this = this;
+    var oDate = new Date();
+
+    this.loadingInBlock(oSource, true);
+
+    $.get(
+        this._oOptions.sActionUrl + 'create_filter/' + iContextId, 
+        {
+            _t: oDate.getTime()
+        },
+        function(oData) {
+            $this.loadingInBlock(oSource, false);
+
+            processJsonData(oData);
+        },
+        'json'
+    );
+
+    return false;
+};
+
+BxTasksView.prototype.onChangeSave = function (oElement) {
+    $(oElement).parents('form').find('#bx-form-element-title').toggleClass('bx-tasks-ffi-hidden', !$(oElement).prop('checked'));
+};
+
 BxTasksView.prototype.loadingInBlock = function(e, bShow) {
     var oParent = $(e).length ? $(e).parents('.bx-db-container:first') : $('body'); 
     bx_loading(oParent, bShow);

@@ -239,35 +239,25 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'actions' => $oActions->getCode()
         ]);
     }
-
+   
     public function getEntriesList($iContextId = 0, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
         $sJsObject = $this->_oConfig->getJsObject('tasks');
 
+        $iLoggedId = bx_get_logged_profile_id();
         $oModule = $this->getModule();
 
         $bContext = !empty($iContextId);
         $bAllowAdd = $bContext && $oModule->isAllowAdd($iContextId);
 
-        $aTmplVarsFilterItems = [];
-
         $aFilters = [];
-        if(($sK = $CNF['COOKIE_SETTING_KEY']) && isset($_COOKIE[$sK]))
-            $aFilters = json_decode($_COOKIE[$sK], true);
+        if(($sFilters = $_COOKIE[$CNF['COOKIE_SETTING_KEY']] ?? false))
+            $aFilters = json_decode($sFilters, true);
         $iFilterSelected = $aParams['filter'] ?? ($aFilters[$iContextId] ?? 0);
 
-        $aFilterItems = array_merge([['id' => 0, 'title' => '_bx_tasks_filter_title_select']], $this->_oDb->getFilters(['sample' => 'active']));
-        foreach($aFilterItems as $aFilterItem)
-            $aTmplVarsFilterItems[] = [
-                'filter_id' => $aFilterItem['id'],
-                'filter_title' => _t($aFilterItem['title']),
-                'bx_if:show_filter_selected' => [
-                    'condition' => $aFilterItem['id'] == $iFilterSelected,
-                    'content' => [true]
-                ]
-            ];
-
+        $sFilters = $this->_getEntriesFilters($iContextId, array_merge($aParams, ['filter_selected' => $iFilterSelected]));
+        
         $this->addCssJs();
         $this->addJs([
             'jquery-ui/jquery-ui.min.js',
@@ -279,11 +269,11 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'object' => $sJsObject,
             'context_id' => $iContextId,
             'bx_if:show_filters' => [
-                'condition' => !empty($aTmplVarsFilterItems),
+                'condition' => !empty($sFilters),
                 'content' => [
                     'object' => $sJsObject,
                     'context_id' => $iContextId,
-                    'bx_repeat:filter_items' => $aTmplVarsFilterItems
+                    'filters' => $sFilters
                 ]
             ],
             'bx_if:allow_add_list' => [
@@ -494,6 +484,48 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         return $this->parseHtmlByName('stickers.html', [
             'bx_repeat:stickers' => $aTmplVarsStickers
         ]);
+    }
+
+    protected function _getEntriesFilters($iContextId = 0, $aParams = [])
+    {
+        $sJsObject = $this->_oConfig->getJsObject('tasks');
+        $iLoggedId = bx_get_logged_profile_id();
+
+        $this->_oDb->cleanFilters($iContextId, $iLoggedId);
+
+        $aInput = [
+            'type' => 'select', 
+            'name' => 'filters',
+            'value' => $aParams['filter_selected'] ?? 0,
+            'values' => [
+                ['key' => 0, 'value' => _t('_bx_tasks_filter_title_select')]
+            ],  
+            'attrs' => [
+                'onchange' => $sJsObject . '.applyFilter(this, ' . $iContextId . ')'
+            ]
+        ];
+
+        $aTypes = [
+            '_bx_tasks_txt_flt_system' => ['sample' => 'active', 'context_id' => 0, 'author' => 0],
+            '_bx_tasks_txt_flt_my_permanent' => ['sample' => 'active', 'context_id' => $iContextId, 'author' => $iLoggedId, 'permanent' => 1],
+            '_bx_tasks_txt_flt_my_temporary' => ['sample' => 'active', 'context_id' => $iContextId, 'author' => $iLoggedId, 'permanent' => 0]
+        ];
+
+        foreach($aTypes as $sTitle => $aType) {
+            $aFilterItems = $this->_oDb->getFilters($aType);
+            if($aFilterItems && is_array($aFilterItems)) {
+                $aInput['values'][] = ['type' => 'group_header', 'value' => _t($sTitle)];
+                foreach($aFilterItems as $aFilterItem)
+                    $aInput['values'][] = [
+                        'key' => $aFilterItem['id'], 
+                        'value' => _t($aFilterItem['title'])
+                    ];
+                $aInput['values'][] = ['type' => 'group_end'];
+            }
+        }
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genInputSelect($aInput);
     }
 }
 

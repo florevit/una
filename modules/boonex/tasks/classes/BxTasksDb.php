@@ -243,7 +243,7 @@ class BxTasksDb extends BxBaseModTextDb
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
         $sSelectClause = '`tf`.*';
         $sJoinClause = $sWhereClause = '';
-        $sOrderClause = '`tf`.`order` ASC';
+        $sOrderClause = '`tf`.`added` ASC, `tf`.`permanent` ASC';
 
         if(!empty($aParams))
             switch($aParams['sample']) {
@@ -269,6 +269,25 @@ class BxTasksDb extends BxBaseModTextDb
 
                 case 'active':
                     $sWhereClause .= " AND `tf`.`active` <> '0'";
+
+                    if(($iContextId = $aParams['context_id'] ?? false) !== false) {
+                        $aMethod['params'][1]['context_id'] = $iContextId;
+                        
+                        $sWhereClause .= " AND `tf`.`context_id` = :context_id";
+                    }
+
+                    if(($iAuthor = $aParams['author'] ?? false) !== false) {
+                        $aMethod['params'][1]['author'] = $iAuthor;
+
+                        $sWhereClause .= " AND `tf`.`author` = :author";
+                    }
+
+                    if(($iPermanent = $aParams['permanent'] ?? false) !== false) {
+                        $aMethod['params'][1]['permanent'] = $iPermanent;
+
+                        $sWhereClause .= " AND `tf`.`permanent` = :permanent";
+                    }
+
                     break;
             }
 
@@ -293,6 +312,17 @@ class BxTasksDb extends BxBaseModTextDb
             $aFilter[$sK] = json_decode($aFilter[$sK], true);
 
         return $aFilter;
+    }
+
+    public function cleanFilters($iContextId, $iAuthor, $iLifetime = 3600) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $this->query("DELETE FROM `" . $CNF['TABLE_FILTERS'] . "` WHERE `context_id` = :context_id AND `author` = :author AND UNIX_TIMESTAMP() - `added` > :lifetime AND `permanent` = '0'", [
+            'context_id' => $iContextId,
+            'author' => $iAuthor,
+            'lifetime' => $iLifetime
+        ]);
     }
 
     public function getTimeTracks($aParams = []) 

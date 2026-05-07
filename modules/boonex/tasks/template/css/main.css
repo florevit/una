@@ -94,6 +94,26 @@
     width: 800px;
 }
 
+/*-- Tasks List: Filters List --*/
+.bx-tasks-tasklist-filters select.bx-form-input-select {
+    position: relative;
+    display: inline-flex;
+    max-width: 10rem;
+    margin-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    line-height: 1.0rem;
+    font-size: 0.75rem;
+}
+
+/*-- Tasks List: Filter Form --*/
+.bx-media-desktop #bx-tasks-filter-popup .bx-tasks-form-cnt {
+    width: auto;
+}
+.bx-tasks-ffi-hidden {
+    display: none;
+}
+
 /*--- View Task ---*/
 .bx-tasks-stickers .bx-def-label {
     color: #ffffff;

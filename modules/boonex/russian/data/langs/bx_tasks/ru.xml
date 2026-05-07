@@ -163,6 +163,18 @@
     <string name="_bx_tasks_category_form_entry_input_value_err"><![CDATA[Значение обязательно. Пожалуйста, заполните это поле]]></string>
     <string name="_bx_tasks_lmi_cpt_categories"><![CDATA[Категории]]></string>
 
+    <string name="_bx_tasks_form_f_input_author"><![CDATA[Автор]]></string>
+    <string name="_bx_tasks_form_f_input_initial_members"><![CDATA[Назначено на]]></string>
+    <string name="_bx_tasks_form_f_input_type"><![CDATA[Тип]]></string>
+    <string name="_bx_tasks_form_f_input_priority"><![CDATA[Приоритет]]></string>
+    <string name="_bx_tasks_form_f_input_estimate"><![CDATA[Временные оценки]]></string>
+    <string name="_bx_tasks_form_f_input_state"><![CDATA[Состояние]]></string>
+    <string name="_bx_tasks_form_f_input_save"><![CDATA[Сохраните для дальнейшего использования]]></string>
+    <string name="_bx_tasks_form_f_input_title"><![CDATA[Заголовок]]></string>
+    <string name="_bx_tasks_form_f_input_apply"><![CDATA[Применить]]></string>
+    <string name="_bx_tasks_form_f_input_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_tasks_popup_f_title_add"><![CDATA[Добавить фильтр]]></string>
+    
     <!-- ACL -->
     <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Создать Задание]]></string>
     <string name="_bx_tasks_acl_action_delete_entry"><![CDATA[Удалить Задание]]></string>
@@ -539,6 +551,10 @@
     <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
+    <string name="_bx_tasks_txt_flt_system"><![CDATA[Системные]]></string>
+    <string name="_bx_tasks_txt_flt_my_permanent"><![CDATA[Мои сохраненные]]></string>
+    <string name="_bx_tasks_txt_flt_my_temporary"><![CDATA[Мои временные]]></string>
+    <string name="_bx_tasks_txt_flt_user_current"><![CDATA[Текущий пользователь]]></string>
 
     <string name="_bx_tasks_txt_timer_start"><![CDATA[Старт]]></string>
     <string name="_bx_tasks_txt_timer_stop"><![CDATA[Стоп]]></string>

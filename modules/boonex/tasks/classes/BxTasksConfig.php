@@ -191,6 +191,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_PRE_LIST_TYPES' => 'bx_tasks_types',
             'OBJECT_PRE_LIST_STICKERS' => 'bx_tasks_stickers',
             'OBJECT_PRE_LIST_PRIORITIES' => 'bx_tasks_priorities',
+            'OBJECT_PRE_LIST_ESTIMATES' => 'bx_tasks_estimates',
             'OBJECT_PRE_LIST_STATES' => 'bx_tasks_states',
             
             'BADGES_AVALIABLE' => true,
@@ -291,6 +292,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'tasks' => $sPrefix . '-tasks',
             'time_popup' => $sPrefix . '-time-popup',
             'total_popup' => $sPrefix . '-total-popup',
+            'filter_popup' => $sPrefix . '-filter-popup',
             'timer' => $sPrefix . '-timer-',
             'timer_actions' => $sPrefix . '-timer-actions',
             'pre_values_popup' => $sPrefix . '-pv-popup-',

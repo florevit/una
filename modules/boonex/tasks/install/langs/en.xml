@@ -163,6 +163,18 @@
     <string name="_bx_tasks_category_form_entry_input_value_err"><![CDATA[Value is essential. Please, fill in this field]]></string>
     <string name="_bx_tasks_lmi_cpt_categories"><![CDATA[Categories]]></string>
 
+    <string name="_bx_tasks_form_f_input_author"><![CDATA[Author]]></string>
+    <string name="_bx_tasks_form_f_input_initial_members"><![CDATA[Assigned to]]></string>
+    <string name="_bx_tasks_form_f_input_type"><![CDATA[Type]]></string>
+    <string name="_bx_tasks_form_f_input_priority"><![CDATA[Priority]]></string>
+    <string name="_bx_tasks_form_f_input_estimate"><![CDATA[Estimate]]></string>
+    <string name="_bx_tasks_form_f_input_state"><![CDATA[State]]></string>
+    <string name="_bx_tasks_form_f_input_save"><![CDATA[Save for future usage]]></string>
+    <string name="_bx_tasks_form_f_input_title"><![CDATA[Title]]></string>
+    <string name="_bx_tasks_form_f_input_apply"><![CDATA[Apply]]></string>
+    <string name="_bx_tasks_form_f_input_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_tasks_popup_f_title_add"><![CDATA[Add Filter]]></string>
+    
     <!-- ACL -->
     <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Create Task]]></string>
     <string name="_bx_tasks_acl_action_delete_entry"><![CDATA[Delete Task]]></string>
@@ -543,6 +555,10 @@
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
+    <string name="_bx_tasks_txt_flt_system"><![CDATA[System]]></string>
+    <string name="_bx_tasks_txt_flt_my_permanent"><![CDATA[My saved]]></string>
+    <string name="_bx_tasks_txt_flt_my_temporary"><![CDATA[My temporary]]></string>
+    <string name="_bx_tasks_txt_flt_user_current"><![CDATA[Current user]]></string>
 
     <string name="_bx_tasks_txt_timer_start"><![CDATA[Start]]></string>
     <string name="_bx_tasks_txt_timer_stop"><![CDATA[Stop]]></string>
