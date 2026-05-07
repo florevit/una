@@ -24,10 +24,10 @@ define('BX_DATABASE_PASS', $_ENV['UNA_DB_PWD'] ?? '%DB_PASSWORD%'); ///< db pass
 define('BX_DATABASE_NAME', $_ENV['UNA_DB_NAME'] ?? '%DB_NAME%'); ///< db name
 define('BX_DATABASE_ENGINE', $_ENV['UNA_DB_ENGINE'] ?? '%DB_ENGINE%'); ///< db engine
 if (isset($_ENV['UNA_DATABASE_COLLATE'])) {
-    define('BX_DATABASE_COLLATE', $_ENV['UNA_DATABASE_COLLATE']);
+    define('BX_DATABASE_COLLATE', $_ENV['UNA_DATABASE_COLLATE']); ///< db collate
 }
 if (isset($_ENV['UNA_DATABASE_PERSISTENT'])) {
-    define('BX_DATABASE_PERSISTENT', $_ENV['UNA_DATABASE_PERSISTENT']);
+    define('BX_DATABASE_PERSISTENT', $_ENV['UNA_DATABASE_PERSISTENT']); ///< db use porsistent connection (true by default)
 }
 
 define('BX_SYSTEM_JAVA', $_ENV['UNA_JAVA_PATH'] ?? '%JAVA_PATH%'); ///< path to java binary
@@ -38,18 +38,18 @@ define('BX_DB_FULL_VISUAL_PROCESSING', $_ENV['UNA_DEBUG_VISUAL_PROCESSING'] ?? t
 define('BX_DB_FULL_DEBUG_MODE', $_ENV['UNA_DEBUG_MODE'] ?? false); ///< upon db error - show detailed report (turn off in production mode)
 define('BX_DB_DO_EMAIL_ERROR_REPORT', $_ENV['UNA_DEBUG_EMAIL_REPORT'] ?? true); ///< upon db error - send email with detailed report
 if (isset($_ENV['UNA_DEBUG_COOKIE'])) {
-    define('BX_DBG_COOKIE', $_ENV['UNA_DEBUG_COOKIE']);
+    define('BX_DBG_COOKIE', $_ENV['UNA_DEBUG_COOKIE']); ///< debug cookie name, if set then display errors
 }
-error_reporting($_ENV['UNA_DEBUG_ERROR_REPORTING'] ?? E_ALL);
+error_reporting($_ENV['UNA_DEBUG_ERROR_REPORTING'] ?? E_ALL); ///< error reporting level
 
 if (isset($_ENV['UNA_FORCE_AUTOUPDATE_MAX_CHANGED_FILES_PERCENT'])) {
-    define('BX_FORCE_AUTOUPDATE_MAX_CHANGED_FILES_PERCENT', $_ENV['UNA_FORCE_AUTOUPDATE_MAX_CHANGED_FILES_PERCENT']);
+    define('BX_FORCE_AUTOUPDATE_MAX_CHANGED_FILES_PERCENT', $_ENV['UNA_FORCE_AUTOUPDATE_MAX_CHANGED_FILES_PERCENT']); ///< max % of changed files to force autoupdate, 0.05 (5%) by default
 }
 if (isset($_ENV['UNA_INT_MAX'])) {
-    define('BX_DOL_INT_MAX', $_ENV['UNA_INT_MAX']);
+    define('BX_DOL_INT_MAX', $_ENV['UNA_INT_MAX']); ///< max interger value, by default 2147483647 to support 32bit systems
 }
 if (isset($_ENV['UNA_STUDIO_FOLDER'])) {
-    define('BX_DOL_STUDIO_FOLDER', $_ENV['UNA_STUDIO_FOLDER']);
+    define('BX_DOL_STUDIO_FOLDER', $_ENV['UNA_STUDIO_FOLDER']); ///< studio folder name
 }
 
 mb_internal_encoding('UTF-8');
