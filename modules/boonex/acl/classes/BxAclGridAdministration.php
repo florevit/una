@@ -23,9 +23,8 @@ class BxAclGridAdministration extends BxAclGridLevels
 
         $this->_aLevels = $this->_oModule->_oDb->getLevels(['type' => 'for_selector']);
 
-        $iLevel = (int)bx_get('level');
-        if($iLevel > 0) {
-            $this->_iLevelId = $iLevel;
+        if(($iLevelId = bx_get('level')) !== false) {
+            $this->_iLevelId = (int)$iLevelId;
             $this->_aQueryAppend['level'] = $this->_iLevelId;
         }
     }
@@ -41,12 +40,19 @@ class BxAclGridAdministration extends BxAclGridLevels
             list($this->_iLevelId, $sFilter) = explode($this->_sParamsDivider, $sFilter);
 
     	$oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_PRICE'], $CNF['OBJECT_FORM_PRICE_DISPLAY_ADD']);
-        $oForm->setAction(BX_DOL_URL_ROOT . 'grid.php?o=' . $this->_sObject . '&a=' . $sAction . '&level=' . $this->_iLevelId);
-        $oForm->setLevelId($this->_iLevelId);
+
+        $aActionParams = ['o' => $this->_sObject, 'a' => $sAction];
+        if($this->_iLevelId) {
+            $aActionParams['level'] = $this->_iLevelId;
+
+            $oForm->setLevelId($this->_iLevelId);
+        }
+
+        $oForm->setAction(bx_append_url_params(BX_DOL_URL_ROOT . 'grid.php', $aActionParams));
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            $iLevel = $oForm->getCleanValue('level_id');
+            $iLevelId = $oForm->getCleanValue('level_id');
             $iPeriod = $oForm->getCleanValue('period');
             $sPeriodUnit = $oForm->getCleanValue('period_unit');
 
@@ -55,15 +61,14 @@ class BxAclGridAdministration extends BxAclGridLevels
 
             $aPriceSimilar = $this->_oModule->_oDb->getPrices([
                 'type' => 'by_level_id_duration', 
-                'level_id' => $iLevel, 
+                'level_id' => $iLevelId, 
                 'period' => $iPeriod, 
                 'period_unit' => $sPeriodUnit
             ]);
 
-            $iId = (int)$oForm->insert(array('added' => time(), 'order' => $this->_oModule->_oDb->getPriceOrderMax($this->_iLevelId) + 1));
-            if($iId != 0) {
+            if(($iId = (int)$oForm->insert(['added' => time(), 'order' => $this->_oModule->_oDb->getPriceOrderMax($iLevelId) + 1])) != 0) {
             	//TODO: May be we don't need to have this 'Purchasable' flag at all or at least we shouldn't update it from here.
-                $this->_oModule->_oDb->updateLevels(['Purchasable' => 'yes'], ['ID' => $this->_iLevelId]);
+                $this->_oModule->_oDb->updateLevels(['Purchasable' => 'yes'], ['ID' => $iLevelId]);
 
                 $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
                 if(!empty($aPriceSimilar) && is_array($aPriceSimilar))
