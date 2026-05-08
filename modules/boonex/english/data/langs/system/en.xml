@@ -1321,7 +1321,7 @@
 	<string name="_adm_nav_txt_menus_style"><![CDATA[Style]]></string>
 	<string name="_adm_nav_txt_menus_style_select"><![CDATA[Select Style...]]></string>
 	<string name="_adm_nav_txt_menus_title"><![CDATA[System Name]]></string>
-        <string name="_adm_nav_txt_menus_title_public"><![CDATA[Name]]></string>
+        <string name="_adm_nav_txt_menus_title_public"><![CDATA[Display Name]]></string>
 	<string name="_adm_nav_txt_n_items"><![CDATA[{0} items]]></string>
 	<string name="_adm_nav_txt_select_set"><![CDATA[Select Set...]]></string>
 	<string name="_adm_nav_txt_sets_create_popup"><![CDATA[Add New Set]]></string>

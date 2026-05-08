@@ -1303,7 +1303,7 @@
 	<string name="_adm_nav_txt_menus_style"><![CDATA[Стиль]]></string>
 	<string name="_adm_nav_txt_menus_style_select"><![CDATA[Выбрать стиль...]]></string>
 	<string name="_adm_nav_txt_menus_title"><![CDATA[Системное имя]]></string>
-        <string name="_adm_nav_txt_menus_title_public"><![CDATA[Имя]]></string>
+        <string name="_adm_nav_txt_menus_title_public"><![CDATA[Отображаемое имя]]></string>
 	<string name="_adm_nav_txt_n_items"><![CDATA[{0} элементов]]></string>
 	<string name="_adm_nav_txt_select_set"><![CDATA[Выбрать набор...]]></string>
 	<string name="_adm_nav_txt_sets_create_popup"><![CDATA[Добавить новый набор]]></string>
