@@ -21,26 +21,28 @@ class BxCreditsGridWithdrawalsCommon extends BxCreditsGridWithdrawalsAdministrat
     public function performActionWithdrawRequest()
     {
         if(!$this->_bWithdraw)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $sAction = 'withdraw_request';
 
-        $this->_performActionWithProfileAmount($sAction);
+        return $this->_performActionWithProfileAmount($sAction);
     }
 
     public function performActionWithdrawCancel()
     {
         if(!$this->_bWithdraw)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $sAction = 'withdraw_cancel';
 
         $iId = $this->_getId();
         if(!$iId)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $aResult = $this->_oModule->processWithdrawCancel($iId);
-        return echoJson($this->_onPerformAction($aResult));
+        $aResult = $this->_onPerformAction($aResult);
+
+        return $this->_bIsApi ? $aResult : echoJson($aResult);
     }
 
     public function getCode($isDisplayHeader = true)

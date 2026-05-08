@@ -28,16 +28,18 @@ class BxCreditsGridWithdrawalsAdministration extends BxCreditsGrid
     public function performActionWithdrawConfirm()
     {
         if(!$this->_bWithdraw)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $sAction = 'withdraw_confirm';
 
         $iId = $this->_getId();
         if(!$iId)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $aResult = $this->_oModule->processWithdrawConfirm($this->_iUserId, $iId);
-        return echoJson($this->_onPerformAction($aResult));
+        $aResult = $this->_onPerformAction($aResult);
+
+        return $this->_bIsApi ? $aResult : echoJson($aResult);
     }
 
     protected function _getActionWithdrawConfirm($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())

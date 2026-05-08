@@ -22,7 +22,7 @@ class BxCreditsGridHistoryCommon extends BxCreditsGridHistoryAdministration
     {
         $sAction = 'send';
 
-        $this->_performActionWithProfileAmount($sAction);
+        return $this->_performActionWithProfileAmount($sAction);
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)

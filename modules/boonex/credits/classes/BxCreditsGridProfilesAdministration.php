@@ -24,6 +24,11 @@ class BxCreditsGridProfilesAdministration extends BxTemplGrid
         parent::__construct ($aOptions, $oTemplate);
     }
 
+    public function getFormCallBackUrlAPI($sAction, $iId = 0)
+    {
+         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&id=' . $iId;
+    }
+
     public function performActionEdit()
     {
         $sAction = 'edit';
@@ -41,20 +46,23 @@ class BxCreditsGridProfilesAdministration extends BxTemplGrid
 
         $aProfile = $this->_oModule->_oDb->getProfile(['type' => 'id', 'id' => $iId]);
         if(empty($aProfile) || !is_array($aProfile))
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $oForm = $this->_getFormObject($sAction, $aProfile);
         $oForm->initChecker($aProfile);
 
         if($oForm->isSubmittedAndValid()) {
             if($oForm->update($iId) !== false)
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
+                $aRes = $this->_bIsApi ? [] : ['grid' => $this->getCode(false), 'blink' => $iId];
             else
-                $aRes = ['msg' => _t('_bx_credits_txt_err_cannot_perform_action')];
+                $aRes = ($sMsg = _t('_bx_credits_txt_err_cannot_perform_action')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
 
-            echoJson($aRes);
+            return $this->_bIsApi ? $aRes : echoJson($aRes);
         }
         else {
+            if($this->_bIsApi)
+                return $this->getFormBlockAPI($oForm, $sAction, $iId);
+
             $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('edit_profile_popup'), _t('_bx_credits_grid_popup_title_pfl_edit', BxDolProfile::getInstanceMagic($aProfile['id'])->getDisplayName()), $this->_oModule->_oTemplate->parseHtmlByName('profile_form.html', [
                 'form_id' => $oForm->aFormAttrs['id'],
                 'form' => $oForm->getCode(true),

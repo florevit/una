@@ -28,11 +28,12 @@ class BxCreditsGridOrdersAdministration extends BxCreditsGrid
 
     protected function _getCellBundle($mixedValue, $sKey, $aField, $aRow)
     {
-        $mixedValue = $this->_oTemplate->parseHtmlByName('bundle_link.html', [
-            'href' => $this->_oModule->_oConfig->getBundleUrl(['id' => $aRow['bundle_id']]),
-            'title' => bx_html_attribute($mixedValue),
-            'content' => $mixedValue
-        ]);
+        if(!$this->_bIsApi)
+            $mixedValue = $this->_oTemplate->parseHtmlByName('bundle_link.html', [
+                'href' => $this->_oModule->_oConfig->getBundleUrl(['id' => $aRow['bundle_id']]),
+                'title' => bx_html_attribute($mixedValue),
+                'content' => $mixedValue
+            ]);
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }

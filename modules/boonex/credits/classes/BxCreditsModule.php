@@ -200,11 +200,12 @@ class BxCreditsModule extends BxBaseModGeneralModule
 
     public function serviceGetSafeServices()
     {
-        return array (
+        return [
             'GetBlockBundles' => '',
             'GetBlockOrders' => '',
             'GetBlockHistory' => '',
-        );
+            'AddToCart' => ''
+        ];
     }
 
     public function serviceGetCheckoutUrl()
@@ -362,7 +363,14 @@ class BxCreditsModule extends BxBaseModGeneralModule
      */
     public function serviceGetBlockBundles()
     {
-        return $this->_oTemplate->getBlockBundles();
+        $mixedResult = $this->_oTemplate->getBlockBundles();
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('bundles', $mixedResult)
+            ];
+
+        return $mixedResult;
     }
 
     /**
@@ -504,6 +512,32 @@ class BxCreditsModule extends BxBaseModGeneralModule
             'url_browse_order_common' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_ORDERS_COMMON']), ['filter' => '{order}'], false)),
             'url_browse_order_administration' => bx_absolute_url(bx_append_url_params($oPermalink->permalink($CNF['URL_ORDERS_ADMINISTRATION']), ['filter' => '{order}'], false))
         ]);
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_credits Credits
+     * @subsection bx_credits-payments Payments
+     * @subsubsection bx_credits-add_to_cart add_to_cart
+     * 
+     * @code bx_srv('bx_credits', 'add_to_cart', [...]); @endcode
+     * 
+     * Adds an item in Shopping Cart. Is needed for payments processing module.
+     * 
+     * @return an array with module's description.
+     * 
+     * @see BxCreditsModule::serviceAddToCart
+     */
+    /** 
+     * @ref bx_credits-add_to_cart "add_to_cart"
+     */
+    public function serviceAddToCart($iItemId)
+    {
+        $aResult = BxDolPayments::getInstance()->addToCart($this->_oConfig->getAuthor(), $this->_oConfig->getName(), $iItemId, 1, true);
+        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+            return [bx_api_get_msg($aResult['message'])];
+
+        return [];
     }
 
     /**
@@ -1408,8 +1442,13 @@ class BxCreditsModule extends BxBaseModGeneralModule
         $sGrid = $CNF['OBJECT_GRID_ORDERS_' . strtoupper($sType)];
         $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
-            return '';
+            return $this->_bIsApi ? [] : '';
 
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
+        
         return [
             'content' => $oGrid->getCode(),
             'menu' => $CNF['OBJECT_MENU_MANAGE_SUBMENU']
@@ -1423,7 +1462,12 @@ class BxCreditsModule extends BxBaseModGeneralModule
         $sGrid = $CNF['OBJECT_GRID_HISTORY_' . strtoupper($sType)];
         $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
 
         return [
             'content' => $oGrid->getCode(),
@@ -1438,7 +1482,12 @@ class BxCreditsModule extends BxBaseModGeneralModule
         $sGrid = $CNF['OBJECT_GRID_WITHDRAWALS_' . strtoupper($sType)];
         $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
 
         return [
             'content' => $oGrid->getCode(),
@@ -1452,12 +1501,17 @@ class BxCreditsModule extends BxBaseModGeneralModule
 
         $sKey = 'OBJECT_GRID_PROFILES_' . strtoupper($sType);
         if(empty($CNF[$sKey]))
-            return '';
+            return $this->_bIsApi ? [] : '';
 
         $sGrid = $CNF[$sKey];
         $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
 
         return [
             'content' => $oGrid->getCode(),

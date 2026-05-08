@@ -96,45 +96,54 @@ class BxCreditsTemplate extends BxBaseModGeneralTemplate
         $CNF = &$this->_oConfig->CNF;
         $sStylePrefix = $this->_oConfig->getPrefix('style');
 
+        $sModule = $this->_oConfig->getName();
         $iAuthor = $this->_oConfig->getAuthor();
         $aCurrency = $this->_oConfig->getCurrency();
 
-        $aBundles = $this->_oDb->getBundle(array('type' => 'all', 'active' => 1));
+        $aBundles = $this->_oDb->getBundle(['type' => 'all', 'active' => 1]);
         if(empty($aBundles) || !is_array($aBundles))
-            return MsgBox(_t('_Empty'));
+            return ($sMsg = _t('_Empty')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
         $oPayment = BxDolPayments::getInstance();
 
-        $aTmplVarsBundles = array();
+        $aTmplVarsBundles = [];
         foreach($aBundles as $aBundle) {
-            $aJs = $oPayment->getAddToCartJs($iAuthor, $this->MODULE, $aBundle[$CNF['FIELD_ID']], 1, true);
+            $iBundle = $aBundle[$CNF['FIELD_ID']];
+
+            $aJs = $oPayment->getAddToCartJs($iAuthor, $this->MODULE, $iBundle, 1, true);
             if(empty($aJs) || !is_array($aJs))
                 continue;
 
             list($sJsCode, $sJsMethod) = $aJs;
 
-            $aTmplVarsBundles[] = array_merge($aBundle, array(
-                'sp' => $sStylePrefix,
+            $aTmplVarsBundles[] = array_merge($aBundle, [
                 'title' => _t($aBundle[$CNF['FIELD_TITLE']]),
                 'description' => _t($aBundle[$CNF['FIELD_DESCRIPTION']]),
-                'bx_if:show_bonus' => array(
-                    'condition' => (int)$aBundle[$CNF['FIELD_BONUS']] > 0,
-                    'content' => array(
-                        'sp' => $sStylePrefix,
-                        'bonus' => (int)$aBundle[$CNF['FIELD_BONUS']]
-                    )
-                ),
                 'currency_sign' => $aCurrency['sign'],
                 'currency_code' => $aCurrency['code'],
+            ], !$this->_bIsApi ? [
+                'sp' => $sStylePrefix,
+                'bx_if:show_bonus' => [
+                    'condition' => (int)$aBundle[$CNF['FIELD_BONUS']] > 0,
+                    'content' => [
+                        'sp' => $sStylePrefix,
+                        'bonus' => (int)$aBundle[$CNF['FIELD_BONUS']]
+                    ]
+                ],
                 'onclick' => $sJsMethod
-            ));
+            ] : [
+                'buttons' => [[
+                    'title' => _t('_bx_credits_txt_purchase'),
+                    'request_url' => $sModule . '/add_to_cart/&params[]=' . $iBundle . '&params[]=',
+                ]]
+            ]);
         }
 
-        return $this->parseHtmlByName('bundles.html', array(
+        return $this->_bIsApi ? $aTmplVarsBundles : $this->parseHtmlByName('bundles.html', [
             'sp' => $sStylePrefix,
             'bx_repeat:bundles' => $aTmplVarsBundles,
             'js_code' => $oPayment->getCartJs()
-        ));
+        ]);
     }
 
     public function getPopupSubscribe($oBuyer, $oSeller, $aData)

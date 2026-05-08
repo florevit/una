@@ -92,11 +92,14 @@ class BxPaymentGridCart extends BxBaseModPaymentGridCarts
 
     protected function _getCellTitle($mixedValue, $sKey, $aField, $aRow)
     {
-    	return parent::_getCellDefault($this->_oModule->_oTemplate->displayLink('link', array(
-            'href' => $aRow['url'],
-            'title' => bx_html_attribute($aRow['title']),
-            'content' => $aRow['title']
-    	)), $sKey, $aField, $aRow);
+        if(!$this->_bIsApi)
+            $mixedValue = $this->_oModule->_oTemplate->displayLink('link', array(
+                'href' => $aRow['url'],
+                'title' => bx_html_attribute($aRow['title']),
+                'content' => $aRow['title']
+            ));
+
+    	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
 
     protected function _getCellPriceSingle($mixedValue, $sKey, $aField, $aRow)
@@ -106,11 +109,12 @@ class BxPaymentGridCart extends BxBaseModPaymentGridCarts
 
     protected function _getCellQuantity($mixedValue, $sKey, $aField, $aRow)
     {
-        $mixedValue = $this->_oModule->_oTemplate->parseHtmlByName('cart_quantity.html', [
-            'sub' => $this->_getActionQuantity('sub', $aRow),
-            'quantity' => $mixedValue,
-            'add' => $this->_getActionQuantity('add', $aRow)
-        ]);
+        if(!$this->_bIsApi)
+            $mixedValue = $this->_oModule->_oTemplate->parseHtmlByName('cart_quantity.html', [
+                'sub' => $this->_getActionQuantity('sub', $aRow),
+                'quantity' => $mixedValue,
+                'add' => $this->_getActionQuantity('add', $aRow)
+            ]);
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }

@@ -24,7 +24,7 @@ class BxCreditsGridHistoryAdministration extends BxCreditsGrid
     {
         $sAction = 'grant';
 
-        $this->_performActionWithProfileAmount($sAction);
+        return $this->_performActionWithProfileAmount($sAction);
     }
 
     protected function _getCellDirection($mixedValue, $sKey, $aField, $aRow)

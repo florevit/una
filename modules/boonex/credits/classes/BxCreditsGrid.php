@@ -32,6 +32,11 @@ class BxCreditsGrid extends BxTemplGrid
         }
     }
 
+    public function getFormCallBackUrlAPI($sAction, $iId = 0)
+    {
+         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&id=' . $iId;
+    }
+
     protected function _getProfile($mixedValue) 
     {
         if(is_numeric($mixedValue) && (int)$mixedValue == 0)
@@ -57,9 +62,14 @@ class BxCreditsGrid extends BxTemplGrid
             $sMessage = $oForm->getCleanValue('message');
 
             $aResult = $this->_oModule->{'process' . bx_gen_method_name($sAction)}($this->_iUserId, $iProfile, $fAmount, $sMessage);
-            echoJson($this->_onPerformAction($aResult));
+            $aResult = $this->_onPerformAction($aResult);
+
+            return $this->_bIsApi ? $aResult : echoJson($aResult);
         }
         else {
+            if($this->_bIsApi)
+                return $this->getFormBlockAPI($oForm, $sAction);
+
             $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds($sAction . '_popup'), _t($CNF['T'][$sAction . '_popup']), $this->_oModule->_oTemplate->parseHtmlByName('credit_form.html', [
                 'form_id' => $oForm->aFormAttrs['id'],
                 'form' => $oForm->getCode(true),
@@ -77,12 +87,12 @@ class BxCreditsGrid extends BxTemplGrid
 
         if((int)$aResult['code'] == 0) {
             if(!empty($aResult['id']))
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $aResult['id']];
+                $aRes = $this->_bIsApi ? [] : ['grid' => $this->getCode(false), 'blink' => $aResult['id']];
             else
-                $aRes = ['msg' => _t(!empty($aResult['msg']) ? $aResult['msg'] : '_bx_credits_msg_action_performed')];
+                $aRes = ($sMsg = _t(!empty($aResult['msg']) ? $aResult['msg'] : '_bx_credits_msg_action_performed')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
         }
         else
-            $aRes = ['msg' => _t(!empty($aResult['msg']) ? $aResult['msg'] : '_bx_credits_err_cannot_perform_action')];
+            $aRes = ($sMsg = _t(!empty($aResult['msg']) ? $aResult['msg'] : '_bx_credits_err_cannot_perform_action')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
 
         return $aRes;
     }
