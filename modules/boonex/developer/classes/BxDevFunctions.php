@@ -29,6 +29,10 @@ class BxDevFunctions
         $aInputs['object']['value'] = $aParams['object'];
         $aInputs['object']['values'] = array();
 
+        foreach(['caption_system', 'caption'] as $sField)
+            if(isset($aInputs[$sField]))
+                $aInputs[$sField]['caption'] = _t('_bx_dev_frm_txt_field_title_' . $sField);
+
     	$aForms = array();
         $oDb->getForms(array('type' => 'by_module', 'value' => $aParams['module']), $aForms, false);
         if(!empty($aForms) && is_array($aForms)) {

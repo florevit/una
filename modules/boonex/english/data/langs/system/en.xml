@@ -519,8 +519,8 @@
 	<string name="_adm_bp_dsc_page_meta_description"><![CDATA[Use 10-50 words to tell search engines what the page is about.]]></string>
 	<string name="_adm_bp_dsc_page_meta_keywords"><![CDATA[Use 5-10 keywords, separated by comma, associated with page content.]]></string>
 	<string name="_adm_bp_dsc_page_meta_robots"><![CDATA[Standard commands for search engine robots. Example: noindex, nofollow.]]></string>
-	<string name="_adm_bp_dsc_page_title"><![CDATA[Page title displayed in page header. Use at least 3 characters.]]></string>
-	<string name="_adm_bp_dsc_page_title_system"><![CDATA[Page name, displayed in studio only.]]></string>
+	<string name="_adm_bp_dsc_page_title"><![CDATA[This name is displayed in page header. Use at least 3 characters.]]></string>
+	<string name="_adm_bp_dsc_page_title_system"><![CDATA[This name is displayed in Studio only.]]></string>
 	<string name="_adm_bp_dsc_page_uri"><![CDATA[Page address used after 'youdomain.com/page/'. It must be unique and it can not be changed later.]]></string>
 	<string name="_adm_bp_dsc_page_url"><![CDATA[Page link to access the page.]]></string>
 	<string name="_adm_bp_dsc_page_visible_for_levels"><![CDATA[Select user levels that can see this page]]></string>
@@ -583,7 +583,7 @@
 	<string name="_adm_bp_txt_block_selected"><![CDATA[blocks selected]]></string>
         <string name="_adm_bp_txt_block_submenu"><![CDATA[Block submenu]]></string>
         <string name="_adm_bp_txt_block_tabs"><![CDATA[Use 'tabs' based block submenu]]></string>
-	<string name="_adm_bp_txt_block_title"><![CDATA[Title]]></string>
+	<string name="_adm_bp_txt_block_title"><![CDATA[Display Name]]></string>
 	<string name="_adm_bp_txt_block_visible_for"><![CDATA[Visible For]]></string>
 	<string name="_adm_bp_txt_block_visible_for_all"><![CDATA[Anyone]]></string>
 	<string name="_adm_bp_txt_block_visible_for_levels"><![CDATA[Select Levels]]></string>
@@ -609,7 +609,7 @@
 	<string name="_adm_bp_txt_page_meta_robots"><![CDATA[Meta Robots]]></string>
         <string name="_adm_bp_txt_page_submenu"><![CDATA[Submenu]]></string>
 	<string name="_adm_bp_dsc_page_submenu"><![CDATA[Page submenu can be selected here]]></string>
-	<string name="_adm_bp_txt_page_title"><![CDATA[Title]]></string>
+	<string name="_adm_bp_txt_page_title"><![CDATA[Display Name]]></string>
 	<string name="_adm_bp_txt_page_title_system"><![CDATA[System Name]]></string>
 	<string name="_adm_bp_txt_page_type_id"><![CDATA[Type]]></string>
 	<string name="_adm_bp_dsc_page_type_id"><![CDATA[Page display type. Default value can be changed in Studio -> Designer -> Settings.]]></string>
@@ -805,9 +805,9 @@
     <string name="_adm_form_dsc_field_attrs_min"><![CDATA[Enter numeric value]]></string>
     <string name="_adm_form_dsc_field_attrs_src"><![CDATA[Enter correct image URL]]></string>
     <string name="_adm_form_dsc_field_attrs_step"><![CDATA[Enter numeric value]]></string>
-    <string name="_adm_form_dsc_field_caption"><![CDATA[Item name displayed on site]]></string>
+    <string name="_adm_form_dsc_field_caption"><![CDATA[This name is displayed on site.]]></string>
     <string name="_adm_form_dsc_field_caption_block_header"><![CDATA[Title for the group of fields]]></string>
-    <string name="_adm_form_dsc_field_caption_system"><![CDATA[Field title, displayed in Studio only.]]></string>
+    <string name="_adm_form_dsc_field_caption_system"><![CDATA[This name is displayed in Studio only.]]></string>
     <string name="_adm_form_dsc_field_checker_error_captcha"><![CDATA[Error message to display if text doesn't match with text on the image]]></string>
     <string name="_adm_form_dsc_field_checker_params_preg"><![CDATA[Use standard <a href="http://en.wikipedia.org/wiki/Regular_expression" target="_blank">regular expression</a>. Example: #^[A-Za-z0-9]{3,16}$#]]></string>
     <string name="_adm_form_dsc_field_collapsed"><![CDATA[Pack down the group of this field by default]]></string>
@@ -931,8 +931,8 @@
 	<string name="_adm_form_txt_field_attrs_min"><![CDATA[Min Value]]></string>
 	<string name="_adm_form_txt_field_attrs_src"><![CDATA[Image Source]]></string>
 	<string name="_adm_form_txt_field_attrs_step"><![CDATA[Step]]></string>
-	<string name="_adm_form_txt_field_caption"><![CDATA[Title]]></string>
-	<string name="_adm_form_txt_field_caption_system"><![CDATA[System Title]]></string>
+	<string name="_adm_form_txt_field_caption"><![CDATA[Display Name]]></string>
+	<string name="_adm_form_txt_field_caption_system"><![CDATA[System Name]]></string>
 	<string name="_adm_form_txt_field_checked"><![CDATA[Checked by default]]></string>
 	<string name="_adm_form_txt_field_checked_switcher"><![CDATA[Enabled by default]]></string>
 	<string name="_adm_form_txt_field_checker_avail"><![CDATA[Data Availability (something must be entered) ]]></string>
@@ -967,7 +967,7 @@
 	<string name="_adm_form_txt_field_info"><![CDATA[Description]]></string>
         <string name="_adm_form_txt_field_help"><![CDATA[Help]]></string>
 	<string name="_adm_form_txt_field_module"><![CDATA[Module]]></string>
-	<string name="_adm_form_txt_field_name"><![CDATA[Name]]></string>
+	<string name="_adm_form_txt_field_name"><![CDATA[Identifier]]></string>
 	<string name="_adm_form_txt_field_object"><![CDATA[Form]]></string>
         <string name="_adm_form_txt_field_privacy"><![CDATA[Privacy]]></string>
         <string name="_adm_form_txt_field_rateable"><![CDATA[Rateable]]></string>
@@ -1296,7 +1296,7 @@
 	<string name="_adm_nav_txt_items_target"><![CDATA[Target]]></string>
 	<string name="_adm_nav_txt_items_target_blank"><![CDATA[New Page]]></string>
 	<string name="_adm_nav_txt_items_target_self"><![CDATA[Same Page]]></string>
-	<string name="_adm_nav_txt_items_title"><![CDATA[Name]]></string>
+	<string name="_adm_nav_txt_items_title"><![CDATA[Display Name]]></string>
         <string name="_adm_nav_txt_items_title_attr"><![CDATA[Title]]></string>
 	<string name="_adm_nav_txt_items_title_system"><![CDATA[System Name]]></string>
         <string name="_adm_nav_txt_items_info"><![CDATA[Info]]></string>

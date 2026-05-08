@@ -517,8 +517,8 @@
 	<string name="_adm_bp_dsc_page_meta_description"><![CDATA[Используйте 10-50 слов, чтобы описать назначение страницы для поисковых машин.]]></string>
 	<string name="_adm_bp_dsc_page_meta_keywords"><![CDATA[Используйте 5-10 ключевых слов, разделённых запятыми, связанных с содержимым страницы.]]></string>
 	<string name="_adm_bp_dsc_page_meta_robots"><![CDATA[Стандартные команды для поисковых роботов. Например: noindex, nofollow.]]></string>
-	<string name="_adm_bp_dsc_page_title"><![CDATA[Название страницы, отображаемое в заголовке. Используйте как минимум 3 символа.]]></string>
-	<string name="_adm_bp_dsc_page_title_system"><![CDATA[Название страницы, отображаемое только в Студии.]]></string>
+	<string name="_adm_bp_dsc_page_title"><![CDATA[Это имя отображается в заголовке страницы. Используйте как минимум 3 символа.]]></string>
+	<string name="_adm_bp_dsc_page_title_system"><![CDATA[Это имя отображается только в Студии.]]></string>
 	<string name="_adm_bp_dsc_page_uri"><![CDATA[Адрес страницы, используемый после 'youdomain.com/page/'. Он должен быть уникальным и не может быть изменён в дальнейшем.]]></string>
 	<string name="_adm_bp_dsc_page_url"><![CDATA[Ссылка на страницу для доступа к ней.]]></string>
 	<string name="_adm_bp_dsc_page_visible_for_levels"><![CDATA[Выберите уровни пользователей, разрешённые для просмотра этой страницы]]></string>
@@ -581,7 +581,7 @@
 	<string name="_adm_bp_txt_block_selected"><![CDATA[блоков выбрано]]></string>
         <string name="_adm_bp_txt_block_submenu"><![CDATA[Подменю блока]]></string>
         <string name="_adm_bp_txt_block_tabs"><![CDATA[Использовать подменю блока в виде вкладок]]></string>
-	<string name="_adm_bp_txt_block_title"><![CDATA[Заголовок]]></string>
+	<string name="_adm_bp_txt_block_title"><![CDATA[Отображаемое имя]]></string>
 	<string name="_adm_bp_txt_block_visible_for"><![CDATA[Видимо для]]></string>
 	<string name="_adm_bp_txt_block_visible_for_all"><![CDATA[Всех]]></string>
 	<string name="_adm_bp_txt_block_visible_for_levels"><![CDATA[Выбрать уровни]]></string>
@@ -607,7 +607,7 @@
 	<string name="_adm_bp_txt_page_meta_robots"><![CDATA[Мета-роботы]]></string>
         <string name="_adm_bp_txt_page_submenu"><![CDATA[Подменю]]></string>
 	<string name="_adm_bp_dsc_page_submenu"><![CDATA[В данном поле можно выбрать подменю страницы]]></string>
-	<string name="_adm_bp_txt_page_title"><![CDATA[Заголовок]]></string>
+	<string name="_adm_bp_txt_page_title"><![CDATA[Отображаемое имя]]></string>
 	<string name="_adm_bp_txt_page_title_system"><![CDATA[Системное имя]]></string>
 	<string name="_adm_bp_txt_page_type_id"><![CDATA[Тип]]></string>
 	<string name="_adm_bp_dsc_page_type_id"><![CDATA[Способ отображения страницы. Значение по умолчанию может быть изменено в Студия -> Дизайнер -> Настройки.]]></string>
@@ -798,9 +798,9 @@
     <string name="_adm_form_dsc_field_attrs_min"><![CDATA[Введите числовое значение]]></string>
     <string name="_adm_form_dsc_field_attrs_src"><![CDATA[Введите правильный URL картинки]]></string>
     <string name="_adm_form_dsc_field_attrs_step"><![CDATA[Введите числовое значение]]></string>
-    <string name="_adm_form_dsc_field_caption"><![CDATA[Название элемента, отображаемое на сайте]]></string>
+    <string name="_adm_form_dsc_field_caption"><![CDATA[Это имя отображается на сайте.]]></string>
     <string name="_adm_form_dsc_field_caption_block_header"><![CDATA[Заголовок для группы полей]]></string>
-    <string name="_adm_form_dsc_field_caption_system"><![CDATA[Заголовок поля, отображается только в Студии.]]></string>
+    <string name="_adm_form_dsc_field_caption_system"><![CDATA[Это имя отображается только в Студии.]]></string>
     <string name="_adm_form_dsc_field_checker_error_captcha"><![CDATA[Сообщение об ошибке, когда текст на картинке не соответствует введённому тексту]]></string>
     <string name="_adm_form_dsc_field_checker_params_preg"><![CDATA[Используйте стандартные <a href="http://en.wikipedia.org/wiki/Regular_expression" target="_blank">регулярные выражения</a>. Например: #^[A-Za-z0-9]{3,16}$#]]></string>
     <string name="_adm_form_dsc_field_collapsed"><![CDATA[Упаковать группу данного поля по умолчанию]]></string>
@@ -959,7 +959,7 @@
 	<string name="_adm_form_txt_field_info"><![CDATA[Описание]]></string>
         <string name="_adm_form_txt_field_help"><![CDATA[Помощь]]></string>
 	<string name="_adm_form_txt_field_module"><![CDATA[Модуль]]></string>
-	<string name="_adm_form_txt_field_name"><![CDATA[Имя]]></string>
+	<string name="_adm_form_txt_field_name"><![CDATA[Идентификатор]]></string>
 	<string name="_adm_form_txt_field_object"><![CDATA[Форма]]></string>
         <string name="_adm_form_txt_field_privacy"><![CDATA[Конфиденциальность]]></string>
         <string name="_adm_form_txt_field_rateable"><![CDATA[Оценивать]]></string>
@@ -1278,7 +1278,7 @@
 	<string name="_adm_nav_txt_items_target"><![CDATA[Цель]]></string>
 	<string name="_adm_nav_txt_items_target_blank"><![CDATA[Новая страница]]></string>
 	<string name="_adm_nav_txt_items_target_self"><![CDATA[Эта же страница]]></string>
-	<string name="_adm_nav_txt_items_title"><![CDATA[Имя]]></string>
+	<string name="_adm_nav_txt_items_title"><![CDATA[Отображаемое имя]]></string>
         <string name="_adm_nav_txt_items_title_attr"><![CDATA[Заголовок]]></string>
 	<string name="_adm_nav_txt_items_title_system"><![CDATA[Системное имя]]></string>
         <string name="_adm_nav_txt_items_info"><![CDATA[Информация]]></string>
