@@ -93,7 +93,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             $sTitle = '';
             $aValues = [];
             foreach($oForm->aInputs as $sName => $aInput) {
-                if(in_array($sName, ['save', 'title', 'controls']))
+                if(in_array($sName, ['save_me', 'save_all', 'title', 'controls']))
                     continue;
 
                 if(($mixedValue = $oForm->getCleanValue($sName))) {
@@ -112,8 +112,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             if($aValues && is_array($aValues) && ($aCnds = $this->_getFilterConditions($iContextId, $aValues)))
                 $aValsToAdd['conditions'] = json_encode($aCnds);
 
-            if($oForm->getCleanValue('save') == 'on') {
+            if(($bForAll = $oForm->getCleanValue('save_all') == 'on') || ($oForm->getCleanValue('save_me') == 'on')) {
                 $aValsToAdd = array_merge($aValsToAdd, [
+                    'author' => $bForAll ? 0 : $iAuthorId,
                     'title' => $oForm->getCleanValue('title') ?: $sFltTitle,
                     'permanent' => 1
                 ]);
@@ -1592,10 +1593,19 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 $CNF['FIELD_STATE'] => [
                     'type' => 'checkbox_set',
                 ],
-                'save' => [
+                'save_me' => [
                     'type' => 'switcher',
-                    'name' => 'save',
-                    'caption' => _t('_bx_tasks_form_f_input_save'),
+                    'name' => 'save_me',
+                    'caption' => _t('_bx_tasks_form_f_input_save_me'),
+                    'value' => 'on',
+                    'attrs' => [
+                        'onchange' => $sJsObject . '.onChangeSave(this)'
+                    ]
+                ],
+                'save_all' => [
+                    'type' => 'switcher',
+                    'name' => 'save_all',
+                    'caption' => _t('_bx_tasks_form_f_input_save_all'),
                     'value' => 'on',
                     'attrs' => [
                         'onchange' => $sJsObject . '.onChangeSave(this)'
@@ -1650,17 +1660,25 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             }
         }
 
+        $oContext = false;
+        $sContextModule = '';
+        if($iContextId && ($oContext = BxDolProfile::getInstance($iContextId)) !== false)
+            $sContextModule = $oContext->getModule();
+
         foreach([$CNF['FIELD_AUTHOR'], $CNF['FIELD_INITIAL_MEMBERS']] as $sK)
             if(isset($aForm['inputs'][$sK])) {
-                $aForm['inputs'][$sK]['values'][$this->_iProfileId] = _t('_bx_tasks_txt_flt_user_current');
+                $aForm['inputs'][$sK]['values']['{logged_pid}'] = _t('_bx_tasks_txt_flt_user_current');
 
-                if($iContextId && ($oContext = BxDolProfile::getInstance($iContextId)) !== false) {
-                    $aMembers = bx_srv($oContext->getModule(), 'fans', [$oContext->getContentId(), true]);
+                if($oContext !== false) {
+                    $aMembers = bx_srv($sContextModule, 'fans', [$oContext->getContentId(), true]);
                     foreach($aMembers as $iMember)
                         if(($iMember != $this->_iProfileId) && ($oMember = BxDolProfile::getInstance($iMember)) !== false && !($oMember instanceof BxDolProfileUndefined))
                             $aForm['inputs'][$sK]['values'][$iMember] = $oMember->getDisplayName();
                 }
             }
+
+        if(!$oContext || !bx_srv($sContextModule, 'is_admin', [$iContextId, $this->_iProfileId]))
+            unset($aForm['inputs']['save_all']);
 
         return new BxTemplFormView($aForm);
     }

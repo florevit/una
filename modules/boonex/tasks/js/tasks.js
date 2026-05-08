@@ -183,7 +183,7 @@ BxTasksView.prototype.createFilter = function (oSource, iContextId) {
 };
 
 BxTasksView.prototype.onChangeSave = function (oElement) {
-    $(oElement).parents('form').find('#bx-form-element-title').toggleClass('bx-tasks-ffi-hidden', !$(oElement).prop('checked'));
+    $(oElement).parents('form').find('#bx-form-element-title').toggleClass('bx-tasks-ffi-hidden', !($("[name = 'save_me']").prop('checked') || $("[name = 'save_all']").prop('checked')));
 };
 
 BxTasksView.prototype.loadingInBlock = function(e, bShow) {

@@ -507,6 +507,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $aTypes = [
             '_bx_tasks_txt_flt_system' => ['sample' => 'active', 'context_id' => 0, 'author' => 0],
+            '_bx_tasks_txt_flt_contextual' => ['sample' => 'active', 'context_id' => $iContextId, 'author' => 0],
             '_bx_tasks_txt_flt_my_permanent' => ['sample' => 'active', 'context_id' => $iContextId, 'author' => $iLoggedId, 'permanent' => 1],
             '_bx_tasks_txt_flt_my_temporary' => ['sample' => 'active', 'context_id' => $iContextId, 'author' => $iLoggedId, 'permanent' => 0]
         ];

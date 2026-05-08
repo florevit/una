@@ -169,7 +169,8 @@
     <string name="_bx_tasks_form_f_input_priority"><![CDATA[Priority]]></string>
     <string name="_bx_tasks_form_f_input_estimate"><![CDATA[Estimate]]></string>
     <string name="_bx_tasks_form_f_input_state"><![CDATA[State]]></string>
-    <string name="_bx_tasks_form_f_input_save"><![CDATA[Save for future usage]]></string>
+    <string name="_bx_tasks_form_f_input_save_me"><![CDATA[Save for me]]></string>
+    <string name="_bx_tasks_form_f_input_save_all"><![CDATA[Save for all]]></string>
     <string name="_bx_tasks_form_f_input_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_f_input_apply"><![CDATA[Apply]]></string>
     <string name="_bx_tasks_form_f_input_cancel"><![CDATA[Cancel]]></string>
@@ -556,6 +557,7 @@
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
     <string name="_bx_tasks_txt_flt_system"><![CDATA[System]]></string>
+    <string name="_bx_tasks_txt_flt_contextual"><![CDATA[Contextual]]></string>
     <string name="_bx_tasks_txt_flt_my_permanent"><![CDATA[My saved]]></string>
     <string name="_bx_tasks_txt_flt_my_temporary"><![CDATA[My temporary]]></string>
     <string name="_bx_tasks_txt_flt_user_current"><![CDATA[Current user]]></string>

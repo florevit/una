@@ -169,7 +169,8 @@
     <string name="_bx_tasks_form_f_input_priority"><![CDATA[Приоритет]]></string>
     <string name="_bx_tasks_form_f_input_estimate"><![CDATA[Временные оценки]]></string>
     <string name="_bx_tasks_form_f_input_state"><![CDATA[Состояние]]></string>
-    <string name="_bx_tasks_form_f_input_save"><![CDATA[Сохраните для дальнейшего использования]]></string>
+    <string name="_bx_tasks_form_f_input_save_me"><![CDATA[Сохранить для себя]]></string>
+    <string name="_bx_tasks_form_f_input_save_all"><![CDATA[Сохранить для всех]]></string>
     <string name="_bx_tasks_form_f_input_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_f_input_apply"><![CDATA[Применить]]></string>
     <string name="_bx_tasks_form_f_input_cancel"><![CDATA[Отменить]]></string>
@@ -552,6 +553,7 @@
     <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>
     <string name="_bx_tasks_txt_set"><![CDATA[set...]]></string>
     <string name="_bx_tasks_txt_flt_system"><![CDATA[Системные]]></string>
+    <string name="_bx_tasks_txt_flt_contextual"><![CDATA[Контекстные]]></string>
     <string name="_bx_tasks_txt_flt_my_permanent"><![CDATA[Мои сохраненные]]></string>
     <string name="_bx_tasks_txt_flt_my_temporary"><![CDATA[Мои временные]]></string>
     <string name="_bx_tasks_txt_flt_user_current"><![CDATA[Текущий пользователь]]></string>
