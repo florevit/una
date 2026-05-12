@@ -124,6 +124,8 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'user-times' => 'user-x',
             'users' => 'users-round',
             'video-camera' => 'video',
+            'at' => 'at-sign',
+            'backspace' => 'delete'
         ];
     }
 
