@@ -533,11 +533,16 @@ class BxCreditsModule extends BxBaseModGeneralModule
      */
     public function serviceAddToCart($iItemId)
     {
-        $aResult = BxDolPayments::getInstance()->addToCart($this->_oConfig->getAuthor(), $this->_oConfig->getName(), $iItemId, 1, true);
-        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
-            return [bx_api_get_msg($aResult['message'])];
+        $iVendor = $this->_oConfig->getAuthor();
+        $oPayments = BxDolPayments::getInstance();
 
-        return [];
+        $aResult = $oPayments->addToCart($iVendor, $this->_oConfig->getName(), $iItemId, 1, true);
+        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+            return $this->_bIsApi ? [bx_api_get_msg($aResult['message'])] : $aResult;
+
+        return $this->_bIsApi ? [
+            'url' => bx_api_get_relative_url($oPayments->getCartUrl($iVendor))
+        ] : $aResult;
     }
 
     /**
