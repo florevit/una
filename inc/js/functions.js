@@ -221,6 +221,46 @@ function closeDynamicPopupBlock() {
     $('#dynamicPopup').dolPopupHide();
 }
 
+function loadDynamicBlockAsync(iBlockID, sUrl, fCallback, bLoading, bLazyLoad) {
+    if(!sUrl)
+        sUrl = document.location.href;
+
+    var fLoadBlock = function(iBlockID, sUrl) {
+        if(fCallback == undefined || fCallback == true)
+            fCallback = onAsyncBlockLoad;
+
+        getHtmlData($('#bx-page-block-' + iBlockID), bx_append_url_params(sUrl, 'dynamic=tab&pageBlock=' + iBlockID), fCallback, 'post', false, {
+            includedCss: JSON.stringify(aIncludedCss), 
+            includedJs: JSON.stringify(aIncludedJs)
+        }, (bLoading != undefined && bLoading == true));
+    };
+
+    if(bLazyLoad == undefined || bLazyLoad == true) {
+        const oObserver = new IntersectionObserver((aEntries, obs) => {
+            aEntries.forEach(oEntry => {
+                if(oEntry.isIntersecting) {
+                    const oElement = oEntry.target;
+
+                    fLoadBlock(iBlockID, sUrl);
+
+                    obs.unobserve(oElement);
+                }
+            });
+        }, {
+            root: null,        // viewport
+            threshold: 0.1     // trigger when 10% visible
+        });
+
+        document.querySelectorAll('.bx-db-placeholder-async').forEach(oElement => {
+            oObserver.observe(oElement);
+        });
+    }
+    else
+        $(document).ready(function() {
+            fLoadBlock(iBlockID, sUrl);
+        });
+}
+
 function onAsyncBlockLoad() {
     var oBlock = $(this);
 

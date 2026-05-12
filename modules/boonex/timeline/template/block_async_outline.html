@@ -1,4 +1,4 @@
-<div class="bx-tl-cont-ph-boxes flex space-x-6 rtl:space-x-reverse">
+<div class="bx-db-placeholder-async bx-tl-cont-ph-boxes flex space-x-6 rtl:space-x-reverse">
     <div class="flex-1 mb-4 ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800 rounded-md">
         <div class="flex items-center p-4">
             <div class="flex-0 h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-full">&nbsp;</div>
@@ -52,8 +52,5 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        var iBlockID = '__id__';
-        getHtmlData($('#bx-page-block-' + iBlockID), bx_append_url_params(document.location.href, 'dynamic=tab&pageBlock=' + iBlockID), undefined, 'post', false, {includedCss: JSON.stringify(aIncludedCss), includedJs: JSON.stringify(aIncludedJs)}, false);
-    });
+    loadDynamicBlockAsync('__id__', false, false);
 </script>
