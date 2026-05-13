@@ -40,7 +40,7 @@
     <string name="_bx_tasks_form_entry_input_sys_controls_edit_popup"><![CDATA[Controls (Edit form in popup)]]></string>
     <string name="_bx_tasks_form_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_entry_input_title"><![CDATA[Title]]></string>
-    <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Title is essential min 3 max 160.]]></string>
     <string name="_bx_tasks_form_entry_input_sys_stickers"><![CDATA[Labels]]></string>
     <string name="_bx_tasks_form_entry_input_stickers"><![CDATA[Labels]]></string>
     <string name="_bx_tasks_form_entry_input_sys_type"><![CDATA[Type]]></string>

@@ -59,7 +59,7 @@
     <string name="_bx_forum_form_entry_input_date_changed"><![CDATA[Дата изменения]]></string>
     <string name="_bx_forum_form_entry_input_sys_title"><![CDATA[Тема]]></string>
     <string name="_bx_forum_form_entry_input_title"><![CDATA[Тема]]></string>
-    <string name="_bx_forum_form_entry_input_title_err"><![CDATA[Необходимо указать тему]]></string>
+    <string name="_bx_forum_form_entry_input_title_err"><![CDATA[Тема обязателена, мин. 3 макс. 160.]]></string>
     <string name="_bx_forum_form_entry_input_sys_cat"><![CDATA[Категория]]></string>
     <string name="_bx_forum_form_entry_input_cat"><![CDATA[Категория]]></string>
     <string name="_bx_forum_form_entry_input_cat_err"><![CDATA[Нужно обязательно выбрать категорию]]></string>

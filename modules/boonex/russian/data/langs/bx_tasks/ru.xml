@@ -40,7 +40,7 @@
     <string name="_bx_tasks_form_entry_input_sys_controls_edit_popup"><![CDATA[Управление (Форма редактирования во всплывающем окне)]]></string>
     <string name="_bx_tasks_form_entry_input_sys_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_entry_input_title"><![CDATA[Заголовок]]></string>
-    <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Заголовок обязателен. Пожалуйста, заполните это поле]]></string>
+    <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Заголовок обязателен, мин. 3 макс. 160.]]></string>
     <string name="_bx_tasks_form_entry_input_sys_stickers"><![CDATA[Метки]]></string>
     <string name="_bx_tasks_form_entry_input_stickers"><![CDATA[Метки]]></string>
     <string name="_bx_tasks_form_entry_input_sys_type"><![CDATA[Тип]]></string>

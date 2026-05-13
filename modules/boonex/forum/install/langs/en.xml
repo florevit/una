@@ -59,7 +59,7 @@
     <string name="_bx_forum_form_entry_input_date_changed"><![CDATA[Changed]]></string>
     <string name="_bx_forum_form_entry_input_sys_title"><![CDATA[Topic]]></string>
     <string name="_bx_forum_form_entry_input_title"><![CDATA[Topic]]></string>
-    <string name="_bx_forum_form_entry_input_title_err"><![CDATA[Topic is mandatory]]></string>
+    <string name="_bx_forum_form_entry_input_title_err"><![CDATA[Topic is essential min 3 max 160.]]></string>
     <string name="_bx_forum_form_entry_input_sys_cat"><![CDATA[Category]]></string>
     <string name="_bx_forum_form_entry_input_cat"><![CDATA[Category]]></string>
     <string name="_bx_forum_form_entry_input_cat_err"><![CDATA[Please select category]]></string>
