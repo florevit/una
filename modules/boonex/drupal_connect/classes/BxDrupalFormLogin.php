@@ -85,8 +85,6 @@ class BxDrupalFormLogin extends BxTemplFormLogin
             }
         }
 
-        curl_close($rCurl);
-
         return $mixedResult;
     }
 }

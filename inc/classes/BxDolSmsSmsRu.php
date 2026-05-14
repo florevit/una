@@ -299,7 +299,7 @@ class SMSRU {
 		} else {
 			$error = FALSE;
 		}
-		curl_close($ch);
+
 		if ($error && $this->count_repeat > 0) {
 			$this->count_repeat--;
 			return $this->Request($url, $r_post);

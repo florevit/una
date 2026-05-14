@@ -124,6 +124,6 @@ class FacebookCurl
      */
     public function close()
     {
-        curl_close($this->curl);
+        // curl_close($this->curl); // it does nothing since PHP 8.0
     }
 }

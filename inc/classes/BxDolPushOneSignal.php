@@ -103,7 +103,6 @@ class BxDolPushOneSignal extends BxDolPush
             curl_setopt($oChannel, CURLOPT_SSL_VERIFYPEER, false);
 
         $sResult = curl_exec($oChannel);
-        curl_close($oChannel);
 
         $oResult = @json_decode($sResult, true);
         if(isset($oResult['errors']))

@@ -269,12 +269,9 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
 		if(!$sResponse) {
 		    $this->log('Validation Data: ' . curl_error($rConnect), '', BX_LOG_ERR);
             $this->log($sResponse, '', BX_LOG_ERR);
-			curl_close($rConnect);
 
 			return array('code' => 5, 'message' => $this->_sLangsPrefix . 'err_cannot_validate');
 		}
-
-		curl_close($rConnect);
 
 		$aResponse = explode("\n", $sResponse);
 
