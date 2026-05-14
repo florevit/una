@@ -168,7 +168,7 @@ class BxAclGridAdministration extends BxAclGridLevels
 
     protected function _getCellLevelId($mixedValue, $sKey, $aField, $aRow)
     {
-        $mixedValue = _t(isset($this->_aLevels[$mixedValue]) ? $this->_aLevels[$mixedValue] : '_undefined');
+        $mixedValue = _t($this->_aLevels[$mixedValue] ?? '_undefined');
 
     	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }

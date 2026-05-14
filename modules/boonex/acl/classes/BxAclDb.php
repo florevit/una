@@ -60,7 +60,7 @@ class BxAclDb extends BxDolModuleDb
                 $aMethod['name'] = 'getPairs';
                 $aMethod['params'][1] = 'id';
                 $aMethod['params'][2] = 'name';
-                $sWhereClause .= "AND `tal`.`Active`='yes' AND (`tal`.`Purchasable`='yes' OR `tal`.`Removable`='yes')";
+                $sWhereClause .= "AND `tal`.`Active`='yes' AND (`tal`.`ID`='3' OR `tal`.`Purchasable`='yes' OR `tal`.`Removable`='yes')";
                 break;
         }
 

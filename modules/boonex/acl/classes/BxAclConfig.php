@@ -38,6 +38,9 @@ class BxAclConfig extends BxBaseModGeneralConfig
             'FIELD_ID' => 'id',
             'FIELD_LEVEL_ID' => 'level_id',
             'FIELD_NAME' => 'name',
+            'FIELD_PRICE' => 'price',
+            'FIELD_TRIAL' => 'trial',
+            'FIELD_IMMEDIATE' => 'immediate',
 
             // page URIs
             'URL_ADMINISTRATION' => 'page.php?i=acl-administration',

@@ -14,6 +14,8 @@ class BxAclFormPrice extends BxTemplStudioFormView
     protected $_sModule;
     protected $_oModule;
 
+    protected $_bDisplayEdit;
+
     public function __construct($aInfo, $oTemplate = false)
     {
         $this->_sModule = 'bx_acl';
@@ -23,15 +25,18 @@ class BxAclFormPrice extends BxTemplStudioFormView
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
+        $this->_bDisplayEdit = $this->aParams['display'] == $CNF['OBJECT_FORM_PRICE_DISPLAY_EDIT'];
+
         if(isset($this->aInputs[$CNF['FIELD_LEVEL_ID']])) {
             $aLevels = $this->_oModule->_oDb->getLevels(['type' => 'for_selector']);
 
             $this->aInputs[$CNF['FIELD_LEVEL_ID']]['values'][] = ['key' => 0, 'value' => _t('_sys_please_select')];
             foreach($aLevels as $iId => $sTitle)
-                $this->aInputs[$CNF['FIELD_LEVEL_ID']]['values'][] = [
-                    'key' => $iId, 
-                    'value' => _t($sTitle)
-                ];
+                if($iId != MEMBERSHIP_ID_STANDARD)
+                    $this->aInputs[$CNF['FIELD_LEVEL_ID']]['values'][] = [
+                        'key' => $iId, 
+                        'value' => _t($sTitle)
+                    ];
         }
 
         if(isset($this->aInputs[$CNF['FIELD_NAME']])) {
@@ -39,7 +44,7 @@ class BxAclFormPrice extends BxTemplStudioFormView
 
             $iId = $this->getId();
             $aMask = array('mask' => "javascript:%s.checkName('%s');", $sJsObject, $CNF['FIELD_NAME']);
-            if(!empty($iId) && $this->aParams['display'] == $CNF['OBJECT_FORM_PRICE_DISPLAY_EDIT']) {
+            if(!empty($iId) && $this->_bDisplayEdit) {
                 $aMask['mask'] = "javascript:%s.checkName('%s', %d);";
                 $aMask[] = $iId;
             }
@@ -79,22 +84,21 @@ class BxAclFormPrice extends BxTemplStudioFormView
         return $sCode;
     }
 
-    /*
-    public function initChecker ($aValues = array (), $aSpecificValues = array())
+    public function initChecker($aValues = [], $aSpecificValues = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-        
-        $bValues = $aValues && !empty($aValues[$CNF['FIELD_ID']]);
 
-        if(isset($this->aInputs[$CNF['FIELD_NAME']])) {
-            if ($bValues)
-                $this->aInputs[$CNF['FIELD_POLL']]['content_id'] = $aValues['id'];
+        parent::initChecker($aValues, $aSpecificValues);
+
+        if($this->_bDisplayEdit) {
+            if(($aValues['level_id'] ?? 0) == MEMBERSHIP_ID_STANDARD) {
+                foreach([$CNF['FIELD_LEVEL_ID'], $CNF['FIELD_NAME'], $CNF['FIELD_PRICE'], $CNF['FIELD_TRIAL'], $CNF['FIELD_IMMEDIATE']] as $sField)
+                    if(isset($this->aInputs[$sField]))
+                        $this->aInputs[$sField]['type'] = 'hidden';
+            }
         }
-        
-        parent::initChecker ($aValues, $aSpecificValues);
     }
-*/
-    
+
     public function insert ($aValsToAdd = array(), $isIgnore = false)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
@@ -108,7 +112,7 @@ class BxAclFormPrice extends BxTemplStudioFormView
         return parent::insert ($aValsToAdd, $isIgnore);
     }
 
-    function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
+    public function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 

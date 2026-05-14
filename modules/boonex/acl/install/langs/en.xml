@@ -118,6 +118,9 @@
     <string name="_bx_acl_err_cannot_perform"><![CDATA[An error appeared. Please report.]]></string>
 
     <string name="_bx_acl_txt_all_level"><![CDATA[All levels]]></string>
+    <string name="_bx_acl_txt_level_caption_standard"><![CDATA[Free]]></string>
+    <string name="_bx_acl_txt_level_description_standard"><![CDATA[Try basic features for free.]]></string>
+    <string name="_bx_acl_txt_level_details_standard"><![CDATA[More info may be here.]]></string>
     <string name="_bx_acl_txt_cart_item_title"><![CDATA[{0} ({1} {2})]]></string>
     <string name="_bx_acl_txt_cart_item_title_lifetime"><![CDATA[{0} (lifetime)]]></string>
     <string name="_bx_acl_txt_cart_item_description"><![CDATA[Membership level on {0} site.]]></string>

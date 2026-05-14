@@ -21,6 +21,9 @@ CREATE TABLE `bx_acl_level_prices` (
   UNIQUE KEY `name` (`name`)
 );
 
+INSERT INTO `bx_acl_level_prices` (`level_id`, `name`, `caption`, `description`, `details`, `period`, `period_unit`, `trial`, `price`, `immediate`, `added`, `active`, `order`) VALUES
+(3, 'standard', '_bx_acl_txt_level_caption_standard', '_bx_acl_txt_level_description_standard', '_bx_acl_txt_level_details_standard', 0, '', 0, 0, 1, UNIX_TIMESTAMP(), 0, 1);
+
 -- TABLE: licenses
 CREATE TABLE IF NOT EXISTS `bx_acl_licenses` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -107,7 +110,7 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 -- GRIDS
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
 ('bx_acl_administration', 'Sql', 'SELECT * FROM `bx_acl_level_prices` WHERE 1 ', 'bx_acl_level_prices', 'id', 'order', 'active', '', 100, NULL, 'start', '', 'period,period_unit,price', 'caption', 'like', '', '', 192, 'BxAclGridAdministration', 'modules/boonex/acl/classes/BxAclGridAdministration.php'),
-('bx_acl_view', 'Sql', 'SELECT `tlp`.*, `tl`.`Name` AS `level_name`, `tl`.`Icon` AS `level_icon` FROM `bx_acl_level_prices` AS `tlp` LEFT JOIN `sys_acl_levels` AS `tl` ON `tlp`.`level_id`=`tl`.`ID` WHERE `tlp`.`active`<>''0'' && `tl`.`Active`=''yes'' AND `tl`.`Purchasable`=''yes'' ', 'bx_acl_level_prices', 'id', 'order', '', '', 100, NULL, 'start', '', 'period,period_unit,price', 'tl`.`Name', 'like', '', '', 2147483647, 'BxAclGridView', 'modules/boonex/acl/classes/BxAclGridView.php');
+('bx_acl_view', 'Sql', 'SELECT `tlp`.*, `tl`.`Name` AS `level_name`, `tl`.`Icon` AS `level_icon` FROM `bx_acl_level_prices` AS `tlp` LEFT JOIN `sys_acl_levels` AS `tl` ON `tlp`.`level_id`=`tl`.`ID` WHERE `tlp`.`active`<>''0'' && `tl`.`Active`=''yes'' ', 'bx_acl_level_prices', 'id', 'order', '', '', 100, NULL, 'start', '', 'period,period_unit,price', 'tl`.`Name', 'like', '', '', 2147483647, 'BxAclGridView', 'modules/boonex/acl/classes/BxAclGridView.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
 ('bx_acl_administration', 'checkbox', '_sys_select', '2%', 0, '', '', 1),
