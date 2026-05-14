@@ -44,14 +44,13 @@ class BxBaseEmbedSystem extends BxDolEmbed
                 $aAttrs['rel'] = 'nofollow';
         }
 
-        $sImage = $aData['image'] ?? '';
-        $sLogo = $aData['logo'] ?? '';
+        $sImage = $sLogo = '';
         if(($oStorage = BxDolStorage::getObjectInstance('sys_images')) !== false) {
-            if($sImage && is_numeric($sImage))
-                $sImage = $oStorage->getFileUrlById($sImage);
+            if(($iImageId = $aData['image_id'] ?? 0) || (($iImageId = $aData['image'] ?? '') && is_numeric($iImageId)))
+                $sImage = $oStorage->getFileUrlById($iImageId);
 
-            if($sLogo && is_numeric($sLogo))
-                $sLogo = $oStorage->getFileUrlById($sLogo);
+            if(($iLogoId = $aData['logo_id'] ?? 0) ||  (($iLogoId = $aData['logo'] ?? '') && is_numeric($iLogoId)))
+                $sLogo = $oStorage->getFileUrlById($iLogoId);
         }
         $sImage = $sImage ?: ($sLogo ?: $this->_oTemplate->getImageUrl('embed.svg'));
 
@@ -108,11 +107,14 @@ class BxBaseEmbedSystem extends BxDolEmbed
             return;
 
         foreach(['image', 'logo'] as $sKey)
-            if(($sMediaUrl = $a[$sKey] ?? false) && ($iMediaId = $oStorage->storeFileFromUrl($sMediaUrl, false)))
+            if(($sMediaUrl = $a[$sKey] ?? false) && ($iMediaId = $oStorage->storeFileFromUrl($sMediaUrl, false))) {
                 $a = array_merge($a, [
-                    $sKey . '_id' =>  $iMediaId,
-                    $sKey => $oStorage->getFileUrlById($iMediaId)
+                    $sKey . '_src' => $a[$sKey],
+                    $sKey . '_id' => $iMediaId
                 ]);
+
+                unset($a[$sKey]);
+            }
     }
 }
 
