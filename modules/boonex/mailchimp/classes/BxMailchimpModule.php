@@ -328,11 +328,9 @@ class BxMailchimpModule extends BxDolModule
 
         if (false === $sResult) {
             $sError = curl_error ($r);
-            curl_close($r);
             return false;
         }
 
-        curl_close($r);
         return $sResult;
     }
 }

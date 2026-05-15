@@ -229,8 +229,6 @@ class BxElsApi extends BxDol
         if (NULL !== $sHttpCode)
             $sHttpCode = curl_getinfo($rConnect, CURLINFO_HTTP_CODE);
 
-        curl_close($rConnect);
-
         return $sResult;
     }
 

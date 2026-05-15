@@ -1154,7 +1154,6 @@ function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $
         if (NULL !== $sHttpCode)
             $sHttpCode = curl_getinfo($rConnect, CURLINFO_HTTP_CODE);
 
-        curl_close($rConnect);
     }
     else {
 
