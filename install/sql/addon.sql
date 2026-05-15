@@ -15,7 +15,7 @@ INSERT INTO `sys_std_roles_members` (`account_id`, `role`) VALUES
 -- default bot profile
 
 INSERT INTO `sys_accounts` (`name`, `email`, `email_confirmed`, `receive_updates`, `receive_news`, `password`, `salt`, `role`, `added`) VALUES 
-('Robot', '', 0, 0, 0, '', '', 3, {current_timestamp});
+('Robot', '', 1, 0, 0, '', '', 3, {current_timestamp});
 
 SET @iAccountIdBot = LAST_INSERT_ID();
 
