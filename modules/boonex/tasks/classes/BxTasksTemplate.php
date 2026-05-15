@@ -98,7 +98,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $iContentId = (int)$aData[$CNF['FIELD_ID']];
 
         $sResult = '';
-        if(!$this->_oModule->isAllowManage($iContentId)) {
+        if(!$this->_oModule->isAllowEdit($iContentId)) {
             $aVars = $this->getTmplVarsText($aData);
 
             $sResult = $this->parseHtmlByName($sTemplateName, $aVars);

@@ -28,11 +28,20 @@ class BxTasksFormContext extends BxTemplFormView
             $sMethod = 'get_apps';
             if(bx_is_srv($sModule, $sMethod)) {
                 $aApps = bx_srv($sModule, $sMethod, [$iProfileId]);
-                foreach($aApps as $aApp)
+                if($aApps !== false) {
                     $this->aInputs[$sKey]['values'][] = [
-                        'key' => $aApp['id'],
-                        'value' => $aApp['title'],
+                        'key' => '',
+                        'value' => _t('_sys_please_select'),
                     ];
+
+                    foreach($aApps as $aApp)
+                        $this->aInputs[$sKey]['values'][] = [
+                            'key' => $aApp['id'],
+                            'value' => $aApp['title'],
+                        ];
+                }
+                else
+                    unset($this->aInputs[$sKey]);
             }
         }
     }

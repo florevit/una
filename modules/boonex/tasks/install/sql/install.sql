@@ -634,9 +634,9 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_tasks_context', 'bx_tasks', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '_bx_tasks_form_context_input_sys_controls', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
-('bx_tasks_context_edit', 'gh_app_id', 2147483647, 1, 1),
-('bx_tasks_context_edit', 'gh_username', 2147483647, 1, 2),
-('bx_tasks_context_edit', 'gh_repository', 2147483647, 1, 3),
+('bx_tasks_context_edit', 'gh_username', 2147483647, 1, 1),
+('bx_tasks_context_edit', 'gh_repository', 2147483647, 1, 2),
+('bx_tasks_context_edit', 'gh_app_id', 2147483647, 1, 3),
 ('bx_tasks_context_edit', 'do_submit', 2147483647, 1, 4);
 
 -- FORMS: time

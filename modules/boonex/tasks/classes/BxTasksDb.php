@@ -62,7 +62,7 @@ class BxTasksDb extends BxBaseModTextDb
             'id' => $iId
         ]);
 
-        return $aContext && is_array($aContext) ? [$aContext['gh_username'], $aContext['gh_repository']] : false;
+        return $aContext && is_array($aContext) ? $aContext : false;
     }
 
     public function getLists ($iContextId = 0)

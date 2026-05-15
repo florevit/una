@@ -1109,9 +1109,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0) {
             $iContextId = abs($iContextId);
 
-            $mixedRepo = $this->_oDb->getContextRepository($iContextId);
+            $mixedRepo = $this->ghGetRepository($iContextId);
             if($mixedRepo !== false && ($sMl = 'bx_github') && ($sMd = 'create_issue') && bx_is_srv($sMl, $sMd)) {
-                list($sGhUsername, $sGhRepository) = $mixedRepo;
+                list($sGhUsername, $sGhRepository, $mixedAuth) = $mixedRepo;
 
                 $aFldLoc2Repo = [
                     $CNF['FIELD_STICKERS'] => 'labels', 
@@ -1139,7 +1139,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                                 $aGhFields[$sRepoField] = $sLocValue;
                         }
 
-                $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']], $aGhFields]);
+                $aIssue = bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $mixedAuth, $aContentInfo[$CNF['FIELD_TITLE']], $aContentInfo[$CNF['FIELD_TEXT']], $aGhFields]);
                 if($aIssue && is_array($aIssue) && ($iNumber = (int)($aIssue['number'] ?? 0)) != 0 && ($sUrl = $aIssue['html_url'] ?? '') != '') {
                     $this->_oDb->updateEntriesBy([
                         $CNF['FIELD_GH_ISSUE'] => $iNumber,
@@ -1215,7 +1215,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         
         return false;
     }
-    
+
+    public function isAllowEdit($mixedContent)
+    {
+        $aContentInfo = !is_array($mixedContent) ? $this->_oDb->getContentInfoById((int)$mixedContent) : $mixedContent;
+        if($this->checkAllowedEdit($aContentInfo) === CHECK_ACTION_RESULT_ALLOWED)
+            return true;
+
+        return false;
+    }
+
     public function isAllowManage($mixedContent)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -1299,13 +1308,13 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_' . ($iCompleted ? '' : 'un') . 'completed']);
 
-        if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0 && ($mixedRepository = $this->_oDb->getContextRepository(abs($iContextId))) !== false) {
+        if(($iContextId = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0 && ($mixedRepo = $this->ghGetRepository(abs($iContextId))) !== false) {
             $sModule = 'bx_github';
             $sMethod = ($iCompleted ? 'close' : 'reopen') . '_issue';
             if(bx_is_srv($sModule, $sMethod) && ($iGhIssue = (int)$aContentInfo[$CNF['FIELD_GH_ISSUE']]) != 0) {
-                list($sGhUsername, $sGhRepository) = $mixedRepository;
+                list($sGhUsername, $sGhRepository, $mixedAuth) = $mixedRepo;
 
-                bx_srv($sModule, $sMethod, [$sGhUsername, $sGhRepository, $iGhIssue]);
+                bx_srv($sModule, $sMethod, [$sGhUsername, $sGhRepository, $mixedAuth, $iGhIssue]);
             }
         }
 
@@ -1329,6 +1338,19 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $oCmts->addAuto($aMessage);
     }
 
+    public function ghGetRepository($iContextId)
+    {
+        $mixedRepo = $this->_oDb->getContextRepository($iContextId);
+        if($mixedRepo === false) 
+            return false;
+
+        return [
+            $mixedRepo['gh_username'], 
+            $mixedRepo['gh_repository'], 
+            $mixedRepo['gh_app_id'] ? [$this->_iProfileId, (int)$mixedRepo['gh_app_id']] : $this->_iProfileId
+        ];
+    }
+
     public function ghUpdateIssue($mixedContent, $aGhFields = [])
     {
         $aContentInfo = is_array($mixedContent) ? $mixedContent : $this->_oDb->getContentInfoById((int)$mixedContent);
@@ -1342,17 +1364,17 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if($iContextId >= 0) 
             return false;
 
-        $mixedRepo = $this->_oDb->getContextRepository(abs($iContextId));
+        $mixedRepo = $this->ghGetRepository(abs($iContextId));
         if($mixedRepo === false) 
             return false;
 
-        list($sGhUsername, $sGhRepository) = $mixedRepo;
+        list($sGhUsername, $sGhRepository, $mixedAuth) = $mixedRepo;
 
         $iGhIssue = (int)$aContentInfo[$CNF['FIELD_GH_ISSUE']];
 
         $sMl = 'bx_github';
         if($aGhFields && ($sMd = 'update_issue') && bx_is_srv($sMl, $sMd))
-            if(bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $iGhIssue, $aGhFields]) !== false) 
+            if(bx_srv($sMl, $sMd, [$sGhUsername, $sGhRepository, $mixedAuth, $iGhIssue, $aGhFields]) !== false) 
                 $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_synced', 'markers' => [
                     'ghi_link' => $aContentInfo[$CNF['FIELD_GH_ISSUE_URL']],
                     'ghi_number' => $iGhIssue
