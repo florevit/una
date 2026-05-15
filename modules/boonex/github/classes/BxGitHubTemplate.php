@@ -16,7 +16,33 @@ class BxGitHubTemplate extends BxDolModuleTemplate
         parent::__construct($oConfig, $oDb);
     }
 
-    public function getBlockSettings($iProfileId)
+    public function getBlockAuthorize($iAppId, $iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $oApp = $this->_oModule->getObjectApp($iAppId);
+        if(!$oApp)
+            return '';
+
+        $bAuthorized = $this->_oDb->isAuthorization($iProfileId, $iAppId);
+
+        return $this->parseHtmlByName('authorize.html', [
+            'bx_if:show_authorize' => [
+                'condition' => !$bAuthorized,
+                'content' => [
+                    'authorize_url' => $oApp->getUrlAuthorize()
+                ]
+            ],
+            'bx_if:show_authorized' => [
+                'condition' => $bAuthorized,
+                'content' => [
+                    'manage_url' => BxDolPermalinks::getInstance()->permalink($CNF['URL_SETTINGS'])
+                ]
+            ]
+        ]);
+    }
+
+    public function getBlockSettingsClient($iProfileId)
     {
         $CNF = &$this->_oConfig->CNF;
 

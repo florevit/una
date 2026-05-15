@@ -43,14 +43,15 @@ class BxGitHubApi extends BxDol
         $this->_bInit = false;
     }
 
-    public function init($iProfileId)
+    public function init($sToken)
     {
-        $aSettings = $this->_oModule->_oDb->getSettings(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
-        if(empty($aSettings) || !is_array($aSettings) || empty($aSettings['pat']))
+        if(!$sToken)
             return false;
 
-        $this->_sToken = $aSettings['pat'];
+        $this->_sToken = $sToken;
         $this->_bInit = true;
+
+        return true;
     }
 
     public function authenticate()
@@ -65,16 +66,23 @@ class BxGitHubApi extends BxDol
 
     public function getRepositories($sUsername)
     {
+        $aRepositories = [];
         if(!$this->authenticate())
-            return [];
+            return $aRepositories;
 
-        return $this->_oClient->api('user')->repositories($sUsername);
+        try {
+            $aRepositories = $this->_oClient->api('user')->repositories($sUsername);
+        } catch (Exception $ex) {
+            $this->_processException('Get Repositories:', $oException);
+        }
+
+        return $aRepositories;
     }
 
-    public function getIssues($sUsername, $sRepository, $sState = 'open', $bAuthenticate = true)
+    public function getIssues($sUsername, $sRepository, $sState = 'open')
     {
         $aIssues = [];
-        if($bAuthenticate && !$this->authenticate())
+        if(!$this->authenticate())
             return $aIssues;
 
         try {
@@ -87,10 +95,10 @@ class BxGitHubApi extends BxDol
         return $aIssues;
     }
 
-    public function getIssue($sUsername, $sRepository, $iIssue, $bAuthenticate = true)
+    public function getIssue($sUsername, $sRepository, $iIssue)
     {
         $aIssue = [];
-        if($bAuthenticate && !$this->authenticate())
+        if(!$this->authenticate() || !$iIssue)
             return $aIssue;
 
         try {
@@ -121,7 +129,7 @@ class BxGitHubApi extends BxDol
 
     public function updateIssue($sUsername, $sRepository, $iIssue, $aParams)
     {
-        if(!$this->authenticate() || !$aParams || !is_array($aParams))
+        if(!$this->authenticate() || !$iIssue || !$aParams || !is_array($aParams))
             return false;
 
         $aIssue = false;
@@ -136,10 +144,10 @@ class BxGitHubApi extends BxDol
         return $aIssue;
     }
 
-    public function createLabel($sUsername, $sRepository, $mixedLabel, $bAuthenticate = true)
+    public function createLabel($sUsername, $sRepository, $mixedLabel)
     {
         $aResult = [];
-        if($bAuthenticate && !$this->authenticate())
+        if(!$this->authenticate() || !$mixedLabel)
             return $aResult;
 
         return $this->_oClient->api('issue')->labels()->create($sUsername, $sRepository, is_array($mixedLabel) ? $mixedLabel : [
@@ -147,34 +155,25 @@ class BxGitHubApi extends BxDol
         ]);
     }
     
-    public function addLabel($sUsername, $sRepository, $iIssue, $mixedLabel)
+    public function addLabel($sUsername, $sRepository, $iIssue, $sLabel)
     {
-        if(!$this->authenticate() || !$mixedLabel)
+        if(!$this->authenticate() || !$iIssue || !$sLabel)
             return false;
 
-        return $this->_oClient->api('issue')->labels()->add($sUsername, $sRepository, $iIssue, is_array($mixedLabel) ? $mixedLabel : [
-            'name' => $mixedLabel
-        ]);
+        return $this->_oClient->api('issue')->labels()->add($sUsername, $sRepository, $iIssue, $sLabel);
     }
 
     protected function _processException($sMessage, &$oException)
     {
         $sError = $oException->getMessage();
 
-        $this->_log($sMessage . ' ' . $sError);
+        $this->_logError($sMessage . ' ' . $sError);
 
         return false;
     }
 
-    protected function _log($sContents)
+    protected function _logError($sContents)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if (is_array($sContents))
-            $sContents = var_export($sContents, true);	
-        else if (is_object($sContents))
-            $sContents = json_encode($sContents);
-
-        bx_log($CNF['OBJECT_LOG_API'], $sContents, BX_LOG_ERR);
+        $this->_oModule->log($sContents, BX_LOG_ERR);
     }
 }

@@ -2,7 +2,7 @@ SET @sName = 'bx_github';
 
 
 -- TABLES
-DROP TABLE IF EXISTS `bx_github_settings`;
+DROP TABLE IF EXISTS `bx_github_apps`, `bx_github_authorizations`, `bx_github_settings`;
 
 
 -- FORMS
