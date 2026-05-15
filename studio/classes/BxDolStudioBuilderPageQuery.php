@@ -513,7 +513,8 @@ class BxDolStudioBuilderPageQuery extends BxDolStudioPageQuery
             
     function insertBlock($aData)
     {
-        $aData['order'] = $this->getBlockOrderMax($aData['object']) + 1;
+        if(!isset($aData['order']))
+            $aData['order'] = $this->getBlockOrderMax($aData['object']) + 1;
 
         return $this->query("INSERT INTO `sys_pages_blocks` SET " . $this->arrayToSQL($aData)) ? $this->lastId() : false;
     }

@@ -484,8 +484,10 @@ class BxDevModule extends BxDolModule
             $iData += 1;
 
             $sObject = $aData['page']['object'];
-            if($bModeFull && !$oBpDb->isPageExists($sObject))
-                $oBpDb->addPage($aData['page']);
+            if($bModeFull && !$oBpDb->isPageExists($sObject)) {
+                if(!$oBpDb->addPage($aData['page']))
+                    continue;
+            }
             else
                 $oBpDb->updatePageByObject($sObject, $aData['page']);
 
@@ -498,7 +500,7 @@ class BxDevModule extends BxDolModule
                 ];
 
                 if($bModeFull && !$oBpDb->isBlockExists($aFields))
-                    $oBpDb->addBlock($aItem);
+                    $oBpDb->insertBlock($aBlock);
                 else
                     $oBpDb->updateBlockByFields($aFields, $aBlock);
             }
