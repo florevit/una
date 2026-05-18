@@ -687,17 +687,29 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
     public function actionSubscriptionCancel($iId, $mixedGridObject = false)
     {
-        $aResult = array('code' => 1, 'message' => _t('_bx_payment_err_cannot_perform'));
+        $CNF = &$this->_oConfig->CNF;
+        $aResult = ['code' => 1, 'message' => _t('_bx_payment_err_cannot_perform')];
 
-        $aPending = $this->_oDb->getOrderPending(array('type' => 'id', 'id' => $iId));
+        $aPending = $this->_oDb->getOrderPending(['type' => 'id', 'id' => $iId]);
         if(empty($aPending) || !is_array($aPending))
             return echoJson($aResult);
 
         $mixedResult = $this->isAllowedManage($aPending);
         if($mixedResult !== true)
-            return echoJson(array('code' => 2, 'message' => $mixedResult));
+            return echoJson(['code' => 2, 'message' => $mixedResult]);
 
-        if(!$this->getObjectSubscriptions()->cancel($iId))
+        $oSubscriptions = $this->getObjectSubscriptions();
+        
+        $sReason = '';
+        if(getParam($CNF['PARAM_SBS_CANCEL_SURVEY']) == 'on') {
+            $aCsResult = $oSubscriptions->getPopupCancelSurvey($iId);
+            if($aCsResult['code'] != 0)
+                return echoJson($aCsResult);
+
+            $sReason = $aCsResult['msg'];
+        }
+
+        if(!$oSubscriptions->cancel($iId, $sReason))
             return echoJson($aResult);
 
         if(empty($mixedGridObject) && bx_get('grid') !== false)
@@ -707,10 +719,10 @@ class BxPaymentModule extends BxBaseModPaymentModule
             $oGrid = BxDolGrid::getObjectInstance($mixedGridObject, $this->_oTemplate);
             $oGrid->addQueryParam('client_id', $aPending['client_id']);
 
-            return echoJson(array('object' => $mixedGridObject, 'grid' => $oGrid->getCode(false), 'blink' => array($iId)));
+            return echoJson(['object' => $mixedGridObject, 'grid' => $oGrid->getCode(false), 'blink' => array($iId)]);
         }
         else
-            return echoJson(array('code' => 0, 'message' => _t('_bx_payment_msg_successfully_performed')));
+            return echoJson(['code' => 0, 'message' => _t('_bx_payment_msg_successfully_performed')]);
     }
 
     /**

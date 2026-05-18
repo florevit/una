@@ -572,6 +572,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
                 $aResult = array_merge($aResult, [
                     'customer_id' => $aSubscription['customer_id'],
                     'deleted' => $aSubscription['deleted'] ?? false,
+                    'deleted_reason' => $aSubscription['reason'] ?? '',
                 ]);
         }
 

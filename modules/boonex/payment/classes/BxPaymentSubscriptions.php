@@ -457,12 +457,13 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
         return true;
     }
 
-    public function cancel($iPendingId)
+    public function cancel($iPendingId, $sReason = '')
     {
+        /*
         if(!$this->cancelRemote($iPendingId))
             return false;
-
-        if(!$this->cancelLocal($iPendingId))
+        */
+        if(!$this->cancelLocal($iPendingId, $sReason))
             return false;
 
         return true;
@@ -489,7 +490,7 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
         return true;
     }
 
-    public function cancelLocal($mixedPending)
+    public function cancelLocal($mixedPending, $sReason = 'cancel')
     {
         $aPending = is_array($mixedPending) ? $mixedPending : $this->_oModule->_oDb->getOrderPending(array('type' => 'id', 'id' => (int)$mixedPending));
         if(empty($aPending) || !is_array($aPending) || $aPending['type'] != BX_PAYMENT_TYPE_RECURRING)
@@ -503,12 +504,36 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
         foreach($aItems as $aItem)
             $this->_oModule->callCancelSubscriptionItem((int)$aItem['module_id'], array($aPending['client_id'], $aPending['seller_id'], $aItem['item_id'], $aItem['item_count'], $aPending['order']));
 
-        if(!$this->_oModule->_oDb->deleteSubscription($aSubscription['id'], 'cancel'))
+        if(!$this->_oModule->_oDb->deleteSubscription($aSubscription['id'], $sReason))
             return false;
 
         $this->_oModule->onSubscriptionCancel($aPending, $aSubscription);
 
         return true;
+    }
+
+    public function getPopupCancelSurvey($iId)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $oForm = $this->_getFormCancelSurvey($iId);
+        $oForm->initChecker();
+        if($oForm->isSubmittedAndValid()) {
+            $aReasons = BxDolForm::getDataItems($CNF['OBJECT_FORM_PRELISTS_REASONS_CANCEL']);
+
+            return [
+                'code' => 0,
+                'msg' => ($sOther = $oForm->getCleanValue('other')) ? $sOther : $aReasons[$oForm->getCleanValue('items')]
+            ];
+        }
+
+        $sPopupId = $this->_oModule->_oConfig->getHtmlIds('subscription', 'popup_subscription_cancel_survay') . $iId;
+        $sPopupContent = BxTemplFunctions::getInstance()->transBox($sPopupId, $this->_oModule->_oTemplate->parseHtmlByName('subscription_form.html', [
+            'form_id' => $oForm->aFormAttrs['id'],
+            'form' => $oForm->getCode(true)
+        ]));
+
+        return ['code' => 1, 'popup' => ['html' => $sPopupContent, 'options' => ['closeOnOuterClick' => false]]];
     }
 
     protected function _getBlock($sType)
@@ -580,6 +605,85 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
         }
 
         return $sInterval;
+    }
+
+    protected function _getFormCancelSurvey($iId)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+        $sJsObject = $this->_oModule->_oConfig->getJsObject('subscription');
+
+        $aReasons = BxDolForm::getDataItems($CNF['OBJECT_FORM_PRELISTS_REASONS_CANCEL']);
+        
+        $aForm = [
+            'form_attrs' => [
+                'id' => $this->_oModule->_oConfig->getHtmlIds('subscription', 'form_subscription_cancel_survay') . $iId,
+                'action' => BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'subscription_cancel/' . $iId,
+                'method' => BX_DOL_FORM_METHOD_DEFAULT,
+                'onsubmit' => 'return ' . $sJsObject . '.onSubmitCancelationReason(this)'
+            ],
+            'params' => [
+                'db' => [
+                    'table' => '',
+                    'key' => '',
+                    'uri' => '',
+                    'uri_title' => '',
+                    'submit_name' => 'do_submit'
+                ],
+            ],
+            'inputs' => [
+                'items' => [
+                    'type' => 'radio_set',
+                    'name' => 'items',
+                    'caption' => _t('_bx_payment_form_cs_input_items'),
+                    'values' => $aReasons,
+                    'value' => key($aReasons),
+                    'required' => '1',
+                    'attrs' => [
+                        'onchange' => $sJsObject . '.onChangeCancelationReason(this)'
+                    ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                    'checker' => [
+                        'func' => 'Avail',
+                        'params' => [],
+                        'error' => _t('_bx_payment_form_input_err'),
+                    ],
+                ],
+                'other' => [
+                    'type' => 'text',
+                    'name' => 'other',
+                    'caption' => _t('_bx_payment_form_cs_input_other'),
+                    'value' => '',
+                    'required' => '1',
+                    'tr_attrs' => [
+                        'class' => 'bx-payment-cs-other bx-payment-cs-hidden'
+                    ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+                'controls' => [
+                    'name' => 'controls',
+                    'type' => 'input_set',
+                    [
+                        'type' => 'submit',
+                        'name' => 'do_submit',
+                        'value' => _t('_bx_payment_form_cs_input_submit'),
+                    ], [
+                        'type' => 'reset',
+                        'name' => 'do_cancel',
+                        'value' => _t('_bx_payment_form_cs_input_cancel'),
+                        'attrs' => [
+                            'onclick' => "$('.bx-popup-applied:visible').dolPopupHide()",
+                            'class' => 'bx-def-margin-sec-left',
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        return new BxTemplFormView($aForm);
     }
 }
 

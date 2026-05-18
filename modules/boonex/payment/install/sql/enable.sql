@@ -15,7 +15,8 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_payment_site_admin', '', @iCategoryId, '_bx_payment_option_site_admin', 'select', '', '', '', 'a:2:{s:6:"module";s:10:"bx_payment";s:6:"method";s:22:"get_options_site_admin";}', 1),
 ('bx_payment_extended_mode', '', @iCategoryId, '_bx_payment_option_extended_mode', 'checkbox', '', '', '', '', 11),
 ('bx_payment_credits_only', '', @iCategoryId, '_bx_payment_option_credits_only', 'checkbox', '', '', '', '', 13),
-('bx_payment_single_seller', '', @iCategoryId, '_bx_payment_option_single_seller', 'checkbox', '', '', '', '', 15);
+('bx_payment_single_seller', '', @iCategoryId, '_bx_payment_option_single_seller', 'checkbox', '', '', '', '', 15),
+('bx_payment_sbs_cancel_survey', '', @iCategoryId, '_bx_payment_option_sbs_cancel_survey', 'checkbox', '', '', '', '', 20);
 
 INSERT INTO `sys_options_categories` (`type_id`, `name`, `caption`, `order`)
 VALUES (@iTypeId, 'bx_payment_currency', '_bx_payment_options_category_currency', 5);
@@ -111,7 +112,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES 
 ('bx_payment_menu_sbs_actions', 'bx_payment', 'sbs-request-cancelation', '_bx_payment_menu_item_title_system_sbs_request_cancelation', '_bx_payment_menu_item_title_sbs_request_cancelation', 'javascript:void(0)', '{js_object}.requestCancelation(this, {id})', '_self', '', '', '', 2147483647, 1, 0, 1, 1),
-('bx_payment_menu_sbs_actions', 'bx_payment', 'sbs-cancel', '_bx_payment_menu_item_title_system_sbs_cancel', '_bx_payment_menu_item_title_sbs_cancel', 'javascript:void(0)', '{js_object}.cancel(this, {id}, \'{grid}\')', '_self', '', '', '', 2147483647, 0, 0, 1, 2);
+('bx_payment_menu_sbs_actions', 'bx_payment', 'sbs-cancel', '_bx_payment_menu_item_title_system_sbs_cancel', '_bx_payment_menu_item_title_sbs_cancel', 'javascript:void(0)', '{js_object}.cancel(this, {id}, \'{grid}\', 1)', '_self', '', '', '', 2147483647, 0, 0, 1, 2);
 
 -- MENU: orders submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 

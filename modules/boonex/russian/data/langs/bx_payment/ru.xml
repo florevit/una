@@ -13,6 +13,7 @@
     <string name="_bx_payment_option_extended_mode"><![CDATA[Расширенный режим (позволяет продавцам использовать тестовый режим и т. д.).]]></string>
     <string name="_bx_payment_option_credits_only"><![CDATA[Режим оплаты только кредитами (приложение 'Кредиты' должно быть установлено).]]></string>
     <string name="_bx_payment_option_single_seller"><![CDATA[Режим единого продавца (все продается от имени 'Главный продавец').]]></string>
+    <string name="_bx_payment_option_sbs_cancel_survey"><![CDATA[Включите опрос 'Причина отмены подписки'.]]></string>
     <string name="_bx_payment_option_commissions"><![CDATA[Включить расчет комиссий]]></string>
     <string name="_bx_payment_option_inv_issue_day"><![CDATA[День месяца, когда автоматически генерятся счета-фактуры (1, 2, 3 и тп)]]></string>
     <string name="_bx_payment_option_inv_lifetime"><![CDATA[Срок оплаты - количество дней после даты выставления счета-фактуры]]></string>
@@ -273,10 +274,25 @@
     <string name="_bx_payment_form_invoices_input_cancel_sys"><![CDATA[Отменить]]></string>
     <string name="_bx_payment_form_invoices_input_cancel"><![CDATA[Отменить]]></string>
 
+    <string name="_bx_payment_form_cs_input_items"><![CDATA[Почему вы хотите отменить подписку?]]></string>
+    <string name="_bx_payment_form_cs_input_other"><![CDATA[Ваш вариант]]></string>
+    <string name="_bx_payment_form_cs_input_submit"><![CDATA[Отправить]]></string>
+    <string name="_bx_payment_form_cs_input_cancel"><![CDATA[Отменить]]></string>
+
+    <string name="_bx_payment_form_input_err"><![CDATA[Это поле необходимо. Пожалуйста, заполните его.]]></string>
     <string name="_bx_payment_form_input_email_err_cor_or_emp"><![CDATA[Используйте правильный адрес электронной почты или оставьте поле пустым.]]></string>
 
     <!-- Predefined Values -->
     <string name="_bx_payment_pre_lists_currencies"><![CDATA[Валюты]]></string>
+
+    <string name="_bx_payment_pre_lists_reasons_cancel"><![CDATA[Причины для отмены подписки]]></string>
+    <string name="_bx_payment_pre_values_rc_0"><![CDATA[Другое]]></string>
+    <string name="_bx_payment_pre_values_rc_1"><![CDATA[Затраты и бюджетирование]]></string>
+    <string name="_bx_payment_pre_values_rc_2"><![CDATA[Скрытые платежи и проблемы с выставлением счетов]]></string>
+    <string name="_bx_payment_pre_values_rc_3"><![CDATA[Низкий уровень использования]]></string>
+    <string name="_bx_payment_pre_values_rc_4"><![CDATA[Потеря интереса]]></string>
+    <string name="_bx_payment_pre_values_rc_5"><![CDATA[Неудовлетворительный пользовательский опыт]]></string>
+    <string name="_bx_payment_pre_values_rc_6"><![CDATA[Есть альтернативы получше]]></string>
 
     <!-- ACL -->
     <string name="_bx_payment_acl_action_purchase"><![CDATA[Покупать]]></string>
@@ -409,6 +425,7 @@
     <string name="_bx_payment_txt_message"><![CDATA[Результат]]></string>
     <string name="_bx_payment_txt_date"><![CDATA[Дата]]></string>
     <string name="_bx_payment_txt_deleted"><![CDATA[Дата отмены]]></string>
+    <string name="_bx_payment_txt_deleted_reason"><![CDATA[Причина отмены]]></string>
     <string name="_bx_payment_txt_products"><![CDATA[Продукты]]></string>
     <string name="_bx_payment_txt_buyer_name_mask"><![CDATA[{0} {1}]]></string>
     <string name="_bx_payment_txt_none"><![CDATA[нет]]></string>

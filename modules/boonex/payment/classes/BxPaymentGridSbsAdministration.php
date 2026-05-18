@@ -95,6 +95,7 @@ class BxPaymentGridSbsAdministration extends BxBaseModPaymentGridTransactions
         parent::_addJsCss();
 
         $this->_oTemplate->addJsTranslation(array(
+            '_bx_payment_form_input_err',
             '_bx_payment_msg_confirm_cancelation',
             '_bx_payment_txt_unsubscribe_yes',
             '_bx_payment_txt_unsubscribe_no'

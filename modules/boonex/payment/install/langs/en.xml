@@ -13,6 +13,7 @@
     <string name="_bx_payment_option_extended_mode"><![CDATA[Extended mode (Allows sellers to use Test mode, etc).]]></string>
     <string name="_bx_payment_option_credits_only"><![CDATA[Pay with Credits only mode ('Credits' app should be installed).]]></string>
     <string name="_bx_payment_option_single_seller"><![CDATA[Single seller mode (To sell everything on behalf of the 'Main seller').]]></string>
+    <string name="_bx_payment_option_sbs_cancel_survey"><![CDATA[Enable 'Your reason to cancel subscription' survey.]]></string>
     <string name="_bx_payment_option_commissions"><![CDATA[Enable commissions calculation]]></string>
     <string name="_bx_payment_option_inv_issue_day"><![CDATA[Day of month when invoices are automatically generated (1, 2, 3, etc)]]></string>
     <string name="_bx_payment_option_inv_lifetime"><![CDATA[Due date - days after invoice date]]></string>
@@ -271,11 +272,26 @@
     <string name="_bx_payment_form_invoices_input_submit"><![CDATA[Submit]]></string>
     <string name="_bx_payment_form_invoices_input_cancel_sys"><![CDATA[Cancel]]></string>
     <string name="_bx_payment_form_invoices_input_cancel"><![CDATA[Cancel]]></string>
+    
+    <string name="_bx_payment_form_cs_input_items"><![CDATA[Why do you want to cancel?]]></string>
+    <string name="_bx_payment_form_cs_input_other"><![CDATA[Your variant]]></string>
+    <string name="_bx_payment_form_cs_input_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_payment_form_cs_input_cancel"><![CDATA[Cancel]]></string>
 
+    <string name="_bx_payment_form_input_err"><![CDATA[This field is essential. Please, fill it in.]]></string>
     <string name="_bx_payment_form_input_email_err_cor_or_emp"><![CDATA[Use correct email address or leave empty.]]></string>
 
     <!-- Predefined Values -->
     <string name="_bx_payment_pre_lists_currencies"><![CDATA[Currencies]]></string>
+    
+    <string name="_bx_payment_pre_lists_reasons_cancel"><![CDATA[Reasons to cancel subscription]]></string>
+    <string name="_bx_payment_pre_values_rc_0"><![CDATA[Other]]></string>
+    <string name="_bx_payment_pre_values_rc_1"><![CDATA[Cost & Budgeting]]></string>
+    <string name="_bx_payment_pre_values_rc_2"><![CDATA[Hidden Fees & Billing Issues]]></string>
+    <string name="_bx_payment_pre_values_rc_3"><![CDATA[Low Usage]]></string>
+    <string name="_bx_payment_pre_values_rc_4"><![CDATA[Loss of Interest]]></string>
+    <string name="_bx_payment_pre_values_rc_5"><![CDATA[Poor User Experience]]></string>
+    <string name="_bx_payment_pre_values_rc_6"><![CDATA[Better Alternatives]]></string>
 
     <!-- ACL -->
     <string name="_bx_payment_acl_action_purchase"><![CDATA[Purchase]]></string>
@@ -407,6 +423,7 @@
     <string name="_bx_payment_txt_message"><![CDATA[Result]]></string>
     <string name="_bx_payment_txt_date"><![CDATA[Date]]></string>
     <string name="_bx_payment_txt_deleted"><![CDATA[Date cancel]]></string>
+    <string name="_bx_payment_txt_deleted_reason"><![CDATA[Reason to cancel]]></string>
     <string name="_bx_payment_txt_products"><![CDATA[Products]]></string>
     <string name="_bx_payment_txt_buyer_name_mask"><![CDATA[{0} {1}]]></string>
     <string name="_bx_payment_txt_none"><![CDATA[none]]></string>

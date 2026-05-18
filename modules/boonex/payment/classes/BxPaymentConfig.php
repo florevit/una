@@ -56,6 +56,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
             'KEY_ARRAY_TRIAL_RECURRING' => 'trial_recurring',
 
             // some params
+            'PARAM_SBS_CANCEL_SURVEY' => 'bx_payment_sbs_cancel_survey',
             'PARAM_CURRENCY_EXCHANGE_API' => 'bx_payment_currency_exchange_api',
             'PARAM_CMSN_ENABLE' => 'bx_payment_commissions',
             'PARAM_CMSN_INVOICE_ISSUE_DAY' => 'bx_payment_inv_issue_day', //some day of month
@@ -64,6 +65,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
             // objects
             'OBJECT_FORM_PRELISTS_CURRENCIES' => 'bx_payment_currencies',
+            'OBJECT_FORM_PRELISTS_REASONS_CANCEL' => 'bx_payment_reasons_cancel',
             'OBJECT_PP_OFFLINE' => 'offline', //Offline payment provider
             'OBJECT_PP_CREDITS' => 'credits', //Credits payment provider
 
@@ -104,6 +106,8 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
                 'order_subscription_change_billing' => $this->_sName . '-order-change-billing-subscription',
                 'form_subscription_change_billing' => $this->_sName . '-form-change-billing-subscription',
                 'form_subscription_change_details' => $this->_sName . '-form-change-details-subscription',
+                'form_subscription_cancel_survay' => $this->_sName . '-form-cancel-subscription-survay-',
+                'popup_subscription_cancel_survay' => $this->_sName . '-popup-cancel-subscription-survay-',
             ),
             'pending' => array(
                 'order_pending_view' => $this->_sName . '-order-view-pending',

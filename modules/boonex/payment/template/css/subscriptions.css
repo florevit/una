@@ -5,6 +5,11 @@
 	max-height: 20px;
 }
 
+/*--- Actions Menu ---*/
+div.bx-payment-cs-hidden {
+    display: none;
+}
+
 /*--- View Details ---*/
 div.bx-payment-view-details {
     border-top-width: 0px;

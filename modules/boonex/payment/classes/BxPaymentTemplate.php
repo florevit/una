@@ -357,14 +357,19 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
                     'condition' => false,
                     'content' => [
                         'txt_deleted' => _t($this->_sLangsPrefix . 'txt_deleted'),
-                        'deleted' => 0
+                        'txt_deleted_reason' => _t($this->_sLangsPrefix . 'txt_deleted_reason'),
+                        'deleted' => 0,
+                        'deleted_reason' => ''
                     ]
                 ]
             ];
 
             if(($sK = 'deleted') && isset($aOrder[$sK]) && $aOrder[$sK]) {
                 $aTmplVarsCustom['bx_if:show_deleted']['condition'] = true;
-                $aTmplVarsCustom['bx_if:show_deleted']['content']['deleted'] = bx_time_js($aOrder[$sK], BX_FORMAT_DATE_TIME, true);
+                $aTmplVarsCustom['bx_if:show_deleted']['content'] = array_merge($aTmplVarsCustom['bx_if:show_deleted']['content'], [
+                    'deleted' => bx_time_js($aOrder[$sK], BX_FORMAT_DATE_TIME, true),
+                    'deleted_reason' => $aOrder['deleted_reason'] ?? ''
+                ]);
             }
         }
 
