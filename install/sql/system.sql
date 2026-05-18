@@ -6795,7 +6795,8 @@ CREATE TABLE `sys_api_keys` (
   `title` varchar(255) NOT NULL,
   `key` varchar(48) NOT NULL,
   `order` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key` (`key`)
 );
 
 CREATE TABLE `sys_api_origins` (
