@@ -78,6 +78,14 @@ class BxGitHubGridAuthorizations extends BxBaseModGeneralGrid
         return parent::_getCellDefault(bx_time_js($mixedValue, BX_FORMAT_DATE_TIME, true), $sKey, $aField, $aRow);
     }
 
+    protected function _getActionRefresh($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
+    {
+        if(!$aRow['at_expires_in'] || !$aRow['refresh_token'])
+            return $this->_bIsApi ? [] : '';
+
+        return $this->_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
+
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
         $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(' AND `tan`.`profile_id`=?', $this->_iProfileId);
