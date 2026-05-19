@@ -1685,7 +1685,6 @@
     <string name="_adm_stg_cpt_option_sys_embedly_api_key"><![CDATA[Ключ Embed.ly API]]></string>
     <string name="_adm_stg_cpt_option_sys_iframely_api_key"><![CDATA[Ключ Iframely API]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_microlink_key"><![CDATA[Ключ Microlink API]]></string>
-    <string name="_adm_stg_inf_option_sys_embed_microlink_key"><![CDATA[Оставьте пустым для использования в бесплатном режиме.]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_peekalink_api_key"><![CDATA[Ключ Peekalink API]]></string>
     <string name="_adm_stg_cpt_option_sys_eq_time"><![CDATA[Флаг выполнения email очереди]]></string>
     <string name="_adm_stg_cpt_option_sys_eq_send_per_start"><![CDATA[Количество сообщенией, отправляемое из email очереди при каждом запуске]]></string>

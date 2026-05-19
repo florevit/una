@@ -599,7 +599,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `ty
 
 (@iCategoryId, 'sys_iframely_api_key', '_adm_stg_cpt_option_sys_iframely_api_key', '', '', 'digit', '', '', '', 90),
 
-(@iCategoryId, 'sys_embed_microlink_key', '_adm_stg_cpt_option_sys_embed_microlink_key', '_adm_stg_inf_option_sys_embed_microlink_key', '', 'digit', '', '', '', 100),
+(@iCategoryId, 'sys_embed_microlink_key', '_adm_stg_cpt_option_sys_embed_microlink_key', '', '', 'digit', '', '', '', 100),
 
 (@iCategoryId, 'sys_embed_peekalink_api_key', '_adm_stg_cpt_option_sys_embed_peekalink_api_key', '', '', 'digit', '', '', '', 110);
 
