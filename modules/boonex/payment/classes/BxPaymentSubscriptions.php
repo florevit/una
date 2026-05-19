@@ -459,10 +459,9 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
 
     public function cancel($iPendingId, $sReason = '')
     {
-        /*
         if(!$this->cancelRemote($iPendingId))
             return false;
-        */
+
         if(!$this->cancelLocal($iPendingId, $sReason))
             return false;
 
