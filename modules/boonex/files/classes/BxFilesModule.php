@@ -247,7 +247,7 @@ class BxFilesModule extends BxBaseModFilesModule
             }
             
             $sCommand = '"' . constant('BX_SYSTEM_JAVA') . '" -Djava.awt.headless=true -jar "' . $this->_oConfig->getHomePath() . 'data/tika-app.jar" --encoding=UTF-8 --text "' . $sFilePath . '"';
-            $sData = `$sCommand`;
+            $sData = shell_exec($sCommand);
             @unlink($sFilePath);
 
             $this->_oDb->updateFileData ($aContentInfo[$CNF['FIELD_ID']], $sData);

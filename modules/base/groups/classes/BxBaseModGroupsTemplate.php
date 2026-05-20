@@ -51,9 +51,9 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         if (!$oProfile) 
             $oProfile = BxDolProfileUndefined::getInstance();
 
-        $aVars['title'] = (boolean)$aVars['public'] ? bx_process_output($aData[$CNF['FIELD_NAME']]) : _t($CNF['T']['txt_private_group']);
+        $aVars['title'] = (bool)$aVars['public'] ? bx_process_output($aData[$CNF['FIELD_NAME']]) : _t($CNF['T']['txt_private_group']);
         $aVars['description'] = '';
-        if(!empty($CNF['FIELD_TEXT']) && !empty($aData[$CNF['FIELD_TEXT']]) && (boolean)$aVars['public'])
+        if(!empty($CNF['FIELD_TEXT']) && !empty($aData[$CNF['FIELD_TEXT']]) && (bool)$aVars['public'])
             $aVars['description'] = strmaxtextlen(strip_tags($aData[$CNF['FIELD_TEXT']]), $this->_iUnitCharsSummary);
 
         $aVars['author'] = $oProfile->getDisplayName();

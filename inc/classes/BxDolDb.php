@@ -464,19 +464,19 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
     /**
      * execute sql query and return table of records as result
      */
-    public function getPairs($oStatement, $sFieldKey, $sFieldValue, $aBindings = array(), $iFetchType = PDO::FETCH_ASSOC)
+    public function getPairs($oStatement, $sFieldKey, $sFieldValue, $aBindings = [], $iFetchType = PDO::FETCH_ASSOC)
     {
-    	$aResult = array();
+    	$aResult = [];
         if(!$oStatement)
             return $aResult;
-		else if(!($oStatement instanceof PDOStatement) && is_string($oStatement))
-			$oStatement = $this->prepare($oStatement);
+        else if(!($oStatement instanceof PDOStatement) && is_string($oStatement))
+            $oStatement = $this->prepare($oStatement);
 
         $aRow = $this->getFirstRow($oStatement, $aBindings, $iFetchType);
         while(!empty($aRow)) {
-        	$aResult[$aRow[$sFieldKey]] = $aRow[$sFieldValue];
+            $aResult[$aRow[$sFieldKey] ?? ''] = $aRow[$sFieldValue];
 
-        	$aRow = $this->getNextRow($iFetchType);
+            $aRow = $this->getNextRow($iFetchType);
         }
 
         return $aResult;

@@ -62,7 +62,7 @@ class BxNtfsGridSettingsAdministration extends BxTemplGrid
 
     public function setGrouped($bGrouped)
     {
-        $bReinit = $this->_bGrouped !== (boolean)$bGrouped;
+        $bReinit = $this->_bGrouped !== (bool)$bGrouped;
 
         $this->_bGrouped = $bGrouped;
 

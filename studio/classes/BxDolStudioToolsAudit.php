@@ -350,11 +350,11 @@ class BxDolStudioToolsAudit extends BxDol
 
         $s .= $this->getBlock(_t('_sys_audit_permissions'), '', _t('_sys_audit_msg_permissions'));
 
-        $s .= $this->getBlock('ffmpeg', '', _t('_sys_audit_msg_ffmpeg', `{$sFfmpegPath} 2>&1`));
+        $s .= $this->getBlock('ffmpeg', '', _t('_sys_audit_msg_ffmpeg', shell_exec("{$sFfmpegPath} 2>&1")));
 
         $s .= $this->getBlock(_t('_sys_audit_mail_sending'), '', _t('_sys_audit_msg_mail_sending'));
 
-        $s .= $this->getBlock(_t('_sys_audit_cron_jobs'), '', _t('_sys_audit_msg_cron_jobs', `crontab -l 2>&1`));
+        $s .= $this->getBlock(_t('_sys_audit_cron_jobs'), '', _t('_sys_audit_msg_cron_jobs', shell_exec("crontab -l 2>&1")));
 
         $iCronTime = getParam('sys_cron_time');
         $s .= $this->getBlock(_t('_sys_audit_cron_jobs_exec_time'), '', !empty($iCronTime) ? bx_time_js($iCronTime, BX_FORMAT_DATE_TIME, true) : _t('_None'));
@@ -580,19 +580,19 @@ class BxDolStudioToolsAudit extends BxDol
 
         } else {
 
-            $sApachectlPath = trim(`which apachectl`);
+            $sApachectlPath = trim(shell_exec("which apachectl"));
             if (!$sApachectlPath)
-                $sApachectlPath = trim(`which apache2ctl`);
+                $sApachectlPath = trim(shell_exec("which apache2ctl"));
             if (!$sApachectlPath)
-                $sApachectlPath = trim(`which /usr/local/apache/bin/apachectl`);
+                $sApachectlPath = trim(shell_exec("which /usr/local/apache/bin/apachectl"));
             if (!$sApachectlPath)
-                $sApachectlPath = trim(`which /usr/local/apache/bin/apache2ctl`);
+                $sApachectlPath = trim(shell_exec("which /usr/local/apache/bin/apache2ctl"));
             if (!$sApachectlPath) {
                 return array('type' => BX_DOL_AUDIT_UNDEF);
             }
-            $ret = (boolean)`$sApachectlPath -M 2>&1 | grep $sModule`;
+            $ret = (bool)shell_exec("$sApachectlPath -M 2>&1 | grep $sModule");
             if (!$ret)
-                $ret = (boolean)`$sApachectlPath -l 2>&1 | grep $sNameCompiledName`;
+                $ret = (bool)shell_exec("$sApachectlPath -l 2>&1 | grep $sNameCompiledName");
         }
 
         $aMessage = array('type' => BX_DOL_AUDIT_OK);
@@ -650,7 +650,7 @@ class BxDolStudioToolsAudit extends BxDol
     protected function setErrorReporting ()
     {
         if (version_compare(phpversion(), "5.3.0", ">=") == 1)
-            $this->iPhpErrorReporting = error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED & ~E_STRICT);
+            $this->iPhpErrorReporting = error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
         else
             $this->iPhpErrorReporting = error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
     }

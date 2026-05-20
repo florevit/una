@@ -536,15 +536,15 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
 
         $iSubtypes = 0;
         switch($sType) {
-            case 'content';
+            case 'content':
                 $iSubtypes = BX_DOL_MODULE_SUBTYPE_TEXT;
                 break;
 
-            case 'context';
+            case 'context':
                 $iSubtypes = BX_DOL_MODULE_SUBTYPE_CONTEXT;
                 break;
 
-            case 'profile';
+            case 'profile':
                 $iSubtypes = BX_DOL_MODULE_SUBTYPE_PROFILE;
                 break;
         }
