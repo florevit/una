@@ -14,11 +14,17 @@
  */
 class BxBaseEmbedSystem extends BxDolEmbed
 {
+    protected $_sStorage;
+    protected $_iProfileId;
+
     public function __construct ($aObject, $oTemplate)
     {
         $this->_sTableData = 'sys_embeded_data';
 
         parent::__construct ($aObject, $oTemplate);
+
+        $this->_sStorage = 'sys_images';
+        $this->_iProfileId = 0;
     }
 
     public function getLinkHTML ($sLink, $sTitle = '', $sMaxWidth = '')
@@ -45,7 +51,7 @@ class BxBaseEmbedSystem extends BxDolEmbed
         }
 
         $sImage = $sLogo = '';
-        if(($oStorage = BxDolStorage::getObjectInstance('sys_images')) !== false) {
+        if(($oStorage = BxDolStorage::getObjectInstance($this->_sStorage)) !== false) {
             if(($iImageId = $aData['image_id'] ?? 0) || (($iImageId = $aData['image'] ?? '') && is_numeric($iImageId)))
                 $sImage = $oStorage->getFileUrlById($iImageId);
 
@@ -99,15 +105,35 @@ class BxBaseEmbedSystem extends BxDolEmbed
 
         return json_encode($a);
     }
-    
+
+    public function onGetDataFromApi ($iId)
+    {
+        if(!$this->_sTableData)
+            return;
+
+        $aLocal = $this->_oDb->getLocalInfoById($iId);
+        if(!$aLocal || !is_array($aLocal))
+            return;
+
+        if(($aData = json_decode($aLocal['data'], true)) && is_array($aData)) {
+            $oStorage = BxDolStorage::getObjectInstance($this->_sStorage);
+            if($oStorage === false)
+                return;
+
+            foreach(['image_id', 'logo_id'] as $sKey)
+                if(($iMediaId = $aData[$sKey] ?? false))
+                    $oStorage->updateGhostsContentId($iMediaId, $this->_iProfileId, $iId, true);
+        }
+    }
+
     protected function _storeImages (&$a)
     {
-        $oStorage = BxDolStorage::getObjectInstance('sys_images');
+        $oStorage = BxDolStorage::getObjectInstance($this->_sStorage);
         if($oStorage === false)
             return;
 
         foreach(['image', 'logo'] as $sKey)
-            if(($sMediaUrl = $a[$sKey] ?? false) && ($iMediaId = $oStorage->storeFileFromUrl($sMediaUrl, false))) {
+            if(($sMediaUrl = $a[$sKey] ?? false) && ($iMediaId = $oStorage->storeFileFromUrl($sMediaUrl, false, $this->_iProfileId))) {
                 $a = array_merge($a, [
                     $sKey . '_src' => $a[$sKey],
                     $sKey . '_id' => $iMediaId

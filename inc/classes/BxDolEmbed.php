@@ -107,7 +107,7 @@ class BxDolEmbed extends BxDolFactoryObject
             $aLocal = $this->_oDb->getLocalInfo($sUrl, $sTheme);
 
             $bRevalidate = false;
-            if($this->_iLifetime && (int)$aLocal['added'] + $this->_iLifetime < time()) {
+            if($this->_iLifetime && ($iAdded = (int)($aLocal['added'] ?? 0)) && $iAdded + $this->_iLifetime < time()) {
                 $this->_oDb->deleteLocal([
                     'url' => $sUrl,
                     'theme' => $sTheme
@@ -131,6 +131,11 @@ class BxDolEmbed extends BxDolFactoryObject
         // override this function in particular embed provider class
     }
 
+    public function onGetDataFromApi ($iId)
+    {
+        // override this function in particular embed provider class
+    }
+
     public function process ()
     {
         $aEmbeds = $this->_oDb->getLocalUnprocessed();
@@ -143,6 +148,8 @@ class BxDolEmbed extends BxDolFactoryObject
         foreach($aEmbeds as $aEmbed)
             if(($sData = $this->getDataFromApi($aEmbed['url'], $aEmbed['theme']))) {
                 $this->_oDb->updateLocal(['data' => $sData], ['id' => $aEmbed['id']]);
+
+                $this->onGetDataFromApi($aEmbed['id']);
 
                 if($bSockets)
                     $oSockets->sendEvent($this->_sSocketName, $aEmbed['id'], 'processed', $sData);
@@ -173,8 +180,11 @@ class BxDolEmbed extends BxDolFactoryObject
     protected function _getData($sUrl, $sTheme)
     {
         $sData = $this->getDataFromApi($sUrl, $sTheme);
-        if($sData)
-            $this->_oDb->insertLocal($sUrl, $sTheme, $sData);
+        if($sData) {
+            $iId = $this->_oDb->insertLocal($sUrl, $sTheme, $sData);
+
+            $this->onGetDataFromApi($iId);
+        }
 
         return $sData;
     }

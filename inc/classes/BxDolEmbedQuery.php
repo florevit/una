@@ -46,6 +46,13 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
         ]);
     }
 
+    public function getLocalInfoById ($iId)
+    {
+        return $this->getRow("SELECT * FROM `" . $this->_sTableData . "` WHERE `id` = :id", [
+            'id' => $iId
+        ]);
+    }
+
     public function getLocalUnprocessed ()
     {
         return $this->getAll("SELECT * FROM `" . $this->_sTableData . "` WHERE `data` = ''");
