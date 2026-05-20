@@ -299,7 +299,7 @@ class BxDolAIAssistant extends BxDol
         ];
 
         switch($sAction) {
-            case 'add_knowledge';
+            case 'add_knowledge':
                 $aForm['inputs'] = [
                     'id' => [
                         'type' => 'hidden',

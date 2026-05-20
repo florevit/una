@@ -90,7 +90,7 @@ class BxDolTranscoderVideo extends BxDolTranscoder implements iBxDolFactoryObjec
     public static function getDuration($sFile)
     {
         $sCommand = escapeshellcmd(BX_SYSTEM_FFMPEG) . " -i " . escapeshellarg($sFile) . " 2>&1";
-        $sResult = `$sCommand`;
+        $sResult = shell_exec($sCommand);
 
         $aMatch = array();
         if(!preg_match("/[Dd]uration:\s([0-9]{2}):([0-9]{2}):([0-9]{2})\.([0-9]{2})/i", $sResult, $aMatch))
@@ -222,7 +222,7 @@ class BxDolTranscoderVideo extends BxDolTranscoder implements iBxDolFactoryObjec
         }
 
         $sCommand = escapeshellcmd(BX_SYSTEM_FFMPEG) . ' -y ' . $this->_getFfmpegThreadsParams() . ' -i ' . escapeshellarg($sFile) . ' ' . $this->_getFfmpegThreadsParams() . ' ' . $sOptions . ' ' . escapeshellarg($sFileOut) . ' 2>&1';
-        $sOutput = `$sCommand`;
+        $sOutput = shell_exec($sCommand);
         $this->addToLog("\n---\n{$sCommand}\n{$sOutput}\n");
 
         if (!file_exists($sFileOut) || 0 == filesize($sFileOut)) {
