@@ -476,6 +476,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 ('bx_tasks', 'bx_tasks_entry_delete', 'bx_tasks', 0, '_bx_tasks_form_entry_display_delete'),
 ('bx_tasks', 'bx_tasks_entry_edit', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit'),
 ('bx_tasks', 'bx_tasks_entry_edit_body', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_body'),
+('bx_tasks', 'bx_tasks_entry_edit_tasks_list', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_tasks_list'),
 ('bx_tasks', 'bx_tasks_entry_edit_type', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_type'),
 ('bx_tasks', 'bx_tasks_entry_edit_priority', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_priority'),
 ('bx_tasks', 'bx_tasks_entry_edit_estimate', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_estimate'),
@@ -485,6 +486,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_tasks', 'bx_tasks', 'cf', '1', '#!sys_content_filter', 0, 'select', '_sys_form_entry_input_sys_cf', '_sys_form_entry_input_cf', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
+('bx_tasks', 'bx_tasks', 'tasks_list', '', '', 0, 'select', '_bx_tasks_form_entry_input_sys_tasks_list', '_bx_tasks_form_entry_input_tasks_list', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'allow_view_to', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_allow_view_to', '_bx_tasks_form_entry_input_allow_view_to', '', 1, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_tasks_form_entry_input_sys_delete_confirm', '_bx_tasks_form_entry_input_delete_confirm', '_bx_tasks_form_entry_input_delete_confirm_info', 1, 0, 0, '', '', '', 'Avail', '', '_bx_tasks_form_entry_input_delete_confirm_error', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'do_publish', '_bx_tasks_form_entry_input_do_publish', '', 0, 'submit', '_bx_tasks_form_entry_input_sys_do_publish', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
@@ -556,6 +558,11 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit_body', 'text', 2147483647, 1, 2),
 ('bx_tasks_entry_edit_body', 'do_submit', 2147483647, 1, 3),
 
+('bx_tasks_entry_edit_tasks_list', 'tasks_list', 2147483647, 1, 1),
+('bx_tasks_entry_edit_tasks_list', 'controls_edit_popup', 2147483647, 1, 2),
+('bx_tasks_entry_edit_tasks_list', 'do_submit', 2147483647, 1, 3),
+('bx_tasks_entry_edit_tasks_list', 'do_cancel', 2147483647, 1, 4),
+
 ('bx_tasks_entry_edit_state', 'state', 2147483647, 1, 1),
 ('bx_tasks_entry_edit_state', 'controls_edit_popup', 2147483647, 1, 2),
 ('bx_tasks_entry_edit_state', 'do_submit', 2147483647, 1, 3),
@@ -581,6 +588,7 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit_due_date', 'do_submit', 2147483647, 1, 3),
 ('bx_tasks_entry_edit_due_date', 'do_cancel', 2147483647, 1, 4),
 
+('bx_tasks_entry_view', 'tasks_list', 2147483647, 1, 0),
 ('bx_tasks_entry_view', 'stickers', 2147483647, 1, 1),
 ('bx_tasks_entry_view', 'type', 2147483647, 1, 2),
 ('bx_tasks_entry_view', 'priority', 2147483647, 1, 3),

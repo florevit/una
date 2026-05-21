@@ -19,6 +19,7 @@
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Add Task]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Edit Task]]></string>
     <string name="_bx_tasks_form_entry_display_edit_body"><![CDATA[Edit Task's Body]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_tasks_list"><![CDATA[Edit Task's List]]></string>
     <string name="_bx_tasks_form_entry_display_edit_type"><![CDATA[Edit Task's Type]]></string>
     <string name="_bx_tasks_form_entry_display_edit_priority"><![CDATA[Edit Task's Priority]]></string>
     <string name="_bx_tasks_form_entry_display_edit_estimate"><![CDATA[Edit Task's Estimate]]></string>
@@ -551,6 +552,7 @@
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Task isn't published because video conversion failed, edit video to fix the issue.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Task publishing date is {date_publish_uf}]]></string>
     <string name="_bx_tasks_txt_list_title"><![CDATA[{0} ({1})]]></string>
+    <string name="_bx_tasks_txt_list_inbox"><![CDATA[Inbox]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New Task List]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
@@ -575,7 +577,8 @@
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
     <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
     <string name="_bx_tasks_txt_msg_format"><![CDATA[{0} &#183; <span>{1}</span>]]></string>
-    <string name="_bx_tasks_txt_msg_synced"><![CDATA[The task was synced with GitHub: <b><a href="{ghi_link}" target="_blank">#{ghi_number}</a></b>]]></string>
+    <string name="_bx_tasks_txt_msg_synced"><![CDATA[The task was synced with GitHub: <b><a href="{ghi_link}" target="_blank">#{ghi_number}</a></b>]]></string> 
+    <string name="_bx_tasks_txt_msg_edit_tasks_list"><![CDATA[<a href="{author_link}">{author_name}</a> moved to <b>{value}</b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_type"><![CDATA[<a href="{author_link}">{author_name}</a> changed type to <b>{value}</b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_priority"><![CDATA[<a href="{author_link}">{author_name}</a> changed priority to <b>{value}</b>]]></string>
     <string name="_bx_tasks_txt_msg_edit_estimate"><![CDATA[<a href="{author_link}">{author_name}</a> changed estimate to <b>{value}</b>]]></string>

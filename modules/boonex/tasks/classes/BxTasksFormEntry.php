@@ -41,11 +41,23 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     public function setContextId($iContextId)
     {
+        if($this->_iContextId == $iContextId)
+            return;
+
         $CNF = &$this->_oModule->_oConfig->CNF;
 
         $this->_iContextId = $iContextId;
 
-        if(($sKf = 'FIELD_TYPE') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])){
+        if(($sKf = 'FIELD_TASKLIST') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])) {
+            $aLists = [['id' => 0, 'title' => _t('_bx_tasks_txt_list_inbox')]];
+            if(($aListsAdd = $this->_oModule->_oDb->getLists($this->_iContextId)) && is_array($aListsAdd))
+                $aLists = array_merge($aLists, $aListsAdd);
+
+            foreach($aLists as $aList)
+                $this->aInputs[$CNF[$sKf]]['values'][$aList['id']] = $aList['title'];
+        }
+
+        if(($sKf = 'FIELD_TYPE') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])) {
             $aItems = $this->_oModule->_oDb->getPreValues([
                 'sample' => 'context_list', 
                 'context_id' => $this->_iContextId, 
@@ -62,7 +74,7 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             }
         }
 
-        if(($sKf = 'FIELD_STICKERS') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])){
+        if(($sKf = 'FIELD_STICKERS') && isset($CNF[$sKf]) && isset($this->aInputs[$CNF[$sKf]])) {
             $aItems = $this->_oModule->_oDb->getPreValues([
                 'sample' => 'context_list', 
                 'context_id' => $this->_iContextId, 
@@ -87,6 +99,14 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             ]);
 
         return $sValue;
+    }
+
+    protected function genCustomViewRowValueTasksList(&$aInput)
+    {
+        if(!isset($aInput['value']))
+            return null;
+
+        return isset($aInput['value']) && isset($aInput['values'][$aInput['value']]) ? $aInput['values'][$aInput['value']] : null;
     }
 
     public function getCode($bDynamicMode = false)
@@ -313,11 +333,6 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         return $this->genCustomInputUsernamesSuggestions(array_merge($aInput , [
             'ajax_get_suggestions' => BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_initial_members/" . $this->_iContextId
         ]));
-    }
-
-    protected function genCustomInputTasksList(&$aInput)
-    {
-        return $this->genInputStandard($aInput);
     }
 }
 

@@ -13,6 +13,8 @@ bx_import('BxDolInformer');
 
 class BxTasksConfig extends BxBaseModTextConfig
 {
+    protected $_oDb;
+
     protected $_aProperties;
 
     function __construct($aModule)
@@ -75,6 +77,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_STATUS_ADMIN' => 'status_admin',
             'FIELD_LABELS' => 'labels',
             'FIELD_TASKLIST' => 'tasks_list',
+            'FIELD_TASKS_LIST' => 'tasks_list',
             'FIELD_GH_ISSUE' => 'gh_issue',
             'FIELD_GH_ISSUE_URL' => 'gh_issue_url',
             'FIELD_INITIAL_MEMBERS' => 'initial_members',
@@ -151,6 +154,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_FORM_ENTRY_DISPLAY_ADD' => 'bx_tasks_entry_add',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT' => 'bx_tasks_entry_edit',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_BODY' => 'bx_tasks_entry_edit_body',
+            'OBJECT_FORM_ENTRY_DISPLAY_EDIT_TASKS_LIST' => 'bx_tasks_entry_edit_tasks_list',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_TYPE' => 'bx_tasks_entry_edit_type',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_PRIORITY' => 'bx_tasks_entry_edit_priority',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_ESTIMATE' => 'bx_tasks_entry_edit_estimate',
@@ -301,12 +305,18 @@ class BxTasksConfig extends BxBaseModTextConfig
         $this->_bAttachmentsInTimeline = true;
 
         $this->_aProperties = [
+            $this->CNF['FIELD_TASKLIST'],
             $this->CNF['FIELD_TYPE'], 
             $this->CNF['FIELD_PRIORITY'], 
             $this->CNF['FIELD_ESTIMATE'], 
             $this->CNF['FIELD_DUE_DATE'], 
             $this->CNF['FIELD_STATE']
         ];
+    }
+
+    public function init(&$oDb)
+    {
+        $this->_oDb = &$oDb;
     }
 
     public function isCompleted($iState)
@@ -317,6 +327,15 @@ class BxTasksConfig extends BxBaseModTextConfig
     public function getProperties()
     {
         return $this->_aProperties;
+    }
+
+    public function getTasksListTitle($iValue)
+    {
+        if(!$iValue)
+            return _t('_bx_tasks_txt_list_inbox');
+
+        $aList = $this->_oDb->getList($iValue);
+        return $aList['title'] ?? _t('_undefined');
     }
 
     public function getTypeTitle($iValue)

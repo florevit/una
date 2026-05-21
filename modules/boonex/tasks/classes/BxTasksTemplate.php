@@ -257,7 +257,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $iFilterSelected = $aParams['filter'] ?? ($aFilters[$iContextId] ?? 0);
 
         $sFilters = $this->_getEntriesFilters($iContextId, array_merge($aParams, ['filter_selected' => $iFilterSelected]));
-        
+
         $this->addCssJs();
         $this->addJs([
             'jquery-ui/jquery-ui.min.js',
@@ -277,6 +277,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 ]
             ],
             'bx_if:allow_add_list' => [
+                'condition' => $bAllowAdd,
+                'content' => [
+                    'context_id' => $iContextId,
+                    'object' => $sJsObject,
+                ]
+            ],
+            'bx_if:allow_add_task' => [
                 'condition' => $bAllowAdd,
                 'content' => [
                     'context_id' => $iContextId,
@@ -333,8 +340,15 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 }
             }
         }
-        else
-            $aLists = $this->_oDb->getLists($iContextId);
+        else {
+            $aLists[] = [
+                'id' => 0,
+                'context_id' => $iContextId,
+                'title' => _t('_bx_tasks_txt_list_inbox')
+            ];
+            if(($aListsAdd = $this->_oDb->getLists($iContextId)) && is_array($aListsAdd))
+                $aLists = array_merge($aLists, $aListsAdd);
+        }
 
         $aParams = array_merge($aParams, [
             'with_stats' => true
@@ -348,8 +362,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
             $bTasksAllowManage = $bContext ? $bAllowManage : $oModule->isAllowManageByContext($iTasksContextId);
 
-            $aTasks = $this->_oDb->getTasks($iTasksContextId, $bContext ? $aList['id'] : 0, $aParams);
-            if(!$aTasks || !is_array($aTasks))
+            $aTasks = $this->_oDb->getTasks($iTasksContextId, $bContext ? $aList['id'] : false, $aParams);
+            if((!$aTasks || !is_array($aTasks)) && (($bContext && !$aList['id']) || !$bTasksAllowManage))
                 continue;
 
             $aTmplVarsTasks = [];

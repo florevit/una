@@ -25,6 +25,8 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     {
         parent::__construct($aModule);
 
+        $this->_oConfig->init($this->_oDb);
+
         $CNF = &$this->_oConfig->CNF;
         $this->_aSearchableNamesExcept = array_merge($this->_aSearchableNamesExcept, array(
             $CNF['FIELD_PUBLISHED'],

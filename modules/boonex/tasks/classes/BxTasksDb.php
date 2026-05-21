@@ -69,16 +69,18 @@ class BxTasksDb extends BxBaseModTextDb
     {
         $CNF = &$this->_oConfig->CNF;
 
-        $sQuery = $this->prepare ("SELECT * FROM `" . $CNF['TABLE_LISTS'] . "` WHERE `context_id` = ?", $iContextId);
-        return $this->getAll($sQuery);
+        return $this->getAll("SELECT * FROM `" . $CNF['TABLE_LISTS'] . "` WHERE `context_id` = :context_id", [
+            'context_id' => $iContextId
+        ]);
     }
 	
     public function getList ($iId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        $sQuery = $this->prepare ("SELECT * FROM `" . $CNF['TABLE_LISTS'] . "` WHERE `id` = ?", $iId);
-        return $this->getRow($sQuery);
+        return $this->getRow("SELECT * FROM `" . $CNF['TABLE_LISTS'] . "` WHERE `id` = :id", [
+            'id' => $iId
+        ]);
     }
     
     public function deleteList ($iId = 0)
@@ -92,7 +94,7 @@ class BxTasksDb extends BxBaseModTextDb
         $this->query($sQuery);
     }
 	
-    public function getTasks ($iContextId = 0, $iListId = 0, $aParams = [])
+    public function getTasks ($iContextId = 0, $iListId = false, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -105,7 +107,7 @@ class BxTasksDb extends BxBaseModTextDb
             $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
         }
 
-        if(($sField = $CNF['FIELD_TASKLIST']) && $iListId) {
+        if(($sField = $CNF['FIELD_TASKLIST']) && $iListId !== false) {
             $aBindings[$sField] = $iListId;
             $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
         }

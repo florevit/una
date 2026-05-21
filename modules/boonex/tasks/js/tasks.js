@@ -83,6 +83,10 @@ BxTasksView.prototype.processTask = function (iContextId, iListId, oSource) {
     });
 };
 
+BxTasksView.prototype.processTaskEditTasksList = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'tasks_list', oSource);
+};
+
 BxTasksView.prototype.processTaskEditType = function (iContentId, oSource) {
     this.processTaskEditProperty(iContentId, 'type', oSource);
 };
