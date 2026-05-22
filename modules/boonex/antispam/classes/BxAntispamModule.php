@@ -546,13 +546,13 @@ class BxAntispamModule extends BxDolModule
             case 'dnsbl_login':
                 $o = bx_instance('BxAntispamDNSBlacklists', array(), $this->_aModule);
                 return $o->getDNSBLConfigValues();
-            case 'dnsbl_join';
+            case 'dnsbl_join':
                 $o = bx_instance('BxAntispamDNSURIBlacklists', array(), $this->_aModule);
                 return $o->getURIDNSBLConfigValues();
-            case 'disposable_email_domains_join';
+            case 'disposable_email_domains_join':
                 $o = bx_instance('BxAntispamDisposableEmailDomains', array(), $this->_aModule);
                 return $o->getJoinBehaviourValues();                
-            case 'disposable_email_domains_mode';
+            case 'disposable_email_domains_mode':
                 $o = bx_instance('BxAntispamDisposableEmailDomains', array(), $this->_aModule);
                 return $o->getJoinBehaviourModes();                
         }

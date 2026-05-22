@@ -35,7 +35,7 @@ class BxXeroTemplate extends BxBaseModGeneralTemplate
         if($bTmplVarsMessage) {
             $iCode = (int)$iCode;
             switch($iCode) {
-                case 0;
+                case 0:
                     $sMessage = '_bx_xero_txt_msg_authorized';
                     break;
 

@@ -462,6 +462,20 @@ class BxDolAcl extends BxDolFactory implements iBxDolSingleton
     }
     
     /**
+     * Get the action data
+     *
+     * @param  int     $iProfileId     ID of a profile to get action data for
+     * @param  int     $iActionId      ID of the action itself
+     * @return array with action data
+     */
+    function getAction($iProfileId, $iActionId)
+    {
+        $aMembership = $this->getMemberMembershipInfo($iProfileId); // get current profile's membership information
+
+        return $this->oDb->getAction($aMembership['id'], $iActionId);
+    }
+
+    /**
      * Get the number of allowed action
      *
      * @param  int     $iProfileId     ID of a profile that is going to perform an action
@@ -909,6 +923,17 @@ function checkActionModule($iProfileId, $sActionName, $sModuleName, $bPerformAct
         bx_trigger_error("Unknown action: '$sActionName' in module '$sModuleName'", 1);
 
     return $oACL->checkAction($iProfileId, $iActionId, $bPerformAction);
+}
+
+function getActionModule($iProfileId, $sActionName, $sModuleName)
+{
+    $oACL = BxDolAcl::getInstance();
+
+    $iActionId = $oACL->getMembershipActionId($sActionName, $sModuleName);
+    if (!$iActionId)
+        bx_trigger_error("Unknown action: '$sActionName' in module '$sModuleName'", 1);
+
+    return $oACL->getAction($iProfileId, $iActionId);
 }
 
 function getActionNumberLeftModule($iProfileId, $sActionName, $sModuleName)
