@@ -93,21 +93,23 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 INSERT INTO `sys_options_categories` (`type_id`, `name`, `caption`, `hidden`, `order`) VALUES (@iTypeId, @sName, '_bx_ntfs', 0, 1);
 SET @iCategId = LAST_INSERT_ID();
 
-INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `check`, `check_params`, `check_error`, `extra`, `order`) VALUES
-('bx_notifications_events_per_page', '24', @iCategId, '_bx_ntfs_option_events_per_page', 'digit', '', '', '', '', 1),
-('bx_notifications_events_per_preview', '5', @iCategId, '_bx_ntfs_option_events_per_preview', 'digit', '', '', '', '', 5),
-('bx_notifications_enable_group_settings', 'on', @iCategId, '_bx_ntfs_option_enable_group_settings', 'checkbox', '', '', '', '', 10), 
-('bx_notifications_enable_group_events', 'on', @iCategId, '_bx_ntfs_option_enable_group_events', 'checkbox', '', '', '', '', 11), 
-('bx_notifications_enable_clicked_indicator', '', @iCategId, '_bx_ntfs_option_enable_clicked_indicator', 'checkbox', '', '', '', '', 15),
-('bx_notifications_delivery_timeout', '120', @iCategId, '_bx_ntfs_option_delivery_timeout', 'digit', '', '', '', '', 20),
-('bx_notifications_clear_interval', '90', @iCategId, '_bx_ntfs_option_clear_interval', 'digit', '', '', '', '', 30),
-('bx_notifications_enable_comment_post_ext', '', @iCategId, '_bx_ntfs_option_enable_comment_post_ext', 'checkbox', '', '', '', '', 40),
-('bx_notifications_enable_reply_as_comment', 'on', @iCategId, '_bx_ntfs_option_enable_reply_as_comment', 'checkbox', '', '', '', '', 42),
-('bx_notifications_summary_chars', '200', @iCategId, '_bx_ntfs_option_summary_chars', 'digit', '', '', '', '', 50),
-('bx_notifications_owner_name_chars', '21', @iCategId, '_bx_ntfs_option_owner_name_chars', 'digit', '', '', '', '', 51),
-('bx_notifications_content_chars', '32', @iCategId, '_bx_ntfs_option_content_chars', 'digit', '', '', '', '', 52),
-('bx_notifications_email_subject_chars', '30', @iCategId, '_bx_ntfs_option_email_subject_chars', 'digit', '', '', '', '', 53),
-('bx_notifications_push_message_chars', '190', @iCategId, '_bx_ntfs_option_push_message_chars', 'digit', '', '', '', '', 54);
+INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `info`, `type`, `check`, `check_params`, `check_error`, `extra`, `order`) VALUES
+('bx_notifications_events_per_page', '24', @iCategId, '_bx_ntfs_option_events_per_page', '', 'digit', '', '', '', '', 1),
+('bx_notifications_events_per_preview', '5', @iCategId, '_bx_ntfs_option_events_per_preview', '', 'digit', '', '', '', '', 5),
+('bx_notifications_enable_group_settings', 'on', @iCategId, '_bx_ntfs_option_enable_group_settings', '', 'checkbox', '', '', '', '', 10), 
+('bx_notifications_enable_group_events', 'on', @iCategId, '_bx_ntfs_option_enable_group_events', '', 'checkbox', '', '', '', '', 11), 
+('bx_notifications_enable_clicked_indicator', '', @iCategId, '_bx_ntfs_option_enable_clicked_indicator', '', 'checkbox', '', '', '', '', 15),
+('bx_notifications_delivery_timeout', '120', @iCategId, '_bx_ntfs_option_delivery_timeout', '_bx_ntfs_option_delivery_timeout_inf', 'digit', '', '', '', '', 20),
+('bx_notifications_queue_add_threshold', '0', @iCategId, '_bx_ntfs_option_queue_add_threshold', '_bx_ntfs_option_queue_add_threshold_inf', 'digit', '', '', '', '', 21),
+('bx_notifications_queue_add_limit', '200', @iCategId, '_bx_ntfs_option_queue_add_limit', '_bx_ntfs_option_queue_add_limit_inf', 'digit', '', '', '', '', 22),
+('bx_notifications_clear_interval', '90', @iCategId, '_bx_ntfs_option_clear_interval', '', 'digit', '', '', '', '', 30),
+('bx_notifications_enable_comment_post_ext', '', @iCategId, '_bx_ntfs_option_enable_comment_post_ext', '', 'checkbox', '', '', '', '', 40),
+('bx_notifications_enable_reply_as_comment', 'on', @iCategId, '_bx_ntfs_option_enable_reply_as_comment', '', 'checkbox', '', '', '', '', 42),
+('bx_notifications_summary_chars', '200', @iCategId, '_bx_ntfs_option_summary_chars', '', 'digit', '', '', '', '', 50),
+('bx_notifications_owner_name_chars', '21', @iCategId, '_bx_ntfs_option_owner_name_chars', '', 'digit', '', '', '', '', 51),
+('bx_notifications_content_chars', '32', @iCategId, '_bx_ntfs_option_content_chars', '', 'digit', '', '', '', '', 52),
+('bx_notifications_email_subject_chars', '30', @iCategId, '_bx_ntfs_option_email_subject_chars', '', 'digit', '', '', '', '', 53),
+('bx_notifications_push_message_chars', '190', @iCategId, '_bx_ntfs_option_push_message_chars', '', 'digit', '', '', '', '', 54);
 
 
 -- PRIVACY 

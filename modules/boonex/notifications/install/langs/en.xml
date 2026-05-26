@@ -67,6 +67,11 @@
     <string name="_bx_ntfs_option_enable_group_events"><![CDATA[Group notifications by event]]></string>
     <string name="_bx_ntfs_option_enable_clicked_indicator"><![CDATA[Enable 'clicked' indicator]]></string>
     <string name="_bx_ntfs_option_delivery_timeout"><![CDATA[Delay before sending Email and/or Push notifications (in seconds)]]></string>
+    <string name="_bx_ntfs_option_delivery_timeout_inf"><![CDATA[Positive value other than '0' means that notifications will be send via Internal queue.]]></string>
+    <string name="_bx_ntfs_option_queue_add_threshold"><![CDATA[Threshold to add to Internal queue]]></string>
+    <string name="_bx_ntfs_option_queue_add_threshold_inf"><![CDATA['0' means that adding in the queue will be performed only when the queue is empty.]]></string>
+    <string name="_bx_ntfs_option_queue_add_limit"><![CDATA[Number of notifications to process and add to queue (Internal or System) per execution]]></string>
+    <string name="_bx_ntfs_option_queue_add_limit_inf"><![CDATA['0' means that all available notifications will be processed at once.]]></string>
     <string name="_bx_ntfs_option_processed_event"><![CDATA[The last processed event upon notifications sending]]></string>
     <string name="_bx_ntfs_option_clear_interval"><![CDATA[Notification lifetime, in days (0 - no limit)]]></string>
     <string name="_bx_ntfs_option_enable_comment_post_ext"><![CDATA[Notify a user about new comments for a content he's previously commented]]></string>

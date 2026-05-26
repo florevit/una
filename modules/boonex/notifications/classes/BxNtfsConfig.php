@@ -50,7 +50,8 @@ class BxNtfsConfig extends BxBaseModNotificationsConfig
             'URL_HOME' => 'page.php?i=notifications-view',
 
             // some params
-            'PARAM_QUEUE_ADD_THRESHOLD' => 0,
+            'PARAM_QUEUE_ADD_THRESHOLD' => 'bx_notifications_queue_add_threshold',
+            'PARAM_QUEUE_ADD_LIMIT' => 'bx_notifications_queue_add_limit',
             'PARAM_COMMENT_POST_EXT' => 'bx_notifications_enable_comment_post_ext',
             'PARAM_REPLY_AS_COMMENT' => 'bx_notifications_enable_reply_as_comment',
             'PARAM_PROCESSED_EVENT' => 'bx_notifications_processed_event',

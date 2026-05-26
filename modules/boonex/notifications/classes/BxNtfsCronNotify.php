@@ -9,12 +9,17 @@
  * @{
  */
 
+/**
+ * Get notifications list and retrieve recipients for each notification. Put emails in:
+ * a) internal queue, if Delivery Timeout is set,
+ * b) system queue otherwise
+ */
 class BxNtfsCronNotify extends BxDolCron
 {
     protected $_sModule;
     protected $_oModule;
 
-    protected $_iAddThreshold;
+    protected $_bDeliveryTimeout;
 
     public function __construct()
     {
@@ -22,17 +27,21 @@ class BxNtfsCronNotify extends BxDolCron
     	$this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         parent::__construct();
+
+        $this->_bDeliveryTimeout = $this->_oModule->_oConfig->getDeliveryTimeout() > 0;
     }
 
     public function processing()
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $iCount = (int)$this->_oModule->_oDb->queueGet(array('type' => 'count'));
-        if($iCount > $CNF['PARAM_QUEUE_ADD_THRESHOLD'])
-            return;
+        if($this->_bDeliveryTimeout) {
+            $iCount = (int)$this->_oModule->_oDb->queueGet(['type' => 'count']);
+            if($iCount > (int)getParam($CNF['PARAM_QUEUE_ADD_THRESHOLD']))
+                return;
+        }
 
-        $aEvents = $this->_oModule->_oDb->getEventsToProcess();
+        $aEvents = $this->_oModule->_oDb->getEventsToProcess((int)getParam($CNF['PARAM_QUEUE_ADD_LIMIT']));
 
         foreach($aEvents as $aEvent) {
             if(!empty($aEvent['content']) && is_string($aEvent['content']))
@@ -112,8 +121,6 @@ class BxNtfsCronNotify extends BxDolCron
         if($iOwner != $iObjectOwner)
             $this->_addRecipient($iObjectOwner, BX_NTFS_STYPE_PERSONAL, $aRecipients);
 
-        $bDeliveryTimeout = $this->_oModule->_oConfig->getDeliveryTimeout() > 0;
-
         //--- Check recipients and send notifications.
         list($aModulesProfiles) = $this->_oModule->_oConfig->getProfileBasedModules();
         $aRecipientsId = $this->_oModule->_oDb->filterProfileIdsByModule(array_keys($aRecipients), $aModulesProfiles);
@@ -149,7 +156,7 @@ class BxNtfsCronNotify extends BxDolCron
                      * 'break' is essential in the next two conditions to avoid 
                      * duplicate sending to the same recipient.
                      */
-                    if($bDeliveryTimeout && $this->_oModule->_oDb->queueAdd(array(
+                    if($this->_bDeliveryTimeout && $this->_oModule->_oDb->queueAdd(array(
                         'profile_id' => $iRecipient, 
                         'event_id' => $aEvent['id'], 
                         'delivery' => $sDeliveryType,

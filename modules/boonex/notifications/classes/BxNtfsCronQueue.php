@@ -9,6 +9,10 @@
  * @{
  */
 
+/**
+ * Send notifications from internal queue by moving them to system one.
+ * Is working if Delivery Timeout is set.
+ */
 class BxNtfsCronQueue extends BxDolCron
 {
     protected $_sModule;
