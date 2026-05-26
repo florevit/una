@@ -295,6 +295,16 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
                 $sValue = bx_api_get_relative_url($sValue);
             });
 
+            $aEvent['module'] = $aEvent['type'];
+            if(!$this->_oDb->isModuleByName($aEvent['module'])) {
+                if(!isset($aEvent['content']['module'])) {
+                    if(($s = $aEvent['source'] ?: '') || ($s = $aEvent['type']))
+                        $aEvent['module'] = substr($s, 0, strrpos($s, '_'));
+                }
+                else
+                    $aEvent['module'] = $aEvent['content']['module'];
+            }
+
             $aEvent['content'] = array_merge($aEvent['content'], $aLinks);
             $aEvent['content'] = array_intersect_key($aEvent['content'], array_flip([
                 'entry_url', 'entry_url_api', 'subentry_url', 'subentry_url_api'
@@ -308,7 +318,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
                 $aEvent[$sKey] = html_entity_decode($aEvent[$sKey]);
 
             return array_intersect_key($aEvent, array_flip([
-                'id', 'owner_id', 'type', 'content', 'content_parsed', 'date', 'author_data'
+                'id', 'owner_id', 'module', 'type', 'content', 'content_parsed', 'date', 'author_data'
             ]));
         }
 
