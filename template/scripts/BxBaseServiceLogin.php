@@ -390,7 +390,7 @@ class BxBaseServiceLogin extends BxDol
 
         if (bx_is_api()) {
             return [
-                ['id' => 2, 'type' => 'redirect', 'data' => ['uri' => '/']],
+                bx_api_get_block('logout', ['uri' => '/'])
             ];
         }
         else {
