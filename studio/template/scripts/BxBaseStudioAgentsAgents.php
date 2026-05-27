@@ -584,6 +584,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'name' => _t('_sys_please_select'), 
                     'value' => '', 
                     'desc' => '', 
+                    'count' => 0,
+                    'count_per_req' => 0,
                     'bx_if:sel' => [
                         'condition' => false,
                         'content' => ['sel' => '']
@@ -597,6 +599,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 'value' => $r['key'],
                 'desc' => bx_html_attribute($r['desc']),
                 'count' => bx_html_attribute(_t('_sys_agents_count_today', $r['counter_24h'])),
+                'count_per_req' => bx_html_attribute(_t('_sys_agents_count_per_req', $r['counter_per_request'])),
                 'bx_if:sel' => [
                     'condition' => $sValue == $r['key'],
                     'content' => [

@@ -1,7 +1,7 @@
 <div id="bx-agents-agents-alert-cont" style="overflow:visible;">
 <select id="bx-agents-agents-alert" name="alert" class="bx-def-font-inputs bx-form-input-select">
     <bx_repeat:alerts>
-        <option value="__value__" <bx_if:sel>__sel__</bx_if:sel> data-desc="__desc__" data-count="__count__">__name__</option>
+        <option value="__value__" <bx_if:sel>__sel__</bx_if:sel> data-desc="__desc__" data-count="__count__" data-count_per_req="__count_per_req__">__name__</option>
     </bx_repeat:alerts>
 </select>
 </div>
@@ -11,13 +11,18 @@
             return state.text;
         const desc = $(state.element).data('desc');
         const count = $(state.element).data('count');
+        const count_per_req = $(state.element).data('count_per_req');
         return $(`
         <div class="bx-alert-wrap">
             <div>
                 <div class="bx-alert-text">${state.text}</div>
                 <div class="bx-alert-desc">${desc || ''}</div>
             </div>
-            <div class="bx-alert-counter">${count}</div>
+            <div class="bx-alert-counter">
+                ${count}
+                <br />
+                ${count_per_req}
+            </div>
         </div>
         `);
     }

@@ -112,6 +112,7 @@ class BxDolAlerts extends BxDol
 
                 if (isset($GLOBALS['bx_profiler']) && 'bx_profiler' != $aHandler['name']) 
                     $GLOBALS['bx_profiler']->beginAlert($this->sUnit, $this->sAction, $aHandler['name']);
+                $fStart = microtime(true);
 
                 if (!empty($aHandler['file']) && !empty($aHandler['class']) && file_exists(BX_DIRECTORY_PATH_ROOT . $aHandler['file'])) {
                     if(!class_exists($aHandler['class'], false))
@@ -128,7 +129,8 @@ class BxDolAlerts extends BxDol
 
                     BxDolService::call($aService['module'], $aService['method'], $aParams, isset($aService['class']) ? $aService['class'] : 'Module');
                 }
-
+                
+                BxDolAlertsStats::hit($aHandler['name'], microtime(true) - $fStart);
                 if (isset($GLOBALS['bx_profiler']) && 'bx_profiler' != $aHandler['name']) 
                     $GLOBALS['bx_profiler']->endAlert($this->sUnit, $this->sAction, $aHandler['name']);
             }
@@ -146,7 +148,7 @@ class BxDolAlerts extends BxDol
         }
 
         // log alert
-        $this->logAlert();
+        BxDolAlertsStats::log($this);
 
         // call agents
         $oAi = BxDolAI::getInstance();
@@ -219,42 +221,6 @@ class BxDolAlerts extends BxDol
             ];
 
         return $aResult;
-    }
-
-    public function logAlert()
-    {
-        $oDb = BxDolDb::getInstance();
-        $aExtraRefs = [];
-        foreach($this->aExtras as $sKey => $mixedValue) {
-            if (preg_match('/^(ref|override|return)_/', $sKey) || preg_match('/_(ref|override|return)$/', $sKey) || $sKey == 'result' || $sKey == 'res' || $sKey == 'return' || $sKey == 'ret' || $sKey == 'check_result') {
-                $aExtraRefs[] = $sKey;
-            }
-        }
-        $aBind = [
-            'unit' => $this->sUnit,
-            'action' => $this->sAction,
-            'object' => $this->iObject,
-            'sender' => $this->iSender,
-            'extra' => json_encode($this->aExtras),
-            'extra_refs' => json_encode($aExtraRefs)
-        ];
-        $oDb->query("
-            INSERT INTO sys_alerts_log
-            SET
-                unit = :unit,
-                action = :action,
-                object = :object,
-                sender = :sender,
-                extra = :extra,
-                extra_refs = :extra_refs,
-                ts = UNIX_TIMESTAMP(),
-                counter_total = 1,
-                counter_24h = 1
-            ON DUPLICATE KEY UPDATE
-                ts = UNIX_TIMESTAMP(),
-                counter_total = counter_total + 1,
-                counter_24h = counter_24h + 1
-        ", $aBind);
     }
 
     static public function resetAlertsCounter24h()

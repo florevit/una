@@ -2222,6 +2222,10 @@ CREATE TABLE `sys_alerts_handlers` (
   `file` varchar(255) NOT NULL default '',
   `service_call` text NOT NULL default '', 
   `active` tinyint(4) NOT NULL default '1',
+  `ts` int(10) UNSIGNED NOT NULL,
+  `timing` float NOT NULL,
+  `call_count` int(10) UNSIGNED NOT NULL,
+  `calls_per_request` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 );
@@ -2317,6 +2321,7 @@ CREATE TABLE `sys_alerts_log` (
   `ts` int(10) UNSIGNED NOT NULL,
   `counter_total` int(10) UNSIGNED NOT NULL,
   `counter_24h` int(10) UNSIGNED NOT NULL,
+  `counter_per_request` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unit_action` (`unit`,`action`)
 );
