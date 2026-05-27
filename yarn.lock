@@ -1668,10 +1668,10 @@ grapesjs-style-gradient@^3.0.1:
   dependencies:
     grapick "^0.1.13"
 
-grapesjs@^0.22.16:
-  version "0.22.16"
-  resolved "https://registry.yarnpkg.com/grapesjs/-/grapesjs-0.22.16.tgz#8ca1b03235d39cfb363edb2e93385fb5a49a2414"
-  integrity sha512-kCfphgpC7pqJPuMYmIhMR6ueyB3+V67isdpMZOvmuGeWDMomkgzqRWOMH3matfdqIJW7LUivHZo9GeyVQAGmLw==
+grapesjs@^0.23.1:
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/grapesjs/-/grapesjs-0.23.1.tgz#292a1c13c4143db87019837b50bdb8975fcc39b9"
+  integrity sha512-wxFg3QY/VpVXtcqkmacyyv2BsDCJd4sqw4fXTrIbuNqoZJ0kbjPEllhgRo32RR9dCSyOeg4PbCHdFrwmHjmrGA==
   dependencies:
     "@types/backbone" "1.4.15"
     backbone "1.4.1"
