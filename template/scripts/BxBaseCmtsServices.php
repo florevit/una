@@ -416,6 +416,7 @@ class BxBaseCmtsServices extends BxDol
         $iCommentId = (int)$aCommentGi['cmt_id'];
 
         return [
+            'module' => $aCommentSystem['module'],
             'entry_sample' => $CNF['T']['txt_sample_single'],
             'entry_url' => $sEntryUrl,
             'entry_caption' => $sEntryCaption,
@@ -539,6 +540,7 @@ class BxBaseCmtsServices extends BxDol
         }
 
         return [
+            'module' => $oCmts->getModule(),
             'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
             'entry_url' => $sCmtUrl,
             'entry_url_api' => $sCmtUrlApi,
