@@ -103,7 +103,7 @@
     <string name="_bx_tasks_form_list_entry_input_sys_do_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_tasks_form_list_entry_input_sys_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Заголовок]]></string>
-    <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен. Пожалуйста, заполните это поле]]></string>
+    <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен, мин. 3 макс. 160.]]></string>
 
     <string name="_bx_tasks_form_context"><![CDATA[Контекст]]></string>
     <string name="_bx_tasks_form_display_context_edit"><![CDATA[Редактировать контекст]]></string>

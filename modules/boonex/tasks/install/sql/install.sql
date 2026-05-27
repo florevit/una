@@ -611,7 +611,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_tasks_list', 'bx_tasks', 'do_submit', '_bx_tasks_form_list_entry_input_do_submit', '', 0, 'submit', '_bx_tasks_form_list_entry_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_tasks_list', 'bx_tasks', 'title', '', '', 0, 'text', '_bx_tasks_form_list_entry_input_sys_title', '_bx_tasks_form_list_entry_input_title', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_tasks_form_list_entry_input_title_err', 'Xss', '', 1, 0),
+('bx_tasks_list', 'bx_tasks', 'title', '', '', 0, 'text', '_bx_tasks_form_list_entry_input_sys_title', '_bx_tasks_form_list_entry_input_title', '', 1, 0, 0, '', '', '', 'Length', 'a:2:{s:3:"min";i:3;s:3:"max";i:160;}', '_bx_tasks_form_list_entry_input_title_err', 'Xss', '', 1, 0),
 ('bx_tasks_list', 'bx_tasks', 'do_cancel', '_bx_tasks_form_entry_input_do_cancel', '', 0, 'button', '_bx_tasks_form_entry_input_sys_do_cancel', '', '', 0, 0, 0, 'a:2:{s:7:"onclick";s:45:"$(''.bx-popup-applied:visible'').dolPopupHide()";s:5:"class";s:22:"bx-def-margin-sec-left";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks_list', 'bx_tasks', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 

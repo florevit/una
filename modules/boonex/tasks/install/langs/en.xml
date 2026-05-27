@@ -103,7 +103,7 @@
     <string name="_bx_tasks_form_list_entry_input_sys_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_tasks_form_list_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Title]]></string>
-    <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Title is essential min 3 max 160.]]></string>
 
     <string name="_bx_tasks_form_context"><![CDATA[Context]]></string>
     <string name="_bx_tasks_form_display_context_edit"><![CDATA[Edit Context]]></string>

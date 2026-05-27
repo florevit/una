@@ -68,7 +68,7 @@
     <string name="_bx_resources_form_list_entry_input_sys_do_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_resources_form_list_entry_input_sys_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_resources_form_list_entry_input_title"><![CDATA[Заголовок]]></string>
-    <string name="_bx_resources_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен. Пожалуйста, заполните это поле]]></string>
+    <string name="_bx_resources_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен, мин. 3 макс. 160.]]></string>
 
     <!-- ACL -->
     <string name="_bx_resources_acl_action_create_entry"><![CDATA[Создать ресурс]]></string>
