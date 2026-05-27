@@ -959,7 +959,7 @@ class BxDolAIQuery extends BxDolDb
     public function getAlerts()
     {
         $aValues = [];
-        $aAlerts = $this->getAll("SELECT `unit`, `action`, `counter_24h` FROM `sys_alerts_log` ORDER BY `unit`, `action`");
+        $aAlerts = $this->getAll("SELECT `unit`, `action`, `counter_24h`, `counter_per_request` FROM `sys_alerts_log` ORDER BY `unit`, `action`");
         foreach ($aAlerts as $a) {
             $sKey = $a['unit'] . ':' . $a['action'];
             $aValues[$sKey] = [
@@ -969,6 +969,7 @@ class BxDolAIQuery extends BxDolDb
                 'name' => $a['unit'] . ' - ' . $a['action'],
                 'desc' => $this->getAlertDesc($a['unit'] . ':' . $a['action']),
                 'counter_24h' => $a['counter_24h'],
+                'counter_per_request' => $a['counter_per_request'],
             ];
         }
         return $aValues;
