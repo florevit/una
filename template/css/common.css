@@ -254,6 +254,11 @@ blockquote {
     font-weight: 600;
 }
 
+.bx-dbt-cnt {
+    display: flex;
+    align-items: center;
+}
+
 .bx-db-menu {
     -webkit-flex: 1 2 auto;
     -ms-flex: 1 2 auto;

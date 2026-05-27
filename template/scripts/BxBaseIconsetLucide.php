@@ -93,6 +93,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'photo-video' => 'image-play',
             'plus-circle' => 'plus-circle',
             'qrcode' => 'qr-code',
+            'question-circle' => 'circle-question-mark',
             'quote-right' => 'quote',
             'remove' => 'x',
             'reply-all' => 'reply-all',
