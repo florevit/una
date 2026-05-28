@@ -366,7 +366,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'value' => 1,
                     'checked' => isset($aAgent['async']) ? $aAgent['async'] : 0,
                     'db' => [
-                        'pass' => 'Boolean',
+                        'pass' => 'Int',
                     ]
                 ],
 

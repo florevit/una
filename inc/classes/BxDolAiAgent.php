@@ -43,10 +43,12 @@ class BxDolAiAgent extends RAG
         $aPromptTools = !empty($this->aAgent['prompt_tools']) ? [$this->aAgent['prompt_tools']] : [];
         $aPromptOutput = !empty($this->aAgent['prompt_output']) ? [$this->aAgent['prompt_output']] : [];
 
-        $aPromptTools[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
+        $aPromptTools[] = "Always use agent profile id = {$this->aAgent['profile_id']} as author ('profile_id' or 'author_profile_id' tool parameter), unless explicitly specified in the user instructions, no other variants strictly.";
 
         if ('alert' == $this->aAgent['trigger']) {
-            $aPromptTools[] = "Return array only, modified version of 'extra' array. Modifyable keys: " . $this->getAlertTriggerModifyableKeys() . ".";             
+            if (!$this->aAgent['async']) {
+                $aPromptTools[] = "Return array only, modified version of 'extra' array. Modifyable keys: " . $this->getAlertTriggerModifyableKeys() . ".";
+            }
 
             $sDesc = trim(BxDolAiQuery::getAlertDesc($this->aAgent['alert']));
             if ('.' != mb_substr($sDesc, -1))

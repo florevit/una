@@ -583,6 +583,7 @@ class BxBaseServiceContent extends BxDol
      *          - `private` - true | false: set file as private or not, if omitted file is uploaded as public
      *          - `profile_id` - int: set owner of file to this user, of omitted, then currently logged in user is becoming file owner
      *          - `content_id` - int: associate file with this content
+     * @param $iProfileId profile id to perform action on behalf of
      * @return uploaded file Id on success, or array with code != 0 and error message
      * 
      * @see BxBaseServiceContent::serviceUploadFromUrl
@@ -590,15 +591,27 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-upload_from_url "Upload file from URL"
      */
-    public function serviceUploadFromUrl ($sStorageObject, $sFileUrl, $aParams = [])
+    public function serviceUploadFromUrl ($sStorageObject, $sFileUrl, $aParams = [], $iProfileId = 0)
     {
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = $iProfileId;
+        }
+
         $oStorage = BxDolStorage::getObjectInstance($sStorageObject);
-        if (!$oStorage)
-            return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
+        if (!$oStorage) {
+            $mixedRet = ['code' => 404, 'error' => _t('_sys_txt_not_found')];
+        }
+        else {
+            $iFileId = $oStorage->storeFileFromUrl($sFileUrl, isset($aParams['private']) && $aParams['private'] ? true : false, isset($aParams['profile_id']) ? $aParams['profile_id'] : 0, isset($aParams['content_id']) ? $aParams['content_id'] : 0);
 
-        $iFileId = $oStorage->storeFileFromUrl($sFileUrl, isset($aParams['private']) && $aParams['private'] ? true : false, isset($aParams['profile_id']) ? $aParams['profile_id'] : 0, isset($aParams['content_id']) ? $aParams['content_id'] : 0);
+            $mixedRet = $iFileId ? $iFileId : ['code' => $oStorage->getErrorCode(), 'error' => $oStorage->getErrorString()];
+        }
 
-        return $iFileId ? $iFileId : ['code' => $oStorage->getErrorCode(), 'error' => $oStorage->getErrorString()];
+        if ($iProfileId) {
+            $GLOBALS['glForceCurrentProfileId'] = 0;
+        }
+
+        return $mixedRet;
     }
 
     /**
