@@ -31,19 +31,29 @@ class BxDolAiAlertResponse extends BxDolAlertsResponse
             foreach($aAgents as $a) {
                 if (!$a['message_profile_id'] || $iSender == $a['message_profile_id']) {
 
-                    $GLOBALS['glAgentsCallQueue'][] = [
-                        'type' => 'message',
-                        'agent' => $a,
-                        'params' => [
-                            'trigger' => 'message',
-                            'sender_profile_id' => $iSender,
-                            'recipient_profile_id' => $iRecipient,
-                            'message_lot_id' => $iLotId, 
-                            'message_id' => $iJotId,
-                            'message_text' => $aJotInfo['message'],
-                            'message_info' => $aJotInfo,
-                        ],
+                    $aParams = [
+                        'trigger' => 'message',
+                        'sender_profile_id' => $iSender,
+                        'recipient_profile_id' => $iRecipient,
+                        'message_lot_id' => $iLotId, 
+                        'message_id' => $iJotId,
+                        'message_text' => $aJotInfo['message'],
+                        'message_info' => $aJotInfo,
                     ];
+                    if ($a['async']) {
+                        BxDolBackgroundJobs::getInstance()->add(bin2hex(random_bytes(16)), [
+                            'system', 'call_agent', 
+                            ['message', $a, $aParams], 
+                            'TemplServices'
+                        ]);
+                    }
+                    else {
+                        $GLOBALS['glAgentsCallQueue'][] = [
+                            'type' => 'message',
+                            'agent' => $a,
+                            'params' => $aParams,
+                        ];
+                    }
                 }
             }
             if (!empty($GLOBALS['glAgentsCallQueue'])) {

@@ -1746,6 +1746,13 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
     {
         BxDolEmbed::getObjectInstance()->process();
     }
+
+    public function serviceCallAgent($sType, $aAgent, $aParams)
+    {
+        $oAi = BxDolAI::getInstance();
+        return $oAi->callAgent($sType, $aAgent, $aParams);
+    }
+
 }
 
 /** @} */

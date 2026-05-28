@@ -2290,6 +2290,8 @@
     <string name="_sys_agents_automators_popup_add"><![CDATA[Add automator]]></string>
     <string name="_sys_agents_count_today"><![CDATA[{0} calls today]]></string>
     <string name="_sys_agents_count_per_req"><![CDATA[{0} calls per request]]></string>
+    <string name="_sys_agents_field_async"><![CDATA[Delayed execution]]></string>
+    <string name="_sys_agents_field_async_inf"><![CDATA[Run agent later to not block/delay normal code execution. Not applicable for 'manual' and 'scheduler'. For 'alert' - overriding values will not work. For 'messenger' - messages will not appear automatically.]]></string>
     <string name="_sys_agents_popup_edit"><![CDATA[Edit automator]]></string>
     <string name="_sys_agents_field_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_field_name_info"><![CDATA[Uniq agent name]]></string>
@@ -2306,7 +2308,8 @@
     <string name="_sys_agents_field_trigger"><![CDATA[Trigger]]></string>
     <string name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message.]]></string>
     <string name="_sys_agents_field_alert_sample"><![CDATA[Alert: payload]]></string>
-    <string name="_sys_agents_waiting_for_sample_data"><![CDATA[Please select an alert to see its payload.]]></string>
+    <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Please select an alert to see its payload.]]></string>
+    <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Trigger webhook to see its payload.]]></string>
     <string name="_sys_agents_field_alert"><![CDATA[Alert: event name]]></string>
     <string name="_sys_agents_field_alert_info"><![CDATA[Event that triggers the agent. Usually starts with system or module_name. Only events that have occurred at least once are shown.]]></string>
     <string name="_sys_agents_field_scheduler_cron"><![CDATA[Scheduler (CRON)]]></string>
