@@ -849,32 +849,34 @@ class BxBaseServiceAccount extends BxDol
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
             $sErrorUrl = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=forgot-password'));
+            if($bApi)
+                $sErrorUrl = bx_api_get_relative_url($sErrorUrl);
 
             // check if key exists
             $oKey = BxDolKey::getInstance();
             $sKey = $oForm->getCleanValue('key');
             if(!$oKey || !$oKey->isKeyExists($sKey))
-                return $bApi ? bx_api_get_msg(_t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl)) : MsgBox(_t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl));
+                return ($sMsg = _t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl)) && $bApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
             // check if key data exists
             $aKeyData = $oKey->getKeyData($sKey);
             if(empty($aKeyData['email']))
-                return $bApi ? [bx_api_get_msg(_t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl))] : MsgBox(_t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl));
+                return ($sMsg = _t('_sys_txt_reset_pasword_error_invalid_key', $sErrorUrl)) && $bApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
             // check if account with such email exists
             $iAccountId = $this->_oAccountQuery->getIdByEmail($aKeyData['email']);
             if(empty($iAccountId))
-                return $bApi ? [bx_api_get_msg(_t('_sys_txt_reset_pasword_error_not_found', $sErrorUrl))] : MsgBox(_t('_sys_txt_reset_pasword_error_not_found', $sErrorUrl));;
+                return ($sMsg = _t('_sys_txt_reset_pasword_error_not_found', $sErrorUrl)) && $bApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
             $sPassword = $oForm->getCleanValue('password');
             $oAccount = BxDolAccount::getInstance($iAccountId);
             if (!$oAccount || !$oAccount->updatePassword($sPassword))
-                return $bApi ?[ bx_api_get_msg(_t('_sys_txt_reset_pasword_error_occured', $sErrorUrl))] : MsgBox(_t('_sys_txt_reset_pasword_error_occured', $sErrorUrl));
+                return ($sMsg = _t('_sys_txt_reset_pasword_error_occured', $sErrorUrl)) && $bApi ?[ bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
             $this->_oAccountQuery->unlockAccount($iAccountId);
             $oKey->removeKey($sKey);
 
-            return $bApi ? [bx_api_get_msg(_t('_sys_txt_reset_pasword_success', $sErrorUrl))] : MsgBox(_t('_sys_txt_reset_pasword_success'), 3) . bx_srv('system', 'login_form_only', array('', bx_get_reset_password_redirect($iAccountId)), 'TemplServiceLogin');
+            return ($sMsg = _t('_sys_txt_reset_pasword_success')) && $bApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg, 3) . bx_srv('system', 'login_form_only', array('', bx_get_reset_password_redirect($iAccountId)), 'TemplServiceLogin');
         }
 
         $sTitleReset = _t('_sys_page_title_forgot_password_reset');
