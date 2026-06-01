@@ -34,9 +34,17 @@ class BxDolBackgroundJobsQuery extends BxDolDb
                 break;
 
             case 'process':
+                $aMethod['name'] = 'getAllWithKey';
+                $aMethod['params'][1] = 'id';
+
+                $sWhereClause = " AND `reserved_at`='0' AND (`available_at`='0' OR `available_at`<=UNIX_TIMESTAMP()) AND `status`='pending'";
+
                 $sOrderClause = "`added` ASC";
                 if(isset($aParams['with_priority']) && $aParams['with_priority'] === true)
                     $sOrderClause = "`priority` DESC, " . $sOrderClause;
+
+                if(!empty($aParams['limit']))
+                    $sLimitClause = $aParams['limit'];
                 break;
         }
 
@@ -70,6 +78,17 @@ class BxDolBackgroundJobsQuery extends BxDolDb
         ]);
     }
 
+    public function updateJobByIds($mixedIds, $aParamsSet)
+    {
+        if(empty($mixedIds))
+            return false;
+        
+        if(!is_array($mixedIds))
+            $mixedIds = [(int)$mixedIds];
+
+        return $this->query("UPDATE `sys_background_jobs` SET " . $this->arrayToSQL($aParamsSet) . " WHERE `id` IN (" . $this->implode_escape($mixedIds) . ")");
+    }
+
     public function updateJobExt($aParamsSet, $aParamsWhere)
     {
         if(empty($aParamsSet) || empty($aParamsWhere))
@@ -78,11 +97,35 @@ class BxDolBackgroundJobsQuery extends BxDolDb
         return $this->query("UPDATE `sys_background_jobs` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
     }
 
+    public function deleteJobs($aParams = [])
+    {
+        $aMethod = ['name' => 'query', 'params' => [0 => 'query']];
+
+        $sWhereClause = $sLimitClause = "";
+        switch($aParams['sample']) {
+            case 'name':
+                $aMethod['params'][1] = [
+                    'name' => $aParams['name']
+                ];
+
+                $sWhereClause = " AND `name` = :name";
+                break;
+
+            case 'outdated':
+                $sWhereClause = " AND `added` + :timeout < UNIX_TIMESTAMP() AND `status` = :status";
+                break;
+        }
+
+        $sLimitClause = !empty($sLimitClause) ? "LIMIT " . $sLimitClause : $sLimitClause;
+
+        $aMethod['params'][0] = "DELETE FROM `sys_background_jobs` WHERE 1" . $sWhereClause . " " . $sLimitClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
     public function deleteJob($sName)
     {
-        return $this->query("DELETE FROM `sys_background_jobs` WHERE `name`=:name", [
-            'name' => $sName
-        ]) !== false;
+        return $this->deleteJobs(['sample' => 'name', 'name' => $sName]) !== false;
     }
 }
 

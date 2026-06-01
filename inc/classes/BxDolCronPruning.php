@@ -75,6 +75,9 @@ class BxDolCronPruning extends BxDolCron
         // clean ai related data
         $iDeletedItems = BxDolAI::pruning();
 
+        // clean background jobs
+        $iDeletedJobs = BxDolBackgroundJobs::pruning();
+
         // reset Alert counters
         BxDolAlerts::resetAlertsCounter24h();
 
