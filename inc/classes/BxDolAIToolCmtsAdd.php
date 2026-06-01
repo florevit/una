@@ -44,7 +44,7 @@ class BxDolAIToolCmtsAdd extends BxDolAITool
             new ToolProperty(
                 name: 'parent_comment_id',
                 type: PropertyType::INTEGER,
-                description: 'Parent comment ID, for comment replies.',
+                description: 'Parent comment ID, for comment replies, default 0.',
                 required: false
             ),
             new ToolProperty(
@@ -56,7 +56,7 @@ class BxDolAIToolCmtsAdd extends BxDolAITool
         ];
     }
 
-    public function __invoke(string $module, int $content_id, string $comment_text, int $parent_comment_id = 0, int $author_profile_id = 0): array
+    public function __invoke(string $module, int $content_id, string $comment_text, ?int $parent_comment_id = null, ?int $author_profile_id = null): array
     {
         if ($author_profile_id) {
             $GLOBALS['glForceCurrentProfileId'] = $author_profile_id;
@@ -68,7 +68,7 @@ class BxDolAIToolCmtsAdd extends BxDolAITool
             $aData = [
                 'sys' => $module,
                 'id' => $content_id,
-                'cmt_parent_id' => $parent_comment_id,
+                'cmt_parent_id' => $parent_comment_id ?? 0,
                 // 'cmt_image' => [],
                 'cmt_text' => $comment_text,
             ];

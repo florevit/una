@@ -31,6 +31,15 @@ if (!$aAgent) {
 $aParams = $_REQUEST;
 $aParams['trigger'] = 'webhook';
 
-$mixed = $oAi->callAgent('webhook', $aAgent, $aParams);
-
-echo json_encode($mixed);
+if ($aAgent['async']) {
+    BxDolBackgroundJobs::getInstance()->add(bin2hex(random_bytes(16)), [
+        'system', 'call_agent', 
+        ['webhook', $aAgent, $aParams], 
+        'TemplServices'
+    ]);
+    echo json_encode(['result' => 'scheduled']);
+}
+else {
+    $mixed = $oAi->callAgent('webhook', $aAgent, $aParams);
+    echo json_encode($mixed);
+}

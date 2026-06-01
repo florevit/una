@@ -7190,6 +7190,7 @@ CREATE TABLE `sys_agents_agents` (
   `chat_history_context` int(11) NOT NULL DEFAULT 50000,
   `vector_store_id` int(11) NOT NULL,
   `trigger` enum('alert','scheduler','webhook','manual','agent','message') NOT NULL DEFAULT 'message',
+  `async` tinyint(4) NOT NULL DEFAULT 0,
   `alert` varchar(192) NOT NULL DEFAULT '',
   `scheduler_cron` varchar(64) NOT NULL,
   `webhook_key` varchar(255) NOT NULL,

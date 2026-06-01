@@ -379,7 +379,10 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
     public function callAgent($sType, $aAgent, $mixedParams = [])
     {
-        $sParams = is_string($mixedParams) ? $mixedParams : json_encode($mixedParams);
+        if ($mixedParams)
+            $sParams = is_string($mixedParams) ? $mixedParams : json_encode($mixedParams);
+        else
+            $sParams = 'START';
 
         // update sample data
         $a = ['webhook' => 'webhook_sample'];

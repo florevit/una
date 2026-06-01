@@ -29,7 +29,10 @@ function isLogged()
  */
 function getLoggedId()
 {
-    if (getParam('sys_session_auth')) {
+    if ($GLOBALS['glForceCurrentProfileId'] ?? false) {
+        return BxDolProfile::getInstance()->getAccountId();
+    }
+    elseif (getParam('sys_session_auth')) {
         return (!empty($GLOBALS['logged']['member']) || !empty($GLOBALS['logged']['admin'])) ? BxDolSession::getInstance()->getUserId() : 0;
     }
     else {

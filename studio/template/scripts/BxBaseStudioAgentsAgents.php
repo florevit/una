@@ -358,6 +358,17 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'pass' => 'Xss',
                     ]
                 ],
+                'async' => [
+                    'type' => 'checkbox',
+                    'name' => 'async',
+                    'caption' => _t('_sys_agents_field_async'),
+                    'info' => _t('_sys_agents_field_async_inf'),                    
+                    'value' => 1,
+                    'checked' => isset($aAgent['async']) ? $aAgent['async'] : 0,
+                    'db' => [
+                        'pass' => 'Int',
+                    ]
+                ],
 
                 'alert_section' => array(
                     'type' => 'block_header',
@@ -372,7 +383,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'caption' => _t('_sys_agents_field_alert_sample'),
                     'content' => $this->_oTemplate->parseHtmlByName('agents_agents_alerts_payload.html', [
                         'text-visibility' => empty($aAgent['alert']) ? 'block' : 'none',
-                        'text' => _t('_sys_agents_waiting_for_sample_data'),
+                        'text' => _t('_sys_agents_waiting_for_sample_data_alert'),
 
                         'payload-visibility' => !empty($aAgent['alert']) ? 'block' : 'none',
                         'desc' => $aAgent ? $this->_oDb->getAlertDesc($aAgent['alert']) : '',
@@ -420,7 +431,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'type' => 'custom',
                     'name' => 'webhook_sample',
                     'caption' => _t('_sys_agents_field_webhook_sample'),
-                    'content' => isset($aAgent['webhook_sample']) ? $aAgent['webhook_sample'] : _t('_sys_agents_waiting_for_sample_data'),
+                    'content' => isset($aAgent['webhook_sample']) ? $aAgent['webhook_sample'] : _t('_sys_agents_waiting_for_sample_data_webhook'),
                 ],
                 'webhook_key' => [
                     'type' => 'text',
