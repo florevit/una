@@ -17,6 +17,29 @@ class BxDolBackgroundJobsQuery extends BxDolDb
     	parent::__construct();
     }
 
+    public function getClaimedJobs($sClasimToken)
+    {
+        return $this->getAll("
+            SELECT * FROM `sys_background_jobs` 
+            WHERE `claim_token` = :claim_token AND `status` = '" . BX_DOL_BG_JOBS_STATUS_PENDING . "' 
+            ORDER BY `priority` DESC, `added` ASC", [
+                'claim_token' => $sClasimToken
+            ]
+        );
+    }
+
+    public function claimJobs($sClasimToken, $iLimit)
+    {
+        return $this->query("UPDATE `sys_background_jobs` 
+            SET `reserved_at`=UNIX_TIMESTAMP(), `claim_token`=:claim_token 
+            WHERE claim_token = '' AND `reserved_at`='0' AND (`available_at`='0' OR `available_at`<=UNIX_TIMESTAMP()) AND `status`='" . BX_DOL_BG_JOBS_STATUS_PENDING . "' 
+            ORDER BY `priority` DESC, `added` ASC 
+            LIMIT :limit", [
+                'claim_token' => $sClasimToken,
+                'limit' => (int)$iLimit
+        ]) !== false;
+    }
+
     public function getJobs($aParams = [])
     {
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
@@ -31,6 +54,13 @@ class BxDolBackgroundJobsQuery extends BxDolDb
                 ];
 
                 $sWhereClause = " AND `name`=:name";
+                break;
+
+            case 'running':
+                $aMethod['name'] = 'getAllWithKey';
+                $aMethod['params'][1] = 'id';
+
+                $sWhereClause = " AND `status`='" . BX_DOL_BG_JOBS_STATUS_PROCESSING . "'";
                 break;
 
             case 'process':

@@ -1880,7 +1880,6 @@
     <string name="_adm_stg_cpt_option_sys_std_pgt_etemplates_editor"><![CDATA[Полиглот в Студии: Включить визуальный редактор]]></string>
 
     <string name="_adm_stg_cpt_option_sys_bg_jobs_process_per_run"><![CDATA[Фоновые задачи: Количество заданий для обработки за один запуск]]></string>
-    <string name="_adm_stg_cpt_option_sys_bg_jobs_workers"><![CDATA[Фоновые задачи: Количество активных параллельных работников]]></string>
     <string name="_adm_stg_cpt_option_sys_bg_jobs_workers_limit"><![CDATA[Фоновые задачи: Максимальное количество параллельных работников]]></string>
     <string name="_adm_stg_cpt_option_sys_bg_jobs_cleanup_timeout"><![CDATA[Фоновые задачи: Удаление заданий с ошибками через (в днях)]]></string>
 

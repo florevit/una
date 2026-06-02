@@ -1905,7 +1905,6 @@
     <string name="_adm_stg_cpt_option_sys_std_pgt_etemplates_editor"><![CDATA[Studio Polyglot: Enable visual editor]]></string>
 
     <string name="_adm_stg_cpt_option_sys_bg_jobs_process_per_run"><![CDATA[Background jobs: Number of jobs to process per run]]></string>
-    <string name="_adm_stg_cpt_option_sys_bg_jobs_workers"><![CDATA[Background jobs: Number of active parallel workers]]></string>
     <string name="_adm_stg_cpt_option_sys_bg_jobs_workers_limit"><![CDATA[Background jobs: Max number of parallel workers]]></string>
     <string name="_adm_stg_cpt_option_sys_bg_jobs_cleanup_timeout"><![CDATA[Background jobs: Cleanup jobs with errors after (in days)]]></string>
 

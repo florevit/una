@@ -17,7 +17,6 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
 
     protected $_sObjectLog;
 
-    protected $_sParamWorkers;
     protected $_sParamWorkersLimit;
 
     protected $_iAttemptsMax;
@@ -31,7 +30,6 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
 
         $this->_sObjectLog = 'sys_background_jobs';
 
-        $this->_sParamWorkers = 'sys_bg_jobs_workers';
         $this->_sParamWorkersLimit = 'sys_bg_jobs_workers_limit';
 
         $this->_iAttemptsMax = 3;
@@ -114,10 +112,17 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
             ]);
 
         $fStart = microtime(true);
-        $mixedResult = BxDolService::callSerialized($mixedJob['service_call']);
+        $sError = '';
+        $mixedResult = '';
+        try {
+            $mixedResult = BxDolService::callSerialized($mixedJob['service_call']);
+        }
+        catch (Throwable $e) {
+            $sError = $e->getMessage();
+        }
         $fEnd = microtime(true);
 
-        if($mixedResult !== true) {
+        if ($sError) {
             $iAvailableAt = 0;
             $sStatus = BX_DOL_BG_JOBS_STATUS_ERROR;
 
@@ -128,10 +133,11 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
             }
 
             $this->_oQuery->updateJob($mixedJob['name'], [
+                'claim_token' => '',
                 'reserved_at' => 0,
                 'available_at' => $iAvailableAt,
                 'attempts' => $iAttempts,
-                'error' => $mixedResult ?: 'Exited with an error at ' . $fEnd,
+                'error' => $sError . ' / result: [' . $mixedResult . ']',
                 'status' => $sStatus
             ]);
         }
@@ -145,12 +151,15 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
 
     public function processAll($iLimit = 0)
     {
-        $aJobs = $this->_oQuery->getJobs(['sample' => 'process', 'with_priority' => true, 'limit' => $iLimit ?: (getParam('sys_bg_jobs_process_per_run') ?: 5)]);
+        if($this->_isWorkersLimitReached())
+            return false;
+     
+        $sClaimToken = bin2hex(random_bytes(16));
+        $this->_oQuery->claimJobs($sClaimToken, $iLimit ?: (getParam('sys_bg_jobs_process_per_run') ?: 5));
+
+        $aJobs = $this->_oQuery->getClaimedJobs($sClaimToken);
         if(!$aJobs || !is_array($aJobs))
             return true;
-
-        if(!$this->_startWorker())
-            return false;
 
         $this->_oQuery->updateJobByIds(array_keys($aJobs), [
             'reserved_at' => time()
@@ -163,7 +172,7 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
 
         bx_log($this->_sObjectLog, "Processed: all (" . $iProcessed . " from " . count($aJobs) . ")", BX_LOG_INFO);
 
-        return $this->_stopWorker();
+        return true;
     }
 
     public function prune($iTimeout, $sStatus = BX_DOL_BG_JOBS_STATUS_ERROR)
@@ -175,18 +184,14 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
         ]);
     }
 
-    protected function _startWorker()
+    protected function _isWorkersLimitReached()
     {
-        $iWorkers = 0;
-        if(($iWorkers = (int)getParam($this->_sParamWorkers)) >= (int)getParam($this->_sParamWorkersLimit))
-            return false;
+        $aJobs = $this->_oQuery->getJobs(['sample' => 'running']);
+        $iWorkers = $aJobs ? count($aJobs) : 0;        
+        if ($iWorkers >= (int)getParam($this->_sParamWorkersLimit))
+            return true;
 
-        return setParam($this->_sParamWorkers, $iWorkers + 1);
-    }
-
-    protected function _stopWorker()
-    {
-        return setParam($this->_sParamWorkers, (int)getParam($this->_sParamWorkers) - 1);
+        return false;
     }
 }
 
