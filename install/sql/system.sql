@@ -465,7 +465,6 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_std_pgt_etemplates_editor', '_adm_stg_cpt_option_sys_std_pgt_etemplates_editor', 'on', 'checkbox', '', '', '', '', 290),
 
 (@iCategoryId, 'sys_bg_jobs_process_per_run', '_adm_stg_cpt_option_sys_bg_jobs_process_per_run', '5', 'digit', '', '', '', '', 300),
-(@iCategoryId, 'sys_bg_jobs_workers', '_adm_stg_cpt_option_sys_bg_jobs_workers', '0', 'digit', '', '', '', '', 302),
 (@iCategoryId, 'sys_bg_jobs_workers_limit', '_adm_stg_cpt_option_sys_bg_jobs_workers_limit', '3', 'digit', '', '', '', '', 304),
 (@iCategoryId, 'sys_bg_jobs_cleanup_timeout', '_adm_stg_cpt_option_sys_bg_jobs_cleanup_timeout', '30', 'digit', '', '', '', '', 306),
 
@@ -2654,6 +2653,7 @@ CREATE TABLE `sys_recommendation_data` (
 CREATE TABLE `sys_background_jobs` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL default '',
+  `claim_token` varchar(64) NOT NULL default '',
   `added` int(11) unsigned NOT NULL default '0',
   `reserved_at` int(11) unsigned NOT NULL default '0',
   `available_at` int(11) unsigned NOT NULL default '0',
@@ -2663,7 +2663,8 @@ CREATE TABLE `sys_background_jobs` (
   `error` varchar(255) NOT NULL default '',
   `status` varchar(16) NOT NULL default 'pending',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `claim_token` (`claim_token`)
 );
 
 -- --------------------------------------------------------

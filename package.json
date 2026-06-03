@@ -59,7 +59,7 @@
     "moment-timezone": "^0.6.2",
     "npm": "^11.16.0",
     "ovenplayer": "^0.10.51",
-    "pdfjs-dist": "^5.7.284",
+    "pdfjs-dist": "^6.0.227",
     "photoswipe": "^5.4.4",
     "player.js": "^0.1.0",
     "prismjs": "^1.29.0",
@@ -152,7 +152,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "bower": "^1.8.14",
     "npm-run-all": "^4.1.5",
-    "rollup": "^4.60.4",
+    "rollup": "^4.61.0",
     "tailwindcss": "^3.4.17",
     "uglify-js": "^3.19.3"
   }
