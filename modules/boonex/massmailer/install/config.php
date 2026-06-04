@@ -18,12 +18,12 @@ $aConfig = array(
     'name' => 'bx_massmailer',
     'title' => 'Mass mailer',
     'note' => 'Mass mailer module.',
-    'version' => '14.0.1.DEV',
+    'version' => '15.0.1.DEV',
     'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '14.0.x'
+        '15.0.x'
     ),
 
     /**
