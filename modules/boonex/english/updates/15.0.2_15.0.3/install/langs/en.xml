@@ -56,7 +56,7 @@
 	<string_add name="_sys_agents_field_profile_id"><![CDATA[Profile]]></string_add>
 	<string_add name="_sys_agents_field_profile_id_inf"><![CDATA[AI agent will perform actions under this profile]]></string_add>
 	<string_add name="_sys_agents_field_trigger"><![CDATA[Trigger]]></string_add>
-	<string_add name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message.]]></string_add>
+	<string_add name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert â€” system event notification. Scheduler â€” time-based scheduled execution. Webhook â€” external HTTP trigger. Manual â€” user-initiated run. Agent â€” triggered by another agent. Message â€” triggered by chat message.]]></string_add>
 	<string_add name="_sys_agents_field_alert_sample"><![CDATA[Alert: payload]]></string_add>
 	<string_add name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Please select an alert to see its payload.]]></string_add>
 	<string_add name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Trigger webhook to see its payload.]]></string_add>
