@@ -395,7 +395,7 @@ INSERT INTO `sys_objects_search` (`ObjectName`, `Title`, `Order`, `ClassName`, `
 
 -- CONNECTIONS
 INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `profile_content`, `type`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_assignments', 'bx_tasks_assignments', 0, 1, 'one-way', '', '');
+('bx_tasks_assignments', 'bx_tasks_assignments', 1, 0, 'one-way', '', '');
 
 
 -- CATEGORY
