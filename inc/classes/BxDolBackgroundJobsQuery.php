@@ -142,6 +142,11 @@ class BxDolBackgroundJobsQuery extends BxDolDb
                 break;
 
             case 'outdated':
+                $aMethod['params'][1] = [
+                    'timeout' => $aParams['timeout'],
+                    'status' => $aParams['status'],
+                ];
+
                 $sWhereClause = " AND `added` + :timeout < UNIX_TIMESTAMP() AND `status` = :status";
                 break;
         }
