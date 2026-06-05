@@ -170,7 +170,7 @@ BxDolUploaderBase.prototype.restoreGhosts = function (bInitReordering, onComplet
                     $this.showGhost(iFileId, oVars);
                 });
 
-            $('#' + $this._sResultContainerId).bxProcessHtml().bx_show_more_check_overflow();
+            $('#' + $this._sResultContainerId).bx_show_more_check_overflow().bxProcessHtml();
 
             if(bInitReordering) {
                 var sClassGhost = 'bx-uploader-ghost';

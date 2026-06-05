@@ -352,8 +352,10 @@ button.bx-btn:focus .bx-loading-ajax-btn {
 .bx-show-more {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
-
-    text-align: center
+}
+.bx-show-more a {
+    display: flex;
+    justify-content: center;
 }
 
 /*-- Flickity: Tailwind overwrite --*/
