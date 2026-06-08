@@ -468,6 +468,9 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_bg_jobs_workers_limit', '_adm_stg_cpt_option_sys_bg_jobs_workers_limit', '3', 'digit', '', '', '', '', 304),
 (@iCategoryId, 'sys_bg_jobs_cleanup_timeout', '_adm_stg_cpt_option_sys_bg_jobs_cleanup_timeout', '30', 'digit', '', '', '', '', 306),
 
+(@iCategoryId, 'sys_alerts_logger', '_adm_stg_cpt_option_sys_alerts_logger', 'on', 'checkbox', '', '', '', '', 310),
+(@iCategoryId, 'sys_alerts_stats', '_adm_stg_cpt_option_sys_alerts_stats', '', 'checkbox', '', '', '', '', 312),
+
 (@iCategoryId, 'sys_maintenance_mode', '_adm_stg_cpt_option_sys_maintenance_mode', '', 'checkbox', '', '', '', '', 400),
 (@iCategoryId, 'sys_maintenance_mode_html', '_adm_stg_cpt_option_sys_maintenance_mode_html', '', 'code', '', '', '', '', 402);
 
