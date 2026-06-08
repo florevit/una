@@ -64,7 +64,7 @@ class BxDolAlertsStats extends BxDol
 
     public static function flushStats(): void
     {
-        if (!self::$stats)
+        if (!self::$stats || !getParam('sys_alerts_stats'))
             return;
 
         foreach (self::$stats as $hookName => $data) {
@@ -93,6 +93,10 @@ class BxDolAlertsStats extends BxDol
         if (!self::$logs)
             return;
 
+        $oDb = BxDolDb::getInstance();
+        if (!getParam('sys_alerts_stats'))
+            $aMap = $oDb->getPairs('SELECT CONCAT(unit, ":", action) AS `key`, 1 AS `val` FROM sys_alerts_log', 'key', 'val');
+
         foreach (self::$logs as $s => $data) {
             $aExtraRefs = [];
             foreach($data['extra'] as $sKey => $mixedValue) {
@@ -101,27 +105,45 @@ class BxDolAlertsStats extends BxDol
                 }
             }
             self::$logs[$s]['extra_refs'] = json_encode(self::$logs[$s]['extra_refs'] ?? []);
-            self::$logs[$s]['extra'] = json_encode(self::$logs[$s]['extra']);
+            self::$logs[$s]['extra'] = json_encode(self::$logs[$s]['extra']);            
 
-            BxDolDb::getInstance()->query("
-                INSERT INTO sys_alerts_log
-                SET
-                    unit = :unit,
-                    action = :action,
-                    object = :object,
-                    sender = :sender,
-                    extra = :extra,
-                    extra_refs = :extra_refs,
-                    ts = UNIX_TIMESTAMP(),
-                    counter_total = :counter,
-                    counter_24h = :counter,
-                    counter_per_request = :counter
-                ON DUPLICATE KEY UPDATE
-                    ts = UNIX_TIMESTAMP(),
-                    counter_total = counter_total + :counter,
-                    counter_24h = counter_24h + :counter,
-                    counter_per_request = GREATEST(counter_per_request, :counter)
-            ", self::$logs[$s]);
+            if (getParam('sys_alerts_stats')) {
+                $oDb->query("
+                    INSERT INTO sys_alerts_log
+                    SET
+                        unit = :unit,
+                        action = :action,
+                        object = :object,
+                        sender = :sender,
+                        extra = :extra,
+                        extra_refs = :extra_refs,
+                        ts = UNIX_TIMESTAMP(),
+                        counter_total = :counter,
+                        counter_24h = :counter,
+                        counter_per_request = :counter
+                    ON DUPLICATE KEY UPDATE
+                        ts = UNIX_TIMESTAMP(),
+                        counter_total = counter_total + :counter,
+                        counter_24h = counter_24h + :counter,
+                        counter_per_request = GREATEST(counter_per_request, :counter)
+                ", self::$logs[$s]);
+            } else {                
+                $sKey = self::$logs[$s]['unit'] . ':' . self::$logs[$s]['action'];
+                if (!isset($aMap[$sKey])) {
+                    $oDb->query("
+                        INSERT IGNORE INTO sys_alerts_log
+                        SET
+                            unit = :unit,
+                            action = :action,
+                            object = :object,
+                            sender = :sender,
+                            extra = :extra,
+                            extra_refs = :extra_refs,
+                            ts = 0,
+                            counter_per_request = :counter
+                    ", self::$logs[$s]);
+                }
+            }
         }
     }
 }

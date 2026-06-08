@@ -1741,6 +1741,8 @@
     <string name="_adm_stg_cpt_option_sys_push_queue_time"><![CDATA[Push queue execution flag]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start"><![CDATA[Number of messages to send from Push queue per run]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start_to_recipient"><![CDATA[Number of messages to send from Push queue per run to some recipient]]></string>
+    <string name="_adm_stg_cpt_option_sys_alerts_logger"><![CDATA[Alerts/hooks logger]]></string>
+    <string name="_adm_stg_cpt_option_sys_alerts_stats"><![CDATA[Alerts/hooks stats]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_default"><![CDATA[Provider]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_twilio_sid"><![CDATA[Twilio: Account SID]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_twilio_token"><![CDATA[Twilio: Auth token]]></string>

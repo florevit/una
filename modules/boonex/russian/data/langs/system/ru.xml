@@ -1716,6 +1716,8 @@
     <string name="_adm_stg_cpt_option_sys_push_queue_time"><![CDATA[Флаг выполнения Push очереди]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start"><![CDATA[Количество сообщенией, отправляемое из Push очереди при каждом запуске]]></string>
     <string name="_adm_stg_cpt_option_sys_push_queue_send_per_start_to_recipient"><![CDATA[Количество сообщенией, отправляемое из Push очереди одному и тому же получателю при каждом запуске]]></string>
+    <string name="_adm_stg_cpt_option_sys_alerts_logger"><![CDATA[Журнал оповещений/хуков]]></string>
+    <string name="_adm_stg_cpt_option_sys_alerts_stats"><![CDATA[Статистика оповещений/хуков]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_default"><![CDATA[Поставщик]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_twilio_sid"><![CDATA[Twilio: SID учетной записи]]></string>
     <string name="_adm_stg_cpt_option_sys_sms_twilio_token"><![CDATA[Twilio: Токен аутентификации]]></string>
