@@ -282,8 +282,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-manage', '', '_bx_tasks_menu_item_title_mt_submenu_entries_common', 'page.php?i=tasks-manage', '', '_self', '', '', 2147483647, 1, 0, 1),
 ('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-administration', '', '_bx_tasks_menu_item_title_mt_submenu_entries_administration', 'page.php?i=tasks-administration', '', '_self', '', '', 128, 1, 0, 2),
 ('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-time-manage', '', '_bx_tasks_menu_item_title_mt_submenu_time_common', 'page.php?i=tasks-time-manage', '', '_self', '', '', 2147483647, 1, 0, 3),
-('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-time-administration', '', '_bx_tasks_menu_item_title_mt_submenu_time_administration', 'page.php?i=tasks-time-administration', '', '_self', '', '', 128, 1, 0, 4),
-('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-timers', '', '_bx_tasks_menu_item_title_mt_submenu_timers', 'page.php?i=tasks-timers', '', '_self', '', '', 2147483647, 1, 0, 5);
+('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-time-administration', '', '_bx_tasks_menu_item_title_mt_submenu_time_administration', 'page.php?i=tasks-time-administration', '', '_self', '', '', 128, 1, 0, 4);
 
 -- MENU: manage tools: item submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
