@@ -507,6 +507,7 @@ class BxAclModule extends BxBaseModGeneralModule
      * @code bx_srv('bx_acl', 'cancel_subscription_item', [...]); @endcode
      * 
      * Cancel an earlier processed subscription (recurring payment) inside the Paid Levels module. Is called with payment processing module after the subscription was canceled there.
+     * Reset membership to STANDARD if subscribed membership was still in Trial mode (hasn't been paid yet).
      * 
      * @param $iClientId client ID.
      * @param $iSellerId seller ID
@@ -522,8 +523,18 @@ class BxAclModule extends BxBaseModGeneralModule
      */
     public function serviceCancelSubscriptionItem($iClientId, $iSellerId, $iItemId, $iItemCount, $sOrder)
     {
-    	//TODO: Do something if it's necessary.
-    	return true;
+        $iItemTrial = 0;
+        $aItemInfo = $this->_oDb->getPrices(['type' => 'by_id', 'value' => $iItemId]);
+        if(empty($aItemInfo) || !is_array($aItemInfo) || !($iItemTrial = (int)$aItemInfo['trial']))
+            return false;
+
+        $oAcl = BxDolAcl::getInstance();
+
+        $aMembershipInfo = $oAcl->getMemberMembershipInfo($iClientId);
+        if(time() - $aMembershipInfo['date_starts'] > $iItemTrial * 86400)
+            return true;
+
+        return $oAcl->setMembership($iClientId, MEMBERSHIP_ID_STANDARD);
     }
 
     /**
