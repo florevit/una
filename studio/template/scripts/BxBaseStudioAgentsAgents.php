@@ -589,6 +589,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
     {
         $aAlerts = $this->_oDb->getAlerts();
         $a = [
+            'sys_stat_not_available' => _t('_sys_not_available'),
             'grid_object' => $this->_sObject,
             'bx_repeat:alerts' => [
                 [

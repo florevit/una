@@ -12,6 +12,7 @@
         const desc = $(state.element).data('desc');
         const count = $(state.element).data('count');
         const count_per_req = $(state.element).data('count_per_req');
+        const stats = parseInt(count) !== 0 ? `${count}<br />${count_per_req}` : '__sys_stat_not_available__';
         return $(`
         <div class="bx-alert-wrap">
             <div>
@@ -19,9 +20,7 @@
                 <div class="bx-alert-desc">${desc || ''}</div>
             </div>
             <div class="bx-alert-counter">
-                ${count}
-                <br />
-                ${count_per_req}
+                ${stats}
             </div>
         </div>
         `);

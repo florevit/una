@@ -2318,7 +2318,7 @@
     <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Please select an alert to see its payload.]]></string>
     <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Trigger webhook to see its payload.]]></string>
     <string name="_sys_agents_field_alert"><![CDATA[Alert: event name]]></string>
-    <string name="_sys_agents_field_alert_info"><![CDATA[Event that triggers the agent. Usually starts with system or module_name. Only events that have occurred at least once are shown.]]></string>
+    <string name="_sys_agents_field_alert_info"><![CDATA[Event that triggers the agent. Usually starts with system or module_name. Only events that have occurred at least once are shown. Second column shows alert stats, if 'n/a' then alert haven't happend yet. If 'n/a' everywhere then stats option is disabled in Developer module.]]></string>
     <string name="_sys_agents_field_scheduler_cron"><![CDATA[Scheduler (CRON)]]></string>
     <string name="_sys_agents_field_scheduler_cron_info"><![CDATA[CRON expression for scheduling the agent.]]></string>
     <string name="_sys_agents_field_webhook_key"><![CDATA[Webhook: key]]></string>
