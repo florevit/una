@@ -2291,7 +2291,7 @@
         <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Пожалуйста, выберите алерт, чтобы увидеть его данные.]]></string>
         <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Пожалуйста, активируйте вебхук, чтобы увидеть его данные.]]></string>       
         <string name="_sys_agents_field_alert"><![CDATA[Alert - событие]]></string>
-        <string name="_sys_agents_field_alert_info"><![CDATA[Событие, запускающее агента. Обычно начинается с system или module_name. Показаны только уже произошедшие события.]]></string>
+        <string name="_sys_agents_field_alert_info"><![CDATA[Событие, запускающее агента. Обычно начинается с system или module_name. Показаны только уже произошедшие события. Во втором столбце отображается статистика уведомлений. Если указано «н/д», значит соответствующее уведомление ещё не срабатывало. Если «н/д» указано везде, то опция статистики уведомлений отключена в модуле «Developer».]]></string>
         <string name="_sys_agents_field_alert_action"><![CDATA[Alert - действие события]]></string>
         <string name="_sys_agents_field_scheduler_cron"><![CDATA[Scheduler - Планировщик (CRON)]]></string>
         <string name="_sys_agents_field_scheduler_cron_info"><![CDATA[Scheduler - CRON строка для планирования агента.]]></string>
