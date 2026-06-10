@@ -1,1 +1,0 @@
-Installation manual: https://tailwindcss.com/docs/installation
