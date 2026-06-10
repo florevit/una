@@ -2796,7 +2796,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_url' => bx_absolute_url($this->_oConfig->getItemViewUrl($aContent, false), '{bx_url_root}'),
             'entry_caption' => $sEntryCaption,
             'entry_summary' => $sEntrySummary,
-            'entry_author' => $aContent['owner_id'],
             'subentry_sample' => $CNF['T']['txt_sample_reaction_single'],
             'subentry_sample_params' => $aSubentrySampleParams,
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
