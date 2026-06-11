@@ -256,7 +256,7 @@ blockquote {
 
 .bx-dbt-cnt {
     display: flex;
-    align-items: center;
+    flex-direction: column;
 }
 
 .bx-db-menu {
