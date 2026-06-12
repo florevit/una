@@ -140,7 +140,7 @@ class BxProfiler extends BxDol
         $sDate = date ($this->_sLogDateFormat);
         return "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" . $sDate . " " . $s . "\n" .
         (getLoggedId() ? "User ID: " . getLoggedId()  . "\n" : '') .
-        "User role: " . ($GLOBALS['logged']['admin'] ? 'admin' : ($GLOBALS['logged']['member'] ? 'member' : 'guest')) . "\n";
+        "User role: " . (!empty($GLOBALS['logged']['admin']) ? 'admin' : (!empty($GLOBALS['logged']['member']) ? 'member' : 'guest')) . "\n";
     }
 
     function _logEnd ()
