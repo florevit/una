@@ -1807,10 +1807,7 @@ class BxDolFormCheckerHelper
     }
     static public function checkCaptcha($s)
     {
-        $oCaptcha = BxDolCaptcha::getObjectInstance();
-        if (!$oCaptcha)
-            return true;
-        return $oCaptcha->check ();
+        return !bx_is_api() && ($oCaptcha = BxDolCaptcha::getObjectInstance()) !== false ? $oCaptcha->check() : true;
     }
     static public function checkIsSpam(&$val, $sType = 'textarea')
     {

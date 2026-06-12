@@ -406,6 +406,9 @@ class BxBaseFormView extends BxDolForm
             if(isset($aInput['visible_for_levels']) && !self::isVisible($aInput)) 
                 continue;
 
+            if(isset($aInput['type']) && in_array($aInput['name'], ['captcha'])) 
+                continue;
+
             list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $oFunctions->getIcon($aInput['icon'] ?? '');
 
             $aInput['icon'] = $sIcon ? $oIconset->getIcon($sIcon) : ($sIconHtml ? $sIconHtml : '');
