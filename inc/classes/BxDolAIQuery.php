@@ -891,9 +891,9 @@ class BxDolAIQuery extends BxDolDb
         return $oDb->query($sQuery, ['status' => $sStatus, 'id' => $iId]);
     }
 
-    public function getAgentsByAlertUnitAndAction($sUnit, $sAction, $bActiveOnly = true)
+    public function getAgentsWithAlert($bActiveOnly = true)
     {
-        return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'alert' AND `alert` = :alert AND `active` = :active", ['alert' => $sUnit . ':' . $sAction, 'active' => $bActiveOnly ? 1 : 0]);
+        return $this->fromCache('sys_agents_with_alert', 'getAll', "SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'alert' AND `active` = :active", ['active' => $bActiveOnly ? 1 : 0]);
     }
 
     public function getAgentsByProfileId($iProfileId, $bActiveOnly = true)

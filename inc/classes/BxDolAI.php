@@ -433,7 +433,15 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
     public function getAgentsByAlertUnitAndAction($sUnit, $sAction)
     {
-        return $this->_oDb->getAgentsByAlertUnitAndAction($sUnit, $sAction);
+        $aAgents = [];
+        $a = $this->_oDb->getAgentsWithAlert();
+        foreach ($a as $r) {
+            $aAlert = explode(':', $r['alert']);
+            if (count($aAlert) == 2 && $aAlert[0] == $sUnit && $aAlert[1] == $sAction)
+                $aAgents[] = $r;
+        }
+
+        return $aAgents;
     }
 
     public function getAgentsByProfileId($iProfileId)
