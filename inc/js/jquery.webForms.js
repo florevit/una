@@ -147,19 +147,18 @@
             });
 
             $(this).find("a").on("click", function () {
-                var oIcon = $(this).find("i");
-                var oLink = oIcon.parents("a:first");
-                var oFld = $(this).parents(".bx-form-input-wrapper-password:first").find("input");
-                if (oIcon.hasClass("eye")) {
-                    oIcon.removeClass("eye").addClass("eye-slash");
+                var oLink = $(this);
+                var oFld = oLink.parents(".bx-form-input-wrapper-password:first").find("input");
+                if (oLink.hasClass('password-show')) {
                     oLink.attr('title', _t('_sys_form_input_password_hide'));
                     oFld.attr("type", "text");
                 }
                 else {
-                    oIcon.addClass("eye").removeClass("eye-slash");
                     oLink.attr('title', _t('_sys_form_input_password_show'));
                     oFld.attr("type", "password");
                 }
+                oLink.toggleClass('password-show password-hide');
+                oLink.find('i').toggleClass('eye eye-slash');
             });
 
             $(this).addClass(sClassInited);
