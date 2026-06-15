@@ -126,6 +126,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             $bIsValid = true;
             if($bIsValid) {
                 if(($iId = $oForm->insert($aValsToAdd)) !== false) {
+                    $this->_oDb->cleanCache('sys_agents_with_alert');
                     $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
                 }
                 else
@@ -193,6 +194,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             $bIsValid = true;
             if($bIsValid) {
                 if(($iId = $oForm->update($iId, $aValsToAdd)) !== false) {
+                    $this->_oDb->cleanCache('sys_agents_with_alert');
                     $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
                 }
                 else
@@ -250,6 +252,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
     protected function _delete ($mixedId)
     {
         $mixedResult = parent::_delete($mixedId);
+        $this->_oDb->cleanCache('sys_agents_with_alert');
         if($mixedResult) {
             // $this->_oDb->deleteAutomatorProviders(['automator_id' => (int)$mixedId]);
             // $this->_oDb->deleteAutomatorHelpers(['automator_id' => (int)$mixedId]);
