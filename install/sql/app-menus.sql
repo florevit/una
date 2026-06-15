@@ -6,14 +6,6 @@
 -- 'config_api' settings
 --
 
--- System
-UPDATE `sys_objects_menu` SET `config_api`='{\r\n    name: \'Dashboard\',\r\n    icon: \'LayoutDashboard\',\r\n}' WHERE `object`='sys_account_dashboard';
-UPDATE `sys_objects_menu` SET `config_api`='{\r\n    name: \'Settings\',\r\n   \r\n}' WHERE `object`='sys_account_settings_submenu';
-UPDATE `sys_objects_menu` SET `config_api`='{\r\n    items:[\r\n        {\r\n            name: \'bx_timeline\',\r\n        }, \r\n        {\r\n            name: \'create-post\',\r\n            icon: \'sdd\'\r\n        }, \r\n        {\r\n            name: \'create-discussion\',\r\n        }\r\n    ]\r\n}' WHERE `object`='sys_create_post';
-UPDATE `sys_objects_menu` SET `config_api`='{\r\n    name: \'Connections\',\r\n    icon: \'UsersFour\',\r\n    items: [\r\n        {\r\n            name: \'friends\',\r\n            icon: \'Users\'\r\n        },\r\n        {\r\n            name: \'friend-suggestions\',\r\n            icon: \'CircleUser\'\r\n        },\r\n        {\r\n            name: \'friend-requests\',\r\n            icon: \'UserPlus\'\r\n        },\r\n        {\r\n            name: \'sent-friend-requests\',\r\n            icon: \'UserCog\'\r\n        },\r\n        {\r\n            name: \'follow-suggestions\',\r\n            icon: \'ContactRound\'\r\n        },\r\n        {\r\n            name: \'followers\',\r\n            icon: \'SquareUser\'\r\n        },\r\n        {\r\n            name: \'following\',\r\n            icon: \'SquareUserRound\'\r\n        },\r\n    ],\r\n    add: [\r\n        {\r\n            icon: \'Search\',\r\n            name: \'Search\',\r\n            link: \'\',\r\n            section: \'bx_persons\',\r\n        },\r\n    ],\r\n}' WHERE `object`='sys_con_submenu';
-UPDATE `sys_objects_menu` SET `config_api`='{\r\n    name: \'Notifications\', \r\n    add:[]\r\n}' WHERE `object`='sys_ntfs_submenu';
-
-
 --
 -- 'active_api' switch
 --
@@ -78,6 +70,10 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_wiki' AND `modu
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_wiki' AND `module`='system' AND `name`='history';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_favorite_list' AND `module`='system' AND `name`='edit';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_favorite_list' AND `module`='system' AND `name`='delete';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_studio_account_popup' AND `module`='system' AND `name`='account';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_studio_account_popup' AND `module`='system' AND `name`='edit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_studio_account_popup' AND `module`='system' AND `name`='language';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_studio_account_popup' AND `module`='system' AND `name`='logout';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_con_submenu' AND `module`='system' AND `name`='friends';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_con_submenu' AND `module`='system' AND `name`='friend-suggestions';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_con_submenu' AND `module`='system' AND `name`='friend-requests';

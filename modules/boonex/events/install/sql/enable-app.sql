@@ -1,7 +1,5 @@
 -- PAGES: config_api
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'profile\',\r\n    blocks: {\r\n        col00: {\r\n            name: \'system:get_create_post_form\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        col0: {\r\n            name: \'bx_timeline:get_block_post_profile\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        col1: {\r\n            name: \'bx_timeline:get_block_view_profile\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            perLine: 1,\r\n        },\r\n        col5: {\r\n            name: \'bx_events:sessions\',\r\n            showTitle: true,\r\n            showBg: true,\r\n            perLine: 1,\r\n            sidebar: true,\r\n            showPad: true,\r\n        },\r\n        col2: {\r\n            name: \'bx_events:entity_info\',\r\n            showTitle: true,\r\n            showBg: true,\r\n            perLine: 1,\r\n            sidebar: true,\r\n            showPad: true,\r\n        },\r\n        col3: {\r\n            name: \'bx_events:entity_text_block\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            perLine: 1,\r\n            sidebar: true,\r\n            showPad: true,\r\n        },\r\n        col4: {\r\n            name: \'system:locations_map\',\r\n            showTitle: true,\r\n            showBg: true,\r\n            perLine: 1,\r\n            sidebar: true,\r\n            showPad: true,\r\n        },\r\n    },\r\n    headerSettings: {\r\n        offset: false,\r\n        header: false\r\n    },\r\n}' WHERE `object`='bx_events_view_profile';
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'navigator\',\r\n    blocks: {\r\n        browse: {\r\n            perLine: 2,\r\n            name: \'bx_events:browse_recent_profiles\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n    },\r\n}' WHERE `object`='bx_events_home';
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'navigator\',\r\n    blocks: {\r\n        browse: {\r\n            name: \'bx_events:browse_top_profiles\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            perLine: 2,\r\n        },\r\n    },\r\n}' WHERE `object`='bx_events_top';
+UPDATE `sys_pages_blocks` SET `config_api`='{\r\n\"content_type\":\"browse_simple\",\r\n\"header_more_url\":\"/events-home\",\r\n\"view\":\"row\"\r\n}' WHERE `object`='sys_explore' AND `module`='bx_events' AND `title_system`='_bx_events_page_block_title_sys_featured_entries_view_showcase';
 
 -- PAGES: active_api
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_create_profile' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_create_profile';
@@ -25,7 +23,6 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_profile_i
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_profile_pricing' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_profile_pricing';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_home' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_featured_profiles';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_home' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_latest_profiles';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_home' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_past_profiles';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_top' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_top_profiles';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_context' AND `module`='bx_events' AND `title_system`='_bx_events_page_block_title_sys_entries_in_context' AND `title`='_bx_events_page_block_title_entries_in_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_context' AND `module`='bx_events' AND `title_system`='_bx_events_page_block_title_sys_calendar_in_context' AND `title`='_bx_events_page_block_title_calendar_in_context';
@@ -43,11 +40,7 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_favorites
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_favorites' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_favorites_entries_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_favorites' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_favorites_entries_actions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_joined' AND `module`='bx_events' AND `title_system`='_bx_events_page_block_title_sys_joined_calendar' AND `title`='_bx_events_page_block_title_joined_calendar';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_upcoming' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_calendar_1700744160';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_followed_events' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_calendar_1700744393';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_joined_events' AND `module`='bx_events' AND `title_system`='' AND `title`='_sys_block_type_service_1700744591';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_view_profile' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_profile_sessions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_profile_sessions' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_profile_sessions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_events_questionnaire' AND `module`='bx_events' AND `title_system`='' AND `title`='_bx_events_page_block_title_edit_questionnaire';
@@ -73,6 +66,7 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_acti
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions' AND `module`='bx_events' AND `name`='profile-set-badges';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions' AND `module`='bx_events' AND `name`='ical-export';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions' AND `module`='bx_events' AND `name`='profile-actions-more';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions' AND `module`='bx_events' AND `name`='profile-check-in';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_more' AND `module`='bx_events' AND `name`='edit-event-profile';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_more' AND `module`='bx_events' AND `name`='event-pricing';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_more' AND `module`='bx_events' AND `name`='invite-to-event';
@@ -84,6 +78,7 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_acti
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_all' AND `module`='bx_events' AND `name`='profile-fan-remove';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_all' AND `module`='bx_events' AND `name`='profile-subscribe-add';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_all' AND `module`='bx_events' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_actions_all' AND `module`='bx_events' AND `name`='profile-check-in';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_meta' AND `module`='bx_events' AND `name`='members';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_meta' AND `module`='bx_events' AND `name`='subscribers';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_events_view_meta' AND `module`='bx_events' AND `name`='views';

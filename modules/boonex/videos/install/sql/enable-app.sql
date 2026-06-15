@@ -1,5 +1,5 @@
 -- PAGES: config_api
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'post\',\r\n    top: true,\r\n    blocks: {\r\n        author: {\r\n            name: \'bx_videos:entity_author\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            forList: true,\r\n            forHeader: true,\r\n        },\r\n        text: {\r\n            name: \'bx_videos:entity_text_block\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            forList: true,\r\n        },\r\n        attachments: {\r\n            name: \'bx_videos:entity_attachments\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            forList: true,\r\n        },\r\n        actions: {\r\n            name: \'bx_videos:entity_all_actions\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            forList: true,\r\n        },\r\n        \'comments-empty\': {\r\n            name: \'static:comments_empty\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            forList: true,\r\n        },\r\n        comments: {\r\n            name: \'bx_videos:entity_comments\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n    },\r\n    headerSettings: {\r\n        header: false,\r\n        footer: false,\r\n        offset: false,\r\n        backButton: true,\r\n        title: false,\r\n    },\r\n}' WHERE `object`='bx_videos_view_entry';
+UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'post\',\r\n   \r\n}' WHERE `object`='bx_videos_view_entry';
 
 -- PAGES: active_api
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_create_entry' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_create_entry';
@@ -13,7 +13,6 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entr
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entry' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_entry_comments';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entry' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_entry_location';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entry' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_featured_entries_view_extended';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entry' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_entry_reports';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_view_entry_comments' AND `module`='bx_videos' AND `title_system`='_bx_videos_page_block_title_entry_comments' AND `title`='_bx_videos_page_block_title_entry_comments_link';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_popular' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_popular_entries';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_top' AND `module`='bx_videos' AND `title_system`='' AND `title`='_bx_videos_page_block_title_top_entries';
@@ -66,3 +65,4 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' 
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='date';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='rating';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='views';

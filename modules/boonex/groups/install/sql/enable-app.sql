@@ -1,9 +1,13 @@
 -- PAGES: config_api
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'profile\',\r\n    blocks: {\r\n        col00: {\r\n            name: \'system:get_create_post_form\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        col1: {\r\n            name: \'bx_timeline:get_block_view_profile\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            perLine: 1,\r\n        },\r\n        leaderboard2: {\r\n            name: \'bx_reputation:get_block_widget\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            sidebar: true,\r\n        },\r\n        col3: {\r\n            name: \'bx_posts:browse_public\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            sidebar: true,\r\n        },\r\n        col2: {\r\n            name: \'bx_groups:entity_info\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            sidebar: true,\r\n        },\r\n        col4: {\r\n            name: \'bx_groups:entity_text_block\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            sidebar: true,\r\n        },\r\n        col5: {\r\n            name: \'bx_invites:get_block_invite\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            sidebar: true,\r\n        },\r\n    },\r\n    headerSettings: {\r\n        offset: false,\r\n        header: false,\r\n        cover: \'group\'\r\n    },\r\n}' WHERE `object`='bx_groups_view_profile';
+UPDATE `sys_pages_blocks` SET `config_api`='{\r\n    layout: \'navigator\',\r\n    blocks: {\r\n        browse: { name: \'system:get_results\', showTitle: false, showBg: false},\r\n        search: { name: \'system:get_form\', showTitle: false, showBg: false, sidebar: false, leftbar: true },\r\n    }\r\n}' WHERE `object`='bx_groups_search' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_search_results';
+UPDATE `sys_pages_blocks` SET `config_api`='{\r\n\"content_type\":\"browse_simple\",\r\n\"header_more_url\":\"/groups-home\",\r\n\"view\":\"row\"\r\n}' WHERE `object`='sys_explore' AND `module`='bx_groups' AND `title_system`='_bx_groups_page_block_title_sys_featured_entries_view_showcase';
+
 
 -- PAGES: active_api
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_create_profile' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_create_profile';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_profile_info';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_fans';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_admins';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_profile_description';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile_closed' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_profile_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile_closed' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_fans';
@@ -31,7 +35,6 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_favorites
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_favorites' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_favorites_entries_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_favorites' AND `module`='bx_groups' AND `title_system`='' AND `title`='_bx_groups_page_block_title_favorites_entries_actions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_fans' AND `module`='bx_groups' AND `title_system`='_bx_groups_page_block_title_system_fans' AND `title`='_bx_groups_page_block_title_fans_link';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_manage_item' AND `module`='bx_groups' AND `title_system`='_bx_groups_page_block_title_system_fans_manage' AND `title`='_bx_groups_page_block_title_fans_link';
 
@@ -55,12 +58,9 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_acti
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='edit-group-profile';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='invite-to-group';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='delete-group-profile';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='join-group-profile';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-fan-add';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-fan-remove';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-subscribe-add';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-subscribe-remove';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-fans';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-subscriptions';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='members';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='views';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='votes';
@@ -78,5 +78,6 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_m
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='leave';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='subscribe';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='unsubscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='ignore-join';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_menu_manage_tools' AND `module`='bx_groups' AND `name`='clear-reports';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_menu_manage_tools' AND `module`='bx_groups' AND `name`='delete';

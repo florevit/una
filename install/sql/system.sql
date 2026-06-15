@@ -884,8 +884,8 @@ INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `hidden`, `or
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, 'sys_api_root_page_guest', '_adm_stg_cpt_option_sys_api_root_page_guest', 'home', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_options_api_root_page_guest";s:5:"class";s:13:"TemplServices";}', '', '', 1),
-(@iCategoryId, 'sys_api_root_page_member', '_adm_stg_cpt_option_sys_api_root_page_member', 'splash', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:32:"get_options_api_root_page_member";s:5:"class";s:13:"TemplServices";}', '', '', 3),
+(@iCategoryId, 'sys_api_root_page_guest', '_adm_stg_cpt_option_sys_api_root_page_guest', 'splash', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_options_api_root_page_guest";s:5:"class";s:13:"TemplServices";}', '', '', 1),
+(@iCategoryId, 'sys_api_root_page_member', '_adm_stg_cpt_option_sys_api_root_page_member', 'home', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:32:"get_options_api_root_page_member";s:5:"class";s:13:"TemplServices";}', '', '', 3),
 (@iCategoryId, 'sys_api_menu_top', '_adm_stg_cpt_option_sys_api_menu_top', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:24:"get_options_api_menu_top";s:5:"class";s:13:"TemplServices";}', '', '', 5),
 (@iCategoryId, 'sys_api_context_switcher', '_adm_stg_cpt_option_sys_api_context_switcher', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:32:"get_options_api_context_switcher";s:5:"class";s:13:"TemplServices";}', '', '', 6),
 (@iCategoryId, 'sys_api_context_connection', '_adm_stg_cpt_option_sys_api_context_connection', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:34:"get_options_api_context_connection";s:5:"class";s:13:"TemplServices";}', '', '', 7),

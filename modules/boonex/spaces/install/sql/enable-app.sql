@@ -1,5 +1,4 @@
 -- PAGES: config_api
-UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'profile\',\r\n    blocks: {\r\n        col3: {\r\n            name: \'bx_spaces:entity_cover\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            showPad: false,\r\n            sidebar: true,\r\n            list: true,\r\n        },\r\n        col001: {\r\n            name: \'bx_spaces:fans\',\r\n            showTitle: true,\r\n            showBg: true,\r\n            showPad: true,\r\n        },\r\n        col002: {\r\n            name: \'bx_spaces:admins\',\r\n            showTitle: true,\r\n            showBg: true,\r\n            showPad: true,\r\n        },\r\n        col00: {\r\n            name: \'system:get_create_post_form\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        col1: {\r\n            name: \'bx_timeline:get_block_view_profile\',\r\n            showTitle: false,\r\n            showBg: false,\r\n            perLine: 1,\r\n        },                \r\n        col2: {\r\n            name: \'bx_spaces:entity_info\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            showPad: true,\r\n            sidebar: true,\r\n        },\r\n        col4: {\r\n            name: \'bx_spaces:entity_text_block\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            showPad: true,\r\n            sidebar: true,\r\n        },\r\n    },\r\n}' WHERE `object`='bx_spaces_view_profile';
 
 -- PAGES: active_api
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_create_profile' AND `module`='bx_spaces' AND `title_system`='' AND `title`='_bx_spaces_page_block_title_create_profile';
@@ -36,7 +35,6 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_favorites
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_favorites' AND `module`='bx_spaces' AND `title_system`='' AND `title`='_bx_spaces_page_block_title_favorites_entries_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_favorites' AND `module`='bx_spaces' AND `title_system`='' AND `title`='_bx_spaces_page_block_title_favorites_entries_actions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
 
 
 -- MENUS:
@@ -53,8 +51,6 @@ UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboa
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='join-space-profile';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-fan-add';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-subscribe-add';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-fan-remove';
-UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-subscribe-remove';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='edit-space-profile';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='edit-space-pricing';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='delete-space-profile';
