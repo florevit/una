@@ -1,15 +1,12 @@
 function BxNtfsView(oOptions) {
-	this._sActionsUri = oOptions.sActionUri;
-    this._sActionsUrl = oOptions.sActionUrl;
+    BxNtfsMain.call(this, oOptions);
+
     this._sObjName = oOptions.sObjName == undefined ? 'oNtfsView' : oOptions.sObjName;
     this._iOwnerId = oOptions.iOwnerId == undefined ? 0 : oOptions.iOwnerId;
-    this._sAnimationEffect = oOptions.sAnimationEffect == undefined ? 'slide' : oOptions.sAnimationEffect;
-    this._iAnimationSpeed = oOptions.iAnimationSpeed == undefined ? 'slow' : oOptions.iAnimationSpeed;
-    this._aHtmlIds = oOptions.aHtmlIds == undefined ? {} : oOptions.aHtmlIds;
-    this._oRequestParams = oOptions.oRequestParams == undefined ? {} : oOptions.oRequestParams;
 }
 
-BxNtfsView.prototype = new BxNtfsMain();
+BxNtfsView.prototype = Object.create(BxNtfsMain.prototype);
+BxNtfsView.prototype.constructor = BxNtfsView;
 
 /**
  * Is needed to switch between different browsing types dynamically.
