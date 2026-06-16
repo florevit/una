@@ -1645,6 +1645,11 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         return $this->serviceCheckAllowedProfileView($iContentId);
     }
 
+    public function serviceCheckSpacePrivacyForProfile($iContentId, $iProfileId = false)
+    {
+        return $this->serviceCheckAllowedWithContentForProfile('View', $iContentId, $iProfileId);
+    }
+
     /**
      * Check if the profile can be viewed.
      * 

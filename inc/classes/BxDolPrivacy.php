@@ -758,14 +758,14 @@ class BxDolPrivacy extends BxDolFactory implements iBxDolFactoryObject
         ));
         return $bRv;
     }
-    
+
     public function checkSpace($aObject, $iViewerId)
     {
         $oProfile = BxDolProfile::getInstance(-$aObject['group_id']);
         if (!$oProfile)
             return false;
 
-        return CHECK_ACTION_RESULT_ALLOWED === BxDolService::call($oProfile->getModule(), 'check_space_privacy', array($oProfile->getContentId()));
+        return CHECK_ACTION_RESULT_ALLOWED === bx_srv($oProfile->getModule(), 'check_space_privacy_for_profile', [$oProfile->getContentId(), $iViewerId]);
     }
 
     public function checkMeOnly($iOwnerId, $iViewerId)
