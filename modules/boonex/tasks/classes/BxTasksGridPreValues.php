@@ -21,6 +21,10 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
 
         parent::__construct ($aOptions, $oTemplate);
 
+        $this->_aConfirmMessages = [
+            'delete' => _t('_bx_tasks_grid_action_confirm_pv_delete')
+        ];
+
         if(($sFfName = 'profile_id') && ($iValue = bx_get($sFfName)) !== false) 
             $this->setContextPid($iValue);
         
