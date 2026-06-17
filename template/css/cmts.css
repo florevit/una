@@ -99,6 +99,10 @@ span.cmt-reply-to a .bx-def-icon-size {
 .cmt-counter .bx-base-pofile-unit-online {
     display: none;
 }
+.cmt-counter .cmt-counter-icon svg {
+    width: 1.0rem;
+    height: 1.0rem;
+}
 .cmt-counter .cmt-counter-text {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
