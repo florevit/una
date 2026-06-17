@@ -61,7 +61,8 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             $aItems = $this->_oModule->_oDb->getPreValues([
                 'sample' => 'context_list', 
                 'context_id' => $this->_iContextId, 
-                'list' => 'type'
+                'list' => 'type',
+                'active' => 1
             ]);
 
             if($aItems && is_array($aItems)) {

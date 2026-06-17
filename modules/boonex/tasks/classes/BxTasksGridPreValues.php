@@ -106,6 +106,16 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
     }
 
+    public function performActionActivate()
+    {
+    	parent::performActionEnable(1);
+    }
+
+    public function performActionDeactivate()
+    {
+        parent::performActionEnable(0);
+    }
+
     protected function _getActionAdd($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
     {
         if(!$this->_sList)

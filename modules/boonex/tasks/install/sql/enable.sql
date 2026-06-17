@@ -508,16 +508,20 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRIDS: pre lists and values
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_pre_values', 'Sql', 'SELECT `tpv`.*, `tpl`.`title` AS `list_title`, `tpl`.`use_color` AS `list_color`, `tpl`.`use_multiselect` AS `list_multiselect` FROM `bx_tasks_pre_values` AS `tpv` INNER JOIN `bx_tasks_pre_lists` AS `tpl` ON `tpv`.`list`=`tpl`.`name` WHERE 1 ', 'bx_tasks_pre_values', 'id', 'order', '', '', 20, NULL, 'start', '', 'tpv`.`name,tpv`.`title,tpl`.`title', '', 'like', '', '', 2147483647, 'BxTasksGridPreValues', 'modules/boonex/tasks/classes/BxTasksGridPreValues.php');
+('bx_tasks_pre_values', 'Sql', 'SELECT `tpv`.*, `tpl`.`title` AS `list_title`, `tpl`.`use_color` AS `list_color`, `tpl`.`use_multiselect` AS `list_multiselect` FROM `bx_tasks_pre_values` AS `tpv` INNER JOIN `bx_tasks_pre_lists` AS `tpl` ON `tpv`.`list`=`tpl`.`name` WHERE 1 ', 'bx_tasks_pre_values', 'id', 'order', 'active', '', 20, NULL, 'start', '', 'tpv`.`name,tpv`.`title,tpl`.`title', '', 'like', '', '', 2147483647, 'BxTasksGridPreValues', 'modules/boonex/tasks/classes/BxTasksGridPreValues.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
-('bx_tasks_pre_values', 'order', '', '10%', 0, 0, '', 1),
-('bx_tasks_pre_values', 'title', '_bx_tasks_grid_column_title_pv_title', '70%', 0, 0, '', 2),
-('bx_tasks_pre_values', 'actions', '', '20%', 0, 0, '', 3);
+('bx_tasks_pre_values', 'checkbox', '_sys_select', '3%', 0, 0, '', 1),
+('bx_tasks_pre_values', 'order', '', '3%', 0, 0, '', 2),
+('bx_tasks_pre_values', 'switcher', '_bx_tasks_grid_column_title_pv_active', '9%', 0, 0, '', 3),
+('bx_tasks_pre_values', 'title', '_bx_tasks_grid_column_title_pv_title', '65%', 0, 0, '', 4),
+('bx_tasks_pre_values', 'actions', '', '20%', 0, 0, '', 5);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
 ('bx_tasks_pre_values', 'independent', 'add', '_bx_tasks_grid_action_title_pv_add', '', 0, 0, 1),
-('bx_tasks_pre_values', 'bulk', 'delete', '_bx_tasks_grid_action_title_pv_delete', '', 0, 1, 1),
+('bx_tasks_pre_values', 'bulk', 'activate', '_bx_tasks_grid_action_title_pv_activate', '', 0, 0, 1),
+('bx_tasks_pre_values', 'bulk', 'deactivate', '_bx_tasks_grid_action_title_pv_deactivate', '', 0, 0, 2),
+('bx_tasks_pre_values', 'bulk', 'delete', '_bx_tasks_grid_action_title_pv_delete', '', 0, 1, 3),
 ('bx_tasks_pre_values', 'single', 'edit', '_bx_tasks_grid_action_title_pv_edit', 'pencil-alt', 1, 0, 1),
 ('bx_tasks_pre_values', 'single', 'delete', '_bx_tasks_grid_action_title_pv_delete', 'remove', 1, 1, 2);
 

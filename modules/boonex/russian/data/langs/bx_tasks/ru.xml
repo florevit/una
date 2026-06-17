@@ -444,9 +444,12 @@
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_context_module"><![CDATA[Любой модуль]]></string>
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Любая задача]]></string>
 
+    <string name="_bx_tasks_grid_column_title_pv_active"><![CDATA[Активные]]></string>
     <string name="_bx_tasks_grid_column_title_pv_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_grid_action_title_pv_add"><![CDATA[Добавить]]></string>
     <string name="_bx_tasks_grid_action_title_pv_edit"><![CDATA[Редактировать]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_activate"><![CDATA[Активировать]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_deactivate"><![CDATA[Деактивировать]]></string>
     <string name="_bx_tasks_grid_action_title_pv_delete"><![CDATA[Удалить]]></string>
     <string name="_bx_tasks_grid_action_confirm_pv_delete"><![CDATA[Это действие удалит элемент из всех задач во всех контекстах, и его нельзя будет отменить. Вы хотите продолжить?]]></string>
     <string name="_bx_tasks_grid_filter_item_title_pv_select_one_list"><![CDATA[Выберите список...]]></string>

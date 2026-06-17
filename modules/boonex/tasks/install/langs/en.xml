@@ -447,9 +447,12 @@
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_context_module"><![CDATA[Any Module]]></string>
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Any Task]]></string>
 
+    <string name="_bx_tasks_grid_column_title_pv_active"><![CDATA[Active]]></string>
     <string name="_bx_tasks_grid_column_title_pv_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_grid_action_title_pv_add"><![CDATA[Add]]></string>
     <string name="_bx_tasks_grid_action_title_pv_edit"><![CDATA[Edit]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_activate"><![CDATA[Activate]]></string>
+    <string name="_bx_tasks_grid_action_title_pv_deactivate"><![CDATA[Deactivate]]></string>
     <string name="_bx_tasks_grid_action_title_pv_delete"><![CDATA[Delete]]></string>
     <string name="_bx_tasks_grid_action_confirm_pv_delete"><![CDATA[This action will remove the item from all tasks across the contexts and it cannot be undone. Do you want to preceed?]]></string>
     <string name="_bx_tasks_grid_filter_item_title_pv_select_one_list"><![CDATA[Select list...]]></string>
