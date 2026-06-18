@@ -623,7 +623,7 @@ class BxDolSearchResult implements iBxDolReplaceable
             'per_page' => $this->aCurrent['paginate']['perPage'],
             'start' => $this->aCurrent['paginate']['start'],
             'type' => $this->_sMode,
-            'view' => $this->_aParams['unit_view']
+            'view' => $this->_aParams['unit_view'] ?? ''
         ];
         
         if ($sHomeUrl){

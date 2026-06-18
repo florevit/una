@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_pre_values` (
   `order` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
   `color` varchar(128) NOT NULL DEFAULT '',
+  `active` tinyint(4) NOT NULL DEFAULT '1', 
   PRIMARY KEY (`id`),
   UNIQUE KEY `list_value` (`list`, `value`(191))
 );

@@ -3775,8 +3775,8 @@ class BxBaseModGeneralModule extends BxDolModule
             $aBlock = BxDolPage::getBlockProcessing();
 
             $sContentType = 'browse';
-            if(($sK = 'config_api') && $aBlock[$sK] && is_array($aBlock[$sK]))
-                $sContentType = $aBlock[$sK]['content_type'] ?? $sContentType;
+            if(($aConfigApi = $aBlock['config_api'] ?? false) && is_array($aConfigApi))
+                $sContentType = $aConfigApi['content_type'] ?? $sContentType;
 
             $bBrowseSimple = $sContentType == 'browse_simple';
 

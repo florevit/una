@@ -186,6 +186,11 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
 
         bx_content_cache_del_by_prefix('sprofile_unit_vars:' . $oEditedProfile->id() . ':');
 
+        if(($oSockets = BxDolSockets::getInstance()) && $oSockets->isEnabled()) {
+            $aProfileData = BxDolProfile::getDataForPage($oEditedProfile);
+            $oSockets->sendEvent('profile', $aContentInfo['profile_id'], 'changed', json_encode($aProfileData));
+        }
+
         return '';
     }
 

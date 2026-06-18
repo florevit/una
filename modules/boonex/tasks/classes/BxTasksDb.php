@@ -551,6 +551,13 @@ class BxTasksDb extends BxBaseModTextDb
                     ];
 
                     $sWhereClause = "AND `tpv`.`context_id` = :context_id AND `tpv`.`list` = :list";
+                    
+                    if(($iActive = $aParams['active'] ?? false) !== false) {
+                        $aMethod['params'][2]['active'] = (int)$iActive;
+
+                        $sWhereClause .= " AND `tpv`.`active` = :active";
+                    }
+
                     $sOrderClause = "`tpv`.`order` ASC";
                     break;
             }
