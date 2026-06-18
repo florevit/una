@@ -1,4 +1,5 @@
 
+TRUNCATE TABLE `sys_alerts_desc`;
 INSERT INTO `sys_alerts_desc` (`unit`, `action`, `description`) VALUES
 ('system', 'check_send_mail', 'hook for disabling mail sending'),
 ('system', 'before_send_mail', 'hook before mail sending'),
@@ -41,8 +42,8 @@ INSERT INTO `sys_alerts_desc` (`unit`, `action`, `description`) VALUES
 ('account', 'confirm', 'hook in email confirmation $oAccount->updateEmailConfirmed'),
 ('account', 'edited', 'hook on account edited $oAccount->updatePassword'),
 ('account', 'set_phone', 'hook after accout password changed'),
-('account', 'before_switch_context', 'hook before switch profile_id frof current logged user'),
-('account', 'switch_context', 'hook before switch profile_id frof current logged user'),
+('account', 'before_switch_context', 'hook before switch profile_id from current logged user'),
+('account', 'switch_context', 'hook before switch profile_id from current logged user'),
 ('account', 'account_name', 'hook on get account display name'),
 ('account', 'get_limit_profiles_number', 'hook on get account limit on the number of profiles'),
 ('account', 'before_delete', 'hook on before delete account,'),
