@@ -404,7 +404,7 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
         $ret = null;
         /**
          * @hooks
-         * @hookdef hook-account-before_switch_context 'account', 'before_switch_context' - hook before switch profile_id frof current logged user
+         * @hookdef hook-account-before_switch_context 'account', 'before_switch_context' - hook before switch profile_id from current logged user
          * - $unit_name - equals `account`
          * - $action - equals `before_switch_context` 
          * - $object_id - account id 
@@ -425,7 +425,7 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
         
         /**
          * @hooks
-         * @hookdef hook-account-switch_context 'account', 'switch_context' - hook before switch profile_id frof current logged user
+         * @hookdef hook-account-switch_context 'account', 'switch_context' - hook before switch profile_id from current logged user
          * - $unit_name - equals `account`
          * - $action - equals `switch_context` 
          * - $object_id - account id 
