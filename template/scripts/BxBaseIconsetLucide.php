@@ -82,6 +82,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'info-circle' => 'info',
             'keyround' => 'key-round',
             'language' => 'languages',
+            'list-alt' => 'list',
             'linkedin-in' => 'linkedin',
             'lockopen' => 'unlock',
             'mail-bulk' => 'mails',

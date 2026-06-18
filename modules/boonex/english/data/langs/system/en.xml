@@ -1168,6 +1168,7 @@
     <string name="_adm_lmi_cpt_logo"><![CDATA[Logo]]></string>
     <string name="_adm_lmi_cpt_menus"><![CDATA[Menus]]></string>
     <string name="_adm_lmi_cpt_origins"><![CDATA[Origins]]></string>
+    <string name="_adm_lmi_cpt_pages"><![CDATA[Pages]]></string>
     <string name="_adm_lmi_cpt_pre_lists"><![CDATA[Data Lists]]></string>
     <string name="_adm_lmi_cpt_pre_values"><![CDATA[Data Items]]></string>
     <string name="_adm_lmi_cpt_providers"><![CDATA[Providers]]></string>

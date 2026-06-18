@@ -1,13 +1,7 @@
 /*--- Panel Top style ---*/
-div.bx-std-pt-pages {
-    position: relative;
-    float: left;
-}
+div.bx-std-pt-types div.bx-form-element-wrapper,
 div.bx-std-pt-pages div.bx-form-element-wrapper {
-    width: 165px;
-}
-div.bx-std-pt-buttons {
-    float: right;
+    width: 10rem;
 }
 
 /*--- Main section style ---*/

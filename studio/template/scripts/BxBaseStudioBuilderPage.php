@@ -118,40 +118,19 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
     function getPageMenu($aMenu = [], $aMarkers = [])
     {
         $aMenuItems = [
-            BX_DOL_STUDIO_MODULE_SYSTEM => [
-                'name' => BX_DOL_STUDIO_MODULE_SYSTEM,
-                'icon' => 'mi-bp-system.svg',
-                'icon_bg' => true,
-                'title' => '_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_SYSTEM,
-            ],
-            BX_DOL_STUDIO_MODULE_CUSTOM => [
-                'name' => BX_DOL_STUDIO_MODULE_CUSTOM,
-                'icon' => 'mi-bp-custom.svg',
-                'icon_bg' => true,
-                'title' => '_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_CUSTOM,
-            ]
+            'pages' => ['icon' => 'mi-bp-system.svg', 'link' => 'builder_page.php']
         ];
 
-        $aModulesDb = $this->oDb->getPages(['type' => 'modules_with_pages']);
-        foreach($aModulesDb as $aModuleDb) {
-            $sName = $aModuleDb['name'];
-            if($sName == BX_DOL_STUDIO_MODULE_SYSTEM)
-                continue;
-
-            $aMenuItems[] = [
-                'name' => $sName,
-                'icon' => BxDolStudioUtils::getModuleIcon($aModuleDb, 'menu', false),
-                'icon_bg' => false,
-                'title' => BxDolStudioUtils::getModuleTitle($sName)
-            ]; 
-        }
-
         $aMenu = [];
-        foreach($aMenuItems as $aMenuItem)
-            $aMenu[] = array_merge($aMenuItem, [
-                'link' =>  sprintf($this->sTypeUrl, $aMenuItem['name']),
-                'selected' => $aMenuItem['name'] == $this->sType
-            ]);
+        foreach($aMenuItems as $sMenuItem => $aItem)
+            $aMenu[] = [
+                'name' => $sMenuItem,
+                'icon' => $aItem['icon'],
+                'icon_bg' => true,
+                'link' => $aItem['link'],
+                'title' => _t('_adm_lmi_cpt_' . $sMenuItem),
+                'selected' => true
+            ];
 
         return parent::getPageMenu($aMenu);
     }
@@ -253,7 +232,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             'type' => $this->sType,
             'page' => $this->sPage,
             'html_ids' => json_encode($this->aHtmlIds),
-            'languahes' => json_encode($aLanguages),
+            'languages' => json_encode($aLanguages),
             'content' => $this->getBlockCode(array(
                 'items' => $sContent
             ))
@@ -1985,12 +1964,45 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
     {
         $sJsObject = $this->getPageJsObject();
 
-        $oForm = new BxTemplStudioFormView(array());
+        /* */
+        
+        $aInputTypesValues = [[
+            'key' => BX_DOL_STUDIO_MODULE_SYSTEM,
+            'value' => _t('_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_SYSTEM)
+        ], [
+            'key' => BX_DOL_STUDIO_MODULE_CUSTOM,
+            'value' => _t('_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_CUSTOM)
+        ]];
 
-        $aPages = $this->oDb->getPages(array('type' => 'by_module', 'value' => $this->sType));
+        $aModulesDb = $this->oDb->getPages(['type' => 'modules_with_pages']);
+        foreach($aModulesDb as $aModuleDb) {
+            $sName = $aModuleDb['name'];
+            if($sName == BX_DOL_STUDIO_MODULE_SYSTEM)
+                continue;
 
-        $aCounter = array();
-        $this->oDb->getBlocks(array('type' => 'counter_by_pages'), $aCounter, false);
+            $aInputTypesValues[] = [
+                'key' => $sName,
+                'value' => BxDolStudioUtils::getModuleTitle($sName)
+            ]; 
+        }
+
+        $aInputTypes = [
+            'type' => 'select',
+            'name' => 'page',
+            'attrs' => [
+                'onChange' => 'javascript:' . $sJsObject . '.onChangeType(this)'
+            ],
+            'value' => $this->sType,
+            'values' => $aInputTypesValues
+        ];
+
+        
+        /* */
+
+        $aPages = $this->oDb->getPages(['type' => 'by_module', 'value' => $this->sType]);
+
+        $aCounter = [];
+        $this->oDb->getBlocks(['type' => 'counter_by_pages'], $aCounter, false);
         
         $aInputPagesValues = [];
         foreach($aPages as $aPage) {
@@ -1998,42 +2010,45 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             if(empty($sTitle))
                 $sTitle = _t($aPage['title']);
 
-            $aInputPagesValues[] = array(
+            $aInputPagesValues[] = [
                 'key' => $aPage['object'], 
                 'value' => $sTitle . " (" . (isset($aCounter[$aPage['object']]) ? $aCounter[$aPage['object']] : "0") . ")"
-            );
+            ];
         }
 
         usort($aInputPagesValues, function($aV1, $aV2) {
             return strcmp($aV1['value'], $aV2['value']);
         });
 
-        $aInputPages = array(
+        $aInputPages = [
             'type' => 'select',
             'name' => 'page',
-            'attrs' => array(
-                'onChange' => 'javascript:' . $this->getPageJsObject() . '.onChangePage(this)'
-            ),
+            'attrs' => [
+                'onChange' => 'javascript:' . $sJsObject . '.onChangePage(this)'
+            ],
             'value' => $this->sPage,
             'values' => array_merge([[
                 'key' => '', 
                 'value' => _t('_adm_bp_txt_select_page')]
             ], $aInputPagesValues)
-        );       
+        ];
 
-        $aTmplVarsActions = array();
+        $aTmplVarsActions = [];
         if(($this->sPage != '' && !empty($this->aPageRebuild)) !== false)
             $aTmplVarsActions = $this->_getTmplVarsBlockPanelTopActions();
 
-        return array(
-            'js_object' => $this->getPageJsObject(),
-            'selector' => $oForm->genRow($aInputPages),
+        $oForm = new BxTemplStudioFormView([]);
+
+        return [
+            'js_object' => $sJsObject,
+            'selector_types' => $oForm->genRow($aInputTypes),
+            'selector_pages' => $oForm->genRow($aInputPages),
             'action_page_create' => $this->sActionPageCreate,
-            'bx_if:show_actions' => array(
+            'bx_if:show_actions' => [
                 'condition' => $this->sPage != '',
                 'content' => $aTmplVarsActions
-            )
-        );
+            ]
+        ];
     }
 
     protected function _getTmplVarsBlockPanelTopActions()

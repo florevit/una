@@ -1151,6 +1151,7 @@
 	<string name="_adm_lmi_cpt_levels"><![CDATA[Уровни]]></string>
 	<string name="_adm_lmi_cpt_logo"><![CDATA[Лого]]></string>
 	<string name="_adm_lmi_cpt_menus"><![CDATA[Меню]]></string>
+        <string name="_adm_lmi_cpt_pages"><![CDATA[Страницы]]></string>
 	<string name="_adm_lmi_cpt_pre_lists"><![CDATA[Списки данных]]></string>
 	<string name="_adm_lmi_cpt_pre_values"><![CDATA[Элементы данных]]></string>
         <string name="_adm_lmi_cpt_providers"><![CDATA[Поставщики]]></string>

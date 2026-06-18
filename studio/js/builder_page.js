@@ -44,6 +44,10 @@ function BxDolStudioBuilderPage(oOptions) {
 /**
  * Main page methods.
  */
+BxDolStudioBuilderPage.prototype.onChangeType = function(oSelect) {
+    document.location.href = this.parsePageUrl({type: $(oSelect).val()});
+};
+
 BxDolStudioBuilderPage.prototype.onChangePage = function(oSelect) {
     document.location.href = this.parsePageUrl({page: $(oSelect).val()});
 };
