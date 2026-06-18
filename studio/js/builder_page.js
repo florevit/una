@@ -156,7 +156,7 @@ BxDolStudioBuilderPage.prototype.onChangeModule = function(sName, oLink) {
             bx_loading($this.oHtmlIds['create_block_popup_id'], false);
 
             $('#' + $this.oHtmlIds['block_lists_id'] + ' > div:visible').bx_anim('hide', $this.sAnimationEffect, 0, function() {
-                $(this).parent().append(oData.content);
+                $(this).parent().append(oData.content).bxProcessHtml();
             });
         },
         'json'

@@ -63,6 +63,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'fa-bookmark' => 'bookmark',
             'fa-certificate' => 'badge',
             'fa-check-circle' => 'circle-check', 
+            'fa-grip-horizontal' => 'layout-grid',
             'fa-smile' => 'smile',
             'fa-thumbs-up' => 'thumbs-up',
             'facebook-square' => 'facebook',

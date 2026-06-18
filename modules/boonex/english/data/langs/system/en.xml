@@ -501,7 +501,7 @@
 	<string name="_adm_bp_btn_settings"><![CDATA[Settings]]></string>
 	<string name="_adm_bp_btn_view_page"><![CDATA[View Page]]></string>
 	<string name="_adm_bp_cpt_type_custom"><![CDATA[Custom Pages]]></string>
-	<string name="_adm_bp_cpt_type_modules"><![CDATA[Modules]]></string>
+	<string name="_adm_bp_cpt_type_modules"><![CDATA[Apps Pages]]></string>
 	<string name="_adm_bp_cpt_type_system"><![CDATA[System Pages]]></string>
 	<string name="_adm_bp_dsc_block_content_image_file"><![CDATA[The image will be displayed in block]]></string>
 	<string name="_adm_bp_dsc_block_content_lang"><![CDATA[Enter the content in accordance with the selected language]]></string>
@@ -1168,7 +1168,6 @@
     <string name="_adm_lmi_cpt_logo"><![CDATA[Logo]]></string>
     <string name="_adm_lmi_cpt_menus"><![CDATA[Menus]]></string>
     <string name="_adm_lmi_cpt_origins"><![CDATA[Origins]]></string>
-    <string name="_adm_lmi_cpt_pages"><![CDATA[Pages]]></string>
     <string name="_adm_lmi_cpt_pre_lists"><![CDATA[Data Lists]]></string>
     <string name="_adm_lmi_cpt_pre_values"><![CDATA[Data Items]]></string>
     <string name="_adm_lmi_cpt_providers"><![CDATA[Providers]]></string>

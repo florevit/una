@@ -118,7 +118,9 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
     function getPageMenu($aMenu = [], $aMarkers = [])
     {
         $aMenuItems = [
-            'pages' => ['icon' => 'mi-bp-system.svg', 'link' => 'builder_page.php']
+            BX_DOL_STUDIO_BP_TYPE_SYSTEM => ['icon' => 'mi-bp-system.svg'],
+            BX_DOL_STUDIO_BP_TYPE_CUSTOM => ['icon' => 'mi-bp-custom.svg'],
+            BX_DOL_STUDIO_BP_TYPE_MODULES => ['icon' => 'mi-bp-modules.svg']
         ];
 
         $aMenu = [];
@@ -127,9 +129,9 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                 'name' => $sMenuItem,
                 'icon' => $aItem['icon'],
                 'icon_bg' => true,
-                'link' => $aItem['link'],
-                'title' => _t('_adm_lmi_cpt_' . $sMenuItem),
-                'selected' => true
+                'link' => sprintf($this->sTypeUrl, $sMenuItem),
+                'title' => _t('_adm_bp_cpt_type_' . $sMenuItem),
+                'selected' => $sMenuItem == $this->sType || ($sMenuItem == BX_DOL_STUDIO_BP_TYPE_MODULES && !isset($aMenuItems[$this->sType]))
             ];
 
         return parent::getPageMenu($aMenu);
@@ -1964,40 +1966,35 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
     {
         $sJsObject = $this->getPageJsObject();
 
-        /* */
-        
-        $aInputTypesValues = [[
-            'key' => BX_DOL_STUDIO_MODULE_SYSTEM,
-            'value' => _t('_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_SYSTEM)
-        ], [
-            'key' => BX_DOL_STUDIO_MODULE_CUSTOM,
-            'value' => _t('_adm_bp_cpt_type_' . BX_DOL_STUDIO_MODULE_CUSTOM)
-        ]];
+        $aInputTypes = [];
+        if(!in_array($this->sType, [BX_DOL_STUDIO_BP_TYPE_SYSTEM, BX_DOL_STUDIO_BP_TYPE_CUSTOM])) {
+            $aModulesDb = $this->oDb->getPages(['type' => 'modules_with_pages']);
 
-        $aModulesDb = $this->oDb->getPages(['type' => 'modules_with_pages']);
-        foreach($aModulesDb as $aModuleDb) {
-            $sName = $aModuleDb['name'];
-            if($sName == BX_DOL_STUDIO_MODULE_SYSTEM)
-                continue;
+            $aInputTypesValues = [[
+                'key' => '',
+                'value' => _t('_adm_txt_select_module')
+            ]];
+            foreach($aModulesDb as $aModuleDb) {
+                $sName = $aModuleDb['name'];
+                if($sName == BX_DOL_STUDIO_MODULE_SYSTEM)
+                    continue;
 
-            $aInputTypesValues[] = [
-                'key' => $sName,
-                'value' => BxDolStudioUtils::getModuleTitle($sName)
-            ]; 
+                $aInputTypesValues[] = [
+                    'key' => $sName,
+                    'value' => BxDolStudioUtils::getModuleTitle($sName)
+                ]; 
+            }
+
+            $aInputTypes = [
+                'type' => 'select',
+                'name' => 'page',
+                'attrs' => [
+                    'onChange' => 'javascript:' . $sJsObject . '.onChangeType(this)'
+                ],
+                'value' => $this->sType,
+                'values' => $aInputTypesValues
+            ];
         }
-
-        $aInputTypes = [
-            'type' => 'select',
-            'name' => 'page',
-            'attrs' => [
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeType(this)'
-            ],
-            'value' => $this->sType,
-            'values' => $aInputTypesValues
-        ];
-
-        
-        /* */
 
         $aPages = $this->oDb->getPages(['type' => 'by_module', 'value' => $this->sType]);
 
@@ -2041,7 +2038,12 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
         return [
             'js_object' => $sJsObject,
-            'selector_types' => $oForm->genRow($aInputTypes),
+            'bx_if:show_selector_types' => [
+                'condition' => !empty($aInputTypes),
+                'content' => [
+                    'selector_types' => $oForm->genRow($aInputTypes),
+                ]
+            ],
             'selector_pages' => $oForm->genRow($aInputPages),
             'action_page_create' => $this->sActionPageCreate,
             'bx_if:show_actions' => [

@@ -1,6 +1,8 @@
 <div class="bx-std-pt-cnt flex justify-between items-center">
     <div class="bx-std-pt-selects flex flex-wrap">
-        <div class="bx-std-pt-types m-1">__selector_types__</div>
+        <bx_if:show_selector_types>
+            <div class="bx-std-pt-types m-1">__selector_types__</div>
+        </bx_if:show_selector_types>
         <div class="bx-std-pt-pages m-1">__selector_pages__</div>
     </div>
     <div class="bx-std-pt-buttons flex flex-wrap -m-1">

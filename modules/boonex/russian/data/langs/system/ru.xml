@@ -499,7 +499,7 @@
 	<string name="_adm_bp_btn_settings"><![CDATA[Настройки]]></string>
 	<string name="_adm_bp_btn_view_page"><![CDATA[Просмотреть страницу]]></string>
 	<string name="_adm_bp_cpt_type_custom"><![CDATA[Пользовательские страницы]]></string>
-	<string name="_adm_bp_cpt_type_modules"><![CDATA[Модули]]></string>
+	<string name="_adm_bp_cpt_type_modules"><![CDATA[Страницы приложений]]></string>
 	<string name="_adm_bp_cpt_type_system"><![CDATA[Системные страницы]]></string>
 	<string name="_adm_bp_dsc_block_content_image_file"><![CDATA[Картинка будет отображена в блоке]]></string>
 	<string name="_adm_bp_dsc_block_content_lang"><![CDATA[Введите содержимое в соответствии с выбранным языком]]></string>
@@ -1151,7 +1151,6 @@
 	<string name="_adm_lmi_cpt_levels"><![CDATA[Уровни]]></string>
 	<string name="_adm_lmi_cpt_logo"><![CDATA[Лого]]></string>
 	<string name="_adm_lmi_cpt_menus"><![CDATA[Меню]]></string>
-        <string name="_adm_lmi_cpt_pages"><![CDATA[Страницы]]></string>
 	<string name="_adm_lmi_cpt_pre_lists"><![CDATA[Списки данных]]></string>
 	<string name="_adm_lmi_cpt_pre_values"><![CDATA[Элементы данных]]></string>
         <string name="_adm_lmi_cpt_providers"><![CDATA[Поставщики]]></string>
