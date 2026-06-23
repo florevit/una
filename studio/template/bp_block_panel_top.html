@@ -1,11 +1,11 @@
 <div class="bx-std-pt-cnt flex justify-between items-center">
-    <div class="bx-std-pt-selects flex flex-wrap">
+    <div class="bx-std-pt-bp-selects flex flex-wrap">
         <bx_if:show_selector_types>
-            <div class="bx-std-pt-types m-1">__selector_types__</div>
+            <div class="bx-std-pt-bp-types m-1">__selector_types__</div>
         </bx_if:show_selector_types>
-        <div class="bx-std-pt-pages m-1">__selector_pages__</div>
+        <div class="bx-std-pt-bp-pages m-1">__selector_pages__</div>
     </div>
-    <div class="bx-std-pt-buttons flex flex-wrap -m-1">
+    <div class="bx-std-pt-bp-buttons flex flex-wrap -m-1">
         <button class="bx-btn bx-btn-primary m-1" onclick="javascript:__js_object__.performAction('__action_page_create__');"><bx_text:_adm_bp_btn_create_new /></button>
         <bx_if:show_actions>
             <bx_if:can_view>

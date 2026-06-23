@@ -23,6 +23,15 @@ function BxDolStudioBuilderPage(oOptions) {
         placeholder: 'adm-bp-block adm-bp-block-empty'
     };
 
+    $('div.bx-std-pt-bp-types select').select2({
+        templateSelection: d => d.text
+    });
+
+    $('div.bx-std-pt-bp-pages select').select2({
+        templateResult: this.formatItemPage,
+        templateSelection: d => d.text
+    });
+
     var $this = this;
     $(document).ready(function() {
     	$($this.aSortingConf.parent).sortable({
@@ -40,6 +49,25 @@ function BxDolStudioBuilderPage(oOptions) {
     	});
     });
 }
+
+BxDolStudioBuilderPage.prototype.formatItemPage = function(oItem) {
+    if(!oItem.id) 
+        return oItem.text;
+
+    const sUrl = $(oItem.element).data('url');
+    const iBlocks = $(oItem.element).data('blocks');
+    const sBlocks = parseInt(iBlocks) >= 0 ? iBlocks : _t('_sys_not_available');
+
+    return $(`
+    <div class="adm-bp-page">
+        <div>
+            <div class="adm-bpp-ttl">${oItem.text}</div>
+            <div class="adm-bpp-inf bx-def-font-meta">${sUrl || ''}</div>
+        </div>
+        <div class="adm-bpp-cnt">${sBlocks}</div>
+    </div>
+    `);
+};
 
 /**
  * Main page methods.

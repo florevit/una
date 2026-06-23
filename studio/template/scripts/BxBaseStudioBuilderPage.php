@@ -85,29 +85,31 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                 $oUploader->addCssJs();
         }
 
-        return array_merge(parent::getPageCss(), array(
+        return array_merge(parent::getPageCss(), [
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'codemirror/|codemirror.css',
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'grapesjs/|grapes.min.css',
+            BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'select2/css/|select2.min.css',
             'page_layouts.css', 
             'builder_page.css'
-        ));
+        ]);
     }
 
     function getPageJs()
     {
-        return array_merge(parent::getPageJs(), array(
+        return array_merge(parent::getPageJs(), [
             'codemirror/codemirror.min.js',
             'grapesjs/grapes.min.js',
             'grapesjs/grapesjs-blocks-basic.js',
             'grapesjs/grapesjs-style-bg.js',
             'grapesjs/grapesjs-preset-webpage.min.js',
+            'select2/js/select2.min.js',
             'jquery-ui/jquery-ui.min.js',
             'jquery.ui.touch-punch.min.js',
             'jquery.easing.js',
             'jquery.form.min.js',
             'functions.js',
             'builder_page.js'
-        ));
+        ]);
     }
 
     function getPageJsObject()
@@ -240,10 +242,11 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             ))
         );
 
-        $oTemplate->addJsTranslation(array(
+        $oTemplate->addJsTranslation([
+            '_sys_not_available',
             '_adm_bp_wrn_page_delete',
             '_adm_bp_wrn_page_block_delete'
-        ));
+        ]);
         return $sResult . $oTemplate->parseHtmlByName('builder_page.html', $aTmplVars);
     }
 
@@ -1964,6 +1967,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
     protected function _getTmplVarsBlockPanelTop()
     {
+        $oPermalink = BxDolPermalinks::getInstance();
         $sJsObject = $this->getPageJsObject();
 
         $aInputTypes = [];
@@ -2009,7 +2013,11 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
             $aInputPagesValues[] = [
                 'key' => $aPage['object'], 
-                'value' => $sTitle . " (" . (isset($aCounter[$aPage['object']]) ? $aCounter[$aPage['object']] : "0") . ")"
+                'value' => $sTitle,
+                'attrs' => [
+                    'data-url' => $aPage['url'] ? $oPermalink->permalink($aPage['url']) : '',
+                    'data-blocks' => $aCounter[$aPage['object']] ?? 0
+                ]
             ];
         }
 
@@ -2026,8 +2034,8 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             'value' => $this->sPage,
             'values' => array_merge([[
                 'key' => '', 
-                'value' => _t('_adm_bp_txt_select_page')]
-            ], $aInputPagesValues)
+                'value' => _t('_adm_bp_txt_select_page')
+            ]], $aInputPagesValues)
         ];
 
         $aTmplVarsActions = [];
