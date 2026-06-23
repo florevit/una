@@ -66,7 +66,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'fa-grip-horizontal' => 'layout-grid',
             'fa-smile' => 'smile',
             'fa-thumbs-up' => 'thumbs-up',
-            'facebook-square' => 'facebook',
+            'facebook-square' => 'log-in', //TODO: Brand icon. Update later.
             'file-alt' => 'file',
             'file-alt' => 'file-text',
             'file-export' => 'file-output',
@@ -84,7 +84,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'keyround' => 'key-round',
             'language' => 'languages',
             'list-alt' => 'list',
-            'linkedin-in' => 'linkedin',
+            'linkedin-in' => 'log-in', //TODO: Brand icon. Update later.
             'lockopen' => 'unlock',
             'mail-bulk' => 'mails',
             'map-marker' => 'map-pin',
@@ -96,6 +96,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'photo-video' => 'image-play',
             'plus-circle' => 'plus-circle',
             'qrcode' => 'qr-code',
+            'question' => 'circle-question-mark',
             'question-circle' => 'circle-question-mark',
             'quote-right' => 'quote',
             'remove' => 'x',
@@ -117,6 +118,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'times-circle' => 'x-circle',
             'toolbox' => 'tool-case',
             'trash2' => 'trash-2',
+            'twitter' => 'log-in', //TODO: Brand icon. Update later.
             'unlock-alt' => 'unlock',
             'user' => 'user-round',
             'user-friends' => 'users',
