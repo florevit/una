@@ -2777,10 +2777,10 @@ outlayer@^2.1.0:
     fizzy-ui-utils "^2.0.0"
     get-size "^2.0.2"
 
-ovenplayer@^0.10.51:
-  version "0.10.51"
-  resolved "https://registry.yarnpkg.com/ovenplayer/-/ovenplayer-0.10.51.tgz#123538484f7620a03fb19c2898d0f3d0f857f315"
-  integrity sha512-QSMoGAVwO1ltAOPzIQKGYbcQTSw7SyTQ9eg1spVp5QChp/BvfFYq7CXC2yaLuWrzlOl9t5PdIC9kWO5BCgUF3g==
+ovenplayer@^0.10.52:
+  version "0.10.52"
+  resolved "https://registry.yarnpkg.com/ovenplayer/-/ovenplayer-0.10.52.tgz#09efce927378a4a04d75a03be59e03c69684059b"
+  integrity sha512-waTdjuULWhgmeu5wvCCvrG8MzFMDPOZM6ngw9lsHSE1O9ll3iFfTFh5UR09kPwvwn52YvEnm6ApGsENAIv7tCA==
 
 own-keys@^1.0.1:
   version "1.0.1"
