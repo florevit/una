@@ -85,7 +85,7 @@ class BxTasksCmts extends BxTemplCmts
 
     protected function _getAttachments($aCmt)
     {
-        return !$this->_isAutoComment($aCmt) ? parent::_getAttachments($aCmt) : '';
+        return !$this->_isAutoComment($aCmt) ? parent::_getAttachments($aCmt) : ($this->_bIsApi ? [] : '');
     }
 
     protected function _getTmplVarsAuthor($aCmt)

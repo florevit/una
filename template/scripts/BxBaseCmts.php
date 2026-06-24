@@ -1665,12 +1665,11 @@ class BxBaseCmts extends BxDolCmts
 
     protected function _getAttachments($aCmt)
     {
-        $aTmplImages = array();
         if(!$this->isAttachImageEnabled())
-            return ''; 
+            return $this->_bIsApi ? [] : ''; 
 
-        $aFiles = $this->_oQuery->getFiles($this->_aSystem['system_id'], $aCmt['cmt_id']);
-        if(!empty($aFiles) && is_array($aFiles)) {
+        $aTmplImages = [];
+        if(($aFiles = $this->_oQuery->getFiles($this->_aSystem['system_id'], $aCmt['cmt_id'])) && is_array($aFiles)) {
             $oStorage = BxDolStorage::getObjectInstance($this->getStorageObjectName());
             $oTranscoder = BxDolTranscoderImage::getObjectInstance($this->getTranscoderPreviewName());
 
@@ -1737,10 +1736,9 @@ class BxBaseCmts extends BxDolCmts
                 }
             }
         }
-        
-        if (bx_is_api()){
+
+        if($this->_bIsApi)
             return $aTmplImages;
-        }
 
         return $this->_oTemplate->parseHtmlByName('comment_attachments.html', array(
             'bx_repeat:attached' => $aTmplImages

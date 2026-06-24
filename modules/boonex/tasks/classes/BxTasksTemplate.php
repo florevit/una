@@ -111,8 +111,6 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
     public function entryAssignments ($aProfiles)
     {
-        $CNF = &$this->_oConfig->CNF;
-
         $aTmplVarsProfiles = [];
         foreach($aProfiles as $mixedProfile) {
             $bProfile = is_array($mixedProfile);
@@ -125,10 +123,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             if($bProfile && is_array($mixedProfile['info']))
                 $aUnitParams['template']['vars'] = $mixedProfile['info'];
 
-            $aTmplVarsProfiles[] = [
+            $aTmplVarsProfiles[] = $this->_bIsApi ? BxDolProfile::getData($oProfile) : [
                 'unit' => $oProfile->getUnit(0, $aUnitParams)
             ];
         }
+
+        if($this->_bIsApi)
+            return $aTmplVarsProfiles;
 
         return $aTmplVarsProfiles ? $this->parseHtmlByName('entry-assignments.html', [
             'bx_repeat:profiles' => $aTmplVarsProfiles
@@ -256,7 +257,30 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             $aFilters = json_decode($sFilters, true);
         $iFilterSelected = $aParams['filter'] ?? ($aFilters[$iContextId] ?? 0);
 
-        $sFilters = $this->_getEntriesFilters($iContextId, array_merge($aParams, ['filter_selected' => $iFilterSelected]));
+        $mixedFilters = $this->_getEntriesFilters($iContextId, array_merge($aParams, ['filter_selected' => $iFilterSelected]));
+
+        $aEntries = $this->getEntries($iContextId, array_merge($aParams, [
+            'filter' => $iFilterSelected,
+        ]));
+
+        if($this->_bIsApi)
+            return [
+                'context_id' => $iContextId,
+                'filters' => $mixedFilters,
+                'task_lists' => $aEntries,
+                'permissions' => [
+                    'add_list' => $bAllowAdd,
+                    'add_task' => $bAllowAdd,
+                    'manage_settings' => $bContext,
+                ],
+                'request_urls' => [
+                    'add_list' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=',
+                    'edit_list' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=',
+                    'delete_list' => $this->MODULE . '/delete_task_list&params[]=' . $iContextId . '&params[]=',
+                    'add_task' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=',
+                    'edit_task' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=',
+                ]
+            ];
 
         $this->addCssJs();
         $this->addJs([
@@ -269,11 +293,11 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'object' => $sJsObject,
             'context_id' => $iContextId,
             'bx_if:show_filters' => [
-                'condition' => !empty($sFilters),
+                'condition' => !empty($mixedFilters),
                 'content' => [
                     'object' => $sJsObject,
                     'context_id' => $iContextId,
-                    'filters' => $sFilters
+                    'filters' => $mixedFilters
                 ]
             ],
             'bx_if:allow_add_list' => [
@@ -296,9 +320,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'context_id' => $iContextId,
                 ]
             ],
-            'tasks' => $this->getEntries($iContextId, array_merge($aParams, [
-                'filter' => $iFilterSelected,
-            ])),
+            'task_lists' => $aEntries,
             'js_code' => $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_txt_msg_confirm_tasklist_deletion')])
         ]);
     }
@@ -379,24 +401,32 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 $aTmplVarsMembers = [];
                 foreach($aMembers as $iMember)
                     if(($oProfile = BxDolProfile::getInstance($iMember)) !== false && !($oProfile instanceof BxDolProfileUndefined))
-                        $aTmplVarsMembers[] = ['info' => $oProfile->getUnit(0, ['template' => 'unit_wo_info'])];
+                        $aTmplVarsMembers[] = $this->_bIsApi ? BxDolProfile::getData($oProfile) : ['info' => $oProfile->getUnit(0, ['template' => 'unit_wo_info'])];
 
                 $bCompleted = $aTask[$CNF['FIELD_COMPLETED']] == 1;
+                $sUrl = bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']]));
 
-                $aTmplVarsTasks[] = [
+                $aTmplVarsTasks[] = array_merge([
                     'id' => $aTask[$CNF['FIELD_ID']],
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
-                    'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
+                    'created' => $aTask[$CNF['FIELD_ADDED']],
                     'class' => $bCompleted ? 'completed' : 'uncompleted',
-                    'due' => $aTask[$CNF['FIELD_DUE_DATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUE_DATE']]) : '',
+                    'due' => $aTask[$CNF['FIELD_DUE_DATE']] ?: '',
                     'type' => $aTypes[$aTask[$CNF['FIELD_TYPE']]] ?? '',
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
                     'state' => $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '',
                     'time' => $sTime,
-                    'bx_repeat:members' => $aTmplVarsMembers,
                     'badges' => $oModule->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
-                    'url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']])),
+                    'url' => $sUrl
+                ], $this->_bIsApi ? [
+                    'url' => bx_api_get_relative_url($sUrl),
+                    'members' => $aTmplVarsMembers,
+                    'allow_manage' => $bTasksAllowManage,
+                ] : [
+                    'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
+                    'due' => $aTask[$CNF['FIELD_DUE_DATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUE_DATE']]) : '',
                     'object' => $sJsObject,
+                    'bx_repeat:members' => $aTmplVarsMembers,
                     'bx_if:allow_manage' => [
                         'condition' => $bTasksAllowManage,
                         'content' => [
@@ -412,12 +442,30 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                             'checked' => $bCompleted ? 'checked' : '',
                         ]
                     ]
-                ];
+                ]);
             }
 
+            $iListId = (int)$aList[$CNF['FIELD_ID']];
+
+            if($this->_bIsApi) {
+                $aTmplVarsLists[] = [
+                    'context_id' => $iContextId,
+                    'list_id' => $iListId,
+                    'list_title' => $aList[$CNF['FIELD_TITLE']],
+                    'tasks' => $aTmplVarsTasks,
+                    'permissions' => [
+                        'edit_list' => $bAllowAdd,
+                        'delete_list' => $bAllowManage,
+                        'add_task' => $bAllowAdd,
+                    ]
+                ];
+
+                continue;
+            }
+            
             $sClass = $sCompleted = $sAll = "";
-            if (isset($aFilterValues[$aList[$CNF['FIELD_ID']]])){
-                $sClass = $aFilterValues[$aList[$CNF['FIELD_ID']]];
+            if (isset($aFilterValues[$iListId])){
+                $sClass = $aFilterValues[$iListId];
                 if ($sClass == 'completed')
                     $sCompleted= 'selected';
                 if ($sClass == 'all')
@@ -429,13 +477,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 $aTmplVarsAllowEditList = [
                     'title' => $aList[$CNF['FIELD_TITLE']],
                     'context_id' => $iContextId,
-                    'list_id' => $aList[$CNF['FIELD_ID']],
+                    'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
                 
                 $aTmplVarsAllowAdd = [
                     'context_id' => $iContextId,
-                    'list_id' => $aList[$CNF['FIELD_ID']],
+                    'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
             }
@@ -444,7 +492,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             if($bAllowManage) {
                 $aTmplVarsAllowDeleteList = [
                     'context_id' => $iContextId,
-                    'list_id' => $aList[$CNF['FIELD_ID']],
+                    'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
             }
@@ -470,10 +518,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 ],
                 'bx_repeat:tasks' =>  $aTmplVarsTasks,
                 'context_id' => $iContextId,
-                'list_id' => $aList[$CNF['FIELD_ID']],
+                'list_id' => $iListId,
                 'object' => $sJsObject
             ];
         }
+
+        if($this->_bIsApi)
+            return $aTmplVarsLists;
 
         return $this->parseHtmlByName('tasks.html', [
             'html_id' => $this->_oConfig->getHtmlIds('tasks'),
@@ -538,6 +589,14 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 $aInput['values'][] = ['type' => 'group_end'];
             }
         }
+
+        if($this->_bIsApi)
+            return [
+                'values' => $aInput['values'],
+                'value' => $aInput['value'],
+                'request_url_add' => $this->MODULE . '/create_filter&params[]=' . $iContextId,
+                'request_url_apply' => $this->MODULE . '/apply_filter&params[]=' . $iContextId . '&params[]='
+            ];
 
         $oForm = new BxTemplFormView([]);
         return $oForm->genInputSelect($aInput);

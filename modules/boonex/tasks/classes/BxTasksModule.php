@@ -54,35 +54,312 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         header('Content-Type:text/javascript; charset=utf-8');
         echo(json_encode($a));
     }
-          
+
     public function actionSetCompleted($iContentId, $iCompleted)
     {
-        if(!$this->isAllowManage($iContentId) || !$this->complete($iContentId, $iCompleted))
-            return echoJson(['code' => 1]);
-
-        return echoJson(['code' => 0, 'reload' => 1]);
+        return echoJson($this->serviceSetCompleted($iContentId, $iCompleted));
     }
 
     public function actionApplyFilter($iContextId, $iFilterId)
     {
-        $this->applyFilter($iContextId, $iFilterId);
-
         return echoJson([
-            'content' => $this->_oTemplate->getEntries($iContextId, ['filter' => $iFilterId]),
+            'content' => $this->serviceApplyFilter($iContextId, $iFilterId),
             'eval' => $this->_oConfig->getJsObject('tasks') . '.onApplyFilter(oData)'
         ]);
     }
 
     public function actionCreateFilter($iContextId)
     {
-        $CNF = &$this->_oConfig->CNF;
-        $sJsObject = $this->_oConfig->getJsObject('tasks');
+        $mixedResult = $this->serviceCreateFilter($iContextId);
+        if(is_array($mixedResult))
+            return echoJson($aRes);
+
+        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oConfig->getHtmlIds('filter_popup'), _t('_bx_tasks_popup_f_title_add'), $this->_oTemplate->parseHtmlByName('popup_form.html', [
+            'form_id' => $mixedResult->getId(),
+            'form' => $mixedResult->getCode(true)
+        ]));
+
+        return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
+    }
+
+    public function actionProcessTaskListForm($iContextId, $iId)
+    {
+        $mixedResult = $this->serviceProcessTaskListForm($iContextId, $iId);
+        if(($bReload = is_bool($mixedResult) || is_numeric($mixedResult)) || is_array($mixedResult)) {
+            if($bReload)
+                $mixedResult = [
+                    'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
+                ];
+
+            return echoJson($mixedResult);
+        }
+
+        echo $mixedResult;
+    }
+
+    public function actionDeleteTaskList($iContextId, $iId)
+    {
+        return echoJson($this->serviceDeleteTaskList($iContextId, $iId) ? [
+            'context_id' => $iContextId,
+        ] : []);
+    }
+
+    public function actionProcessTaskForm($iContextId, $iListId)
+    {
+        $mixedResult = $this->serviceProcessTaskForm($iContextId, $iListId);
+        if(($bReload = is_bool($mixedResult) || is_numeric($mixedResult)) || is_array($mixedResult)) {
+            if($bReload)
+                $mixedResult = [
+                    'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
+                ];
+
+            return echoJson($mixedResult);
+        }
+
+        echo $mixedResult;
+    }
+
+    public function actionProcessTaskFormEditProperty($iContentId, $sProperty)
+    {
+        $mixedResult = $this->serviceProcessTaskFormEditProperty($iContentId, $sProperty);
+        if(($bReload = is_bool($mixedResult)) || is_array($mixedResult)) {
+            if($bReload)
+                $mixedResult = [
+                    'eval' => $this->_oConfig->getJsObject('tasks') . '.reload(oData)',
+                ];
+
+            return echoJson($mixedResult);
+        }
+
+        echo $mixedResult;
+    }
+
+    public function actionCalendarData()
+    {
+        // check permissions
+        $aSQLPart = array();
+        $iContextId = (int)bx_get('context_id');
         
+        if(!$this->isAllowView($iContextId))
+            return; 
+		
+        $oPrivacy = BxDolPrivacy::getObjectInstance($this->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
+
+        if($iContextId) {
+            $aSQLPart = $oPrivacy ? $oPrivacy->getContentByGroupAsSQLPart(- $iContextId) : array();
+        }
+
+        // get entries
+        $aEntries = $this->_oDb->getEntriesByDate(bx_get('start'), bx_get('end'), bx_get('event'), $aSQLPart);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($aEntries);
+    }
+
+    public function actionProcessTimer($sAction, $iContentId, $iProfileId)
+    {
+        if(!$this->_iProfileId || $this->_iProfileId != $iProfileId)
+            return echoJson(['msg' => _t('_sys_txt_access_denied')]);
+
+        $aResult = $this->serviceProcessTimer($sAction, $iContentId, $iProfileId);
+        if($aResult['code'] == 0)
+            $aResult = array_merge($aResult, [
+                'content_id' => $iContentId,
+                'profile_id' => $iProfileId,
+                'content' => $this->_oTemplate->getTimer($iContentId, $iProfileId),
+                'eval' => $this->_oConfig->getJsObject('timer') . '.onPerformAction' . bx_gen_method_name($sAction) . '(oData)'
+            ]);
+
+        return echoJson($aResult);
+    }
+
+    public function serviceGetSafeServices()
+    {
+        return array_merge(parent::serviceGetSafeServices(), [
+            'ProcessTaskListForm' => '',
+            'DeleteTaskList' => '',
+            'ProcessTaskForm' => '',
+            'ProcessTaskFormEditProperty' => '',
+            'SetCompleted' => '',
+            'CreateFilter' => '',
+            'ApplyFilter' => '',
+            'ProcessTimer' => '',
+        ]);
+    }
+
+    public function serviceProcessTaskListForm($iContextId, $iId)
+    {
+        if(!$this->isAllowAdd(abs($iContextId)))
+            return [];
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $bAdd = $iId == 0;
+
+        $aContentInfo = [];
+        $sFormDisplay = $sPopupTitle = '';
+        if($bAdd) {
+            $sFormDisplay = $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD'];
+            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_add');
+        }
+        else {
+            $aContentInfo = $this->_oDb->getList($iId);
+            $sFormDisplay = $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT'];
+            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_edit');
+        }
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $sFormDisplay);
+        if(!$oForm)
+            return [];
+
+	$oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_list_form/' . $iContextId . '/' . $iId . '/');
+        $oForm->initChecker($aContentInfo, []);
+        if($oForm->isSubmittedAndValid()) {
+            return $bAdd ? $oForm->insert(['context_id' => $iContextId]) : (bool)$oForm->update($iId);
+        }
+        else {
+            if($this->_bIsApi)
+                return $oForm->getCodeAPI();
+
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
+
+            if($oForm->isSubmitted())
+                return [
+                    'form' => $sContent, 
+                    'form_id' => $oForm->getId()
+                ];
+
+            return $sContent;
+        }
+    }
+
+    public function serviceDeleteTaskList($iContextId, $iId)
+    {
+        if(!$this->isAllowManageByContext($iContextId))
+            return false;
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $aTasks = $this->_oDb->getTasks($iContextId, $iId);
+        if(!empty($aTasks) && ($oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION'])) !== false)
+            foreach($aTasks as &$aTask)
+                $oConnection->onDeleteContent($aTask[$CNF['FIELD_ID']]);
+
+        return $this->_oDb->deleteList($iId);
+    }
+
+    public function serviceProcessTaskForm($iContextId, $iListId)
+    {
+        if(!$this->isAllowAdd($iContextId))
+            return [];
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
+        if(!$oForm)
+            return [];
+
+        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/');
+        $oForm->setContextId($iContextId);
+
+        $oForm->initChecker();
+        if($oForm->isSubmittedAndValid()) {
+            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => -$iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
+            if($iContentId)
+                $this->onPublished($iContentId);
+
+            return $iContentId;
+        }
+        else {
+            if($this->_bIsApi)
+                return $oForm->getCodeAPI();
+
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
+
+            if($oForm->isSubmitted()) 
+                return [
+                    'form' => $sContent, 
+                    'form_id' => $oForm->getId()
+                ];
+
+            return $sContent;
+        }
+    }
+
+    public function serviceProcessTaskFormEditProperty($iContentId, $sProperty)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(!$this->isAllowAdd(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
+            return [];
+
+        $sForm = $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_' . strtoupper($sProperty)] ?? false;
+        if(!$sForm)
+            return [];
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sForm);
+        $oForm->setId($sForm);
+        $oForm->setName($sForm);
+        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form_edit_property/' . $iContentId . '/' . $sProperty . '/');
+        if(!$oForm)
+            return [];
+
+        $oForm->initChecker($aContentInfo);
+        if($oForm->isSubmittedAndValid()) {
+            if(!$oForm->update($iContentId))
+                return ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
+
+            if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
+                $this->$sMethod($aContentInfo, $oForm);
+            else
+                $this->_onEditProperty($aContentInfo, $sProperty, $oForm);
+
+            return true;
+        }
+        else {
+            if($this->_bIsApi)
+                return $oForm->getCodeAPI();
+
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
+
+            if($oForm->isSubmitted())
+                return [
+                    'form' => $sContent, 
+                    'form_id' => $oForm->getId()
+                ];
+
+            return $sContent;
+        }
+    }
+
+    public function serviceSetCompleted($iContentId, $iCompleted)
+    {
+        if(!$this->isAllowManage($iContentId) || !$this->complete($iContentId, $iCompleted))
+            return ['code' => 1];
+
+        return [
+            'code' => 0, 
+            'reload' => 1
+        ];
+    }
+
+    public function serviceCreateFilter($iContextId)
+    {
         $iAuthorId = bx_get_logged_profile_id();
 
         $oForm = $this->_getFilterForm($iContextId);
         if(!$oForm)
-            return echoJson([]);
+            return [];
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
@@ -133,263 +410,17 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             else
                 $aRes = ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
 
-            return echoJson($aRes);
+            return $aRes;
         }
 
-        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oConfig->getHtmlIds('filter_popup'), _t('_bx_tasks_popup_f_title_add'), $this->_oTemplate->parseHtmlByName('popup_form.html', [
-            'form_id' => $oForm->getId(),
-            'form' => $oForm->getCode(true)
-        ]));
-
-        return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]]);
+        return $this->_bIsApi ? $oForm->getCodeAPI() : $oForm;        
     }
 
-    /*
-     * Moved from popup to page
-     * 
-    public function actionProcessContextForm($iContextId)
+    public function serviceApplyFilter($iContextId, $iFilterId)
     {
-        if(!$this->isAllowManageByContext($iContextId))
-            return;
+        $this->applyFilter($iContextId, $iFilterId);
 
-        $CNF = &$this->_oConfig->CNF;
-
-        $aContext = $this->_oDb->getContexts(['sample' => 'id', 'id' => $iContextId]);
-        $bContext = !empty($aContext) && is_array($aContext);
-
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_CONTEXT'], $CNF['OBJECT_FORM_CONTEXT_DISPLAY_EDIT']);
-        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_context_form/' . $iContextId . '/');      
-        $oForm->initChecker($aContext);
-        if($oForm->isSubmittedAndValid()) {
-            if(!$bContext)
-                $oForm->insert(['id' => $iContextId]);
-            else
-                $oForm->update($iContextId);
-
-            echoJson([
-                'eval' => $this->_oConfig->getJsObject('tasks') . '.hidePopup(oData, ' . $iContextId . ')',
-            ]);
-        }
-        else {	
-            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
-                'form_id' => $oForm->getId(),
-                'form' => $oForm->getCode(true)
-            ]);
-
-            if($oForm->isSubmitted()) 
-                return echoJson([
-                    'form' => $sContent, 
-                    'form_id' => $oForm->getId()
-                ]);
-
-            echo $sContent;
-        }
-    }
-     */
-
-    public function actionProcessTaskListForm($iContextId, $iId)
-    {
-        if (!$this->isAllowAdd(abs($iContextId)))
-            return;
-
-        $CNF = &$this->_oConfig->CNF;
-
-        $oForm = null;
-        $sPopupTitle = "";
-        $aContentInfo = array();
-        if ($iId == 0){
-            $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD']);
-            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_add');
-        }
-        else {
-            $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT']);
-            $aContentInfo = $this->_oDb->getList($iId);
-            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_edit');
-        }
-
-        if(!$oForm)
-            return '';
-
-	$oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_list_form/' . $iContextId . '/' . $iId . '/');
-        $oForm->initChecker($aContentInfo, []);
-        if($oForm->isSubmittedAndValid()) {
-            if ($iId == 0){
-                $aValsToAdd['context_id'] = $iContextId;
-                $iId = $oForm->insert($aValsToAdd);
-            }
-            else {
-                $iId = $oForm->update($iId);
-            }
-
-            return echoJson(array(
-                'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
-            ));
-        }
-        else {	
-            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', array(
-                    'form_id' => $oForm->getId(),
-                    'form' => $oForm->getCode(true)
-            ));
-
-            if (!$oForm->isSubmitted()) {
-                    echo $sContent;
-                    return;
-            }
-
-            return echoJson(array('form' => $sContent, 'form_id' => $oForm->getId()));
-        }
-    }
-    
-    public function actionDeleteTaskList($iContextId, $iId)
-    {
-        if (!$this->isAllowManageByContext($iContextId))
-            return;
-
-        $CNF = &$this->_oConfig->CNF;
-
-        $aTasks = $this->_oDb->getTasks($iContextId, $iId);
-        $this->_oDb->deleteList($iId);
-        if (!empty($aTasks) && ($oConn = BxDolConnection::getObjectInstance($this->_oConfig->CNF['OBJECT_CONNECTION']))) {
-            foreach ($aTasks as &$aTask)
-                $oConn->onDeleteContent($aTask[$CNF['FIELD_ID']]);
-        }
-
-        echoJson(array(
-            'context_id' => $iContextId,
-        ));
-    }
-	
-    public function actionProcessTaskForm($iContextId, $iListId)
-    {
-        if(!$this->isAllowAdd($iContextId))
-            return echoJson([]);
-
-        $CNF = &$this->_oConfig->CNF;
-
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
-        if(!$oForm)
-            return echoJson([]);
-
-        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/');
-        $oForm->setContextId($iContextId);
-
-        $oForm->initChecker();
-        if($oForm->isSubmittedAndValid()) {
-            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => -$iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
-            if($iContentId)
-                $this->onPublished($iContentId);
-
-            return echoJson([
-                'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
-            ]);
-        }
-        else {
-            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
-                'form_id' => $oForm->getId(),
-                'form' => $oForm->getCode(true)
-            ]);
-
-            if($oForm->isSubmitted()) 
-                return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
-
-            echo $sContent;
-        }
-    }
-
-    public function actionProcessTaskFormEditProperty($iContentId, $sProperty)
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        if(!$this->isAllowAdd(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
-            return '';
-
-        $sForm = '';
-        if(($sKey = 'OBJECT_FORM_ENTRY_DISPLAY_EDIT_' . strtoupper($sProperty)) && !empty($CNF[$sKey]))
-            $sForm = $CNF[$sKey];
-        else
-            return '';
-
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sForm);
-        $oForm->setId($sForm);
-        $oForm->setName($sForm);
-        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form_edit_property/' . $iContentId . '/' . $sProperty . '/');
-        if(!$oForm)
-            return '';
-
-        $oForm->initChecker($aContentInfo);
-        if($oForm->isSubmittedAndValid()) {
-            if(!$oForm->update($iContentId))
-                return echoJson(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
-
-            if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
-                $this->$sMethod($aContentInfo, $oForm);
-            else
-                $this->_onEditProperty($aContentInfo, $sProperty, $oForm);
-
-            return echoJson([
-                'eval' => $this->_oConfig->getJsObject('tasks') . '.reload(oData)',
-            ]);
-        }
-        else {
-            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
-                'form_id' => $oForm->getId(),
-                'form' => $oForm->getCode(true)
-            ]);
-																	 
-            if (!$oForm->isSubmitted()) {
-                echo $sContent;
-                return;
-            }
-
-            return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
-        }
-    }
-
-    public function actionCalendarData()
-    {
-        // check permissions
-        $aSQLPart = array();
-        $iContextId = (int)bx_get('context_id');
-        
-        if(!$this->isAllowView($iContextId))
-            return; 
-		
-        $oPrivacy = BxDolPrivacy::getObjectInstance($this->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
-
-        if($iContextId) {
-            $aSQLPart = $oPrivacy ? $oPrivacy->getContentByGroupAsSQLPart(- $iContextId) : array();
-        }
-
-        // get entries
-        $aEntries = $this->_oDb->getEntriesByDate(bx_get('start'), bx_get('end'), bx_get('event'), $aSQLPart);
-        
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($aEntries);
-    }
-
-    public function actionProcessTimer($sAction, $iContentId, $iProfileId)
-    {
-        if(!$this->_iProfileId || $this->_iProfileId != $iProfileId)
-            return echoJson(['msg' => _t('_sys_txt_access_denied')]);
-
-        $aResult = $this->serviceProcessTimer($sAction, $iContentId, $iProfileId);
-        if($aResult['code'] == 0)
-            $aResult = array_merge($aResult, [
-                'content_id' => $iContentId,
-                'profile_id' => $iProfileId,
-                'content' => $this->_oTemplate->getTimer($iContentId, $iProfileId),
-                'eval' => $this->_oConfig->getJsObject('timer') . '.onPerformAction' . bx_gen_method_name($sAction) . '(oData)'
-            ]);
-
-        return echoJson($aResult);
-    }
-
-    public function serviceGetSafeServices()
-    {
-        return array_merge(parent::serviceGetSafeServices(), [
-            'ProcessTimer' => '',
-        ]);
+        return $this->_oTemplate->getEntries($iContextId, ['filter' => $iFilterId]);
     }
 
     public function serviceProcessTimer($sAction, $iContentId, $iProfileId)
@@ -857,7 +888,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if($bAsArray)
             return $aProfiles;
 
-        return $this->_oTemplate->entryAssignments($aProfiles);
+        $mixedResult = $this->_oTemplate->entryAssignments($aProfiles);
+
+        return $this->_bIsApi ? [
+            bx_api_get_block('task_assignments', $mixedResult)
+        ] : $mixedResult;
     }
 
     public function serviceEntityTimer($iContentId = 0)
@@ -867,7 +902,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$iContentId)
             return false;
 
-        return $this->_oTemplate->entryTimer($iContentId, $this->_iProfileId);
+        $mixedResult = $this->_oTemplate->entryTimer($iContentId, $this->_iProfileId);
+
+        return $this->_bIsApi ? [
+            bx_api_get_block('task_timer', $mixedResult)
+        ] : $mixedResult;
     }
 
     public function serviceCheckAllowedCommentsTask($iContentId, $sObjectComments) 
@@ -975,9 +1014,13 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     public function serviceBrowseTasks($iContextId = 0, $aParams = [])
     {
         if(!$this->isAllowView($iContextId))
-            return '';
+            return $this->_bIsApi ? [] : '';
 
-        return $this->_oTemplate->getEntriesList($iContextId, $aParams);
+        $mixedResult = $this->_oTemplate->getEntriesList($iContextId, $aParams);
+
+        return $this->_bIsApi ? [
+            bx_api_get_block('tasks_list', $mixedResult)
+        ] : $mixedResult;
     }
 
     public function serviceBrowseTasksByProfile($iProfileId = 0, $aParams = [])
