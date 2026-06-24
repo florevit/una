@@ -527,7 +527,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceGetBlockMenuBrowse()
     {
-        return $this->_oTemplate->getBlockMenuBrowse();
+        $mixedResult = $this->_oTemplate->getBlockMenuBrowse();
+
+        return $this->_bIsApi ? [
+            bx_api_get_block('tasks_browse', $mixedResult)
+        ] : $mixedResult;
     }
 
     public function serviceGetBlockMenuContext($iProfileId)
@@ -535,14 +539,14 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $CNF = &$this->_oConfig->CNF;
 
         if(!$this->isAllowView($iProfileId))
-            return ''; 
+            return $this->_bIsApi ? [] : ''; 
 
         $oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_SUBMENU_VIEW_CONTEXT']);
         if(!$oMenu)
-            return '';
+            return $this->_bIsApi ? [] : '';
 
         $oMenu->addMarkers(['profile_id' => $iProfileId]);
-        return $oMenu->getCode();
+        return $this->_bIsApi ? $oMenu->getCodeAPI() : $oMenu->getCode();
     }
 
     public function serviceGetBlockContextPreValues($iContextPid = 0)
@@ -667,7 +671,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceGetBlockTimers()
     {
-        return $this->_oTemplate->getBlockTimers($this->_iProfileId);
+        $mixedResult = $this->_oTemplate->getBlockTimers($this->_iProfileId);
+
+        return $this->_bIsApi ? [
+            bx_api_get_block('tasks_timers', $mixedResult)
+        ] : $mixedResult;
     }
 
     /**

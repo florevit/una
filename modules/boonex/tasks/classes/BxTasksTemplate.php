@@ -50,32 +50,39 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $iProfileId = bx_get_logged_profile_id();
 
-        $sMenuUse = '';
+        $sMenuUse = $this->_bIsApi ? [] : '';
         if(($oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_USE_TOOLS_SUBMENU'])) !== false)
-            $sMenuUse = $oMenu->getCode();
+            $sMenuUse = $this->_bIsApi ? $oMenu->getCodeAPI() : $oMenu->getCode();
 
-        $sMenuManage = '';
+        $sMenuManage = $this->_bIsApi ? [] : '';
         if(($oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])) !== false)
-            $sMenuManage = $oMenu->getCode();
+            $sMenuManage = $this->_bIsApi ? $oMenu->getCodeAPI() : $oMenu->getCode();
 
-        $sMenuBrowse = '';
+        $sMenuBrowse = $this->_bIsApi ? [] : '';
         if(($oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_BROWSE'])) !== false) {
             $oMenu->setProfileId($iProfileId);
-            $sMenuBrowse = $oMenu->getCode();
+            $sMenuBrowse = $this->_bIsApi ? $oMenu->getCodeAPI() : $oMenu->getCode();
         }
+
+        if($this->_bIsApi)
+            return [
+                'menu_use' => $sMenuUse,
+                'menu_browse' => $sMenuBrowse,
+                'menu_manage' => $sMenuManage
+            ];
 
         return $this->parseHtmlByName('menu_browse.html', [
             'menu_use' => $sMenuUse,
-            'bx_if:show_menu_manage' => [
-                'condition' => $sMenuManage != '',
-                'content' => [
-                    'menu_manage' => $sMenuManage
-                ]
-            ],
             'bx_if:show_menu_browse' => [
                 'condition' => $sMenuBrowse != '',
                 'content' => [
                     'menu_browse' => $sMenuBrowse
+                ]
+            ],
+            'bx_if:show_menu_manage' => [
+                'condition' => $sMenuManage != '',
+                'content' => [
+                    'menu_manage' => $sMenuManage
                 ]
             ]
         ]);
@@ -156,9 +163,11 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $aTimers = $this->_oDb->getTimers(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
         if(!$aTimers || !is_array($aTimers))
-            return MsgBox(_t('_Empty'));
+            return $this->_bIsApi ? [] : MsgBox(_t('_Empty'));
 
         $oPermalinks = BxDolPermalinks::getInstance();
+
+        $sKeyTimers = $this->_bIsApi ? 'timers' : 'bx_repeat:timers';
 
         $aTmplVarsSections = [];
         foreach($aTimers as $aTimer) {
@@ -166,33 +175,42 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             if(!$aContentInfo && !is_array($aContentInfo))
                 continue;
 
-            $sContextType = $sContextTitle = $sContextUrl = '';
+            $sContextType = '';
+            $aTmplVarsContext = [];
             if(($iAllowViewTo = (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) < 0 && ($oContext = BxDolProfile::getInstance(abs($iAllowViewTo))) !== false) {
                 $sContextType = $oContext->getModule();
-                $sContextTitle = $oContext->getDisplayName();
-                $sContextUrl = $oContext->getUrl();
+                $aTmplVarsContext = $this->_bIsApi ? BxDolProfile::getData($oContext) : [
+                    'title' => $oContext->getDisplayName(),
+                    'url' => $oContext->getUrl()
+                ];
             }
+
+            $sUrl = bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]));
 
             if(!isset($aTmplVarsSections[$sContextType]))
                 $aTmplVarsSections[$sContextType] = [
                     'section_title' => $oModule->getModuleTitle($sContextType),
-                    'bx_repeat:timers' => []
+                    $sKeyTimers => []
                 ];
 
-            $aTmplVarsSections[$sContextType]['bx_repeat:timers'][] = [
-                'bx_if:show_context' => [
-                    'condition' => $sContextTitle && $sContextUrl,
-                    'content' => [
-                        'title' => $sContextTitle,
-                        'url' => $sContextUrl
-                    ]
-                ],
+            $aTmplVarsSections[$sContextType][$sKeyTimers][] = array_merge([
                 'content_title' => $aContentInfo[$CNF['FIELD_TITLE']],
-                'content_url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']])),
+                'content_url' => $this->_bIsApi ? bx_api_get_relative_url($sUrl) : $sUrl,
                 'timer' => $this->getTimer($aTimer['content_id'], $iProfileId),
+            ], $this->_bIsApi ? [
+                'context' => $aTmplVarsContext,
+            ] : [
+                'bx_if:show_context' => [
+                    'condition' => !empty($aTmplVarsContext),
+                    'content' => $aTmplVarsContext
+                ],
                 'js_code_timer' => $sJsObject . '.init(' . $aTimer['content_id'] . ', ' . $iProfileId . ', ' . ($aTimer['started'] != 0 ? 1 : 0) . ');'
-            ];
+            ]);
         }
+
+        $aTmplVarsSections = array_values($aTmplVarsSections);
+        if($this->_bIsApi)
+            return $aTmplVarsSections;
 
         $this->addCss(['timer.css']);
         $this->addJs(['timer.js']);
@@ -200,7 +218,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'js_code' => $this->getJsCode('timer', [
                 'bMulti' => true
             ]),
-            'bx_repeat:sections' => array_values($aTmplVarsSections)
+            'bx_repeat:sections' => $aTmplVarsSections
         ]);
     }
 
@@ -232,6 +250,14 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         ]);
         $oActions->setParams($iContentId, $iProfileId);
 
+        if($this->_bIsApi)
+            return [
+                'hours' => $iHours,
+                'minutes' => $iMinutes,
+                'seconds' => $iSeconds,
+                'actions' => $oActions->getCodeAPI()
+            ];
+
         return $this->parseHtmlByName('entry-timer.html', [
             'html_id' => $this->_oConfig->getHtmlIds('timer') . $iContentId . '-' . $iProfileId,
             'hours' => sprintf("%02d", $iHours),
@@ -240,7 +266,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'actions' => $oActions->getCode()
         ]);
     }
-   
+
     public function getEntriesList($iContextId = 0, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;

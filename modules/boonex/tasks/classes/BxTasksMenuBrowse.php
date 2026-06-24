@@ -81,14 +81,16 @@ class BxTasksMenuBrowse extends BxTemplMenu
             if(!$oContext)
                 continue;
 
+            $sUrl = $this->_oPermalink->permalink(bx_append_url_params($this->_sPageLink, array_merge($this->_aPageParams, [
+                $this->_sParamName => $iId
+            ])));
+
             $aSubmenu[] = [
                 'id' => 'context-' . $iId, 
                 'name' => 'context-' . $iId, 
                 'class_add' => $iId == $this->_iParamValue ? 'bx-menu-tab-active' : '',
                 'class' => '',
-                'link' => $this->_oPermalink->permalink(bx_append_url_params($this->_sPageLink, array_merge($this->_aPageParams, [
-                    $this->_sParamName => $iId
-                ]))), 
+                'link' => $this->_bIsApi ? bx_api_get_relative_url($sUrl) : $sUrl, 
                 'onclick' => '', 
                 'target' => '_self', 
                 'title' => $oContext->getDisplayName(), 
