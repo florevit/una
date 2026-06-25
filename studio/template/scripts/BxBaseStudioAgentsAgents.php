@@ -37,6 +37,19 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
         ]);
     }
 
+    public function performActionGetFormInputs()
+    {
+        $aFormInputs = $this->_getFormInputs(bx_get('form_object'));
+        if (!$aFormInputs) {
+            echoJson(['code' => 404, 'msg' => _t('_sys_not_available')]);
+            return;
+        }
+        echoJson([
+            'code' => $aFormInputs ? 200 : 404,
+            'form_inputs' => $aFormInputs,
+        ]);
+    }
+
     public function performActionManual()
     {
         $iId = $this->_getId();        
@@ -343,7 +356,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'type' => 'select',
                     'name' => 'trigger',
                     'caption' => _t('_sys_agents_field_trigger'),
-                    'info' => _t('_sys_agents_field_trigger_info'),                    
+                    'info' => _t('_sys_agents_field_trigger_info'),
                     'value' => isset($aAgent['trigger']) ? $aAgent['trigger'] : 0,
                     'values' => [
                         'alert' => 'alert',
@@ -352,6 +365,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'manual' => 'manual',
                         'agent' => 'agent',
                         'message' => 'message',
+                        'form-field' => 'form field',
                     ],
                     'attrs' => [
                         'onchange' => $this->getPageJsObject() . '.onChangeAgentTrigger(this)',
@@ -466,7 +480,36 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     ],
                 ],
 
-                'message_section_end' => array(
+                'form_field_section' => array(
+                    'type' => 'block_header',
+                    'caption' => 'Trigger - form field',
+                    'collapsable' => true,
+                    'collapsed' => true,
+                ),
+
+                'form_object' => [
+                    'type' => 'custom',
+                    'name' => 'form_object',
+                    'caption' => _t('_sys_agents_form_object'),
+                    'info' => _t('_sys_agents_form_object_info'),
+                    'content' => $this->_oTemplate->parseHtmlByName('agents_agents_form_object_select.html', $this->_getFormObjectValues(isset($aAgent['form_object']) ? $aAgent['form_object'] : '')),
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+
+                'form_input' => [
+                    'type' => 'custom',
+                    'name' => 'form_input',
+                    'caption' => _t('_sys_agents_form_input'),
+                    'info' => _t('_sys_agents_form_input_info'),
+                    'content' => $this->_oTemplate->parseHtmlByName('agents_agents_form_input_select.html', $this->_getFormInputValues(isset($aAgent['form_id']) ? $aAgent['form_id'] : '', isset($aAgent['form_input']) ? $aAgent['form_input'] : '')),
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+
+                'form_field_section_end' => array(
                     'type' => 'block_end',
                 ),
 
@@ -623,6 +666,98 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 ]
             ];
         }
+        return $a;
+    }
+
+    protected function _getFormObjectValues($sValue)
+    {
+        $aFormObjects = $this->_oDb->getFormObjects();
+        $a = [
+            'sys_stat_not_available' => _t('_sys_not_available'),
+            'grid_object' => $this->_sObject,
+            'bx_repeat:form_objects' => [
+                [
+                    'title' => _t('_sys_please_select'), 
+                    'title_attr' => _t('_sys_please_select'), 
+                    'value' => '', 
+                    'bx_if:sel' => [
+                        'condition' => false,
+                        'content' => ['sel' => '']
+                    ]
+                ]
+            ]
+        ];
+        foreach ($aFormObjects as $k => $r) {
+            $a['bx_repeat:form_objects'][] = [
+                'title' => $r['module_title'] . ': ' . $r['form_title'],
+                'title_attr' => bx_html_attribute($r['module_title'] . ': ' . $r['form_title']),
+                'value' => $r['form_object'],
+                // 'form_id' => $r['form_id'],
+                // 'module' => $r['module'],
+                // 'module_title' => $r['module_title'],
+                // 'form_title' => $r['form_title'],
+                'bx_if:sel' => [
+                    'condition' => $sValue == $r['form_object'],
+                    'content' => ['sel' => $sValue == $r['form_object'] ? 'selected' : ''],
+                ]
+            ];
+        }
+        return $a;
+    }
+
+    protected function _getFormInputs($sFormObject)
+    {
+        $sDisplay = $this->_oDb->getFormDisplay($sFormObject);
+        $oForm = $sDisplay ? BxDolForm::getObjectInstance($sFormObject, $sDisplay) : null;
+        $aFormInputs = $oForm ? $oForm->aInputs : [];
+        if (!$aFormInputs)
+            return [];
+        $aRet = [];
+        foreach ($aFormInputs as $k => $r) {
+            if ($r['type'] == 'text' || $r['type'] == 'textarea') {
+                $aRet[$r['name']] = [
+                    'name' => $r['name'],
+                    'caption' => $r['caption'],
+                ];
+            }
+        }
+        return $aRet;
+    }
+
+    protected function _getFormInputValues($sFormObject, $sFormInput)
+    {
+        $aFormInputs = $this->_getFormInputs($sFormObject);
+
+        $a = [
+            'bx_repeat:form_inputs' => [
+                [
+                    'title' => _t('_sys_please_select'), 
+                    'title_attr' => _t('_sys_please_select'), 
+                    'value' => '', 
+                    'bx_if:sel' => [
+                        'condition' => false,
+                        'content' => ['sel' => '']
+                    ]
+                ]
+            ]
+        ];
+
+        if ($aFormInputs) {
+            foreach ($aFormInputs as $k => $r) {
+                $a['bx_repeat:form_ids'][] = [
+                    'title' => $r['name'] . ' - ' . $r['caption'],
+                    'title_attr' => bx_html_attribute($r['name'] . (!empty($r['caption']) ? ' - ' . $r['caption'] : '')),
+                    'value' => $r['name'],
+                    'bx_if:sel' => [
+                        'condition' => $sFormInput == $r['name'],
+                        'content' => [
+                            'sel' => $sFormInput == $r['name'] ? 'selected' : '',
+                        ]
+                    ]
+                ];
+            }
+        }
+
         return $a;
     }
 

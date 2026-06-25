@@ -2313,7 +2313,7 @@
     <string name="_sys_agents_automators_field_type_scheduler"><![CDATA[Scheduler]]></string>
     <string name="_sys_agents_automators_field_type_webhook"><![CDATA[Webhook]]></string>
     <string name="_sys_agents_field_trigger"><![CDATA[Trigger]]></string>
-    <string name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message.]]></string>
+    <string name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message. Form field — compose form field value.]]></string>
     <string name="_sys_agents_field_alert_sample"><![CDATA[Alert: payload]]></string>
     <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Please select an alert to see its payload.]]></string>
     <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Trigger webhook to see its payload.]]></string>

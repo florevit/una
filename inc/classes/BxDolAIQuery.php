@@ -975,6 +975,33 @@ class BxDolAIQuery extends BxDolDb
         return $aValues;
     }
 
+    public function getFormDisplay($sObject)
+    {
+        $aDisplays = $this->getColumn("SELECT `display_name` FROM `sys_form_displays` WHERE `object` = :object", ['object' => $sObject]);
+        return $aDisplays ? current($aDisplays) : null;
+    }
+
+    public function getFormObjects()
+    {
+        $aValues = [];
+        $aForms = $this->getAll("SELECT `f`.`object`, `f`.`title`, `f`.`module`, `m`.`title` AS `module_title` FROM `sys_objects_form` AS f INNER JOIN `sys_modules` as `m` ON `m`.`name` = `f`.`module` ORDER BY `f`.`module`, `f`.`object` ASC");
+        foreach ($aForms as $r) {
+            $sDisplay = $this->getFormDisplay($r['object']);
+            if (!$sDisplay) 
+                continue;
+            $oForm = BxDolForm::getObjectInstance($r['object'], $sDisplay);
+            $sFormId = $oForm->getId();
+            $aValues[$r['object']] = [
+                'form_id' => $sFormId,
+                'form_object' => $r['object'],
+                'module' => $r['module'],
+                'module_title' => $r['module_title'],
+                'form_title' => _t($r['title']),
+            ];
+        }
+        return $aValues;
+    }
+
     static public function getAlertDesc($sAlert) 
     {
         if (!$sAlert)
