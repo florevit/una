@@ -503,7 +503,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'name' => 'form_input',
                     'caption' => _t('_sys_agents_form_input'),
                     'info' => _t('_sys_agents_form_input_info'),
-                    'content' => $this->_oTemplate->parseHtmlByName('agents_agents_form_input_select.html', $this->_getFormInputValues(isset($aAgent['form_id']) ? $aAgent['form_id'] : '', isset($aAgent['form_input']) ? $aAgent['form_input'] : '')),
+                    'content' => $this->_oTemplate->parseHtmlByName('agents_agents_form_input_select.html', $this->_getFormInputValues(isset($aAgent['form_object']) ? $aAgent['form_object'] : '', isset($aAgent['form_input']) ? $aAgent['form_input'] : '')),
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -672,6 +672,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
     protected function _getFormObjectValues($sValue)
     {
         $aFormObjects = $this->_oDb->getFormObjects();
+
+        // add "Please select" option
         $a = [
             'sys_stat_not_available' => _t('_sys_not_available'),
             'grid_object' => $this->_sObject,
@@ -687,7 +689,12 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 ]
             ]
         ];
+
+        // add form objects
+        $bSelected = false;
         foreach ($aFormObjects as $k => $r) {
+            if ($sValue == $r['form_object'])
+                $bSelected = true;
             $a['bx_repeat:form_objects'][] = [
                 'title' => $r['module_title'] . ': ' . $r['form_title'],
                 'title_attr' => bx_html_attribute($r['module_title'] . ': ' . $r['form_title']),
@@ -702,6 +709,20 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 ]
             ];
         }
+
+        //  add selected form object if not found in form objects
+        if ($sValue && !$bSelected) {
+            $a['bx_repeat:form_objects'][] = [
+                'title' => $sValue,
+                'title_attr' => bx_html_attribute($sValue),
+                'value' => $sValue,
+                'bx_if:sel' => [
+                    'condition' => true,
+                    'content' => ['sel' => 'selected'],
+                ]
+            ];
+        }
+
         return $a;
     }
 
@@ -728,6 +749,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
     {
         $aFormInputs = $this->_getFormInputs($sFormObject);
 
+        // add "Please select" option
         $a = [
             'bx_repeat:form_inputs' => [
                 [
@@ -742,9 +764,13 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
             ]
         ];
 
+        // add form inputs
+        $bSelected = false;
         if ($aFormInputs) {
             foreach ($aFormInputs as $k => $r) {
-                $a['bx_repeat:form_ids'][] = [
+                if ($sFormInput == $r['name'])
+                    $bSelected = true;
+                $a['bx_repeat:form_inputs'][] = [
                     'title' => $r['name'] . ' - ' . $r['caption'],
                     'title_attr' => bx_html_attribute($r['name'] . (!empty($r['caption']) ? ' - ' . $r['caption'] : '')),
                     'value' => $r['name'],
@@ -756,6 +782,19 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     ]
                 ];
             }
+        }
+
+        //  add selected input if not found in form inputs
+        if ($sFormInput && !$bSelected) {
+            $a['bx_repeat:form_inputs'][] = [
+                'title' => $sFormInput,
+                'title_attr' => bx_html_attribute($sFormInput),
+                'value' => $sFormInput,
+                'bx_if:sel' => [
+                    'condition' => true,
+                    'content' => ['sel' => 'selected'],
+                ]
+            ];
         }
 
         return $a;
