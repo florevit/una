@@ -1359,8 +1359,11 @@ class BxBaseModGeneralModule extends BxDolModule
         if($this->_bIsApi && is_string($aParams)){
             $aParams = json_decode($aParams, true);
             if (isset($aParams['params'])) {
-                if(isset($aParams['params']['type']))
-                    $aParams['mode'] = $aParams['params']['type'];
+                if(($sK = 'type') && isset($aParams['params'][$sK]))
+                    $aParams['mode'] = $aParams['params'][$sK];
+
+                if(($sK = 'class_search_result') && isset($aParams['params'][$sK]))
+                    $aParams[$sK] = $aParams['params'][$sK];
 
                 if(isset($aParams['params']['filters'])) {
                     foreach($aParams['params']['filters'] as $sKey => $sValue)
@@ -3749,6 +3752,8 @@ class BxBaseModGeneralModule extends BxDolModule
 
         if($oObject !== null) 
             return $oObject;
+
+        $aParams['class_search_result'] ??= $sClass;
 
         bx_import($sClass, $this->_aModule);
         $sClass = $this->_aModule['class_prefix'] . $sClass;

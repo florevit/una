@@ -618,17 +618,20 @@ class BxDolSearchResult implements iBxDolReplaceable
             $sUnit = 'card';
         
         $aData = defined('BX_API_PAGE') && !$bForceGetData ? [] : $this->decodeDataAPI($this->getSearchData());
-        
+
         $aParams =  [
-            'per_page' => $this->aCurrent['paginate']['perPage'],
-            'start' => $this->aCurrent['paginate']['start'],
             'type' => $this->_sMode,
-            'view' => $this->_aParams['unit_view'] ?? ''
+            'start' => $this->aCurrent['paginate']['start'],
+            'per_page' => $this->aCurrent['paginate']['perPage'],
+            'view' => $this->_aParams['unit_view'] ?? '',
         ];
-        
-        if ($sHomeUrl){
+
+        if($sHomeUrl)
             $aParams['home_url'] = $sHomeUrl;
-        }
+
+        if(($sK = 'class_search_result') && isset($this->_aParams[$sK]))
+            $aParams[$sK] = $this->_aParams[$sK];
+
 
         foreach(['author', 'category', 'context', 'joined_profile', 'followed_contexts', 'level'] as $sParamAdd)
             if(isset($this->_aParams[$sParamAdd]))
