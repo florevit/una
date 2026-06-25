@@ -2269,6 +2269,10 @@
     <string name="_sys_agents_form_field_err_enter"><![CDATA[This field is essential. Please enter something here.]]></string>
     <string name="_sys_agents_form_field_err_select"><![CDATA[This field is essential. Please select something here.]]></string>
     <string name="_sys_agents_form_field_err_profile_has_agent"><![CDATA[This profile is already used in another agent({0}) with the same 'message' trigger.]]></string>
+    <string name="_sys_agents_form_object"><![CDATA[Form object]]></string>
+    <string name="_sys_agents_form_object_info"><![CDATA[Form object that contains the required field, for custom forms enter form id here]]></string>
+    <string name="_sys_agents_form_input"><![CDATA[Form input]]></string>
+    <string name="_sys_agents_form_input_info"><![CDATA[Form input where AI-generated text should be pasted]]></string>
     <string name="_sys_agents_json_field_err"><![CDATA[Invalid JSON format.]]></string>
     <string name="_sys_agents_automators_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_automators_txt_name"><![CDATA[Name]]></string>
