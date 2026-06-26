@@ -1490,8 +1490,31 @@ BLAH;
     {
         $aAttrs = $this->_genInputStandardAttrs($aInput);
 
+        $aAgent = [];
+        if(!empty($this->_aAgentsFormObject)) {
+            foreach($this->_aAgentsFormObject as $a) {
+                if($a['form_object'] == $this->_sAgentFormObject && $a['form_input'] == $aInput['name']) {
+                    $aAgent = $a;
+                    break;
+                }
+            }
+        }
+
+        $sAgentButton = '';
+        if($aInput['type'] == 'text' && !empty($aAgent)) {
+            $sAgentButton = $this->oTemplate->parseHtmlByName('form_field_agent_button.html', [
+                'input' => 'input',
+                'name' => $aInput['name'],
+                'agent_id' => $aAgent['id'] ?? 0,
+                'form_id' => $this->getId(),
+                'html' => $aInput['html'] ?? 0,
+                'popup_text' => $aInput['agent_popup_text'] ?? _t('_sys_agents_agent_form_input_popup_text'),
+            ]);
+        }
+
         return  $this->oTemplate->parseHtmlByName('form_field_standard.html', [
-            'attrs' => bx_convert_array2attrs($aAttrs, "bx-def-font-inputs bx-form-input-{$aInput['type']}")
+            'attrs' => bx_convert_array2attrs($aAttrs, "bx-def-font-inputs bx-form-input-{$aInput['type']}"),
+            'agent_button' => $sAgentButton,
         ]);
     }
 
@@ -1681,6 +1704,18 @@ BLAH;
             }
         }
 
+        $sAgentButton = '';
+        if(!empty($aAgent)) {
+            $sAgentButton = $this->oTemplate->parseHtmlByName('form_field_agent_button.html', [
+                'input' => 'textarea',
+                'name' => $aInput['name'],
+                'agent_id' => $aAgent['id'] ?? 0,
+                'form_id' => $this->getId(),
+                'html' => $aInput['html'] ?? 0,
+                'popup_text' => $aInput['agent_popup_text'] ?? _t('_sys_agents_agent_form_input_popup_text'),
+            ]);
+        }
+
         return $this->oTemplate->parseHtmlByName('form_field_textarea.html', [
             'attrs' => bx_convert_array2attrs($aAttrs, $sClassAdd),
             'value' => $sValue,
@@ -1688,16 +1723,7 @@ BLAH;
                 'condition' => !empty($aTmplVarsSwitcher),
                 'content' => $aTmplVarsSwitcher
             ],
-            'bx_if:show_agent' => [
-                'condition' => !empty($aAgent),
-                'content' => [
-                    'name' => $aInput['name'],
-                    'agent_id' => $aAgent['id'] ?? 0,
-                    'form_id' => $this->getId(),
-                    'html' => $aInput['html'] ?? 0,
-                    'popup_text' => _t('_sys_agents_agent_form_input_popup_text'),
-                ]
-            ]
+            'agent_button' => $sAgentButton,
         ]);
     }
 
