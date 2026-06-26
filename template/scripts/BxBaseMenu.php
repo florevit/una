@@ -347,8 +347,12 @@ class BxBaseMenu extends BxDolMenu
                 $this->addMarkers($aMarkers);
             $aResult = $this->_replaceMarkers($aResult);
 
-            if(!empty($aResult['link']))
-                $aResult['link'] = $this->_oPermalinks->permalink($aResult['link']);
+            if(!empty($aResult['link'])) {
+                if(($sSubstr = 'javascript') && substr($aResult['link'], 0, strlen($sSubstr)) == $sSubstr)
+                    $aResult['link'] = '';
+                else
+                    $aResult['link'] = $this->_oPermalinks->permalink($aResult['link']);
+            }
 
             if($this->isMultilevel() && !empty($a['subitems'])) {
                 $aSubitems = [];

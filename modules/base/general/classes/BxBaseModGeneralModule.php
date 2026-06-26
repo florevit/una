@@ -4796,9 +4796,12 @@ class BxBaseModGeneralModule extends BxDolModule
         if (!$oCmts || !$oCmts->isEnabled())
             return false;
         
-        if (bx_is_api()){
-            return [bx_srv('system', 'get_data_api', [['module' => $sObject, 'object_id' => $iId]], 'TemplCmtsServices')];
-        }
+        if($this->_bIsApi)
+            return [
+                'title' => $oCmts->getCommentsBlockTitle(),
+                'content' => [bx_srv('system', 'get_data_api', [['module' => $sObject, 'object_id' => $iId]], 'TemplCmtsServices')]
+            ];
+
         return $oCmts->getCommentsBlock([], ['in_designbox' => false, 'show_empty' => false]);
     }
 

@@ -192,6 +192,11 @@ class BxBaseCmts extends BxDolCmts
         
     }
 
+    function getCommentsBlockTitle()
+    {
+        return _t($this->_aT['block_comments_title'], $this->getCommentsCountAll(0, true));
+    }
+
     /**
      * get full comments block with initializations
      */
@@ -227,7 +232,7 @@ class BxBaseCmts extends BxDolCmts
         $sPostFormBottom = $this->getFormBoxPost($aBp, array_merge($aDp, ['type' => $this->_sDisplayType, 'position' => BX_CMT_PFP_BOTTOM]));
         $sJsContent = $this->getJsScript($aBp, $aDp);
 
-        $sBlockTitle = _t($this->_aT['block_comments_title'], $this->getCommentsCountAll(0, true));
+        $sBlockTitle = $this->getCommentsBlockTitle();
         $sBlockMenu = $this->_getControlsBox();
 
         /**
