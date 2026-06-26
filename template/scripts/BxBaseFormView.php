@@ -1694,6 +1694,8 @@ BLAH;
                     'name' => $aInput['name'],
                     'agent_id' => $aAgent['id'] ?? 0,
                     'form_id' => $this->getId(),
+                    'html' => $aInput['html'] ?? 0,
+                    'popup_text' => _t('_sys_agents_agent_form_input_popup_text'),
                 ]
             ]
         ]);

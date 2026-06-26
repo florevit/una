@@ -2248,6 +2248,7 @@
         <string name="_sys_agents_form_object_info"><![CDATA[Объект формы, содержащий необходимое поле]]></string>
         <string name="_sys_agents_form_input"><![CDATA[Поле формы]]></string>
         <string name="_sys_agents_form_input_info"><![CDATA[Поле формы, в которое нужно вставить текст, сгенерированный ИИ]]></string>
+        <string name="_sys_agents_agent_form_input_popup_text"><![CDATA[Опишите, что вы хотите вставить в это поле.]]></string>
         <string name="_sys_agents_json_field_err"><![CDATA[Неверный формат JSON.]]></string>
         <string name="_sys_agents_automators_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_automators_txt_name"><![CDATA[Название]]></string>

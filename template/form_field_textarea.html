@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function() {
             $('.bx-form-input-agent-button.__name__ a').click(function() {
-                bx_prompt("Prompt:", '', (o) => {
+                bx_prompt("__popup_text__", '', (o) => {
                     if(o.getValue()) {
                         $('.bx-form-input-agent-button.__name__ .sys-icon').removeClass('magic').addClass('sync animate-spin');
                         $.ajax({
@@ -28,7 +28,18 @@
                             }),
                             success: function(data) {
                                 $('.bx-form-input-agent-button.__name__ .sys-icon').addClass('magic').removeClass('sync animate-spin');
-                                $('textarea[name="__name__"]').val(data.msg);
+
+                                if (__html__) {
+                                    var sEditorId = $('textarea[name="__name__"]').attr('id');
+                                    if (!sEditorId) {
+                                        sEditorId = 'bx-form-input-textarea-__name__' + Math.floor(Math.random() * 100000);
+                                        $('textarea[name="__name__"]').attr('id', sEditorId);
+                                    }
+                                    bx_editor_insert_html (sEditorId, '', data.msg);
+                                }
+                                else {
+                                    $('textarea[name="__name__"]').val(data.msg);
+                                }
                             }
                         });
 

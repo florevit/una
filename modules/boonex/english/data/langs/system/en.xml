@@ -2273,6 +2273,7 @@
     <string name="_sys_agents_form_object_info"><![CDATA[Form object that contains the required field, for custom forms enter form id here]]></string>
     <string name="_sys_agents_form_input"><![CDATA[Form input]]></string>
     <string name="_sys_agents_form_input_info"><![CDATA[Form input where AI-generated text should be pasted]]></string>
+    <string name="_sys_agents_agent_form_input_popup_text"><![CDATA[Please describe what you want to insert into this field.]]></string>
     <string name="_sys_agents_json_field_err"><![CDATA[Invalid JSON format.]]></string>
     <string name="_sys_agents_automators_txt_active"><![CDATA[Active]]></string>
     <string name="_sys_agents_automators_txt_name"><![CDATA[Name]]></string>
