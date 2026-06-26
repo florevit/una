@@ -392,7 +392,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         // set additional params
         $aParams = [];
-        if ('message' == $sType) {
+        if ('message' == $sType || 'form-input' == $sType) {
             $aParams = ['chat_history_subindex' => $mixedParams['sender_profile_id']];
         }
 

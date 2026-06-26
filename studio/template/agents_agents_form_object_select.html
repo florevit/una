@@ -6,18 +6,16 @@
 </select>
 </div>
 <script>
-    function formatItem(state) {
-        return $(`
-        <div class="bx-form-object-wrap">
-            <div>
-                <div class="bx-form-object-text">${state.text || state.id}</div>
-            </div>
-        </div>
-        `);
-    }
-    
     $('#bx-agents-agents-form-object').select2({
-        templateResult: formatItem,
+        templateResult: (state) => {
+            return $(`
+                <div class="bx-form-object-wrap">
+                    <div>
+                        <div class="bx-form-object-text">${state.text || state.id}</div>
+                    </div>
+                </div>
+            `);
+        },
         templateSelection: d => d.text,
         tags: true, // allow custom inputs
         createTag: function (params) {            
