@@ -97,24 +97,6 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         return array($sPhotoGallery, $sPhotoGallery);
     }
-    
-    public function entryText ($aData, $sTemplateName = 'entry-text.html')
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        $iContentId = (int)$aData[$CNF['FIELD_ID']];
-
-        $sResult = '';
-        if(!$this->_oModule->isAllowEdit($iContentId)) {
-            $aVars = $this->getTmplVarsText($aData);
-
-            $sResult = $this->parseHtmlByName($sTemplateName, $aVars);
-        }
-        else 
-            $sResult = $this->getModule()->serviceEntityEdit($iContentId, $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_BODY']);
-
-        return $sResult;
-    }
 
     public function entryAssignments ($aProfiles)
     {
@@ -145,9 +127,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
     public function entryTimer ($iContentId, $iProfileId)
     {
+        $mixedResult = $this->getTimer($iContentId, $iProfileId);
+        if($this->_bIsApi)
+            return $mixedResult;
+
         $this->addCss(['timer.css']);
         $this->addJs(['timer.js']);
-        return $this->getTimer($iContentId, $iProfileId) . $this->getJsCodeTimer('timer', [], [
+        return $mixedResult . $this->getJsCodeTimer('timer', [], [
             'content_id' => $iContentId,
             'profile_id' => $iProfileId,
             'started' => $this->_oDb->isTimerStarted($iContentId, $iProfileId),

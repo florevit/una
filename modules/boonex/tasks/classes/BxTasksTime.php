@@ -15,12 +15,16 @@ class BxTasksTime extends BxTemplReport
     protected $_sModule;
     protected $_oModule;
 
+    protected $_sUniqId;
+
     public function __construct($sSystem, $iId, $iInit = true, $oTemplate = false)
     {
         parent::__construct($sSystem, $iId, $iInit, $oTemplate);
 
         $this->_sModule = 'bx_tasks';
     	$this->_oModule = BxDolModule::getInstance($this->_sModule);
+
+        $this->_sUniqId = '';
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -37,8 +41,65 @@ class BxTasksTime extends BxTemplReport
         });
     }
 
+    public function getJsObjectName()
+    {
+        return parent::getJsObjectName() . $this->_sUniqId;
+    }
+
+    public function getJsScript($bDynamicMode = false, $aParams = [])
+    {
+        if($this->_iDoAuto($aParams)) {
+            $aParams['js_params'] ??= [];
+            $aParams['js_params']['oRequestParams'] ??= [];
+            $aParams['js_params']['oRequestParams']['show_do_report_form'] = 0;
+        }
+
+        return parent::getJsScript($bDynamicMode, $aParams);
+    }
+
+    public function getElement($aParams = [])
+    {
+        $this->_sUniqId = $aParams['uniq_id'] ?? '';
+
+        return parent::getElement($aParams);
+    }
+
     public function report($aParams = [])
     {
+        $iObjectId = $this->_iId;
+        $iAuthorId = $this->_getAuthorId();
+        $bPerformed = $this->isPerformed($iObjectId, $iAuthorId);
+
+        $this->_oModule->serviceProcessTimer('pause', $iObjectId, $iAuthorId);
+
+        if(($sK = 'show_do_report_form') && ($iShowDoReportForm = bx_get($sK)) !== false && !$iShowDoReportForm) {
+            if(!$this->isEnabled())
+                return ['code' => 1, 'message' => _t('_report_err_not_enabled')];
+
+            if(!$this->isAllowedReport())
+                return ['code' => 2, 'message' => $this->msgErrAllowedReport()];
+   
+            $aTimer = $this->_oModule->_oDb->getTimers([
+                'sample' => 'content_profile_ids', 
+                'content_id' => $this->_iId, 
+                'profile_id' => $iAuthorId
+            ]);
+
+            if(!$aTimer || !is_array($aTimer) || !($iDuration = (int)$aTimer['duration']))
+                return ['code' => 3, 'message' => _t('_bx_tasks_txt_err_timer_not_found')];
+
+            list($iHours, $iMinutes) = $this->_oModule->_oConfig->timeI2A($iDuration, true);
+
+            $oForm = $this->_getFormObject();
+            return $this->_report($bPerformed, array_merge($aParams, [
+                'object_id' => $iObjectId,
+                'value_h' => $iHours,
+                'value_m' => $iMinutes,
+                'text' => '',
+                'timer_id' => $aTimer['id']
+            ]), $oForm);
+        }
+
         $mixedResult = parent::report($aParams);
         if(!empty($mixedResult) && is_array($mixedResult) && isset($mixedResult['popup'], $mixedResult['popup_id']))
             $mixedResult['popup'] = [
@@ -122,21 +183,31 @@ class BxTasksTime extends BxTemplReport
         return true;
     }
 
+    protected function _getDoReport($aParams = [])
+    {
+        $mixedResult = parent::_getDoReport($aParams);
+
+        if($this->_bApi)
+            $mixedResult['is_do_auto'] = $this->_iDoAuto($aParams);
+
+        return $mixedResult;
+    }
+
     protected function _report($bPerformed, $aParams, &$oForm)
     {
         $iAuthorId = $this->_getAuthorId();
         $iAuthorNip = bx_get_ip_hash($this->_getAuthorIp());
 
-        $iObjectId = $this->_bApi ? $this->_iId : $oForm->getCleanValue('object_id');
+        $iObjectId = ($sKey = 'object_id') && $this->_bApi ? $this->_iId : ($aParams[$sKey] ?? $oForm->getCleanValue($sKey));
 
         if(!$this->isAllowedReport(true))
             return ['code' => 2, 'message' => $this->msgErrAllowedReport()];
 
-        $iVh = ($sKey = 'value_h') && $this->_bApi ? $aParams[$sKey] : $oForm->getCleanValue($sKey);
-        $iVm = ($sKey = 'value_m') && $this->_bApi ? $aParams[$sKey] : $oForm->getCleanValue($sKey);
+        $iVh = ($sKey = 'value_h') && $this->_bApi ? $aParams[$sKey] : ($aParams[$sKey] ?? $oForm->getCleanValue($sKey));
+        $iVm = ($sKey = 'value_m') && $this->_bApi ? $aParams[$sKey] : ($aParams[$sKey] ?? $oForm->getCleanValue($sKey));
         $iValue = $this->_oModule->_oConfig->timeA2I([$iVh, $iVm]);
 
-        $sText = $this->_bApi ? $aParams['text'] : $oForm->getCleanValue('text');
+        $sText = ($sKey = 'text') && $this->_bApi ? $aParams[$sKey] : ($aParams[$sKey] ?? $oForm->getCleanValue($sKey));
         $sText = bx_process_input($sText);
 
         $iId = (int)$oForm->insert(['object_id' => $iObjectId, 'author_id' => $iAuthorId, 'author_nip' => $iAuthorNip, 'value' => $iValue,  'text' => $sText,  'date' => time()]);
@@ -150,7 +221,7 @@ class BxTasksTime extends BxTemplReport
             /*
              * If timer is attached, clear it and initiate reloading.
              */
-            if(($iTimerId = (int)$oForm->getCleanValue('timer_id'))) {
+            if(($sKey = 'timer_id') && ($iTimerId = (int)($aParams[$sKey] ?? $oForm->getCleanValue($sKey)))) {
                 $aTimer = $this->_oModule->_oDb->getTimers([
                     'sample' => 'id', 
                     'id' => $iTimerId
@@ -222,6 +293,11 @@ class BxTasksTime extends BxTemplReport
 
         return ['_bx_tasks_report_time_do_' . ($bPerformed && $this->isUndo() ? 'un' : '') . 'report'];
     }
+
+    protected function _iDoAuto($aParams)
+    {
+        return ($sK = 'show_do_report_form') && isset($aParams[$sK]) && $aParams[$sK] != true;
+    }    
 }
 
 /** @} */

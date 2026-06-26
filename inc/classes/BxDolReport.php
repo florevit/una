@@ -342,7 +342,15 @@ class BxDolReport extends BxDolObject
 
     protected function _getFormObject()
     {
-        return BxDolForm::getObjectInstance($this->_sFormObject, $this->_sFormDisplayPost);
+        $oForm = BxDolForm::getObjectInstance($this->_sFormObject, $this->_sFormDisplayPost);
+        $oForm->setId($this->_aHtmlIds['do_form']);
+        $oForm->setName($this->_aHtmlIds['do_form']);
+        $oForm->aParams['db']['table'] = $this->_aSystem['table_track'];
+        $oForm->aInputs['sys']['value'] = $this->_sSystem;
+        $oForm->aInputs['object_id']['value'] = $this->_iId;
+        $oForm->aInputs['action']['value'] = 'Report';
+
+        return $oForm;
     }
 }
 

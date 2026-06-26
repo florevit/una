@@ -16,8 +16,6 @@ class BxTasksMenuBrowse extends BxTemplMenu
     protected $_iProfileId;
 
     protected $_oPermalink;
-    protected $_sPageLink;
-    protected $_aPageParams;
 
     protected $_sParamName;
     protected $_iParamValue;
@@ -34,7 +32,6 @@ class BxTasksMenuBrowse extends BxTemplMenu
         $this->_iProfileId = 0;
 
         $this->_oPermalink = BxDolPermalinks::getInstance();
-        list($this->_sPageLink, $this->_aPageParams) = bx_get_base_url_inline();
 
         $this->_sParamName = 'context_pid';
         if(($iParamValue = bx_get($this->_sParamName)) !== false)
@@ -73,6 +70,8 @@ class BxTasksMenuBrowse extends BxTemplMenu
 
     protected function _getMenuSubitems($iProfile, $sContextModule)
     {
+        $CNF = $this->_oModule->_oConfig->CNF;
+
         $aIds = $this->_oModule->_oDb->getContextsIdsByType($sContextModule, $iProfile);
 
         $aSubmenu = [];
@@ -81,9 +80,9 @@ class BxTasksMenuBrowse extends BxTemplMenu
             if(!$oContext)
                 continue;
 
-            $sUrl = $this->_oPermalink->permalink(bx_append_url_params($this->_sPageLink, array_merge($this->_aPageParams, [
+            $sUrl = $this->_oPermalink->permalink($CNF['URL_HOME'], [
                 $this->_sParamName => $iId
-            ])));
+            ]);
 
             $aSubmenu[] = [
                 'id' => 'context-' . $iId, 

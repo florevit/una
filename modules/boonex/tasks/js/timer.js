@@ -33,18 +33,18 @@ BxTasksTimer.prototype.init = function (iContentId, iProfileId, bStarted) {
 
 BxTasksTimer.prototype.start = function (oSource, iContentId, iProfileId) {
     if(this._bMulti)
-        this.stopAll();
+        this.pauseAll();
 
     this._performAction(oSource, 'start', iContentId, iProfileId);
 };
 
-BxTasksTimer.prototype.stop = function (oSource, iContentId, iProfileId) {
+BxTasksTimer.prototype.pause = function (oSource, iContentId, iProfileId) {
     this._clearTimer(iContentId, iProfileId);
 
-    this._performAction(oSource, 'stop', iContentId, iProfileId);
+    this._performAction(oSource, 'pause', iContentId, iProfileId);
 };
 
-BxTasksTimer.prototype.stopAll = function () {
+BxTasksTimer.prototype.pauseAll = function () {
     if(!this._aTimers)
         return;
 
@@ -57,13 +57,13 @@ BxTasksTimer.prototype.stopAll = function () {
         if(!oTimer || !oTimer.length)
             continue;
 
-        this.stop(oTimer.get(0), aKey[0],aKey[1]);
+        this.pause(oTimer.get(0), aKey[0],aKey[1]);
     }
 };
 
 BxTasksTimer.prototype.resume = function (oSource, iContentId, iProfileId) {
     if(this._bMulti)
-        this.stopAll();
+        this.pauseAll();
 
     this._performAction(oSource, 'resume', iContentId, iProfileId);
 };
@@ -94,7 +94,7 @@ BxTasksTimer.prototype.onPerformActionStart = function(oData) {
     this._onPerformActionAndSet(oData);
 };
 
-BxTasksTimer.prototype.onPerformActionStop = function(oData) {
+BxTasksTimer.prototype.onPerformActionPause = function(oData) {
     this._onPerformAction(oData);
 };
 

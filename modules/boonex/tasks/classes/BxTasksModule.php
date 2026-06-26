@@ -432,7 +432,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $iNow = time();
         switch($sAction) {
             case 'start':
-                $this->stopTimerByAuthor($iProfileId);
+                $this->pauseTimerByAuthor($iProfileId);
 
                 $iTimer = false;
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
@@ -447,13 +447,13 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                     $aResult = ['code' => 0, 'id' => $iTimer];
                 break;
 
-            case 'stop':
-                if($this->stopTimerByAuthor($iProfileId))
+            case 'pause':
+                if($this->pauseTimerByAuthor($iProfileId))
                     $aResult = ['code' => 0];
                 break;
 
             case 'resume':
-                $this->stopTimerByAuthor($iProfileId);
+                $this->pauseTimerByAuthor($iProfileId);
 
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
                 if($aTimer && is_array($aTimer) && $this->updateTimerById($aTimer['id'], ['started' => $iNow]))
@@ -514,15 +514,17 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceManageTools($sType = 'common')
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $mixedResults = '';
-        if(!($mixedResults = parent::serviceManageTools($sType)))
+        $mixedResults = parent::serviceManageTools($sType);
+        if(!$mixedResults)
             return $mixedResults;
 
-        return array_merge(parent::serviceManageTools($sType), [
-            'menu' => BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])
-        ]);
+        if($this->_bIsApi)
+            return $mixedResults;
+
+        if(isset($mixedResults['menu']))
+            unset($mixedResults['menu']);
+
+        return $mixedResults;
     }
 
     public function serviceGetBlockMenuBrowse()
@@ -883,6 +885,24 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return true; 
     }
 
+    public function serviceEntityTextBlock ($iContentId = 0)
+    {
+        if(!$iContentId)
+            $iContentId = bx_process_input(bx_get('id'), BX_DATA_INT);
+        if(!$iContentId)
+            return false;
+        
+        $CNF = &$this->_oConfig->CNF;
+
+        $sResult = '';
+        if(!$this->isAllowEdit($iContentId))
+            $sResult = parent::serviceEntityTextBlock($iContentId);
+        else 
+            $sResult = $this->serviceEntityEdit($iContentId, $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_BODY']);
+
+        return $sResult;
+    }
+
     public function serviceEntityAssignments($iContentId = 0, $bAsArray = false)
     {
         if(!$iContentId)
@@ -899,7 +919,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $mixedResult = $this->_oTemplate->entryAssignments($aProfiles);
 
         return $this->_bIsApi ? [
-            bx_api_get_block('task_assignments', $mixedResult)
+            bx_api_get_block('profiles_list', ['data' => $mixedResult])
         ] : $mixedResult;
     }
 
@@ -1050,7 +1070,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         if(($_sTitle = '_' . $sName) && ($sTitle = _t($_sTitle)) && strcmp($_sTitle, $sTitle) != 0)
             $sResult = $sTitle;
-        else if(($aModule = $this->_oModule->_oDb->getModuleByName($sName)) && is_array($aModule))
+        else if(($aModule = $this->_oDb->getModuleByName($sName)) && is_array($aModule))
             $sResult = $aModule['title'] ?? _t('_undefined');
 
         return $sResult;
@@ -1132,10 +1152,10 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $this->_oDb->getTimers(['sample' => 'profile_id', 'profile_id' => $iProfileId, 'active' => $bActive]);
     }
 
-    public function stopTimerByAuthor($iProfileId)
+    public function pauseTimerByAuthor($iProfileId)
     {
         $aTimer = $this->getTimersByAuthor($iProfileId, true);
-        if(!$aTimer || !is_array($aTimer)) 
+        if(!$aTimer || !is_array($aTimer) || empty($aTimer['started']))
             return false;
 
         return $this->updateTimerById($aTimer['id'], [

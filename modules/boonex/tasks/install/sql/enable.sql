@@ -130,28 +130,32 @@ INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `lay
 ('bx_tasks_manage', '_bx_tasks_page_title_sys_manage', '_bx_tasks_page_title_manage', 'bx_tasks', 5, 2147483647, 1, 'tasks-manage', 'page.php?i=tasks-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
-('bx_tasks_manage', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_manage', '_bx_tasks_page_block_title_manage', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";}', 0, 1, 0);
+('bx_tasks_manage', 2, 'bx_tasks', '_bx_tasks_page_block_title_system_menu_browse', '_bx_tasks_page_block_title_menu_browse', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_menu_browse";}', 0, 1, 0),
+('bx_tasks_manage', 3, 'bx_tasks', '_bx_tasks_page_block_title_system_manage', '_bx_tasks_page_block_title_manage', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";}', 0, 1, 0);
 
 -- PAGE: manage all entries
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_tasks_administration', '_bx_tasks_page_title_sys_manage_administration', '_bx_tasks_page_title_manage', 'bx_tasks', 5, 192, 1, 'tasks-administration', 'page.php?i=tasks-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+('bx_tasks_administration', '_bx_tasks_page_title_sys_manage_administration', '_bx_tasks_page_title_manage', 'bx_tasks', 13, 192, 1, 'tasks-administration', 'page.php?i=tasks-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
-('bx_tasks_administration', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_manage_administration', '_bx_tasks_page_block_title_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
+('bx_tasks_administration', 2, 'bx_tasks', '_bx_tasks_page_block_title_system_menu_browse', '_bx_tasks_page_block_title_menu_browse', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_menu_browse";}', 0, 1, 0),
+('bx_tasks_administration', 3, 'bx_tasks', '_bx_tasks_page_block_title_system_manage_administration', '_bx_tasks_page_block_title_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
 
 -- PAGE: manage own time
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_tasks_time_manage', '_bx_tasks_page_title_sys_time_manage', '_bx_tasks_page_title_time_manage', 'bx_tasks', 5, 2147483647, 1, 'tasks-time-manage', 'page.php?i=tasks-time-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+('bx_tasks_time_manage', '_bx_tasks_page_title_sys_time_manage', '_bx_tasks_page_title_time_manage', 'bx_tasks', 13, 2147483647, 1, 'tasks-time-manage', 'page.php?i=tasks-time-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
-('bx_tasks_time_manage', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage', '_bx_tasks_page_block_title_time_manage', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:6:"common";}}', 0, 1, 0);
+('bx_tasks_time_manage', 2, 'bx_tasks', '_bx_tasks_page_block_title_system_menu_browse', '_bx_tasks_page_block_title_menu_browse', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_menu_browse";}', 0, 1, 0),
+('bx_tasks_time_manage', 3, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage', '_bx_tasks_page_block_title_time_manage', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:6:"common";}}', 0, 1, 0);
 
 -- PAGE: manage all time
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_tasks_time_administration', '_bx_tasks_page_title_sys_time_manage_administration', '_bx_tasks_page_title_time_manage', 'bx_tasks', 5, 192, 1, 'tasks-time-administration', 'page.php?i=tasks-time-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+('bx_tasks_time_administration', '_bx_tasks_page_title_sys_time_manage_administration', '_bx_tasks_page_title_time_manage', 'bx_tasks', 13, 192, 1, 'tasks-time-administration', 'page.php?i=tasks-time-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
-('bx_tasks_time_administration', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage_administration', '_bx_tasks_page_block_title_time_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
+('bx_tasks_time_administration', 2, 'bx_tasks', '_bx_tasks_page_block_title_system_menu_browse', '_bx_tasks_page_block_title_menu_browse', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_menu_browse";}', 0, 1, 0),
+('bx_tasks_time_administration', 3, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage_administration', '_bx_tasks_page_block_title_time_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
 
 -- PAGE: timers
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 

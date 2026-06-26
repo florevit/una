@@ -569,13 +569,15 @@
     <string name="_bx_tasks_txt_flt_user_current"><![CDATA[Current user]]></string>
 
     <string name="_bx_tasks_txt_timer_start"><![CDATA[Start]]></string>
-    <string name="_bx_tasks_txt_timer_stop"><![CDATA[Stop]]></string>
+    <string name="_bx_tasks_txt_timer_pause"><![CDATA[Pause]]></string>
     <string name="_bx_tasks_txt_timer_resume"><![CDATA[Resume]]></string>
     <string name="_bx_tasks_txt_timer_clear"><![CDATA[Clear]]></string>
     <string name="_bx_tasks_txt_timer_log"><![CDATA[Log]]></string>
+    <string name="_bx_tasks_txt_timer_edit_and_log"><![CDATA[Edit & Log]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_err_empty_pre_list"><![CDATA[Please select a list to add items to.]]></string>
+    <string name="_bx_tasks_txt_err_timer_not_found"><![CDATA[Timer wasn't found or empty.]]></string>
     <string name="_bx_tasks_txt_msg_perform_action"><![CDATA[The action was performed.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>

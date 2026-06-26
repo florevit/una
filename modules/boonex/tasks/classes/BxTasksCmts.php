@@ -68,6 +68,20 @@ class BxTasksCmts extends BxTemplCmts
         return parent::getComment($aCmt, $aBp, $aDp);
     }
 
+    public function getDataAPI($aData, $aParams = [])
+    {
+        $aResult = parent::getDataAPI($aData, $aParams);
+
+        if($this->_isAutoComment($aData)) {
+            if(isset($aResult['cmt_text']))
+                $aResult['cmt_text'] = $this->_getAutoCommentText($aResult['cmt_text'], $aData['cmt_time']);
+
+            unset($aResult['menu_actions'], $aResult['menu_manage']);
+        }
+
+        return $aResult;
+    }
+
     protected function _getHeaderBox(&$aCmt, $aBp = [], $aDp = [])
     {
         return !$this->_isAutoComment($aCmt) ? parent::_getHeaderBox($aCmt, $aBp, $aDp) : '';
@@ -132,7 +146,7 @@ class BxTasksCmts extends BxTemplCmts
         }
 
         if($iDate !== false)
-            $sText = _t('_bx_tasks_txt_msg_format', $sText, bx_time_js((int)$iDate, BX_FORMAT_DATE, true));
+            $sText = _t('_bx_tasks_txt_msg_format', $sText, $this->_bIsApi ? bx_process_output((int)$iDate, BX_DATA_DATE_TS) : bx_time_js((int)$iDate, BX_FORMAT_DATE, true));
 
         return $sText;
     }

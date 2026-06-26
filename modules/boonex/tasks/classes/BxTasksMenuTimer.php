@@ -54,13 +54,16 @@ class BxTasksMenuTimer extends BxTemplMenuCustom
         if($aTimer && is_array($aTimer)) {
             if((int)$aTimer['started'] > 0)
                 $aItems = [
-                    ['name' => 'stop', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.stop(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_stop')],
+                    ['name' => 'pause', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.pause(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_pause')],
+                    ['name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
                 ];
             else
                 $aItems = [
                     ['name' => 'resume', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.resume(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_resume')],
                     ['name' => 'clear', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.clear(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_clear')],
                     ['name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
                 ];
         }
         else {
@@ -108,7 +111,16 @@ class BxTasksMenuTimer extends BxTemplMenuCustom
     protected function _getMenuItemLog($aItem)
     {
         return $this->_getMenuItemTime($aItem, [
+            'uniq_id' => genRndPwd(3, false),
+            'show_do_report_form' => false,
             'do_report_label' => '_bx_tasks_txt_timer_log'
+        ]);
+    }
+
+    protected function _getMenuItemEditAndLog($aItem)
+    {
+        return $this->_getMenuItemTime($aItem, [
+            'do_report_label' => '_bx_tasks_txt_timer_edit_and_log'
         ]);
     }
 

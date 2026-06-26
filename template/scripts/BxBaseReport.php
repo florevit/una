@@ -118,13 +118,6 @@ class BxBaseReport extends BxDolReport
         }
 
         $oForm = $this->_getFormObject();
-        $oForm->setId($this->_aHtmlIds['do_form']);
-        $oForm->setName($this->_aHtmlIds['do_form']);
-        $oForm->aParams['db']['table'] = $this->_aSystem['table_track'];
-        $oForm->aInputs['sys']['value'] = $this->_sSystem;
-        $oForm->aInputs['object_id']['value'] = $this->_iId;
-        $oForm->aInputs['action']['value'] = 'Report';
-
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid() || ($this->_bApi && !empty($aParams) && is_array($aParams)))
             return $this->_report($bPerformed, $aParams, $oForm);
@@ -145,10 +138,11 @@ class BxBaseReport extends BxDolReport
         return $this->_sJsObjName;
     }
 
-    public function getJsScript($bDynamicMode = false)
+    public function getJsScript($bDynamicMode = false, $aParams = [])
     {
-        $aParams = array(
-            'sObjName' => $this->_sJsObjName,
+        $sJsObjName = $this->getJsObjectName();
+        $aJsObjParams = [
+            'sObjName' => $sJsObjName,
             'sSystem' => $this->getSystemName(),
             'iAuthorId' => $this->_getAuthorId(),
             'iObjId' => $this->getId(),
@@ -157,8 +151,11 @@ class BxBaseReport extends BxDolReport
             'sStylePrefix' => $this->_sStylePrefix,
             'aHtmlIds' => $this->_aHtmlIds,
             'sUnreportConfirm' => bx_js_string(_t('_report_do_unreport_confirm'))
-        );
-        $sCode = "var " . $this->_sJsObjName . " = new " . $this->_sJsObjClass . "(" . json_encode($aParams) . ");";
+        ];
+        if(($sK = 'js_params') && isset($aParams[$sK]) && is_array($aParams[$sK]))
+            $aJsObjParams = array_merge($aJsObjParams, $aParams[$sK]);
+
+        $sCode = "var " . $sJsObjName . " = new " . $this->_sJsObjClass . "(" . json_encode($aJsObjParams) . ");";
 
         return $this->_oTemplate->_wrapInTagJsCode($sCode);
     }
@@ -254,7 +251,7 @@ class BxBaseReport extends BxDolReport
                     ]))
                 )
             ),
-            'script' => $this->getJsScript($bDynamicMode)
+            'script' => $this->getJsScript($bDynamicMode, $aParams)
         ));
     }
 
