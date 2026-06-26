@@ -901,6 +901,11 @@ class BxDolAIQuery extends BxDolDb
         return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'message' AND `profile_id` = :profile AND `active` = :active", ['profile' => $iProfileId, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
+    public function getAgentsByFormObject($sFormObject, $bActiveOnly = true)
+    {
+        return $this->fromMemory('sys_agents_with_form_' . $sFormObject, 'getAll', "SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'form-input' AND `form_object` = :form_object AND `active` = :active", ['form_object' => $sFormObject, 'active' => $bActiveOnly ? 1 : 0]);
+    }
+
     public function getAgentByTriggerWebhookKey($sKey, $bActiveOnly = true)
     {
         return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'scheduler' AND `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);

@@ -365,7 +365,7 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'manual' => 'manual',
                         'agent' => 'agent',
                         'message' => 'message',
-                        'form-field' => 'form field',
+                        'form-input' => 'form input',
                     ],
                     'attrs' => [
                         'onchange' => $this->getPageJsObject() . '.onChangeAgentTrigger(this)',

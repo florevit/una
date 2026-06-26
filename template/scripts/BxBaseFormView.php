@@ -101,6 +101,9 @@ class BxBaseFormView extends BxDolForm
     protected $_sJsObjectName;
     
     protected $_aHtmlIds;
+
+    protected $_aAgentsFormObject;
+    protected $_sAgentFormObject;
     
     /**
      * Constructor
@@ -132,6 +135,8 @@ class BxBaseFormView extends BxDolForm
             $sName = $aInfo['params']['object'];
         if(empty($sName) && !empty($aInfo['form_attrs']['id']))
             $sName = $aInfo['form_attrs']['id'];
+        if(empty($sName) && !empty($aInfo['form_attrs']['name']))
+            $sName = $aInfo['form_attrs']['name'];
 
         $this->_sJsObjectName = 'oForm' . bx_gen_method_name($sName, array('_' , '-'));
 
@@ -142,6 +147,9 @@ class BxBaseFormView extends BxDolForm
             'pgc_popup' => $sHtmlId . '-pgc-popup-',
             'pgc_form' => $sHtmlId . '-pgc-form-',
         );
+
+        $this->_sAgentFormObject = $aInfo['params']['object'] ?? $this->id;
+        $this->_aAgentsFormObject = BxDolAI::getInstance()->getAgentsByFormObject($this->_sAgentFormObject);
     }
 
     public function performActionGetHelp()
@@ -1663,12 +1671,30 @@ BLAH;
 
         $sValue = isset($aInput['value']) ? bx_process_output($bHtml || $bCode ? $aInput['value'] : strip_tags($aInput['value']), BX_DATA_TEXT, ['no_process_macros']) : '';
 
+        $aAgent = [];
+        if(!empty($this->_aAgentsFormObject)) {
+            foreach($this->_aAgentsFormObject as $a) {
+                if($a['form_object'] == $this->_sAgentFormObject && $a['form_input'] == $aInput['name']) {
+                    $aAgent = $a;
+                    break;
+                }
+            }
+        }
+
         return $this->oTemplate->parseHtmlByName('form_field_textarea.html', [
             'attrs' => bx_convert_array2attrs($aAttrs, $sClassAdd),
             'value' => $sValue,
             'bx_if:show_switcher' => [
                 'condition' => !empty($aTmplVarsSwitcher),
                 'content' => $aTmplVarsSwitcher
+            ],
+            'bx_if:show_agent' => [
+                'condition' => !empty($aAgent),
+                'content' => [
+                    'name' => $aInput['name'],
+                    'agent_id' => $aAgent['id'] ?? 0,
+                    'form_id' => $this->getId(),
+                ]
             ]
         ]);
     }

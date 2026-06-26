@@ -1753,6 +1753,23 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return $oAi->callAgent($sType, $aAgent, $aParams);
     }
 
+    public function serviceCallAgentForFormInput($iAgentId)
+    {
+        // TODO: check auth and permissions
+
+        $sJson = file_get_contents('php://input');
+        $aData = json_decode($sJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE)
+            return echoJson(['code' => 500, 'msg' => _t('_sys_agents_json_field_err')]);
+        
+        $sPrompt = $aData['prompt'] ?? null;
+        $sInputName = $aData['input_name'] ?? null;
+        $aValues = $aData['values'] ?? [];
+
+        return echoJson(['code' => 200, 'msg' => 'Great! ' . $sPrompt . random_int(1000, 9999) . ($aValues[$sInputName] ?? '')]);
+    }
+
 }
 
 /** @} */
