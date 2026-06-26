@@ -2244,6 +2244,10 @@
         <string name="_sys_agents_form_field_err_enter"><![CDATA[Это поле имеет важное значение. Пожалуйста, напишите что-нибудь здесь.]]></string>
         <string name="_sys_agents_form_field_err_select"><![CDATA[Это поле имеет важное значение. Пожалуйста, выберите что-нибудь здесь.]]></string>
         <string name="_sys_agents_form_field_err_profile_has_agent"><![CDATA[Этот профиль уже используется в другом агенте({0}) с тем же триггером 'сообщение'.]]></string>
+        <string name="_sys_agents_form_object"><![CDATA[Объект формы]]></string>
+        <string name="_sys_agents_form_object_info"><![CDATA[Объект формы, содержащий необходимое поле]]></string>
+        <string name="_sys_agents_form_input"><![CDATA[Поле формы]]></string>
+        <string name="_sys_agents_form_input_info"><![CDATA[Поле формы, в которое нужно вставить текст, сгенерированный ИИ]]></string>
         <string name="_sys_agents_json_field_err"><![CDATA[Неверный формат JSON.]]></string>
         <string name="_sys_agents_automators_txt_active"><![CDATA[Активный]]></string>
         <string name="_sys_agents_automators_txt_name"><![CDATA[Название]]></string>

@@ -1753,6 +1753,38 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return $oAi->callAgent($sType, $aAgent, $aParams);
     }
 
+    public function serviceCallAgentForFormInput($iAgentId)
+    {
+        if (!bx_get_logged_profile_id())
+            return echoJson(['code' => 403, 'msg' => _t('_sys_agents_unauthorized')]);
+
+        $sJson = file_get_contents('php://input');
+        $aData = json_decode($sJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE)
+            return echoJson(['code' => 500, 'msg' => _t('_sys_agents_json_field_err')]);
+        
+        $sPrompt = $aData['prompt'] ?? null;
+        $sInputName = $aData['input_name'] ?? null;
+        $aValues = $aData['values'] ?? [];
+
+        $aAgent = BxDolAiQuery::getAgentObject($iAgentId);
+        if (!$aAgent || !$aAgent['active'])
+            return echoJson(['code' => 404, 'msg' => _t('_sys_agents_agent_not_found')]);
+        
+        $aParams = [
+            'sender_profile_id' => bx_get_logged_profile_id(),
+            'user_prompt' => $sPrompt,
+            'form_field_name' => $sInputName,
+            'form_values' => $aValues,
+        ];
+
+        $oAi = BxDolAI::getInstance();
+        $mixed = $oAi->callAgent('form-input', $aAgent, $aParams);
+
+        return echoJson(['code' => 200, 'msg' => $mixed]);
+    }
+
 }
 
 /** @} */

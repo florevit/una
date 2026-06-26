@@ -392,7 +392,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
         // set additional params
         $aParams = [];
-        if ('message' == $sType) {
+        if ('message' == $sType || 'form-input' == $sType) {
             $aParams = ['chat_history_subindex' => $mixedParams['sender_profile_id']];
         }
 
@@ -436,7 +436,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         $aAgents = [];
         $a = $this->_oDb->getAgentsWithAlert();
         foreach ($a as $r) {
-            $aAlert = explode(':', $r['alert']);
+            $aAlert = explode(':', $r['alert']); // TODO: remake to concantenate $sUnit and $sAction and then compare
             if (count($aAlert) == 2 && $aAlert[0] == $sUnit && $aAlert[1] == $sAction)
                 $aAgents[] = $r;
         }
@@ -449,6 +449,11 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $this->_oDb->getAgentsByProfileId($iProfileId);
     }
     
+    public function getAgentsByFormObject($sFormObject)
+    {
+        return $this->_oDb->getAgentsByFormObject($sFormObject);
+    }
+
     public function getAgentsByTriggerType($sTrigger)
     {
         return $this->_oDb->getAgentsByTriggerType($sTrigger);

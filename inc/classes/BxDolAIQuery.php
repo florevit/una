@@ -901,6 +901,11 @@ class BxDolAIQuery extends BxDolDb
         return $this->getAll("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'message' AND `profile_id` = :profile AND `active` = :active", ['profile' => $iProfileId, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
+    public function getAgentsByFormObject($sFormObject, $bActiveOnly = true)
+    {
+        return $this->fromMemory('sys_agents_with_form_' . $sFormObject, 'getAll', "SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'form-input' AND `form_object` = :form_object AND `active` = :active", ['form_object' => $sFormObject, 'active' => $bActiveOnly ? 1 : 0]);
+    }
+
     public function getAgentByTriggerWebhookKey($sKey, $bActiveOnly = true)
     {
         return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'scheduler' AND `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);
@@ -970,6 +975,33 @@ class BxDolAIQuery extends BxDolDb
                 'desc' => $this->getAlertDesc($a['unit'] . ':' . $a['action']),
                 'counter_24h' => $a['counter_24h'],
                 'counter_per_request' => $a['counter_per_request'],
+            ];
+        }
+        return $aValues;
+    }
+
+    public function getFormDisplay($sObject)
+    {
+        $aDisplays = $this->getColumn("SELECT `display_name` FROM `sys_form_displays` WHERE `object` = :object", ['object' => $sObject]);
+        return $aDisplays ? current($aDisplays) : null;
+    }
+
+    public function getFormObjects()
+    {
+        $aValues = [];
+        $aForms = $this->getAll("SELECT `f`.`object`, `f`.`title`, `f`.`module`, `m`.`title` AS `module_title` FROM `sys_objects_form` AS f INNER JOIN `sys_modules` as `m` ON `m`.`name` = `f`.`module` ORDER BY `f`.`module`, `f`.`object` ASC");
+        foreach ($aForms as $r) {
+            $sDisplay = $this->getFormDisplay($r['object']);
+            if (!$sDisplay) 
+                continue;
+            $oForm = BxDolForm::getObjectInstance($r['object'], $sDisplay);
+            $sFormId = $oForm->getId();
+            $aValues[$r['object']] = [
+                'form_id' => $sFormId,
+                'form_object' => $r['object'],
+                'module' => $r['module'],
+                'module_title' => $r['module_title'],
+                'form_title' => _t($r['title']),
             ];
         }
         return $aValues;

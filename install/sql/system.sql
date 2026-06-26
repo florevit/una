@@ -6776,7 +6776,8 @@ CREATE TABLE IF NOT EXISTS `sys_rewrite_rules` (
 
 INSERT INTO `sys_rewrite_rules` (`preg`, `service`, `active`) VALUES
 ('^sys-action/(.*)$', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:11:"wiki_action";s:6:"params";a:2:{i:0;s:3:"sys";i:1;s:3:"{1}";}s:5:"class";s:16:"TemplServiceWiki";}', '1'),
-('^home/?$', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:13:\"home_redirect\";s:6:\"params\";a:0:{}}', 1);
+('^home/?$', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:13:\"home_redirect\";s:6:\"params\";a:0:{}}', 1),
+('^sys-agent-form-input/(.*)$', 'a:4:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:25:\"call_agent_for_form_input\";s:6:\"params\";a:1:{i:0;s:3:\"{1}\";}s:5:\"class\";s:13:\"TemplServices\";}', 1);
 
 -- --------------------------------------------------------
 
@@ -7193,12 +7194,14 @@ CREATE TABLE `sys_agents_agents` (
   `tools_max_run` int(11) NOT NULL DEFAULT 10,
   `chat_history_context` int(11) NOT NULL DEFAULT 50000,
   `vector_store_id` int(11) NOT NULL,
-  `trigger` enum('alert','scheduler','webhook','manual','agent','message') NOT NULL DEFAULT 'message',
+  `trigger` enum('alert','scheduler','webhook','manual','agent','message','form-input') NOT NULL DEFAULT 'message',
   `async` tinyint(4) NOT NULL DEFAULT 0,
   `alert` varchar(192) NOT NULL DEFAULT '',
   `scheduler_cron` varchar(64) NOT NULL,
   `webhook_key` varchar(255) NOT NULL,
   `webhook_sample` text NOT NULL,
+  `form_object` varchar(128) NOT NULL,
+  `form_input` varchar(128) NOT NULL,
   `agent_sample` text NOT NULL,
   `message_profile_id` int(11) NOT NULL,
   `added` int(11) UNSIGNED NOT NULL DEFAULT 0,
