@@ -38,6 +38,24 @@ class BxTasksGridTime extends BxBaseModGeneralGrid
         $this->_sFilter4Name = 'filter4';
     }
 
+    public function getFormBlockTitleAPI($sAction, $iId = 0)
+    {
+        $sResult = '';
+
+        switch($sAction) {
+            case 'calculate':
+                $sResult = _t('_bx_tasks_grid_popup_title_tm_calculate');
+                break;
+        }
+
+        return $sResult;
+    }
+
+    public function getFormCallBackUrlAPI($sAction, $iId = 0)
+    {
+         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&id=' . $iId;
+    }
+
     public function performActionCalculate()
     {
         $sAction = 'calculate';

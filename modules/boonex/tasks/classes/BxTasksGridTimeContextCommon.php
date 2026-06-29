@@ -8,6 +8,7 @@
  * @{
  */
 
+require_once(BX_DOL_DIR_STUDIO_INC . 'utils.inc.php');
 require_once('BxTasksGridTimeContextAdministration.php');
 
 class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
@@ -21,6 +22,26 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
         $this->_iLogged = bx_get_logged_profile_id();
     }
 
+    public function getFormBlockTitleAPI($sAction, $iId = 0)
+    {
+        $sResult = '';
+
+        switch($sAction) {
+            case 'add':
+                $sResult = _t('_bx_tasks_grid_popup_title_tm_add');
+                break;
+
+            case 'edit':
+                $sResult = _t('_bx_tasks_grid_popup_title_tm_edit');
+                break;
+
+            default:
+                parent::getFormBlockTitleAPI($sAction, $iId);
+        }
+
+        return $sResult;
+    }
+    
     public function performActionAdd()
     {
         $sAction = 'add';
@@ -52,7 +73,7 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
         if($this->_bIsApi)
             return $this->getFormBlockAPI($oForm, $sAction);
 
-        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('time_popup'), _t('_bx_tasks_popup_title_time_add'), $this->_oModule->_oTemplate->parseHtmlByName('popup_time.html', [
+        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('time_popup'), _t('_bx_tasks_grid_popup_title_tm_add'), $this->_oModule->_oTemplate->parseHtmlByName('popup_time.html', [
             'form_id' => $oForm->getId(),
             'form' => $oForm->getCode(true),
             'object' => $this->_sObject,
@@ -72,8 +93,8 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
         if($aIds === false)
             return $this->_getActionResult([]);
 
-        $iTrack = array_shift($aIds);
-        $aTrack = $this->_oModule->_oDb->getTimeTracks(['sample' => 'id', 'id' => $iTrack]);
+        $iTrackId = array_shift($aIds);
+        $aTrack = $this->_oModule->_oDb->getTimeTracks(['sample' => 'id', 'id' => $iTrackId]);
         if(empty($aTrack) || !is_array($aTrack))
             return $this->_getActionResult([]);
 
@@ -84,23 +105,23 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
                 'value' => $this->_oModule->_oConfig->timeA2I([(int)$oForm->getCleanValue('value_h'), (int)$oForm->getCleanValue('value_m')]),
             ];
 
-            if(!$oForm->update($iTrack, $aValsToAdd))
+            if(!$oForm->update($iTrackId, $aValsToAdd))
                 return $this->_getActionResult(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
 
             $iObjectId = (int)$aTrack['object_id'];
             $iAuthorId = (int)$aTrack['author_id'];
             if(($oTime = BxDolReport::getObjectInstance($CNF['OBJECT_REPORTS_TIME'], $iObjectId)) && $oTime->isEnabled()) {
                 $oTime->putReport($iObjectId, $iAuthorId, $aTrack, true); //--- Revoke old value
-                $oTime->putReport($iObjectId, $iAuthorId, $iTrack); //--- Process new value
+                $oTime->putReport($iObjectId, $iAuthorId, $iTrackId); //--- Process new value
             }
 
-            return $this->_bIsApi ? [] : echoJson(['grid' => $this->getCode(false), 'blink' => $iTrack]);    
+            return $this->_bIsApi ? [] : echoJson(['grid' => $this->getCode(false), 'blink' => $iTrackId]);    
         }
 
         if($this->_bIsApi)
-            return $this->getFormBlockAPI($oForm, $sAction, $iLevel);
+            return $this->getFormBlockAPI($oForm, $sAction, $iTrackId);
 
-        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('time_popup'), _t('_bx_tasks_popup_title_time_edit'), $this->_oModule->_oTemplate->parseHtmlByName('popup_time.html', [
+        $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('time_popup'), _t('_bx_tasks_grid_popup_title_tm_edit'), $this->_oModule->_oTemplate->parseHtmlByName('popup_time.html', [
             'form_id' => $oForm->getId(),
             'form' => $oForm->getCode(true),
             'object' => $this->_sObject,
@@ -147,7 +168,7 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
                 ]
             ]);
 
-            $aTasks = $this->_oModule->_oDb->getTasks(-$this->_iContextPid);
+            $aTasks = $this->_oModule->_oDb->getTasks($this->_iContextPid);
             foreach($aTasks as $aTask) {
                 if($aTask[$CNF['FIELD_STATUS_ADMIN']] !== 'active')
                     continue;
@@ -170,6 +191,19 @@ class BxTasksGridTimeContextCommon extends BxTasksGridTimeContextAdministration
                         $oForm->aInputs['value'][$mixedKey]['value'] = (int)$iValue;
                 }
             }
+        }
+        
+        if($this->_bIsApi && ($sK = 'value') && isset($oForm->aInputs[$sK])) {
+            foreach($oForm->aInputs[$sK] as $mixedKey => $mixedValue) 
+                if(($sName = $mixedValue['name'] ?? false) && in_array($sName, ['value_h', 'value_m']) && ($sCaptionSrc = '_bx_tasks_form_time_input_' . $sName))
+                    $oForm->aInputs = bx_array_insert_before([$sName => array_merge(
+                        $mixedValue, [
+                            'caption_src' => $sCaptionSrc,
+                            'caption' => _t($sCaptionSrc)
+                        ]
+                    )], $oForm->aInputs, 'value_date');
+
+            unset($oForm->aInputs[$sK]);
         }
 
         return $oForm;

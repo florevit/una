@@ -136,17 +136,17 @@
     <string name="_bx_tasks_form_time_input_value"><![CDATA[Time]]></string>
     <string name="_bx_tasks_form_time_input_value_err"><![CDATA[If you want to log some time fill this field in.]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_h"><![CDATA[Time: Hours]]></string>
+    <string name="_bx_tasks_form_time_input_value_h"><![CDATA[Hours]]></string>
     <string name="_bx_tasks_form_time_input_value_h_placeholder"><![CDATA[hours]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_div"><![CDATA[Time: Divider]]></string>
     <string name="_bx_tasks_form_time_input_value_div"><![CDATA[<div>:</div>]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_m"><![CDATA[Time: Minutes]]></string>
+    <string name="_bx_tasks_form_time_input_value_m"><![CDATA[Minutes]]></string>
     <string name="_bx_tasks_form_time_input_value_m_placeholder"><![CDATA[minutes]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
-    <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
-    <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Edit Time]]></string>    
 
     <string name="_bx_tasks_form_pv_input_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_pv_input_color"><![CDATA[Color]]></string>
@@ -446,6 +446,9 @@
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_author_id"><![CDATA[Any Assignee]]></string>
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_context_module"><![CDATA[Any Module]]></string>
     <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Any Task]]></string>
+    <string name="_bx_tasks_grid_popup_title_tm_add"><![CDATA[Add Time]]></string>
+    <string name="_bx_tasks_grid_popup_title_tm_edit"><![CDATA[Edit Time]]></string>
+    <string name="_bx_tasks_grid_popup_title_tm_calculate"><![CDATA[Total Spent Time]]></string>
 
     <string name="_bx_tasks_grid_column_title_pv_active"><![CDATA[Active]]></string>
     <string name="_bx_tasks_grid_column_title_pv_title"><![CDATA[Title]]></string>

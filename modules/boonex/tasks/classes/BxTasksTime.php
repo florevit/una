@@ -94,7 +94,7 @@ class BxTasksTime extends BxTemplReport
             return $this->_report($bPerformed, array_merge($aParams, [
                 'object_id' => $iObjectId,
                 'value_h' => $iHours,
-                'value_m' => $iMinutes,
+                'value_m' => $iMinutes + 1,
                 'text' => '',
                 'timer_id' => $aTimer['id']
             ]), $oForm);

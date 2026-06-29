@@ -24,8 +24,6 @@ class BxTasksGridTimeContextAdministration extends BxTasksGridTime
 
     public function setContextPid($iContextPid)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
         $this->_iContextPid = (int)$iContextPid;
         $this->_aQueryAppend['context_pid'] = $this->_iContextPid;
 
@@ -39,6 +37,11 @@ class BxTasksGridTimeContextAdministration extends BxTasksGridTime
          * Filter by object_id
          */
         $this->_initFilter(2, $this->_oModule->getContextEntries($this->_iContextPid));
+    }
+
+    public function getFormCallBackUrlAPI($sAction, $iId = 0)
+    {
+         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&context_pid=' . $this->_iContextPid . '&id=' . $iId;
     }
 
     protected function _getFilterControls()

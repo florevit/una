@@ -275,24 +275,33 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'filter' => $iFilterSelected,
         ]));
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            $aActions = [];
+            if($bAllowAdd)
+                $aActions = array_merge($aActions, [[
+                    'name' => 'add_list', 
+                    'type' => 'modal', 
+                    'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=0',
+                ], [
+                    'name' => 'add_task', 
+                    'type' => 'modal', 
+                    'callback' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=0',
+                ]]);
+            
+            if($bContext)
+                $aActions[] = [
+                    'name' => 'manage_settings', 
+                    'type' => 'menu', 
+                    'object' => $CNF['OBJECT_MENU_SUBMENU_MANAGE_CONTEXT']
+                ];
+
             return [
                 'context_id' => $iContextId,
                 'filters' => $mixedFilters,
-                'task_lists' => $aEntries,
-                'permissions' => [
-                    'add_list' => $bAllowAdd,
-                    'add_task' => $bAllowAdd,
-                    'manage_settings' => $bContext,
-                ],
-                'request_urls' => [
-                    'add_list' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=',
-                    'edit_list' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=',
-                    'delete_list' => $this->MODULE . '/delete_task_list&params[]=' . $iContextId . '&params[]=',
-                    'add_task' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=',
-                    'edit_task' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=',
-                ]
+                'lists' => $aEntries,
+                'actions' => $aActions
             ];
+        }
 
         $this->addCssJs();
         $this->addJs([
@@ -402,13 +411,15 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
             $aTmplVarsTasks = [];
             foreach($aTasks as $aTask) {
+                $iTaskId = (int)$aTask[$CNF['FIELD_ID']];
+
                 $sTime = '';
                 if(!empty($aTask['time_total']))
                     $sTime = _t('_bx_tasks_txt_total', $this->_oConfig->timeI2S($aTask['time_total']) . (!empty($aTask['time']) ? ' (' . $this->_oConfig->timeI2S($aTask['time']) . ')' : ''));
                 if(!empty($aTask['estimate']))
                     $sTime .= ' ' . _t('_bx_tasks_txt_estimate', $this->_oConfig->timeI2S(60 * (int)$aTask['estimate']));
 
-                $aMembers = $oConnection->getConnectedInitiators($aTask[$CNF['FIELD_ID']]);
+                $aMembers = $oConnection->getConnectedInitiators($iTaskId);
 
                 $aTmplVarsMembers = [];
                 foreach($aMembers as $iMember)
@@ -416,10 +427,19 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                         $aTmplVarsMembers[] = $this->_bIsApi ? BxDolProfile::getData($oProfile) : ['info' => $oProfile->getUnit(0, ['template' => 'unit_wo_info'])];
 
                 $bCompleted = $aTask[$CNF['FIELD_COMPLETED']] == 1;
-                $sUrl = bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']]));
+                $sUrl = bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $iTaskId));
+
+                $aActions = [];
+                if($this->_bIsApi && $bTasksAllowManage)
+                    $aActions[] = [
+                        'name' => 'set_completed', 
+                        'type' => 'callback', 
+                        'callback' => $this->MODULE . '/set_completed&params[]=' . $iTaskId . '&params[]=',
+                        'on_callback' => 'refresh'
+                    ];
 
                 $aTmplVarsTasks[] = array_merge([
-                    'id' => $aTask[$CNF['FIELD_ID']],
+                    'id' => $iTaskId,
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
                     'created' => $aTask[$CNF['FIELD_ADDED']],
                     'class' => $bCompleted ? 'completed' : 'uncompleted',
@@ -428,12 +448,12 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
                     'state' => $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '',
                     'time' => $sTime,
-                    'badges' => $oModule->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
+                    'badges' => $oModule->serviceGetBadges($iTaskId, true),
                     'url' => $sUrl
                 ], $this->_bIsApi ? [
                     'url' => bx_api_get_relative_url($sUrl),
                     'members' => $aTmplVarsMembers,
-                    'allow_manage' => $bTasksAllowManage,
+                    'actions' => $aActions
                 ] : [
                     'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
                     'due' => $aTask[$CNF['FIELD_DUE_DATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUE_DATE']]) : '',
@@ -442,7 +462,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'bx_if:allow_manage' => [
                         'condition' => $bTasksAllowManage,
                         'content' => [
-                            'id' => $aTask[$CNF['FIELD_ID']],
+                            'id' => $iTaskId,
                             'object' => $sJsObject,
                             'checked' => $bCompleted ? 'checked' : '',
                         ]
@@ -450,7 +470,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'bx_if:deny_manage' => [
                         'condition' => !$bTasksAllowManage,
                         'content' => [
-                            'id' => $aTask[$CNF['FIELD_ID']],
+                            'id' => $iTaskId,
                             'checked' => $bCompleted ? 'checked' : '',
                         ]
                     ]
@@ -460,16 +480,32 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             $iListId = (int)$aList[$CNF['FIELD_ID']];
 
             if($this->_bIsApi) {
+                $aActions = [];
+                if($bAllowAdd)
+                    $aActions = array_merge($aActions, [[
+                        'name' => 'edit_list', 
+                        'type' => 'modal', 
+                        'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=' . $iListId,
+                    ], [
+                        'name' => 'add_task', 
+                        'type' => 'modal', 
+                        'callback' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=' . $iListId,
+                    ]]);
+                
+                if($bAllowManage)
+                    $aActions[] = [
+                        'name' => 'delete_list', 
+                        'type' => 'callback', 
+                        'callback' => $this->MODULE . '/delete_task_list&params[]=' . $iContextId . '&params[]=' . $iListId,
+                        'on_callback' => 'hide_row'
+                    ];
+
                 $aTmplVarsLists[] = [
                     'context_id' => $iContextId,
                     'list_id' => $iListId,
                     'list_title' => $aList[$CNF['FIELD_TITLE']],
                     'tasks' => $aTmplVarsTasks,
-                    'permissions' => [
-                        'edit_list' => $bAllowAdd,
-                        'delete_list' => $bAllowManage,
-                        'add_task' => $bAllowAdd,
-                    ]
+                    'actions' => $aActions
                 ];
 
                 continue;

@@ -532,7 +532,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $mixedResult = $this->_oTemplate->getBlockMenuBrowse();
 
         return $this->_bIsApi ? [
-            bx_api_get_block('tasks_browse', $mixedResult)
+            bx_api_get_block('tasks_menu', $mixedResult)
         ] : $mixedResult;
     }
 
