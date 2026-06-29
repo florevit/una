@@ -6,38 +6,5 @@
         </div>
     </div>
 </bx_if:show_switcher>
-<bx_if:show_agent>
-    <div class="bx-form-input-agent-button __name__ relative">
-        <a class="flex absolute -top-7 right-0 space-x-2" href="#"><i class="sys-icon magic"></i></a>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('.bx-form-input-agent-button.__name__ a').click(function() {
-                bx_prompt("Prompt:", '', (o) => {
-                    if(o.getValue()) {
-                        $('.bx-form-input-agent-button.__name__ .sys-icon').removeClass('magic').addClass('sync animate-spin');
-                        $.ajax({
-                            url: sUrlRoot + 'r.php?_q=sys-agent-form-input/__agent_id__',
-                            type: 'POST',
-                            contentType: 'application/json',
-                            dataType: 'json',        // Expect JSON response
-                            data: JSON.stringify({
-                                prompt: o.getValue(),
-                                input_name: '__name__',
-                                values: Object.fromEntries(new FormData($('#__form_id__')[0]))
-                            }),
-                            success: function(data) {
-                                $('.bx-form-input-agent-button.__name__ .sys-icon').addClass('magic').removeClass('sync animate-spin');
-                                $('textarea[name="__name__"]').val(data.msg);
-                            }
-                        });
-
-                        
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
-</bx_if:show_agent>
+__agent_button__
 <textarea __attrs__>__value__</textarea>
