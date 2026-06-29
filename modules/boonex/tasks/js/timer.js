@@ -17,6 +17,7 @@ function BxTasksTimer(oOptions) {
     this._aHtmlIds = oOptions.aHtmlIds == undefined ? {} : oOptions.aHtmlIds;
     this._oRequestParams = oOptions.oRequestParams == undefined ? {} : oOptions.oRequestParams;
 
+    this._sName = oOptions.sName == undefined ? '' : oOptions.sName;
     this._bMulti = oOptions.bMulti == undefined ? false : oOptions.bMulti;
 
     this._aTimers = [];
@@ -57,7 +58,7 @@ BxTasksTimer.prototype.pauseAll = function () {
         if(!oTimer || !oTimer.length)
             continue;
 
-        this.pause(oTimer.get(0), aKey[0],aKey[1]);
+        this.pause(oTimer.get(0), aKey[0], aKey[1]);
     }
 };
 
@@ -80,6 +81,10 @@ BxTasksTimer.prototype.log = function (oSource, iContentId, iProfileId) {
     this._performAction(oSource, 'log', iContentId, iProfileId);
 };
 
+BxTasksTimer.prototype.logAll = function (oSource, iProfileId) {
+    this._performAction(oSource, 'log_all', 0, iProfileId);
+};
+
 BxTasksTimer.prototype.clear = function (oSource, iContentId, iProfileId) {
     var $this = this;
 
@@ -87,6 +92,14 @@ BxTasksTimer.prototype.clear = function (oSource, iContentId, iProfileId) {
         $this._clearTimer(iContentId, iProfileId);
 
         $this._performAction(oSource, 'clear', iContentId, iProfileId);
+    });
+};
+
+BxTasksTimer.prototype.clearAll = function (oSource, iProfileId) {
+    var $this = this;
+
+    bx_confirm('', function() {
+        $this._performAction(oSource, 'clear_all', 0, iProfileId);
     });
 };
 
@@ -143,6 +156,7 @@ BxTasksTimer.prototype._performAction = function (oSource, sAction, iContentId, 
     $.get(
         this._sActionsUrl + 'process_timer/' + sAction + '/' + iContentId + '/' + iProfileId, 
         {
+            name: $this._sName,
             _t: oDate.getTime()
         },
         function(oData) {

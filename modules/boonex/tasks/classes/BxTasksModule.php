@@ -161,12 +161,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$this->_iProfileId || $this->_iProfileId != $iProfileId)
             return echoJson(['msg' => _t('_sys_txt_access_denied')]);
 
+        $sName = '';
+        if(($sName = bx_get('name')) !== false)
+            $sName = bx_process_input($sName);
+
         $aResult = $this->serviceProcessTimer($sAction, $iContentId, $iProfileId);
         if($aResult['code'] == 0)
             $aResult = array_merge($aResult, [
                 'content_id' => $iContentId,
                 'profile_id' => $iProfileId,
-                'content' => $this->_oTemplate->getTimer($iContentId, $iProfileId),
+                'content' => $this->_oTemplate->getTimer($iContentId, $iProfileId, $sName),
                 'eval' => $this->_oConfig->getJsObject('timer') . '.onPerformAction' . bx_gen_method_name($sAction) . '(oData)'
             ]);
 
@@ -503,9 +507,37 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 $aResult = ['code' => 0];
                 break;
 
+            case 'log_all':
+                $aTimers = $this->getTimersByAuthor($iProfileId);
+
+                $iAffected = 0;
+                foreach($aTimers as $aTimer) {
+                    $aSubResult = $this->serviceProcessTimer('log', $aTimer['content_id'], $iProfileId);
+                    if(($aSubResult['code'] ?? false) === 0)
+                        $iAffected++;
+                }
+
+                if(count($aTimers) == $iAffected)
+                    $aResult = ['code' => 0, 'reload' => 1];
+                break;
+
             case 'clear':
                 if($this->_oDb->deleteTimer(['content_id' => $iContentId, 'profile_id' => $iProfileId]) !== false)
                     $aResult = ['code' => 0];
+                break;
+
+            case 'clear_all':
+                $aTimers = $this->getTimersByAuthor($iProfileId);
+
+                $iAffected = 0;
+                foreach($aTimers as $aTimer) {
+                    $aSubResult = $this->serviceProcessTimer('clear', $aTimer['content_id'], $iProfileId);
+                    if(($aSubResult['code'] ?? false) === 0)
+                        $iAffected++;
+                }
+
+                if(count($aTimers) == $iAffected)
+                    $aResult = ['code' => 0, 'reload' => 1];
                 break;
         }
 

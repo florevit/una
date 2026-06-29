@@ -9,6 +9,7 @@
  */
 
 require_once('BxTasksMenuTimer.php');
+require_once('BxTasksMenuTimers.php');
 
 class BxTasksTemplate extends BxBaseModTextTemplate
 {
@@ -153,7 +154,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $oPermalinks = BxDolPermalinks::getInstance();
 
-        $sKeyTimers = $this->_bIsApi ? 'timers' : 'bx_repeat:timers';
+        $sTimerName = 'hor-sm';
+        $sTimersKey = $this->_bIsApi ? 'timers' : 'bx_repeat:timers';
 
         $aTmplVarsSections = [];
         foreach($aTimers as $aTimer) {
@@ -176,13 +178,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             if(!isset($aTmplVarsSections[$sContextType]))
                 $aTmplVarsSections[$sContextType] = [
                     'section_title' => $oModule->getModuleTitle($sContextType),
-                    $sKeyTimers => []
+                    $sTimersKey => []
                 ];
 
-            $aTmplVarsSections[$sContextType][$sKeyTimers][] = array_merge([
+            $aTmplVarsSections[$sContextType][$sTimersKey][] = array_merge([
                 'content_title' => $aContentInfo[$CNF['FIELD_TITLE']],
                 'content_url' => $this->_bIsApi ? bx_api_get_relative_url($sUrl) : $sUrl,
-                'timer' => $this->getTimer($aTimer['content_id'], $iProfileId),
+                'timer' => $this->getTimer($aTimer['content_id'], $iProfileId, $sTimerName),
             ], $this->_bIsApi ? [
                 'context' => $aTmplVarsContext,
             ] : [
@@ -193,22 +195,35 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'js_code_timer' => $sJsObject . '.init(' . $aTimer['content_id'] . ', ' . $iProfileId . ', ' . ($aTimer['started'] != 0 ? 1 : 0) . ');'
             ]);
         }
-
         $aTmplVarsSections = array_values($aTmplVarsSections);
-        if($this->_bIsApi)
-            return $aTmplVarsSections;
 
-        $this->addCss(['timer.css']);
+        $oActions = new BxTasksMenuTimers([
+            'object' => str_replace('_', '-', $this->_oConfig->getName()) . '_timers',
+            'template' => 'menu_custom_hor.html', 
+            'menu_id' => $this->_oConfig->getHtmlIds('timers_actions'), 
+            'persistent' => 0
+        ]);
+        $oActions->setParams($iProfileId);
+        
+        if($this->_bIsApi)
+            return [
+                'sections' => $aTmplVarsSections,
+                'actions' => $oActions->getCodeAPI()
+            ];
+
+        $this->addCss(['forms.css', 'timer.css']);
         $this->addJs(['timer.js']);
         return $this->parseHtmlByName('browse_timers.html', [
             'js_code' => $this->getJsCode('timer', [
+                'sName' => $sTimerName,
                 'bMulti' => true
             ]),
-            'bx_repeat:sections' => $aTmplVarsSections
+            'bx_repeat:sections' => $aTmplVarsSections,
+            'actions' => $oActions->getCode()
         ]);
     }
 
-    public function getTimer ($iContentId, $iProfileId)
+    public function getTimer ($iContentId, $iProfileId, $sName = '')
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -244,7 +259,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'actions' => $oActions->getCodeAPI()
             ];
 
-        return $this->parseHtmlByName('entry-timer.html', [
+        return $this->parseHtmlByName('entry-timer' . ($sName ? '-' . $sName : '') . '.html', [
             'html_id' => $this->_oConfig->getHtmlIds('timer') . $iContentId . '-' . $iProfileId,
             'hours' => sprintf("%02d", $iHours),
             'minutes' => sprintf("%02d", $iMinutes),

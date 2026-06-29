@@ -577,6 +577,8 @@
     <string name="_bx_tasks_txt_timer_clear"><![CDATA[Clear]]></string>
     <string name="_bx_tasks_txt_timer_log"><![CDATA[Log]]></string>
     <string name="_bx_tasks_txt_timer_edit_and_log"><![CDATA[Edit & Log]]></string>
+    <string name="_bx_tasks_txt_timers_clear"><![CDATA[Clear All]]></string>
+    <string name="_bx_tasks_txt_timers_log"><![CDATA[Log All]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_err_empty_pre_list"><![CDATA[Please select a list to add items to.]]></string>

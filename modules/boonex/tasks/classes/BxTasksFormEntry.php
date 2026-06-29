@@ -222,7 +222,7 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         if(($sKey = 'OBJECT_REPORTS_TIME') && !empty($CNF[$sKey]) && ($o = BxDolReport::getObjectInstance($CNF[$sKey], $iContentId)))
             $o->onObjectDelete();
 
-        return parent::delete($iContentId);
+        return parent::delete($iContentId, $aContentInfo);
     }
 
     protected function genCustomViewRowValueStickers (&$aInput)

@@ -41,7 +41,6 @@ class BxTasksMenuTimer extends BxTemplMenuCustom
 
     protected function getMenuItemsRaw ()
     {
-        $sPrefix = str_replace('_', '-', $this->_oModule->_oConfig->getName());
         $sJsObject = $this->_oModule->_oConfig->getJsObject('timer');
 
         $aTimer = $this->_oModule->_oDb->getTimers([
