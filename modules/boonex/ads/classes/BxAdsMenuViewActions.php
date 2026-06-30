@@ -33,7 +33,19 @@ class BxAdsMenuViewActions extends BxBaseModTextMenuViewActions
 
     protected function _getMenuItemInterested($aItem)
     {
-        return $this->_getMenuItemByNameActions($aItem);
+        $aResult = $this->_getMenuItemByNameActions($aItem);
+
+        if($this->_bIsApi && is_array($aResult)) {
+            return array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/interested/&params[]=' . $this->_iContentId, 
+                    'on_callback' => 'hide'
+                ]
+            ]);
+        }
+
+        return $aResult;
     }
 
     protected function _getMenuItemAddToCart($aItem)

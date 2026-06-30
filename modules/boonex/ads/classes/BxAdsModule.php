@@ -134,29 +134,36 @@ class BxAdsModule extends BxBaseModTextModule
 
     public function actionInterested()
     {
-        $CNF = &$this->_oConfig->CNF;
-
         $iContentId = bx_process_input(bx_get('id'), BX_DATA_INT);
+        
+        $aResult = $this->serviceInterested($iContentId);
+
+        echoJson($aResult);
+    }
+
+    public function serviceInterested($iContentId, $iViewer = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
 
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
         if(empty($aContentInfo) || !is_array($aContentInfo))
-            return echoJson(array());
+            return [];
 
-        $iViewer = bx_get_logged_profile_id();        
+        $iViewer = $iViewer ?: bx_get_logged_profile_id();
         $oViewer = BxDolProfile::getInstance($iViewer);
         if(!$oViewer)
-            return echoJson(array());
+            return [];
 
         $iContentAuthor = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
         if($iContentAuthor == $iViewer)
-            return echoJson(array('msg' => _t('_bx_ads_txt_err_your_own')));
+            return ['msg' => _t('_bx_ads_txt_err_your_own')];
 
         if($this->_oDb->isInterested($iContentId, $iViewer))
-            return echoJson(array('msg' => _t('_bx_ads_txt_err_duplicate')));
+            return ['msg' => _t('_bx_ads_txt_err_duplicate')];
 
         $iInterestId = $this->_oDb->insertInterested(array('entry_id' => $iContentId, 'profile_id' => $iViewer));
         if(!$iInterestId)
-            return echoJson(array('msg' => _t('_bx_ads_txt_err_cannot_perform_action')));
+            return ['msg' => _t('_bx_ads_txt_err_cannot_perform_action')];
 
         /**
          * @hooks
@@ -189,7 +196,7 @@ class BxAdsModule extends BxBaseModTextModule
                 )))
             ));
 
-        return echoJson(array('msg' => _t('_bx_ads_txt_msg_author_notified')));
+        return ['msg' => _t('_bx_ads_txt_msg_author_notified')];
     }
 
     public function actionShow()
@@ -357,6 +364,7 @@ class BxAdsModule extends BxBaseModTextModule
     public function serviceGetSafeServices()
     {
         return array_merge(parent::serviceGetSafeServices(), [
+            'Interested' => '',
             'IsSourcesAvaliable' => '',
             'LoadEntryFromSource' => '',
             'LoadEntriesFromSourceByTerm' => '',
