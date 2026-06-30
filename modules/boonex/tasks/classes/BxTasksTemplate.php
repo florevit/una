@@ -160,7 +160,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $aTmplVarsSections = [];
         foreach($aTimers as $aTimer) {
             $aContentInfo = $this->_oDb->getContentInfoById($aTimer['content_id']);
-            if(!$aContentInfo && !is_array($aContentInfo))
+            if(!$aContentInfo || !is_array($aContentInfo))
                 continue;
 
             $sContextType = '';
