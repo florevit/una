@@ -4,19 +4,37 @@
 }
 
 /*--- Tasks List ---*/
-.bx-tasks-tasklist .bx-def-color-bg-hl{
+.bx-tasks-tasklist-header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center
+    align-items: center;
+    cursor: pointer;
 }
+.bx-tasks-tasklist .bx-tasks-tl-show {
+    display: none;
+}
+.bx-tasks-tasklist .bx-tasks-tl-hide {
+    display: inline;
+}
+.bx-tasks-tasklist.bx-tasks-tl-collapsed .bx-tasks-tl-show {
+    display: inline;
+}
+.bx-tasks-tasklist.bx-tasks-tl-collapsed .bx-tasks-tl-hide {
+    display: none;
+}
+.bx-tasks-tasklist.bx-tasks-tl-collapsed .bx-tasks-tasks {
+    display: none;
+}
+
 .bx-tasks-tasklist-title {
-    font-weight: bold;
+    flex: 1 0 auto;
+    display: inline-block;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
-    max-width: calc(100% - 220px);
+    font-weight: bold;
 }
 
 .bx-tasks-task-checkbox {
