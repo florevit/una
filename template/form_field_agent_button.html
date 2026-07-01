@@ -30,10 +30,18 @@
                                 bx_editor_insert_html (sEditorId, '', data.msg);
                             }
                             else {
+                                // regular input
                                 $('__input__[name="__name__"]').val(data.msg);
+
+                                // minicolors input
                                 if ($('__input__[name="__name__"]').hasClass('minicolors-input')) {
                                     $('__input__[name="__name__"]').minicolors('value', data.msg);
                                 }
+
+                                // CodeMirror input
+                                $('__input__[name="__name__"]').parent().find('.CodeMirror').each(function() {  
+                                    this.CodeMirror.setValue(data.msg);
+                                });
                             }
                         }
                     });
