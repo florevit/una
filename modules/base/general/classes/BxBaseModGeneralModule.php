@@ -33,9 +33,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
         $this->_bIsApi = bx_is_api();
         $this->_iProfileId = bx_get_logged_profile_id();
-        $this->_aSearchableNamesExcept = array(
-            'allow_view_to'
-        );
+        $this->_aSearchableNamesExcept = [];
 
         $this->_aFormParams = array(
             'display' => false, 
@@ -1139,13 +1137,19 @@ class BxBaseModGeneralModule extends BxDolModule
         if(!empty($CNF['FIELD_LABELS']) && array_key_exists($CNF['FIELD_LABELS'], $aInputs) && !in_array($CNF['FIELD_LABELS'], $this->_aSearchableNamesExcept))
             $aResult[$CNF['FIELD_LABELS']] = [
                 'type' => 'checkbox_set', 
-                'caption' => isset($CNF['T']['form_field_labels']) ? $CNF['T']['form_field_author'] : '_sys_form_input_labels',
+                'caption' => $CNF['T']['form_field_labels'] ?? '_sys_form_input_labels',
                 'info' => '',
             	'value' => '',
                 'values' => '',
                 'pass' => '',
                 'search_operator' => 'like'
             ];
+
+        if(($sField = $CNF['FIELD_ALLOW_VIEW_TO'] ?? '') != '' && array_key_exists($sField, $aInputs) && !in_array($sField, $this->_aSearchableNamesExcept)) 
+            $aInputs[$sField] = array_merge($aInputs[$sField], [
+                'search_type' => 'select',
+                'search_operator' => '='
+            ]);
 
         foreach($aInputs as $aInput){
             if(in_array($aInput['type'], BxDolSearchExtended::$SEARCHABLE_TYPES) && !in_array($aInput['name'], $this->_aSearchableNamesExcept)) {

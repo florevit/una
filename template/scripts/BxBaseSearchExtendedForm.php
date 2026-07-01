@@ -198,6 +198,39 @@ class BxBaseSearchExtendedForm extends BxTemplFormView
         return $this->genInputCheckboxSet($aInput);
     }
 
+    protected function genCustomInputAllowViewTo (&$aInput)
+    {
+        $iProfileId = bx_get_logged_profile_id();
+        $oConnection = BxDolConnection::getObjectInstance('sys_profiles_subscriptions');
+
+        $aModules = bx_srv('system', 'get_modules_by_type', ['context']);
+
+        $aValues = [
+            ['key' => 0, 'value' => _t('_sys_please_select')],
+            ['key' => 3, 'value' => _t('_sys_ps_group_title_public')]
+        ];
+        foreach($aModules as $aModule) {
+            $aItems = $oConnection->getConnectedContentByType($iProfileId, $aModule['name']);
+            if($aItems && is_array($aItems)) {
+                $aValues[] = [
+                    'type' => 'group_header', 
+                    'value' => mb_strtoupper(bx_srv($aModule['name'], 'get_space_title'))
+                ];
+
+                foreach($aItems as $iItem)
+                    if(($oProfile = BxDolProfile::getInstance($iItem)) !== false)
+                        $aValues[] = ['key' => -$iItem, 'value' => $oProfile->getDisplayName()];
+
+                $aValues[] = [
+                    'type' => 'group_end'
+                ];
+            }
+        }
+
+        $aInput['values'] = $aValues;
+        return $this->genInputSelect($aInput);
+    }
+
     function addCssJsCore ()
     {
         parent::addCssJsCore();

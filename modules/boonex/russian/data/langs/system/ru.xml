@@ -2997,6 +2997,7 @@
 	<string name="_sys_form_forgot_password_input_phone"><![CDATA[Телефон]]></string>
 	<string name="_sys_form_forgot_password_input_submit"><![CDATA[Выполнить]]></string>
 	<string name="_sys_form_input_age"><![CDATA[Возраст]]></string>
+        <string name="_sys_form_input_allow_view_to"><![CDATA[Видимость]]></string>
 	<string name="_sys_form_input_sys_location"><![CDATA[Расположение]]></string>
         <string name="_sys_form_input_location"><![CDATA[Местоположение]]></string>
         <string name="_sys_form_input_location_radius_label"><![CDATA[Радиус (в км)]]></string>
