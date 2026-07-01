@@ -218,8 +218,8 @@ class BxBaseSearchExtendedForm extends BxTemplFormView
                 ];
 
                 foreach($aItems as $iItem)
-                    if(($oProfile = BxDolProfile::getInstance($iItem)) !== false)
-                        $aValues[] = ['key' => -$iItem, 'value' => $oProfile->getDisplayName()];
+                    if(($oProfile = BxDolProfile::getInstance($iItem)) !== false && ($sDisplayName = $oProfile->getDisplayName()))
+                        $aValues[] = ['key' => -$iItem, 'value' => $sDisplayName];
 
                 $aValues[] = [
                     'type' => 'group_end'
