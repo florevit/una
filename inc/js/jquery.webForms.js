@@ -97,6 +97,9 @@
                         eFormSection.removeClass('bx-form-section-hidden');
 
                         $(this).addWebForms();
+                        $(this).find('.CodeMirror').each(function() {
+                            this.CodeMirror.refresh();
+                        });
 
                         //--- fire custom event 'bx_show'
                         eFormSection.trigger('bx_show');
