@@ -89,6 +89,10 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
             'FIELDS_DELAYED_PROCESSING' => 'videos', // can be array of fields or comma separated string of field names
 
+            'FIELD_LIST_ID' => 'id',
+            'FIELD_LIST_CONTEXT_ID' => 'context_id',
+            'FIELD_LIST_TITLE' => 'title',
+
              // some params
             'PARAM_MULTICAT_ENABLED' => true,
             'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES' => 'bx_tasks_auto_activation_for_categories',

@@ -26,7 +26,10 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'aHtmlIds' => $this->_oConfig->getHtmlIds()
         ], $aParams);
 
-        return parent::getJsCode($sType, $aParams, $mixedWrap);
+        return parent::getJsCode($sType, $aParams, $mixedWrap === true ? [
+            'wrap' => true, 
+            'mask' => '{var} {object} = new {class}({params}); {object}.init();'
+        ] : $mixedWrap);
     }
 
     public function getJsCodeTimer($sType, $aParams = [], $mixedWrap = true)
@@ -160,7 +163,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $aTmplVarsSections = [];
         foreach($aTimers as $aTimer) {
             $aContentInfo = $this->_oDb->getContentInfoById($aTimer['content_id']);
-            if(!$aContentInfo && !is_array($aContentInfo))
+            if(!$aContentInfo || !is_array($aContentInfo))
                 continue;
 
             $sContextType = '';
@@ -378,9 +381,11 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $bAllowAdd = $bContext && $oModule->isAllowAdd($iContextId);
         $bAllowManage = $bContext && $oModule->isAllowManageByContext($iContextId);
 
+        $iProfileId = bx_get_logged_profile_id();
+
         $aLists = [];
         if(!$bContext) {
-            $iProfile = $aParams['for_profile'] ?? bx_get_logged_profile_id();
+            $iProfile = $aParams['for_profile'] ?? $iProfileId;
 
             $aContexts = $this->_oModule->getContexts();
             foreach($aContexts as $sName => $sTitle) {
@@ -391,8 +396,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                         continue;
 
                     $aLists[] = [
-                        'id' => $sName,
-                        'context_id' => $iId,
+                        'id' => $iId,
                         'title' => _t('_bx_tasks_txt_list_title', $oContext->getDisplayName(), $sTitle)
                     ];
                 }
@@ -401,7 +405,6 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         else {
             $aLists[] = [
                 'id' => 0,
-                'context_id' => $iContextId,
                 'title' => _t('_bx_tasks_txt_list_inbox')
             ];
             if(($aListsAdd = $this->_oDb->getLists($iContextId)) && is_array($aListsAdd))
@@ -414,7 +417,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $aTmplVarsLists = [];
         foreach($aLists as $aList) {
-            $iTasksContextId = $bContext ? $iContextId : ($aList['context_id'] ?? false);
+            $iTasksContextId = $bContext ? $iContextId : ($aList['id'] ?? false);
             if(!$iTasksContextId)
                 continue;
 
@@ -492,7 +495,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 ]);
             }
 
-            $iListId = (int)$aList[$CNF['FIELD_ID']];
+            $iListId = (int)$aList[$CNF['FIELD_LIST_ID']];
 
             if($this->_bIsApi) {
                 $aActions = [];
@@ -500,25 +503,25 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     $aActions = array_merge($aActions, [[
                         'name' => 'edit_list', 
                         'type' => 'modal', 
-                        'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=' . $iListId,
+                        'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                     ], [
                         'name' => 'add_task', 
                         'type' => 'modal', 
-                        'callback' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=' . $iListId,
+                        'callback' => $this->MODULE . '/process_task_form&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                     ]]);
                 
                 if($bAllowManage)
                     $aActions[] = [
                         'name' => 'delete_list', 
                         'type' => 'callback', 
-                        'callback' => $this->MODULE . '/delete_task_list&params[]=' . $iContextId . '&params[]=' . $iListId,
+                        'callback' => $this->MODULE . '/delete_task_list&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                         'on_callback' => 'hide_row'
                     ];
 
                 $aTmplVarsLists[] = [
-                    'context_id' => $iContextId,
+                    'context_id' => $iTasksContextId,
                     'list_id' => $iListId,
-                    'list_title' => $aList[$CNF['FIELD_TITLE']],
+                    'list_title' => $aList[$CNF['FIELD_LIST_TITLE']],
                     'tasks' => $aTmplVarsTasks,
                     'actions' => $aActions
                 ];
@@ -538,14 +541,14 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             $aTmplVarsAllowEditList = $aTmplVarsAllowAdd = [];
             if($bAllowAdd) {
                 $aTmplVarsAllowEditList = [
-                    'title' => $aList[$CNF['FIELD_TITLE']],
-                    'context_id' => $iContextId,
+                    'title' => $aList[$CNF['FIELD_LIST_TITLE']],
+                    'context_id' => $iTasksContextId,
                     'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
                 
                 $aTmplVarsAllowAdd = [
-                    'context_id' => $iContextId,
+                    'context_id' => $iTasksContextId,
                     'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
@@ -554,7 +557,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             $aTmplVarsAllowDeleteList = [];
             if($bAllowManage) {
                 $aTmplVarsAllowDeleteList = [
-                    'context_id' => $iContextId,
+                    'context_id' => $iTasksContextId,
                     'list_id' => $iListId,
                     'object' => $sJsObject,
                 ];
@@ -576,12 +579,12 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'bx_if:deny_edit_list' => [
                     'condition' => !$bAllowAdd,
                     'content' => [
-                        'title' => $aList[$CNF['FIELD_TITLE']],
+                        'title' => $aList[$CNF['FIELD_LIST_TITLE']],
                     ]
                 ],
                 'bx_repeat:tasks' =>  $aTmplVarsTasks,
-                'context_id' => $iContextId,
                 'list_id' => $iListId,
+                'list_by_viewer' => ($bContext ? 'l' : 'c') . $iListId . '-' . $iProfileId,
                 'object' => $sJsObject
             ];
         }

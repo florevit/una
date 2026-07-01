@@ -222,6 +222,8 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         if(($sKey = 'OBJECT_REPORTS_TIME') && !empty($CNF[$sKey]) && ($o = BxDolReport::getObjectInstance($CNF[$sKey], $iContentId)))
             $o->onObjectDelete();
 
+        $this->_oModule->_oDb->deleteTimer(['content_id' => $iContentId]);
+
         return parent::delete($iContentId, $aContentInfo);
     }
 
