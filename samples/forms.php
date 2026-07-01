@@ -43,6 +43,7 @@ function PageCompMainCode()
             'labels' => array(
                 'type' => 'custom',
                 'name' => 'labels',
+                'caption_src' => 'Labels',
                 'caption' => _t('Labels'),
                 'value' => ['Hello World', 'Привет Мир'],
                 'values' => ['Hello World', 'Привет Мир', 'Guten Tag', 'Жакшы кун'],
@@ -167,6 +168,22 @@ function PageCompMainCode()
                 'required' => true,
             ),
 
+            'color' => array(
+                'type' => 'rgb',
+                'name' => 'color',
+                'caption' => _t('Color'),
+                'value' => 'rgb(16, 164, 164)',
+                'required' => true,
+            ),
+            
+            'code' => array(
+                'type' => 'textarea',
+                'code' => true,
+                'name' => 'code',
+                'caption' => _t('Source code'),
+                'required' => true,                
+            ),            
+
             'header_submit' => array(
                 'type' => 'block_header',
                 'caption' => '',
@@ -206,6 +223,9 @@ function PageCompMainCode()
     $oForm->initChecker();
     if ( $oForm->isSubmittedAndValid() ) {
         echo  MsgBox('Data was successfully submitted');
+        echo '<pre>';
+        print_r($_REQUEST);
+        echo '</pre>';
     }
 
     echo $oForm->getCode();

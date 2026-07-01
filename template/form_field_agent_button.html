@@ -31,6 +31,9 @@
                             }
                             else {
                                 $('__input__[name="__name__"]').val(data.msg);
+                                if ($('__input__[name="__name__"]').hasClass('minicolors-input')) {
+                                    $('__input__[name="__name__"]').minicolors('value', data.msg);
+                                }
                             }
                         }
                     });

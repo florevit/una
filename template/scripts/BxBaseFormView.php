@@ -2729,7 +2729,7 @@ BLAH;
             return;       
 
         $this->_addCss([BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'codemirror/|codemirror.css']);
-        $this->_addJs(['codemirror/codemirror.min.js'], "'undefined' === typeof(CodeMirror)");
+        $this->_addJs(['codemirror/codemirror-ext.min.js'], "'undefined' === typeof(CodeMirror)");
 
         self::$_isCssJsCodeMirrorAdded = true;
     }

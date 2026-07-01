@@ -38,8 +38,11 @@ function BxDolForm(oOptions)
  */
 BxDolForm.prototype.init = function()
 {
-    if(this._bInitCodeMirror)
-        this.initCodeMirror();
+    if(this._bInitCodeMirror) {
+        setTimeout(() => {
+            this.initCodeMirror();
+        }, 500);
+    }
 };
 
 BxDolForm.prototype.initCodeMirror = function()
