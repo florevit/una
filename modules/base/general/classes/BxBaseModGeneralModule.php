@@ -3757,6 +3757,8 @@ class BxBaseModGeneralModule extends BxDolModule
         if($oObject !== null) 
             return $oObject;
 
+        if($aParams === false || !is_array($aParams))
+            $aParams = [];
         $aParams['class_search_result'] ??= $sClass;
 
         bx_import($sClass, $this->_aModule);
