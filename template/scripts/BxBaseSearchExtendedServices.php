@@ -22,8 +22,12 @@ class BxBaseSearchExtendedServices extends BxDol
     public function serviceGetForm($mParams)
     {
         $aParams = [];
-        if (is_string($mParams))
-            $aParams['object'] = $mParams;
+        if(is_string($mParams)) {
+            if(($_mParams = json_decode($mParams, true)) !== null)
+                $aParams = $_mParams;
+            else
+                $aParams['object'] = $mParams;
+        }
         else
             $aParams = $mParams;
         $this->prepareParams($aParams);
@@ -35,11 +39,7 @@ class BxBaseSearchExtendedServices extends BxDol
         if(!$oSearch || !$oSearch->isEnabled())
             return '';
 
-        $mForm = $oSearch->getForm($aParams);
-        if(bx_is_api())
-            $mForm = [$mForm];
-
-        return $mForm;
+        return $oSearch->getForm($aParams);
     }
 
     public function serviceGetSorting($mParams)

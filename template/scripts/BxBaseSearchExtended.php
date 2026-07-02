@@ -47,14 +47,26 @@ class BxBaseSearchExtended extends BxDolSearchExtended
         $this->_iAgeMax = 75;
     }
 
-    public function getForm($aParams = array())
+    public function getForm($aParams = [])
     {
         if(!$this->isEnabled())
             return '';
 
         $oForm = $this->prepareForm($aParams);
+        if(!$this->_bIsApi) 
+            return $oForm->getCode();
 
-        return bx_is_api() ? bx_api_get_block('form', $oForm->getCodeAPI(), ['id' => 2, 'ext' => ['name' => $this->_aObject['module'] . '_serach', 'request' => ['url' => '/api.php?r=system/get_form/TemplSearchExtendedServices&params[]=' . $this->_aObject['module'], 'immutable' => true]]]) : $oForm->getCode();
+        $sParams = $this->_aObject['module'];
+        if(($sK = 'context_id') && ($iContextId = $aParams[$sK] ?? false))
+            $sParams = json_encode(['object' => $this->_aObject['module'], $sK => $iContextId]);
+
+        return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+            'id' => 2, 
+            'ext' => [
+                'name' => $this->_aObject['module'] . '_serach', 
+                'request' => ['url' => '/api.php?r=system/get_form/TemplSearchExtendedServices&params[]=' . $sParams, 'immutable' => true]
+            ]
+        ])];
     }
     
     /**
