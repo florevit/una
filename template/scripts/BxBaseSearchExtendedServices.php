@@ -100,35 +100,41 @@ class BxBaseSearchExtendedServices extends BxDol
 
         $sResults = $oSearch->getResults($aParams);
 
-        if (bx_is_api()){
+        if(bx_is_api())
             return $sResults;
-        }
-        
+
         return !empty($sResults) ? $sResults : (isset($aParams['show_empty']) && (bool)$aParams['show_empty'] ? MsgBox(_t('_Empty')) : ''); 
     }
 
     public function prepareParams(&$aParams)
     {
-        if(empty($aParams['object']) && bx_get('object') !== false)
-            $aParams['object'] = bx_process_input(bx_get('object'), BX_DATA_TEXT);
+        $this->_prepareParamEmpty('object', BX_DATA_TEXT, $aParams);
+        $this->_prepareParamEmpty('context_id', BX_DATA_INT, $aParams);
+        $this->_prepareParamEmpty('template', BX_DATA_TEXT, $aParams);
 
-        if(!isset($aParams['show_empty']) && bx_get('show_empty') !== false)
-            $aParams['show_empty'] = (bool)bx_get('show_empty');
+        if(($sK = 'show_empty') && !isset($aParams[$sK]) && ($iShowEmpty = bx_get($sK)) !== false)
+            $aParams[$sK] = (bool)$iShowEmpty;
 
-        if(empty($aParams['template']) && bx_get('template') !== false)
-            $aParams['template'] = bx_process_input(bx_get('template'), BX_DATA_TEXT);
+        if(($sK = 'cond') && empty($aParams[$sK]) && ($sCond = bx_get('cond')) !== false)
+            $aParams[$sK] = BxDolSearchExtended::decodeConditions(bx_process_input($sCond, BX_DATA_TEXT));
 
-        if(empty($aParams['cond']) && bx_get('cond') !== false)
-            $aParams['cond'] = BxDolSearchExtended::decodeConditions(bx_process_input(bx_get('cond'), BX_DATA_TEXT));
+        $this->_prepareParamIsset('start', BX_DATA_INT, $aParams);
+        $this->_prepareParamIsset('per_page', BX_DATA_INT, $aParams);
 
-        if(!isset($aParams['start']) && bx_get('start') !== false)
-            $aParams['start'] = (int)bx_get('start');
+        if(($sK = 'total') && !isset($aParams[$sK]) && ($mixedTotal = bx_get($sK)) !== false)
+            $aParams[$sK] = is_numeric($mixedTotal) ? (int)$mixedTotal : $mixedTotal == 'true';
+    }
 
-        if(!isset($aParams['per_page']) && bx_get('per_page') !== false)
-            $aParams['per_page'] = (int)bx_get('per_page');
+    protected function _prepareParamEmpty($sParam, $iDataType, &$aParams)
+    {
+        if(empty($aParams[$sParam]) && ($mixedValue = bx_get($sParam)) !== false)
+            $aParams[$sParam] = bx_process_input($mixedValue, $iDataType);
+    }
 
-        if(!isset($aParams['total']) && ($mixedTotal = bx_get('total')) !== false)
-            $aParams['total'] = is_numeric($mixedTotal) ? (int)$mixedTotal : $mixedTotal == 'true';
+    protected function _prepareParamIsset($sParam, $iDataType, &$aParams)
+    {
+        if(!isset($aParams[$sParam]) && ($mixedValue = bx_get($sParam)) !== false)
+            $aParams[$sParam] = bx_process_input($mixedValue, $iDataType);
     }
 }
 

@@ -99,6 +99,9 @@ class BxBaseSearchExtended extends BxDolSearchExtended
             $oForm->initChecker([], $aParams['cond']);
         }
 
+        if($this->_bFilterMode && ($iContextId = $aParams['context_id'] ?? false))
+            $oForm->setSubmittedValue('allow_view_to', -$iContextId, $oForm->aFormAttrs['method']);
+
         if(!$oForm->isSubmittedAndValid() && !$this->_bFilterMode  && (!$this->_bIsApi || !isset($aParams['search_params'])))
             return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage)] : '';
 
@@ -326,27 +329,32 @@ class BxBaseSearchExtended extends BxDolSearchExtended
         ]);
     }
 
-    protected function &prepareForm($aParams = array())
+    protected function &prepareForm($aParams = [])
     {
         if(!empty($this->_oForm) && $this->_oForm instanceof BxDolForm)
             return $this->_oForm;
+
+        $iContextId = (int)($aParams['context_id'] ?? 0);
+        $sContextIdParam = $aParams['context_id_param'] ?? 'profile_id';
 
         $sForm = 'sys_search_extended_' . $this->_sObject;
         $sFormSubmit = 'search' . $this->_sObject;
 
         list($sPageLink, $aPageParams) = bx_get_base_url_inline();
-        
+
+        $sAction = !empty($aPageParams['i']) ? BxDolPermalinks::getInstance()->permalink(bx_append_url_params($sPageLink, ['i' => $aPageParams['i']])) : $sPageLink;
+        if($iContextId)
+            $sAction = bx_append_url_params($sAction, [$sContextIdParam => $iContextId]);
+
         $mDefValues = bx_get('filters');
-       
-        if ($mDefValues){
+        if($mDefValues)
             $mDefValues = json_decode($mDefValues, true);
-        }
 
         $aForm = array(
             'form_attrs' => array(
                 'id' => $sForm,
                 'name' => $sForm,
-                'action' => !empty($aPageParams['i']) ? BxDolPermalinks::getInstance()->permalink(bx_append_url_params($sPageLink, array('i' => $aPageParams['i']))) : $sPageLink,
+                'action' => $sAction,
                 'method' => 'post'
             ),
             'params' => array(
@@ -406,11 +414,17 @@ class BxBaseSearchExtended extends BxDolSearchExtended
                 $aForm['inputs'][$aField['name']]['manual_input'] = true;
         }
 
-        $aForm['inputs']['search'] = array(
+        if($iContextId && isset($aForm['inputs']['allow_view_to']))
+            $aForm['inputs']['allow_view_to'] = array_merge($aForm['inputs']['allow_view_to'], [
+                'type' => 'hidden',
+                'value' => -$iContextId
+            ]);
+
+        $aForm['inputs']['search'] = [
             'type' => 'submit',
             'name' => $sFormSubmit,
             'value' => _t($this->_bFilterMode ? '_Apply' : '_Search')
-        );
+        ];
 
         $sClass = 'BxTemplSearchExtendedForm';
         if(!empty($this->_sFormClassName)) {

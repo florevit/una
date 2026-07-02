@@ -228,7 +228,7 @@ class BxBaseSearchExtendedForm extends BxTemplFormView
         }
 
         $aInput['values'] = $aValues;
-        return $this->genInputSelect($aInput);
+        return $this->{'genInput' . ($aInput['type'] == 'hidden' ? 'Standard' : 'Select')}($aInput);
     }
 
     function addCssJsCore ()
