@@ -38,8 +38,7 @@ class BxDolAIToolCmtsGetSingle extends BxDolAITool
         $oCmtsObject = $aCmt ? BxDolCmts::getObjectInstance($aCmt['system_name'], $aCmt['cmt_object_id']) : null;
 
         if ($oCmtsObject) {
-            $a = $oCmtsObject->getDataAPI($aCmt);
-            return $a['data_api'];
+            return $oCmtsObject->getDataAPI($aCmt);
         }
 
         return ['msg' => '_sys_txt_not_found', 'code' => 404];
