@@ -609,7 +609,7 @@ BxDolCmts.prototype.showLiveUpdate = function(oData)
     var sId = oButton.attr('id');
     $('#' + sId).remove();
 
-    oButton.prependTo(this._sRootId);
+    oButton.prependTo(this._sRootId).bxProcessHtml();
 };
 
 BxDolCmts.prototype.showLiveUpdateForSocket = function(sData)

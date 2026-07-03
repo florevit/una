@@ -110,6 +110,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'stopwatch' => 'timer',
             'swatchbook' => 'swatch-book',
             'sync' => 'refresh-ccw',
+            'sync-alt' => 'refresh-ccw',
             'tachometer-alt' => 'gauge',
             'tasks' => 'check-square',
             'th-large' => 'grid-2x2',
