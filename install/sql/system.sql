@@ -7352,7 +7352,9 @@ INSERT INTO `sys_agents_tools` (`type`, `title`, `docs`, `params`, `params_user`
 ('comments_get', 'Comments get', 'This tool allows agents to get comments for specific content by module name and content id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsGet', ''),
 ('comments_add', 'Comments add', 'This tool allows agents to post comments for specific content.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsAdd', ''),
 ('comments_update', 'Comments update', 'This tool allows agents to edit comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsUpdate', ''),
-('comments_delete', 'Comments delete', 'This tool allows agents to delete comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsDelete', '');
+('comments_delete', 'Comments delete', 'This tool allows agents to delete comments.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsDelete', ''),
+
+('comment_get', 'Comment get', 'This tool allows agents to get single comment by global comment id.', '{}', NULL, 0, 0, 1, 'BxDolAIToolCmtsGetSingle', '');
 
 CREATE TABLE IF NOT EXISTS `sys_agents_chat_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -174,6 +174,7 @@ class BxDolCmtsQuery extends BxDolDb
         $sQuery = "SELECT 
                 `ti`.`cmt_id` AS `cmt_id`, 
                 `ti`.`system_id` AS `cmt_system_id`, 
+                `to`.`Name` AS `system_name`,
                 `to`.`Table` AS `cmt_table` 
             FROM `" . BxDolCmts::$sTableIds . "` AS `ti` 
             INNER JOIN  `" . BxDolCmts::$sTableSystems . "` AS `to` ON  `ti`.`system_id` = `to`.`ID`
