@@ -596,7 +596,7 @@ class BxDolSearchResult implements iBxDolReplaceable
         return $sCode;
     }
 
-    function processingAPI ($bForceGetData = false) 
+    function processingAPI ($bForceGetData = false)
     {
         $sModule = 'system';
         $sUnitType = 'content';
@@ -632,8 +632,11 @@ class BxDolSearchResult implements iBxDolReplaceable
         if(($sK = 'class_search_result') && isset($this->_aParams[$sK]))
             $aParams[$sK] = $this->_aParams[$sK];
 
+        $aParamsAdd = [];
+        if(($sMethod = 'addProcessingParamsAPI') && method_exists($this, $sMethod))
+            $aParamsAdd = $this->$sMethod();
 
-        foreach(['author', 'category', 'context', 'joined_profile', 'followed_contexts', 'level'] as $sParamAdd)
+        foreach($aParamsAdd as $sParamAdd)
             if(isset($this->_aParams[$sParamAdd]))
                 $aParams[$sParamAdd] = $this->_aParams[$sParamAdd];
 
@@ -644,6 +647,11 @@ class BxDolSearchResult implements iBxDolReplaceable
             'data' =>  $aData,
             'params' => $aParams
         ];
+    }
+
+    function addProcessingParamsAPI()
+    {
+        return ['author', 'category', 'context', 'joined_profile', 'followed_contexts', 'level'];
     }
 
     function decodeDataAPI ($a)

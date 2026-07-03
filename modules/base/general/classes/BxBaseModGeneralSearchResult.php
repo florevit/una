@@ -284,7 +284,7 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         return str_replace('_', '-', $this->aCurrent['name'] . '-search-result-block-' . $this->_sMode);
     }
 
-    function decodeDataAPI($a)
+    function decodeDataAPI($a, $sMethod = 'getDataAPI')
     {
         if(!is_array($a))
             return $a;
@@ -292,7 +292,7 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         $bExtendedUnits = getParam('sys_api_extended_units') == 'on';
 
         foreach($a as $i => $r)
-            $a[$i] = $this->oModule->getDataAPI($r, ['extended' => $bExtendedUnits]);
+            $a[$i] = $this->oModule->$sMethod($r, ['extended' => $bExtendedUnits]);
 
         return $a;
     }

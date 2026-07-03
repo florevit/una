@@ -187,51 +187,58 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
         if(empty($aVars[$CNF['FIELD_TITLE']]) && empty($aVars[$CNF['FIELD_TEXT']]))
             return false;
 
-        return $this->parseHtmlByName($sTemplateName, $aVars);
+        return $this->_bIsApi ? $aVars : $this->parseHtmlByName($sTemplateName, $aVars);
     }
 
-    function entryMediaView ($iMediaId, $aParams = array())
+    function entryMediaView ($iMediaId, $aParams = [])
     {
-        $oModule = BxDolModule::getInstance($this->MODULE);
-        $CNF = &$oModule->_oConfig->CNF;
+        $oModule = parent::getModule();
+        $CNF = &$this->_oConfig->CNF;
 
-        if (!($aMediaInfo = $oModule->_oDb->getMediaInfoById($iMediaId)))
-            return '';
+        $aMediaInfo = [];
+        if(!($aMediaInfo = $oModule->_oDb->getMediaInfoById($iMediaId)))
+            return $this->_bIsApi ? [] : '';
 
-        if (!($aAlbumInfo = $oModule->_oDb->getContentInfoById($aMediaInfo['content_id'])))
-            return '';        
-
-        $sUrlAlbum = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aAlbumInfo[$CNF['FIELD_ID']]));
+        $aAlbumInfo = [];
+        if(!($aAlbumInfo = $oModule->_oDb->getContentInfoById($aMediaInfo['content_id'])))
+            return $this->_bIsApi ? [] : '';        
 
         $iProfileId = $aAlbumInfo[$CNF['FIELD_AUTHOR']];
         $oProfile = BxDolProfile::getInstance($iProfileId);
-        if (!$oProfile) 
+        if(!$oProfile) 
             $oProfile = BxDolProfileUndefined::getInstance();
 
-        $aVars = array(
-            'album' => _t('_bx_albums_txt_media_album_link', $sUrlAlbum,  bx_process_output($aAlbumInfo[$CNF['FIELD_TITLE']]), $oProfile->getUrl(), $oProfile->getDisplayName()),
-            'js_code' => $this->getJsCode('main')
-        );
-
         $mixedContext = isset($aParams['context']) ? $aParams['context'] : false;
+        $sAlbumUrl = $this->_oConfig->getAlbumUrl($aAlbumInfo[$CNF['FIELD_ID']]);
+        $sAlbumTitle = bx_process_output($aAlbumInfo[$CNF['FIELD_TITLE']]);
 
-        $aNextPrev = array (
+        $aVars = $this->mediaVars($aMediaInfo, $CNF['OBJECT_IMAGES_TRANSCODER_BIG'], $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster'], $aParams);
+        if($this->_bIsApi)
+            return array_merge($aVars, [
+                'text' => $sAlbumTitle,
+                'entry_text' => $sAlbumTitle,
+            ]);
+
+        $aVars = array_merge($aVars, [
+            'album' => _t('_bx_albums_txt_media_album_link', $sAlbumUrl, $sAlbumTitle, $oProfile->getUrl(), $oProfile->getDisplayName()),
+            'js_code' => $this->getJsCode('main')
+        ]);
+
+        $aNextPrev = [
             'next' => $this->getNextPrevMedia($aMediaInfo, true, $mixedContext),
             'prev' => $this->getNextPrevMedia($aMediaInfo, false, $mixedContext),
-        );
+        ];
 
         foreach ($aNextPrev as $k => $a) {
-            $aVars['bx_if:' . $k] = array (
+            $aVars['bx_if:' . $k] = [
                 'condition' => $a,
                 'content' => $a,
-            );
-            $aVars['bx_if:' . $k . '-na'] = array (
+            ];
+            $aVars['bx_if:' . $k . '-na'] = [
                 'condition' => !$a,
-                'content' => array(),
-            );
+                'content' => [],
+            ];
         }
-
-        $aVars = array_merge($aVars, $this->mediaVars($aMediaInfo, $CNF['OBJECT_IMAGES_TRANSCODER_BIG'], $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster'], $aParams));
 
         $aMediaItems = $oModule->_oDb->getMediaListByContentId($aMediaInfo['content_id'], false);
         $aMediaItemsFormatted = [];
@@ -263,17 +270,15 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
         $oModule = BxDolModule::getInstance($this->MODULE);
         $CNF = &$oModule->_oConfig->CNF;
 
-        $oStorage = BxDolStorage::getObjectInstance($CNF['OBJECT_STORAGE']);
+        $sStorage = $CNF['OBJECT_STORAGE'];
+        $oStorage = BxDolStorage::getObjectInstance($sStorage);
         $oTranscoder = BxDolTranscoderImage::getObjectInstance($sImageTranscoder);
-        $aTranscodersVideo = false;
+        $aTranscodersVideo = [
+            'poster' => BxDolTranscoderImage::getObjectInstance($sVideoPosterTranscoder),
+            'mp4' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4']),
+            'mp4_hd' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4_hd']),
+        ];
 
-        if ($CNF['OBJECT_VIDEOS_TRANSCODERS'])
-            $aTranscodersVideo = array (
-                'poster' => BxDolTranscoderImage::getObjectInstance($sVideoPosterTranscoder),
-                'mp4' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4']),
-                'mp4_hd' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4_hd']),
-            );
-        
         $aFileInfo = $oStorage->getFile ($aMediaInfo['file_id']);
         if (!$aFileInfo)
             return '';
@@ -286,27 +291,34 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
         $mixedContext = isset($aParams['context']) ? $aParams['context'] : '';
         $sUrl = $this->getViewMediaUrl($CNF, $aMediaInfo['id'], $mixedContext);
 
-        $aTmplVarsImage = array();
+        $aTmplVarsImage = [];
         if($isImage) {
-            $aSize = $aMediaInfo['data'] ? explode('x', $aMediaInfo['data']) : array(0, 0);
+            $sSrc = $oTranscoder ? $oTranscoder->getFileUrl($aFileInfo['id']) : $oStorage->getFileUrlById($aFileInfo['id']);
 
-            $aTmplVarsImage = array (
+            list($iWidth, $iHeight) = $aMediaInfo['data'] ? explode('x', $aMediaInfo['data']) : [0, 0];
+
+            $aTmplVarsImage = $this->_bIsApi ? [
+                'storage' => $sStorage,
+                'src' => $sSrc,
+                'width' => $iWidth,
+                'height' => $iHeight
+            ] : [
                 'title_attr' => $sMediaTitleAttr,
                 'title' => $sMediaTitle,
                 'url' => $sUrl,
-                'url_img' => $oTranscoder ? $oTranscoder->getFileUrl($aFileInfo['id']) : $oStorage->getFileUrlById($aFileInfo['id']),
+                'url_img' => $sSrc,
                 'media_id' => $aMediaInfo['id'],
-                'w' => $aSize[0],
-                'h' => $aSize[1],
+                'w' => $iWidth,
+                'h' => $iHeight,
                 'context' => $mixedContext,
-            );
+            ];
         }
 
-        $aTmplVarsVideo = array();
+        $aTmplVarsVideo = [];
         if($isVideo) {
             $mixedAttrs = false;
             if(!empty($aParams['autoplay']))
-                $mixedAttrs = array('autoplay' => 'autoplay');
+                $mixedAttrs = ['autoplay' => 'autoplay'];
 
             $iVideoDuration = $oModule->getMediaDuration($aFileInfo);
             $sVideoDuration = _t_format_duration($iVideoDuration);
@@ -315,13 +327,15 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
             $aVideoFile = $oStorage->getFile($aMediaInfo['file_id']);
 
             $sVideoUrlHd = '';
-            if (!empty($aVideoFile['dimensions']) && $aTranscodersVideo['mp4_hd']->isProcessHD($aVideoFile['dimensions']))
+            if(!empty($aVideoFile['dimensions']) && $aTranscodersVideo['mp4_hd']->isProcessHD($aVideoFile['dimensions']))
                 $sVideoUrlHd = $aTranscodersVideo['mp4_hd']->getFileUrl($aMediaInfo['file_id']);
 
-            $aTmplVarsVideo = array (
+            $aTmplVarsVideo = $this->_bIsApi ? [
+                //TODO: process Media's Video here.
+            ] : [
                 'title_attr' => $sMediaTitleAttr,
                 'title' => $sMediaTitle,
-                'url' => bx_append_url_params($sUrl, array('autoplay' => 1)),
+                'url' => bx_append_url_params($sUrl, ['autoplay' => 1]),
                 'url_img' => $isVideo ? $aTranscodersVideo['poster']->getFileUrl($aMediaInfo['file_id']) : '',
                 'video' => $isVideo && $aTranscodersVideo ? BxTemplFunctions::getInstance()->videoPlayer(
                     $aTranscodersVideo['poster']->getFileUrl($aMediaInfo['file_id']), 
@@ -329,35 +343,42 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
                     $sVideoUrlHd, $mixedAttrs, 'max-height:' . $CNF['OBJECT_VIDEO_TRANSCODER_HEIGHT']
                 ) : '',
                 'duration' => $sVideoDuration,
-                'bx_if:show_duration' => array(
+                'bx_if:show_duration' => [
                     'condition' => $iVideoDuration > 0,
-                    'content' => array(
+                    'content' => [
                         'duration' => $sVideoDuration
-                    )
-                )
-            );
+                    ]
+                ]
+            ];
         }
 
-        $aVars = array(
-            'bx_if:image' => array (
+        $aVars = $this->_bIsApi ? [
+            'id' => $aMediaInfo['id'],
+            'title' => $sMediaTitle,
+            'text' => '',
+            'image' => $aTmplVarsImage,
+            'entry_title' => $sMediaTitle,
+            'entry_text' => '',
+        ] : [
+            'bx_if:image' => [
                 'condition' => $isImage,
                 'content' => $aTmplVarsImage,
-            ),
-            'bx_if:video' => array (
+            ],
+            'bx_if:video' => [
                 'condition' => $isVideo,
                 'content' => $aTmplVarsVideo,
-            ),
+            ],
             'title_attr' => $sMediaTitleAttr,
             'title' => $sMediaTitle,
             'url' => $sUrl,
-        );
+        ];
 
         return $aVars;
     }
 
     public function getViewMediaUrl($CNF, $iMediaId, $sContext = '')
     {
-        return bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_MEDIA'] . '&id=' . $iMediaId . (!empty($sContext) ? '&context=' . $sContext : '')));
+        return $this->_oConfig->getMediaUrl($iMediaId, $sContext);
     }
 
     public function getNextPrevMedia($aMediaInfo, $isNext, $sContext, $aParamsSearchResult = array())
@@ -395,14 +416,6 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
         }
 
         return $a;
-    }
-
-    function entryAttachments ($aData, $aParams = array())
-    {
-        $oModule = BxDolModule::getInstance($this->MODULE);
-        $CNF = &$oModule->_oConfig->CNF;
-
-        return $oModule->_serviceBrowse ('album', array('unit_view' => 'gallery', 'album_id' => $aData[$CNF['FIELD_ID']], 'author' => $aData[$CNF['FIELD_AUTHOR']]), BX_DB_PADDING_DEF, true, true, 'SearchResultMedia');
     }
 
     function mediaAuthor ($aMediaInfo, $iProfileId = false, $sFuncAuthorDesc = '', $sTemplateName = '') 

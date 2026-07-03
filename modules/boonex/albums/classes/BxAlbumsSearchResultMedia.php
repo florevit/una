@@ -260,6 +260,18 @@ class BxAlbumsSearchResultMedia extends BxBaseModTextSearchResult
         return bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->oModule->_oConfig->CNF['URI_VIEW_MEDIA'] . '&id=' . $a['id']));
     }
 
+    function addProcessingParamsAPI()
+    {
+        return array_merge(parent::addProcessingParamsAPI(), [
+            'album_id'
+        ]);
+    }
+
+    function decodeDataAPI($a, $sMethod = 'getDataMediaAPI')
+    {
+        return parent::decodeDataAPI($a, $sMethod);
+    }
+
     protected function _updateCurrentForOrderByGhosts()
     {
         $CNF = &$this->oModule->_oConfig->CNF;

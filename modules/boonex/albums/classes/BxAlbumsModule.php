@@ -55,6 +55,26 @@ class BxAlbumsModule extends BxBaseModTextModule
 
         $oTemplate->getEmbed($this->_oTemplate->unit($aContentInfo, true, $sUnitTemplate));
     }
+
+    /**
+     * Entry attachments
+     */
+    public function serviceEntityAttachments ($iContentId = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $mixedContent = $this->_getContent($iContentId);
+        if($mixedContent === false)
+            return false;
+
+        list($iContentId, $aContentInfo) = $mixedContent;
+        
+        return $this->_serviceBrowse('album', [
+            'unit_view' => 'gallery', 
+            'album_id' => $aContentInfo[$CNF['FIELD_ID']], 
+            'author' => $aContentInfo[$CNF['FIELD_AUTHOR']]
+        ], BX_DB_PADDING_DEF, true, true, 'SearchResultMedia');
+    }
     
     /**
      * Entry actions and social sharing block
@@ -252,25 +272,27 @@ class BxAlbumsModule extends BxBaseModTextModule
      * @param $aParams array of additional params. 
      * @return HTML string with block content. On error false or empty string is returned.
      */
-    public function serviceMediaView ($iMediaId = 0, $mixedContext = false, $aParams = array())
+    public function serviceMediaView ($iMediaId = 0, $mixedContext = false, $aParams = [])
     {
         if(!$iMediaId)
             $iMediaId = bx_process_input(bx_get('id'), BX_DATA_INT);
         if(!$iMediaId)
             return false;
 
-        if(!$mixedContext) {
-            $mixedContext = bx_process_input(bx_get('context'));
+        if(!$mixedContext && ($_mixedContext = bx_get('context')) !== false) {
+            $mixedContext = bx_process_input($_mixedContext);
             if(!in_array($mixedContext, $this->_aContexts)) // when no context specified, it is assumed that it is an album context
                 $mixedContext = bx_process_input($mixedContext, BX_DATA_INT); // numeric context is reserved for future use
         }
         $aParams['context'] = $mixedContext;
 
         $iAutoplay = 0;
-        if(!isset($aParams['autoplay']) && ($iAutoplay = bx_get('autoplay')) !== false)
-            $aParams['autoplay'] = (int)$iAutoplay;
+        if(($sK = 'autoplay') && !isset($aParams[$sK]) && ($iAutoplay = bx_get($sK)) !== false)
+            $aParams[$sK] = (int)$iAutoplay;
 
-        return $this->_oTemplate->entryMediaView ($iMediaId, $aParams);
+        $mixedResult = $this->_oTemplate->entryMediaView ($iMediaId, $aParams);
+
+        return $this->_bIsApi ? [bx_api_get_block('entity_text', $mixedResult)] : $mixedResult;
     }
 
     public function checkAllowedSetThumb ($iContentId = 0)
@@ -837,6 +859,97 @@ class BxAlbumsModule extends BxBaseModTextModule
             $this->_oDb->updateMedia(array($sField => $iDuration), array('id' => $iMedia));
 
         return $iDuration;
+    }
+
+    public function decodeDataAPI($aData, $aParams = [])
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aResult = parent::decodeDataAPI($aData, $aParams);
+
+        $aImage = [];
+        if(($sStorage = $CNF['OBJECT_STORAGE']) && ($oStorage = BxDolStorage::getObjectInstance($sStorage)) !== false) {
+            $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_TRANSCODER_BROWSE']);
+
+            $aItems = $this->_oDb->getMediaListByContentId($aData[$CNF['FIELD_ID']], 1);
+            foreach($aItems as $aItem) {
+                list($iWidth, $iHeight) = $aData['data'] ? explode('x', $aData['data']) : [0, 0];
+
+                $aImage = [
+                    'storage' => $sStorage,
+                    'src' => $oTranscoder ? $oTranscoder->getFileUrl($aItem['file_id']) : $oStorage->getFileUrlById($aItem['file_id']),
+                    'width' => $iWidth,
+                    'height' => $iHeight
+                ];
+            }
+        }
+
+        return array_merge($aResult, [
+            'image' => $aImage
+        ]);
+    }
+
+    public function getDataMediaAPI($aData, $aParams = [])
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sModule = $this->getName();
+
+        $iId = (int)$aData[$CNF['FIELD_ID']];
+        $sUrl = bx_api_get_relative_url($this->_oConfig->getMediaUrl($iId));
+
+        $aImage = $aVideo = [];
+        if(($sStorage = $CNF['OBJECT_STORAGE']) && ($oStorage = BxDolStorage::getObjectInstance($sStorage)) !== false) {
+            $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW']);
+            $aTranscodersVideo = [
+                'poster' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['poster_preview']),
+                'mp4' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4']),
+                'mp4_hd' => BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_VIDEOS_TRANSCODERS']['mp4_hd']),
+            ];
+
+            $aFileInfo = $oStorage->getFile($aData['file_id']);
+
+            $bImage = strncmp('image/', $aFileInfo['mime_type'], 6) === 0 && $oTranscoder->isMimeTypeSupported($aFileInfo['mime_type']);
+            if($bImage) {
+                list($iWidth, $iHeight) = $aData['data'] ? explode('x', $aData['data']) : [0, 0];
+
+                $aImage = [
+                    'storage' => $sStorage,
+                    'src' => $oTranscoder ? $oTranscoder->getFileUrl($aFileInfo['id']) : $oStorage->getFileUrlById($aFileInfo['id']),
+                    'width' => $iWidth,
+                    'height' => $iHeight
+                ];
+            }
+
+            $bVideo = !$bImage && strncmp('video/', $aFileInfo['mime_type'], 6) === 0 && $aTranscodersVideo && $aTranscodersVideo['poster']->isMimeTypeSupported($aFileInfo['mime_type']);
+            if($bVideo) {
+                //TODO: process Media's Video here.
+            }
+        }
+
+        $aResult = [
+            'id' => $iId,
+            'module' => $sModule,
+            'module_title' => _t($CNF['T']['txt_sample_single']),
+            'added' => $aData[$CNF['FIELD_ADDED']],
+            'author' => $aData[$CNF['FIELD_AUTHOR']],
+            'author_data' => !empty($aData[$CNF['FIELD_AUTHOR']]) ? BxDolProfile::getData($aData[$CNF['FIELD_AUTHOR']]) : '',
+            'title' => $aData[$CNF['FIELD_TITLE']],
+            'url' => $sUrl,
+            'image' => $aImage,
+            'video' => $aVideo
+        ];
+
+        if(isset($aParams['extended']) && $aParams['extended'] === true)
+            $aResult['text'] = $aData[$CNF['FIELD_TEXT']];
+
+        if(!empty($CNF['OBJECT_MENU_SNIPPET_META']) && ($oMetaMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_SNIPPET_META'], $this->_oTemplate)) !== false) {
+            $oMetaMenu->setContentId($iId);
+
+            $aResult['meta'] = $oMetaMenu->getCodeAPI();
+        }
+
+        return $aResult;
     }
 
     protected function _buildRssParams($sMode, $aArgs)

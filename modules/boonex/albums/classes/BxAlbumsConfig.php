@@ -231,6 +231,24 @@ class BxAlbumsConfig extends BxBaseModTextConfig
         	
         );
     }
+
+    public function getAlbumUrl($iId)
+    {
+        $sUrl = BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->CNF['URI_VIEW_ENTRY'] . '&id=' . $iId);
+
+        return bx_absolute_url($sUrl);
+    }
+
+    public function getMediaUrl($iId, $sContext = '')
+    {
+        $sUrl = BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->CNF['URI_VIEW_MEDIA'] . '&id=' . $iId);
+        if($sContext)
+            $sUrl = bx_append_url_params($sUrl, [
+                'context' => $sContext
+            ]);
+
+        return bx_absolute_url($sUrl);
+    }
 }
 
 /** @} */
