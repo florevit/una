@@ -190,7 +190,8 @@ class BxDolCmtsQuery extends BxDolDb
                 `ti`.`rate`, `ti`.`votes`,
                 `ti`.`rrate`, `ti`.`rvotes`,
                 `ti`.`score`, `ti`.`sc_up`, `ti`.`sc_down`,
-                `ti`.`reports` 
+                `ti`.`reports`,
+                :system_name AS `system_name`
             FROM `" . $aData['cmt_table'] . "` AS `tc`
             LEFT JOIN `" . BxDolCmts::$sTableIds . "` AS `ti` ON `ti`.`system_id` = :cmt_system_id AND `tc`.`cmt_id` = `ti`.`cmt_id` 
             WHERE `tc`.`cmt_id` = :cmt_id 
@@ -198,7 +199,8 @@ class BxDolCmtsQuery extends BxDolDb
 
         return $oDb->getRow($sQuery, array(
             'cmt_id' => $aData['cmt_id'],
-            'cmt_system_id' => $aData['cmt_system_id']
+            'cmt_system_id' => $aData['cmt_system_id'],
+            'system_name' => $aData['system_name']
         ));
     }
 

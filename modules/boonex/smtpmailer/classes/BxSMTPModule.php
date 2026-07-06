@@ -64,8 +64,24 @@ class BxSMTPModule extends BxDolModule
                     $mail->Port = $sParamPort;
 
                 // from settings, username and passord of smtp server
-                $mail->Username = getParam ('bx_smtp_username');
-                $mail->Password = getParam ('bx_smtp_password');
+                if (getParam('bx_smtp_oauth_on')) {
+                    $mail->AuthType = 'XOAUTH2';
+                    require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/smtpmailer/vendor/autoload.php');
+                    bx_import('MailAuthorization', $this->_aModule);
+                    bx_import('MailAuthorizationPHPMailer', $this->_aModule);
+                    $mail->setOAuth(BxSMTPMailAuthorizationPHPMailer::getInstance([
+                        'mailAddress' => getParam('bx_smtp_from_email'),
+                        'clientId' => getParam('bx_smtp_oauth_client_id'),
+                        'tenantId' => getParam('bx_smtp_oauth_tenant_id'),
+                        'tenantName' => getParam('bx_smtp_oauth_tenant_name'),
+                        'x509Cert' => getParam('bx_smtp_oauth_cert_public'),
+                        'x509Key' => getParam('bx_smtp_oauth_cert_private'),
+                    ]));
+                }
+                else {
+                    $mail->Username = getParam ('bx_smtp_username');
+                    $mail->Password = getParam ('bx_smtp_password');
+                }
 
                 if (!isset($aCustomHeaders['From'])) {
                     $sParamSender = trim(getParam('bx_smtp_from_email'));
