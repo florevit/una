@@ -184,6 +184,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             'DeleteTaskList' => '',
             'ProcessTaskForm' => '',
             'ProcessTaskFormEditProperty' => '',
+            'SetProperty' => '',
             'SetCompleted' => '',
             'CreateFilter' => '',
             'ApplyFilter' => '',
@@ -219,11 +220,18 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 	$oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_list_form/' . $iContextId . '/' . $iId . '/');
         $oForm->initChecker($aContentInfo, []);
         if($oForm->isSubmittedAndValid()) {
-            return $bAdd ? $oForm->insert(['context_id' => $iContextId]) : (bool)$oForm->update($iId);
+            $mixedResult = $bAdd ? $oForm->insert(['context_id' => $iContextId]) : (bool)$oForm->update($iId);
+
+            return $this->_bIsApi ? [] : $mixedResult;
         }
         else {
             if($this->_bIsApi)
-                return $oForm->getCodeAPI();
+                return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+                    'ext' => [
+                        'name' => $this->_aModule['name'], 
+                        'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/process_task_list_form/&params[]=' . $iContextId . '&params[]=' . $iId, 'immutable' => true]
+                    ]
+                ])];
 
             $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
                 'form_id' => $oForm->getId(),
@@ -275,11 +283,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             if($iContentId)
                 $this->onPublished($iContentId);
 
-            return $iContentId;
+            return $this->_bIsApi ? [] : $iContentId;
         }
         else {
             if($this->_bIsApi)
-                return $oForm->getCodeAPI();
+                return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+                    'ext' => [
+                        'name' => $this->_aModule['name'], 
+                        'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/process_task_form/&params[]=' . $iContextId . '&params[]=' . $iListId, 'immutable' => true]
+                    ]
+                ])];
 
             $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
                 'form_id' => $oForm->getId(),
@@ -320,16 +333,22 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             if(!$oForm->update($iContentId))
                 return ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
 
+            $mixedPropertyValue = $oForm->getCleanValue($CNF['FIELD_' . strtoupper($sProperty)]);
             if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
-                $this->$sMethod($aContentInfo, $oForm);
+                $this->$sMethod($aContentInfo, $mixedPropertyValue);
             else
-                $this->_onEditProperty($aContentInfo, $sProperty, $oForm);
+                $this->_onEditProperty($aContentInfo, $sProperty, $mixedPropertyValue);
 
-            return true;
+            return $this->_bIsApi ? [] : true;
         }
         else {
             if($this->_bIsApi)
-                return $oForm->getCodeAPI();
+                return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+                    'ext' => [
+                        'name' => $this->_aModule['name'], 
+                        'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/process_task_form/&params[]=' . $iContextId . '&params[]=' . $sProperty, 'immutable' => true]
+                    ]
+                ])];
 
             $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
                 'form_id' => $oForm->getId(),
@@ -346,12 +365,34 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         }
     }
 
+    public function serviceSetProperty($iContentId, $sProperty, $mixedValue)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(!$this->isAllowAdd(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
+            return [];
+
+        if(!$this->_oDb->updateEntriesBy([$sProperty => $mixedValue], [$CNF['FIELD_ID'] => $iContentId]))
+            return ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
+
+        if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
+            $this->$sMethod($aContentInfo, $mixedValue);
+        else
+            $this->_onEditProperty($aContentInfo, $sProperty, $mixedValue);
+
+        return $this->_bIsApi ? [] : true;
+    }
+
     public function serviceSetCompleted($iContentId, $iCompleted)
     {
         if(!$this->isAllowManage($iContentId) || !$this->complete($iContentId, $iCompleted))
             return ['code' => 1];
 
-        return [
+        return $this->_bIsApi ? [
+            'title' => _t('_bx_tasks_menu_item_title_system_set_' . ($iCompleted ? 'un' : '') . 'completed'),
+            'request_url' => $this->_aModule['name'] . '/set_completed/&params[]=' . $iContentId . '&params[]=' . (1 - $iCompleted),
+        ] : [
             'code' => 0, 
             'reload' => 1
         ];
@@ -409,15 +450,20 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             if(($iId = (int)$oForm->insert($aValsToAdd)) != 0) {
                 $this->applyFilter($iContextId, $iId);
 
-                $aRes = ['reload' => 1];
+                $aRes = $this->_bIsApi ? [] : ['reload' => 1];
             }
             else
-                $aRes = ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
+                $aRes = ($sMsg = _t('_bx_tasks_txt_err_cannot_perform_action')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
 
             return $aRes;
         }
 
-        return $this->_bIsApi ? $oForm->getCodeAPI() : $oForm;        
+        return $this->_bIsApi ? [bx_api_get_block('form', $oForm->getCodeAPI(), [
+            'ext' => [
+                'name' => $this->_aModule['name'], 
+                'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/create_filter/&params[]=' . $iContextId, 'immutable' => true]
+            ]
+        ])] : $oForm;
     }
 
     public function serviceApplyFilter($iContextId, $iFilterId)
@@ -448,12 +494,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                     $iTimer = $this->_oDb->insertTimer(['content_id' => $iContentId, 'profile_id' => $iProfileId, 'started' => $iNow]);
 
                 if($iTimer !== false)
-                    $aResult = ['code' => 0, 'id' => $iTimer];
+                    $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : ['code' => 0, 'id' => $iTimer];
                 break;
 
             case 'pause':
                 if($this->pauseTimerByAuthor($iProfileId))
-                    $aResult = ['code' => 0];
+                    $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : ['code' => 0];
                 break;
 
             case 'resume':
@@ -461,7 +507,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
                 if($aTimer && is_array($aTimer) && $this->updateTimerById($aTimer['id'], ['started' => $iNow]))
-                    $aResult = ['code' => 0];
+                    $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : ['code' => 0];
                 break;
 
             case 'reload':
@@ -523,7 +569,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
             case 'clear':
                 if($this->_oDb->deleteTimer(['content_id' => $iContentId, 'profile_id' => $iProfileId]) !== false)
-                    $aResult = ['code' => 0];
+                    $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : ['code' => 0];
                 break;
 
             case 'clear_all':
@@ -580,7 +626,10 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             return $this->_bIsApi ? [] : '';
 
         $oMenu->addMarkers(['profile_id' => $iProfileId]);
-        return $this->_bIsApi ? $oMenu->getCodeAPI() : $oMenu->getCode();
+        return $this->_bIsApi ? [bx_api_get_block('menu', [
+            'title' => '', 
+            'content' => $oMenu->getCodeAPI()
+        ])] : $oMenu->getCode();
     }
 
     public function serviceGetBlockContextPreValues($iContextPid = 0)
@@ -1088,9 +1137,13 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$iProfileId && $this->_iProfileId)
             $iProfileId = $this->_iProfileId;
 
-        return $this->_oTemplate->getEntriesList(0, array_merge($aParams, [
+        $mixedResult = $this->_oTemplate->getEntriesList(0, array_merge($aParams, [
             'for_profile' => $iProfileId
         ]));
+ 
+        return $this->_bIsApi ? [
+            bx_api_get_block('tasks_list', $mixedResult)
+        ] : $mixedResult;
     }
 
     /**
@@ -1563,7 +1616,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     /**
      * Internal methods
      */
-    protected function _onEditProperty($aContentInfo, $sProperty, &$oForm)
+    protected function _onEditProperty($aContentInfo, $sProperty, $mixedValue)
     {
         $CNF = &$this->_oConfig->CNF;
         $aPropLoc2Repo = [
@@ -1572,7 +1625,6 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
 
-        $mixedValue = $oForm->getCleanValue($CNF['FIELD_' . strtoupper($sProperty)]);
         if(($sMethod = 'get' . bx_gen_method_name($sProperty) . 'Title') && method_exists($this->_oConfig, $sMethod))
             $mixedValue = $this->_oConfig->$sMethod($mixedValue);
 
@@ -1584,13 +1636,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             ]);        
     }
 
-    protected function _onEditState($aContentInfo, &$oForm)
+    protected function _onEditState($aContentInfo, $iState)
     {
         $CNF = &$this->_oConfig->CNF;
 
         $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
 
-        $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
         $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_edit_state', 'markers' => ['value' => $this->_oConfig->getStateTitle($iState)]]);
 
         $iCompleted = (int)$this->_oConfig->isCompleted($iState);

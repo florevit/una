@@ -31,7 +31,18 @@ class BxTasksMenuViewActions extends BxBaseModTextMenuViewActions
 
     protected function _getMenuItemEditTaskState($aItem)
     {
-        return $this->_getMenuItemByNameActions($aItem);
+        $aResult = $this->_getMenuItemByNameActions($aItem);
+
+        if($this->_bIsApi)
+            $aResult = array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/process_task_form_edit_property/&params[]=' . $this->_iContentId . '&params[]=1', 
+                    'on_callback' => 'modal'
+                ]
+            ]);
+
+        return $aResult;
     }
 
     protected function _getMenuItemDeleteTask($aItem)
@@ -46,6 +57,34 @@ class BxTasksMenuViewActions extends BxBaseModTextMenuViewActions
         return parent::_getMenuItemReport($aItem, array_merge($aParams, [
             'object' => $CNF['OBJECT_REPORTS_TIME']
         ]));
+    }
+
+    protected function _getMenuItemSetCompleted($aItem)
+    {
+        if($this->_bIsApi)
+            return array_merge($this->_getMenuItemAPI($aItem), [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/set_completed/&params[]=' . $this->_iContentId . '&params[]=1', 
+                    'on_callback' => 'change'
+                ]
+            ]);
+
+        return true;
+    }
+
+    protected function _getMenuItemSetUncompleted($aItem)
+    {
+        if($this->_bIsApi)
+            return array_merge($this->_getMenuItemAPI($aItem), [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/set_completed/&params[]=' . $this->_iContentId . '&params[]=0', 
+                    'on_callback' => 'hide'
+                ]
+            ]);
+
+        return $aResult;
     }
 }
 

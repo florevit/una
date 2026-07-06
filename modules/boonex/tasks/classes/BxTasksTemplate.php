@@ -250,6 +250,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'object' => $sPrefix . '_timer',
             'template' => 'menu_custom_hor.html', 
             'menu_id' => $this->_oConfig->getHtmlIds('timer_actions'), 
+            'title_public' => '',
+            'config_api' => [],
             'persistent' => 0
         ]);
         $oActions->setParams($iContentId, $iProfileId);

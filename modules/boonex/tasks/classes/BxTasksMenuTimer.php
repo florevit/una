@@ -53,88 +53,28 @@ class BxTasksMenuTimer extends BxTemplMenuCustom
         if($aTimer && is_array($aTimer)) {
             if((int)$aTimer['started'] > 0)
                 $aItems = [
-                    ['name' => 'pause', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.pause(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_pause')],
-                    ['name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
-                    ['name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['id' => 2, 'name' => 'pause', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.pause(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_pause')],
+                    ['id' => 6, 'name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['id' => 7, 'name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
                 ];
             else
                 $aItems = [
-                    ['name' => 'resume', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.resume(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_resume')],
-                    ['name' => 'clear', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.clear(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_clear')],
-                    ['name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
-                    ['name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['id' => 3, 'name' => 'resume', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.resume(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_resume')],
+                    ['id' => 4, 'name' => 'clear', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.clear(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_clear')],
+                    ['id' => 6, 'name' => 'log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                    ['id' => 7, 'name' => 'edit-and-log', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
                 ];
         }
         else {
             $aItems = [
-                ['name' => 'start', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.start(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_start')],
-                ['name' => 'time', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
+                ['id' => 1, 'name' => 'start', 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.start(this, ' . $this->_iContentId . ', ' . $this->_iProfileId . ')', 'target' => '_self', 'title' => _t('_bx_tasks_txt_timer_start')],
+                ['id' => 5, 'name' => 'time', 'class' => '', 'link' => '', 'onclick' => '', 'target' => '', 'title' => ''],
             ];
         }
 
         return $aItems;
     }
 
-    protected function _getMenuItemStart($aItem)
-    {
-        if($this->_bIsApi) {
-            return array_merge($aItem, [
-                'display_type' => 'callback',
-                'data' => [
-                    'request_url' => $this->_sModule . '/process_timer/&params[]=start&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
-                    'on_callback' => 'hide'
-                ]
-            ]);
-        }
-
-        return true;
-    }
-
-    protected function _getMenuItemPause($aItem)
-    {
-        if($this->_bIsApi) {
-            return array_merge($aItem, [
-                'display_type' => 'callback',
-                'data' => [
-                    'request_url' => $this->_sModule . '/process_timer/&params[]=pause&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
-                    'on_callback' => 'hide'
-                ]
-            ]);
-        }
-
-        return true;
-    }
-
-    protected function _getMenuItemResume($aItem)
-    {
-        if($this->_bIsApi) {
-            return array_merge($aItem, [
-                'display_type' => 'callback',
-                'data' => [
-                    'request_url' => $this->_sModule . '/process_timer/&params[]=resume&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
-                    'on_callback' => 'hide'
-                ]
-            ]);
-        }
-
-        return true;
-    }
-
-    protected function _getMenuItemClear($aItem)
-    {
-        if($this->_bIsApi) {
-            return array_merge($aItem, [
-                'display_type' => 'callback',
-                'data' => [
-                    'request_url' => $this->_sModule . '/process_timer/&params[]=clear&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
-                    'on_callback' => 'hide'
-                ]
-            ]);
-        }
-
-        return true;
-    }
-    
     protected function _getMenuItemTime($aItem, $aParams = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
@@ -197,6 +137,43 @@ class BxTasksMenuTimer extends BxTemplMenuCustom
             $aItem['bx_if:title']['condition'] = false;
 
         return parent::_getMenuItemDefault ($aItem);
+    }
+
+    protected function _getMenuCallbackDataAPI($a)
+    {
+        $aResult = [];
+
+        switch($a['name']) {
+            case 'start':
+                $aResult = [
+                    'request_url' => $this->_sModule . '/process_timer/&params[]=start&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
+                    'on_callback' => 'hide'
+                ];
+                break;
+
+            case 'pause':
+                $aResult = [
+                    'request_url' => $this->_sModule . '/process_timer/&params[]=pause&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
+                    'on_callback' => 'hide'
+                ];
+                break;
+
+            case 'resume':
+                $aResult = [
+                    'request_url' => $this->_sModule . '/process_timer/&params[]=resume&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
+                    'on_callback' => 'hide'
+                ];
+                break;
+
+            case 'clear':
+                $aResult = [
+                    'request_url' => $this->_sModule . '/process_timer/&params[]=clear&params[]=' . $this->_iContentId . '&params[]=' . $this->_iProfileId, 
+                    'on_callback' => 'hide'
+                ];
+                break;
+        }
+
+        return $aResult;
     }
 }
 

@@ -120,6 +120,17 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     	return $sResult;
     }
 
+    public function getCodeAPI()
+    {
+        $aResult = parent::getCodeAPI();
+        
+        $aResult['params'] ??= [];
+        if(($sK = 'view_mode') && isset($this->aParams[$sK]) && $this->aParams[$sK])
+            $aResult['params']['request_url'] = $this->MODULE . '/set_property/&params[]=' . $this->_iContentId . '&params[]=';
+
+        return $aResult;
+    }
+    
     public function initChecker ($aValues = array (), $aSpecificValues = array())
     {
         $CNF = &$this->_oModule->_oConfig->CNF;

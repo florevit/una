@@ -811,17 +811,20 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
     {
         $CNF = &$this->_oConfig->CNF;
 
-        if (!$iContentId)
+        if(!$iContentId)
             $iContentId = bx_process_input(bx_get('id'), BX_DATA_INT);
-        if (!$iContentId)
+        if(!$iContentId)
             return false;
 
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        if (!$aContentInfo)
+        if(!$aContentInfo)
             return false;
 
-        if (!($oGroupProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->getName())))
+        if(!($oGroupProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->getName())))
             return false;
+
+        if(is_bool($bAsArray) && $bAsArray === true)
+            return BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTIONS'])->getConnectedContent($oGroupProfile->id(), true);
 
         if($this->_bIsApi) {
             $aParams = bx_api_get_browse_params($bAsArray);
@@ -849,14 +852,10 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
             return [bx_api_get_block('profiles_list', $aData)];
         }
 
-        if(!$bAsArray) {
-            bx_import('BxDolConnection');
-            $mixedResult = $this->serviceBrowseConnectionsQuick ($oGroupProfile->id(), $CNF['OBJECT_CONNECTIONS'], BX_CONNECTIONS_CONTENT_TYPE_CONTENT, true);
-            if (!$mixedResult)
-                return MsgBox(_t('_sys_txt_empty'));
-        }
-        else
-            $mixedResult = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTIONS'])->getConnectedContent($oGroupProfile->id(), true);
+        bx_import('BxDolConnection');
+        $mixedResult = $this->serviceBrowseConnectionsQuick ($oGroupProfile->id(), $CNF['OBJECT_CONNECTIONS'], BX_CONNECTIONS_CONTENT_TYPE_CONTENT, true);
+        if(!$mixedResult)
+            return MsgBox(_t('_sys_txt_empty'));
 
         return $mixedResult;
     }
@@ -885,7 +884,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         if(!empty($aAdmins) && is_array($aAdmins) && !($aFans = array_diff($aFans, $aAdmins)))
             return false;
 
-        if(!$this->_bIsApi && $bAsArray)
+        if(is_bool($bAsArray) && $bAsArray === true)
             return $aFans;
 
         $iStart = $iLimit = 0;

@@ -72,9 +72,18 @@ class BxTasksGridTime extends BxBaseModGeneralGrid
 
             $iTotal += $aTrack['value'];
         }
+        $sTotal = $iTotal ? $this->_oModule->_oConfig->timeI2S($iTotal) : '';
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('msg', [
+                    'total' => $iTotal,
+                    'total_f' => $sTotal
+                ])
+            ];
 
         $sContent = BxTemplFunctions::getInstance()->transBox($this->_oModule->_oConfig->getHtmlIds('total_popup'), $this->_oModule->_oTemplate->parseHtmlByName('popup_total.html', [
-            'total' => $this->_oModule->_oConfig->timeI2S($iTotal)
+            'total' => $sTotal
         ]));
 
         return echoJson(['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => true]]]);

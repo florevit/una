@@ -315,58 +315,8 @@ class BxBaseMenu extends BxDolMenu
         if (!$this->_isActive($a) || !$this->_isVisible($a))
             return false;
 
-        if ($this->_bIsApi) {
-            list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->_getMenuIcon($a);
-
-            $aResult = [
-                'id' => $a['id'],
-                'name' => $a['name'],
-                'title' => _t($a['title']),
-                'info' => isset($a['info']) ? _t($a['info']) : '',
-                'link' => isset($a['link']) ? $a['link'] : '',
-                'icon' => $sIcon ? BxDolIconset::getObjectInstance()->getIcon($sIcon) : ($sIconHtml ? $sIconHtml : ''),
-                'image' => $sIconUrl ? $sIconUrl : '',
-                'submenu' => !empty($a['submenu_object']) ? $a['submenu_object'] : '',
-                'addon' => $this->_bDisplayAddons ? $this->_getMenuAddon($a) : '',
-                'hidden_on' => isset($a['hidden_on']) ? $a['hidden_on'] : false,
-                'hidden_on_col' => isset($a['hidden_on_col']) ? $a['hidden_on_col'] : false,
-                'config' => isset($a['config_api']) ? $a['config_api'] : '',
-                'primary' => isset($a['primary']) ? $a['primary'] : 0,
-                'persistent' => isset($a['persistent']) ? $a['persistent'] : 0,
-            ];
-
-            if(!empty($a['onclick']))
-                $aResult = array_merge($aResult, [
-                    'display_type' => 'callback',
-                    'data' => $this->_getMenuCallbackDataAPI($a)
-                ]);
-
-            $this->_updateVisibilityParamsAPI($aResult);
-
-            if(($aMarkers = $this->_getMenuMarkers($a)) && is_array($aMarkers))
-                $this->addMarkers($aMarkers);
-            $aResult = $this->_replaceMarkers($aResult);
-
-            if(!empty($aResult['link'])) {
-                if(($sSubstr = 'javascript') && substr($aResult['link'], 0, strlen($sSubstr)) == $sSubstr)
-                    $aResult['link'] = '';
-                else
-                    $aResult['link'] = $this->_oPermalinks->permalink($aResult['link']);
-            }
-
-            if($this->isMultilevel() && !empty($a['subitems'])) {
-                $aSubitems = [];
-                foreach($a['subitems'] as $aSubitem) {
-                    $aSubitem = $this->_getMenuItem($aSubitem);
-                    if($aSubitem !== false)
-                        $aSubitems[] = $aSubitem;
-                }
-
-                $aResult['subitems'] = $aSubitems;
-            }
-
-            return $aResult;
-        }
+        if ($this->_bIsApi)
+            return $this->_getMenuItemAPI ($a);
 
         $bIsSelected = $this->_isSelected($a);
         if($bIsSelected)
@@ -522,7 +472,61 @@ class BxBaseMenu extends BxDolMenu
 
         return $a;
     }
-    
+
+    protected function _getMenuItemAPI ($a)
+    {
+        list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $this->_getMenuIcon($a);
+
+        $aResult = [
+            'id' => $a['id'],
+            'name' => $a['name'],
+            'title' => _t($a['title']),
+            'info' => isset($a['info']) ? _t($a['info']) : '',
+            'link' => isset($a['link']) ? $a['link'] : '',
+            'icon' => $sIcon ? BxDolIconset::getObjectInstance()->getIcon($sIcon) : ($sIconHtml ? $sIconHtml : ''),
+            'image' => $sIconUrl ? $sIconUrl : '',
+            'submenu' => !empty($a['submenu_object']) ? $a['submenu_object'] : '',
+            'addon' => $this->_bDisplayAddons ? $this->_getMenuAddon($a) : '',
+            'hidden_on' => isset($a['hidden_on']) ? $a['hidden_on'] : false,
+            'hidden_on_col' => isset($a['hidden_on_col']) ? $a['hidden_on_col'] : false,
+            'config' => isset($a['config_api']) ? $a['config_api'] : '',
+            'primary' => isset($a['primary']) ? $a['primary'] : 0,
+            'persistent' => isset($a['persistent']) ? $a['persistent'] : 0,
+        ];
+
+        if(!empty($a['onclick']))
+            $aResult = array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => $this->_getMenuCallbackDataAPI($a)
+            ]);
+
+        $this->_updateVisibilityParamsAPI($aResult);
+
+        if(($aMarkers = $this->_getMenuMarkers($a)) && is_array($aMarkers))
+            $this->addMarkers($aMarkers);
+        $aResult = $this->_replaceMarkers($aResult);
+
+        if(!empty($aResult['link'])) {
+            if(($sSubstr = 'javascript') && substr($aResult['link'], 0, strlen($sSubstr)) == $sSubstr)
+                $aResult['link'] = '';
+            else
+                $aResult['link'] = $this->_oPermalinks->permalink($aResult['link']);
+        }
+
+        if($this->isMultilevel() && !empty($a['subitems'])) {
+            $aSubitems = [];
+            foreach($a['subitems'] as $aSubitem) {
+                $aSubitem = $this->_getMenuItem($aSubitem);
+                if($aSubitem !== false)
+                    $aSubitems[] = $aSubitem;
+            }
+
+            $aResult['subitems'] = $aSubitems;
+        }
+
+        return $aResult;
+    }
+
     protected function _getMenuIcon ($a)
     {
         return BxTemplFunctions::getInstanceWithTemplate($this->_oTemplate)->getIcon(!empty($a['icon']) ? $a['icon'] : '');
