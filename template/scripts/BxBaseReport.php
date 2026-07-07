@@ -122,6 +122,17 @@ class BxBaseReport extends BxDolReport
         if($oForm->isSubmittedAndValid() || ($this->_bApi && !empty($aParams) && is_array($aParams)))
             return $this->_report($bPerformed, $aParams, $oForm);
 
+        if($this->_bApi)
+            return [
+                'code' => 0,
+                'api' => bx_api_get_block('form', $oForm->getCodeAPI(), [
+                    'ext' => [
+                        'name' => $oForm->getName(),
+                        'request' => ['url' => '/api.php?r=system/do/TemplReportServices&params[]=' . json_encode(['s' => $this->_sSystem, 'o' => $this->_iId]), 'immutable' => true]
+                    ]
+                ])
+            ];
+
         $sPopupId = $this->_aHtmlIds['do_popup'];
         $sPopupContent = BxTemplFunctions::getInstance()->transBox($sPopupId, $this->_oTemplate->parseHtmlByName('report_do_report_form.html', array(
             'style_prefix' => $this->_sStylePrefix,
