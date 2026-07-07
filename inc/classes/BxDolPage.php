@@ -483,26 +483,30 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
             return false;
 
         $sPageModule = '';
+
         $aSeoParams = array('id', 'profile_id'); // supported SEO params which are transformed to SEO strings
         $sSeoParamName = '';
         $sSeoParamValue = '';
-        foreach ($aSeoParams as $k) {
-            if (empty($aQueryParams[$k]) && empty($aParams[$k]))
-                continue;
-            $sSeoParamName = $k;
-            $sSeoParamValue = !empty($aParams[$k]) ? $aParams[$k] : $aQueryParams[$k];
-            unset($aQueryParams[$k]);
-            unset($aParams[$k]);
-            break; // only 1 SEO param will be transformed
+        if ('cmts-view' != $sPageUri) {
+            foreach ($aSeoParams as $k) {
+                if (empty($aQueryParams[$k]) && empty($aParams[$k]))
+                    continue;
+                $sSeoParamName = $k;
+                $sSeoParamValue = !empty($aParams[$k]) ? $aParams[$k] : $aQueryParams[$k];
+                unset($aQueryParams[$k]);
+                unset($aParams[$k]);
+                break; // only 1 SEO param will be transformed
+            }
         }
-
         if (!empty($sSeoParamValue) && 0 === strpos($sSeoParamValue, '{'))
             return false;
-
-        $sSeoPageUri = $sPageUri;
+        
         $aSeoUriRewrites = BxDolPageQuery::getSeoUriRewrites();
-        if (isset($aSeoUriRewrites[$sSeoPageUri]))
-            $sSeoPageUri = $aSeoUriRewrites[$sSeoPageUri];
+        if (isset($aSeoUriRewrites[$sPageUri])) {
+            $sSeoPageUri = $aSeoUriRewrites[$sPageUri];
+        } else {
+            $sSeoPageUri = $sPageUri;
+        }
 
         if ($sSeoParamName && $sSeoParamValue) { // process page with SEO param
             $sPageName = BxDolPageQuery::getPageObjectNameByURI($sPageUri);
@@ -511,15 +515,16 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
                 $sPageModule = $aPage['module'];
                 $sContentInfo = !empty($aPage['content_info']) ? $aPage['content_info'] : $aPage['module'];
                 $bSeoUrlFound = true;
-                if ('sys_cmts_view' == $sPageName) { // `id` (nor `cmt_id`) param in comment URL isn't uniq, so we can't generate SEO link for it 
-                    $bSeoUrlFound = false;
-                }
-                elseif ('id' == $sSeoParamName) {
+
+                if ('id' == $sSeoParamName) {
                     $oContentInfo = BxDolContentInfo::getObjectInstance($sContentInfo);
-                    $sSeoTitle = $oContentInfo ? $oContentInfo->getContentTitle($sSeoParamValue) : '';
-                    if (!$sSeoTitle)
+                    if (!$oContentInfo) {
                         $bSeoUrlFound = false;
-                    
+                    } else {
+                        $sSeoTitle = $oContentInfo->getContentTitle($sSeoParamValue);
+                    }
+                    if (!$sSeoTitle)
+                        $sSeoTitle = base_convert((string)sprintf('%u', crc32($sSeoParamValue . BX_DOL_SECRET)), 10, 36);
                 }
                 elseif ('profile_id' == $sSeoParamName) {
                     $oProfile = BxDolProfile::getInstance($sSeoParamValue);
