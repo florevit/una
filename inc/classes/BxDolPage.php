@@ -461,6 +461,10 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
      */
     static public function transformSeoLink ($sLink, $sPrefix, $aParams = array())
     {
+        static $aMemoryUrls = [];
+        if (isset($aMemoryUrls[$sLink]))
+            return $aMemoryUrls[$sLink];
+
         if (!getParam('permalinks_seo_links'))
             return false;
 
@@ -587,17 +591,22 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
             }
         }
 
-        if (!$sSeoPageUri)
-            return false;
-
-        $sLink = $sPrefix . bx_append_url_params($sSeoPageUri, array_merge($aQueryParams, $aParams), false);
-        if (defined('BX_MULTISITE_MODULE')) {
-
-            $s = BxDolPage::multisiteLinkCheck ($sLink, $sPageUri, $sPageModule, [$sSeoParamName => $sSeoParamValue]);
-            if (false !== $s) 
-                return $s;
+        $sRet = false;        
+        if ($sSeoPageUri) {
+            $sLinkTransformed = $sPrefix . bx_append_url_params($sSeoPageUri, array_merge($aQueryParams, $aParams), false);
+            if (defined('BX_MULTISITE_MODULE')) {
+                $s = BxDolPage::multisiteLinkCheck ($sLinkTransformed, $sPageUri, $sPageModule, [$sSeoParamName => $sSeoParamValue]);
+                if (false !== $s) 
+                    $sRet = $s;
+            }
+            else {
+                $sRet = $sLinkTransformed;
+            }
         }
-        return $sLink;
+        
+        $aMemoryUrls[$sLink] = $sRet;
+
+        return $sRet;
     }
 
 	/**
