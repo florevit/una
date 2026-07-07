@@ -1491,7 +1491,7 @@ BLAH;
         $aAttrs = $this->_genInputStandardAttrs($aInput);
 
         $aAgent = [];
-        if(!empty($this->_aAgentsFormObject)) {
+        if(!empty($this->_aAgentsFormObject) && isset($aInput['name'])) {
             foreach($this->_aAgentsFormObject as $a) {
                 if($a['form_object'] == $this->_sAgentFormObject && $a['form_input'] == $aInput['name']) {
                     $aAgent = $a;
