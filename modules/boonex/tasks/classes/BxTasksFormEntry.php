@@ -125,8 +125,13 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         $aResult = parent::getCodeAPI();
         
         $aResult['params'] ??= [];
-        if(($sK = 'view_mode') && isset($this->aParams[$sK]) && $this->aParams[$sK])
+        if(($sK = 'view_mode') && isset($this->aParams[$sK]) && $this->aParams[$sK]) {
             $aResult['params']['request_url'] = $this->MODULE . '/set_property/&params[]=' . $this->_iContentId . '&params[]=';
+
+            foreach($aResult['inputs'] as $aInput)
+                if(($sName = $aInput['name'] ?? false) && in_array($sName, $this->_aProperties))
+                    $aResult['inputs'][$sName]['editable'] = true;
+        }
 
         return $aResult;
     }

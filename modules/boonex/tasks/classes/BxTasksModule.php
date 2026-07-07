@@ -513,13 +513,15 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             case 'reload':
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
 
-                $aResult = [
+                $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : [
                     'code' => 0,
                     'started' => $aTimer && ($aTimer['started'] ?? 0) != 0
                 ];
                 break;
 
             case 'log':
+                $this->pauseTimerByAuthor($iProfileId);
+
                 $aTimer = $this->getTimer($iContentId, $iProfileId);
                 if(!$aTimer || !is_array($aTimer) || !$aTimer['duration'])
                     break;
@@ -550,7 +552,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                     'profile_id' => $iProfileId
                 ]);
 
-                $aResult = ['code' => 0];
+                $aResult = $this->_bIsApi ? $this->_oTemplate->getTimer($iContentId, $iProfileId) : ['code' => 0];
                 break;
 
             case 'log_all':
@@ -559,7 +561,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 $iAffected = 0;
                 foreach($aTimers as $aTimer) {
                     $aSubResult = $this->serviceProcessTimer('log', $aTimer['content_id'], $iProfileId);
-                    if(($aSubResult['code'] ?? false) === 0)
+                    if(($aSubResult['code'] ?? false) === 0 || ($this->_bIsApi && ($aSubResult['id'] ?? false)))
                         $iAffected++;
                 }
 

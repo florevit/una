@@ -514,7 +514,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks', 'bx_tasks', 'published', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_published', '_bx_tasks_form_entry_input_date_published', '_bx_tasks_form_entry_input_date_published_info', 0, 0, 0, '', '', '', '', '', '', 'DateTimeTs', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'initial_members', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_initial_members', '_bx_tasks_form_entry_input_initial_members', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 1),
 ('bx_tasks', 'bx_tasks', 'estimate', '', '#!bx_tasks_estimates', 0, 'select', '_bx_tasks_form_entry_input_sys_estimate', '_bx_tasks_form_entry_input_estimate', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
-('bx_tasks', 'bx_tasks', 'due_date', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_due_date', '_bx_tasks_form_entry_input_date_due_date', '', 0, 0, 0, '', '', '', '', '', '', 'DateTimeUtc', '', 1, 0),
+('bx_tasks', 'bx_tasks', 'due_date', '', '', 0, 'datepicker', '_bx_tasks_form_entry_input_sys_date_due_date', '_bx_tasks_form_entry_input_date_due_date', '', 0, 0, 0, '', '', '', '', '', '', 'DateTimeUtc', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'attachments', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_attachments', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'anonymous', '', '', 0, 'switcher', '_sys_form_input_sys_anonymous', '_sys_form_input_anonymous', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),

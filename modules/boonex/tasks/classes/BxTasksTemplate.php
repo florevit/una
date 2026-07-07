@@ -256,13 +256,25 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         ]);
         $oActions->setParams($iContentId, $iProfileId);
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            $sState = '';
+            if($bStarted)
+                $sState = 'started';
+            else if($bTimer) 
+                $sState = 'paused';
+
             return [
-                'hours' => $iHours,
-                'minutes' => $iMinutes,
-                'seconds' => $iSeconds,
+                'id' => $aTimer['id'],
+                'time' => [
+                    'hours' => $iHours,
+                    'minutes' => $iMinutes,
+                    'seconds' => $iSeconds,
+                ],
+                'state' => $sState,
+                'request_url' => $this->MODULE . '/process_timer/&params[]=reload&params[]=' . $iContentId . '&params[]=' . $iProfileId, 
                 'actions' => $oActions->getCodeAPI()
             ];
+        }
 
         return $this->parseHtmlByName('entry-timer' . ($sName ? '-' . $sName : '') . '.html', [
             'html_id' => $this->_oConfig->getHtmlIds('timer') . $iContentId . '-' . $iProfileId,
