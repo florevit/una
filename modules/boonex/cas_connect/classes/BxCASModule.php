@@ -16,6 +16,59 @@ class BxCASModule extends BxBaseModConnectModule
         parent::__construct($aModule);
     }
     
+	/**
+	 * This service need to be called when we call logout from UNA,
+	 * so it will propagate logout to IDP
+	 * Other words: logout in UNA, IDP and all other SP
+	 */
+	public function serviceLogout()
+	{
+		if (!getParam('bx_cas_path_simplesamlphp'))
+			return;
+		if (!isLogged())
+			return;
+
+		bx_logout(false /* disable logout hook, so serviceLogout isn't called in a loop*/);
+
+		require_once(getParam('bx_cas_path_simplesamlphp') . '/src/_autoload.php');
+
+		$as = new \SimpleSAML\Auth\Simple('dev-sp');
+		$as->logout(BX_DOL_URL_ROOT);
+
+		\SimpleSAML\Session::getSessionFromRequest()->cleanup();
+	}
+
+	/**
+	 * Single Logout Service in SAML logout chain,
+	 * this URL ned to be specified in ResponceLocation for SingleLogoutService in SAML metadata.
+	 * Other words: logout in UNA only
+     */
+	public function actionLogout()
+	{
+		if (!getParam('bx_cas_path_simplesamlphp')) {
+			echoJson(['code' => 500, 'message' => "SimpleSAML folder isn't configred."]);
+			exit;
+		}
+		else {
+
+			if (!isLogged()) {
+				echo "You aren't logged in.";
+				exit;
+			}
+
+			// cleanup UNA sessioon
+			bx_logout(false /* disable logout hook, so serviceLogout isn't called at all */);
+
+			// cleanup SAML related staff locally only
+			require_once(getParam('bx_cas_path_simplesamlphp') . '/src/_autoload.php');
+			\SimpleSAML\Session::getSessionFromRequest()->cleanup();
+
+			echo 'OK';
+
+			exit;
+		}
+	}
+
     /**
      * Redirect to remote site login form
      *

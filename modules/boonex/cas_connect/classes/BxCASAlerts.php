@@ -20,9 +20,7 @@ class BxCASAlerts extends BxBaseModConnectAlerts
     public function response($o)
     {
         if ($o->sUnit == 'account' && $o->sAction == 'logout') {
-            require_once(getParam('bx_cas_path_simplesamlphp') . '/lib/_autoload.php');
-            $oSession = \SimpleSAML\Session::getSessionFromRequest();
-            $oSession->doLogout('default-sp');
+            bx_srv('bx_cas', 'logout');
         }
     }
 }
