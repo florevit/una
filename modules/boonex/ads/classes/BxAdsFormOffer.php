@@ -32,7 +32,7 @@ class BxAdsFormOffer extends BxTemplFormView
                 $this->_aContentInfo = $this->_oModule->_oDb->getContentInfoById($this->_iContentId);
         }
 
-        if((int)$this->_aContentInfo[$CNF['FIELD_SINGLE']] == 1) {
+        if($this->_aContentInfo && (int)$this->_aContentInfo[$CNF['FIELD_SINGLE']] == 1) {
             if(isset($this->aInputs[$CNF['FIELD_OFR_QUANTITY']]))
                 $this->aInputs[$CNF['FIELD_OFR_QUANTITY']] = array_merge($this->aInputs[$CNF['FIELD_OFR_QUANTITY']], [
                     'type' => 'hidden',
