@@ -22,9 +22,11 @@ class BxTasksTime extends BxTemplReport
         parent::__construct($sSystem, $iId, $iInit, $oTemplate);
 
         $this->_sModule = 'bx_tasks';
-    	$this->_oModule = BxDolModule::getInstance($this->_sModule);
+        $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         $this->_sUniqId = '';
+
+        $this->_aElementParamsApi = ['is_reported'];
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -230,11 +232,12 @@ class BxTasksTime extends BxTemplReport
                 if($aTimer && ($iContentId = $aTimer['content_id'] ?? 0) && ($iProfileId = $aTimer['profile_id'] ?? 0)) {
                     $this->_oModule->serviceProcessTimer('clear', $iContentId, $iProfileId);
 
-                    $aResult = array_merge($aResult, [
-                        'label_title' => _t('_bx_tasks_txt_timer_log'),
-                        'eval' => $aResult['eval'] . '; ' . $this->_oModule->_oConfig->getJsObject('timer'). '.reload(this, ' . $iContentId . ', ' . $iProfileId . ');'
-                    ]);
-                } 
+                    if(!$this->_bApi)
+                        $aResult = array_merge($aResult, [
+                            'label_title' => _t('_bx_tasks_txt_timer_log'),
+                            'eval' => $aResult['eval'] . '; ' . $this->_oModule->_oConfig->getJsObject('timer'). '.reload(this, ' . $iContentId . ', ' . $iProfileId . ');'
+                        ]);
+                }
             }
 
             return $aResult;

@@ -293,13 +293,16 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         $CNF = &$this->_oModule->_oConfig->CNF;
         $oConn = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
 
-        $aMembers2 = $oConn->getConnectedInitiators($iContentId);
+        if($this->_bIsApi && is_string($aMembers))
+            $aMembers = explode(',', $aMembers);
+
+        $aMembersCurrent = $oConn->getConnectedInitiators($iContentId);
 
         $aMembersToAdd = [];
-        $aMembersToRemove = $aMembers2;
+        $aMembersToRemove = $aMembersCurrent;
         if (is_array($aMembers)){
-            $aMembersToAdd = array_diff($aMembers, $aMembers2);
-            $aMembersToRemove = array_diff($aMembers2, $aMembers);
+            $aMembersToAdd = array_diff($aMembers, $aMembersCurrent);
+            $aMembersToRemove = array_diff($aMembersCurrent, $aMembers);
         }    
 
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
@@ -349,9 +352,17 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     protected function genCustomInputInitialMembers ($aInput)
     {
-        return $this->genCustomInputUsernamesSuggestions(array_merge($aInput , [
-            'ajax_get_suggestions' => BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_initial_members/" . $this->_iContextId
-        ]));
+        if($this->_bIsApi) {
+            $aInput['ajax_get_suggestions'] = $this->MODULE . '/get_initial_members&params[]=' . $this->_iContextId . '&params[]=';
+
+            $aInput['value_data'] = [];
+            foreach($aInput['value'] as $iProfileId)
+                $aInput['value_data'][] = BxDolProfile::getData($iProfileId);
+        }
+        else
+            $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_initial_members/" . $this->_iContextId;
+
+        return $this->genCustomInputUsernamesSuggestions($aInput);
     }
 }
 

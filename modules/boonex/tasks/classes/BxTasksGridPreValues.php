@@ -49,23 +49,30 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         ]);
     }
 
+    public function getFormCallBackUrlAPI($sAction, $iId = 0)
+    {
+         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&profile_id=' . $this->_iContextPid . '&id=' . $iId;
+    }
+
     public function performActionAdd()
     {
         if(!$this->_sList)
-            return echoJson(['msg' => _t('_bx_tasks_txt_err_empty_pre_list')]);
+            return $this->_getActionResult(($sMsg = _t('_bx_tasks_txt_err_empty_pre_list')) && $this->_bIsApi ? bx_api_get_msg($sMsg) : ['msg' => $sMsg]);
 
         $sAction = 'add';
 
         $oForm = $this->_getForm($sAction);
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            if(($iId = (int)$oForm->insert(['context_id' => $this->_iContextPid, 'list' => $this->_sList])) != 0)
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $iId];
-            else
-                $aRes = ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
+            $iId = (int)$oForm->insert(['context_id' => $this->_iContextPid, 'list' => $this->_sList]);                    
+            if(!$iId)
+                return $this->_getActionResult(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
 
-            return echoJson($aRes);
+            return $this->_bIsApi ? [] : echoJson(['grid' => $this->getCode(false), 'blink' => $iId]);
         }
+
+        if($this->_bIsApi)
+            return $this->getFormBlockAPI($oForm, $sAction);
 
         $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('pre_values_popup') . $sAction, _t('_bx_tasks_popup_pv_title_' . $sAction), $this->_oModule->_oTemplate->parseHtmlByName('popup_pre_values.html', [
             'form_id' => $oForm->aFormAttrs['id'],
@@ -81,20 +88,22 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
     {
         $sAction = 'edit';
 
-        $aItem = $this->_oModule->_oDb->getPreValues(['sample' => 'id', 'id' => $this->_getIds()]);
+        $iItemId = $this->_getIds();
+        $aItem = $this->_oModule->_oDb->getPreValues(['sample' => 'id', 'id' => $iItemId]);
         if(!$aItem)
-            return echoJson([]);
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $oForm = $this->_getForm($sAction, $aItem);
         $oForm->initChecker($aItem);
         if($oForm->isSubmittedAndValid()) {
-            if($oForm->update($aItem['id']) !== false)
-                $aRes = ['grid' => $this->getCode(false), 'blink' => $aItem['id']];
-            else
-                $aRes = ['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')];
+            if(!$oForm->update($aItem['id']))
+                return $this->_getActionResult(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
 
-            return echoJson($aRes);
+            return $this->_bIsApi ? [] : echoJson(['grid' => $this->getCode(false), 'blink' => $iItemId]);
         }
+
+        if($this->_bIsApi)
+            return $this->getFormBlockAPI($oForm, $sAction, $iItemId);
 
         $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oModule->_oConfig->getHtmlIds('pre_values_popup') . $sAction, _t('_bx_tasks_popup_pv_title_' . $sAction), $this->_oModule->_oTemplate->parseHtmlByName('popup_pre_values.html', [
             'form_id' => $oForm->aFormAttrs['id'],
@@ -136,6 +145,19 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
         $sContent = $this->_getFilterSelectOne('list', $this->_sList, $this->_oModule->getPreLists(), '_bx_tasks_grid_filter_item_title_pv_select_one_list');
         $sContent .= $this->_getSearchInput();
         return $sContent;
+    }
+
+    protected function _getFilterControlsAPI($aFilters = [])
+    {
+        $aFilters = [
+            'list' => []
+        ];
+
+        $aLists = $this->_oModule->getPreLists();
+        foreach($aLists as $sKey => $sValue) 
+            $aFilters['list'][] = ['value' => $sKey, 'title' => $sValue];
+
+        return parent::_getFilterControlsAPI($aFilters);
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)

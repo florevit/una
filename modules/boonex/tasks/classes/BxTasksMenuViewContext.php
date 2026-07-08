@@ -2,35 +2,31 @@
 /**
  * Copyright (c) UNA, Inc - https://una.io
  * MIT License - https://opensource.org/licenses/MIT 
- * 
  * @defgroup    Tasks Tasks
  * @ingroup     UnaModules
  *
  * @{
  */
 
-class BxTasksMenuManageContext extends BxTemplMenu
+/**
+ * View entry menu
+ */
+class BxTasksMenuViewContext extends BxBaseModTextMenuView
 {
-    protected $_sModule;
-    protected $_oModule;
-
-    protected $_sParamName;
-    protected $_iParamValue;
+    protected $_iContextId;
 
     public function __construct($aObject, $oTemplate = false)
     {
-        $this->_sModule = 'bx_tasks';
-    	$this->_oModule = BxDolModule::getInstance($this->_sModule);
-
+        $this->MODULE = 'bx_tasks';
         parent::__construct($aObject, $oTemplate);
+    }
 
-        $this->_sParamName = 'context_pid';
-        if(($iParamValue = bx_get($this->_sParamName)) !== false)
-            $this->_iParamValue = (int)$iParamValue;
-        
+    public function setContextId($iContextId)
+    {
+        $this->_iContextId = (int)$iContextId;
+
         $this->addMarkers([
-            'js_object_view' => $this->_oModule->_oConfig->getJsObject('tasks'),
-            $this->_sParamName => $this->_iParamValue
+            'profile_id' => $this->_iContextId
         ]);
     }
 
@@ -41,8 +37,9 @@ class BxTasksMenuManageContext extends BxTemplMenu
 
         $bResult = true;
         switch ($a['name']) {
+            case 'tasks-context-time-administration':
             case 'tasks-context-values':
-                $bResult = $this->_oModule->isAllowManageByContext($this->_iParamValue);
+                $bResult = $this->_oModule->isAllowManageByContext($this->_iContextId);
                 break;
         }
 

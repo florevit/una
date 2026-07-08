@@ -182,7 +182,6 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_MENU_SNIPPET_META' => 'bx_tasks_snippet_meta', // menu for snippet meta info
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage menu in content administration tools
             'OBJECT_MENU_SUBMENU_VIEW_CONTEXT' => 'bx_tasks_view_context_submenu',
-            'OBJECT_MENU_SUBMENU_MANAGE_CONTEXT' => 'bx_tasks_manage_context_submenu',
             'OBJECT_MENU_USE_TOOLS_SUBMENU' => 'bx_tasks_use_tools_submenu',
             'OBJECT_MENU_MANAGE_TOOLS_SUBMENU' => 'bx_tasks_manage_tools_submenu',
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage item menu in content administration tools

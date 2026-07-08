@@ -80,9 +80,9 @@ class BxTasksMenuBrowse extends BxTemplMenu
             if(!$oContext)
                 continue;
 
-            $sUrl = $this->_oPermalink->permalink($CNF['URL_HOME'], [
+            $sUrl = bx_absolute_url(bx_append_url_params($this->_oPermalink->permalink($CNF['URL_HOME']), [
                 $this->_sParamName => $iId
-            ]);
+            ]));
 
             $aSubmenu[] = [
                 'id' => 'context-' . $iId, 

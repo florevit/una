@@ -246,7 +246,7 @@
     <string name="_bx_tasks_page_title_view_entry_comments"><![CDATA[Activity in {title}]]></string>
     <string name="_bx_tasks_page_title_sys_entries_of_author"><![CDATA[Tasks of author]]></string>
     <string name="_bx_tasks_page_title_entries_of_author"><![CDATA[Tasks by {display_name}]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_in_context"><![CDATA[Tasks in context]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_in_context"><![CDATA[Context: Tasks]]></string>
     <string name="_bx_tasks_page_title_entries_in_context"><![CDATA[Tasks in {display_name}]]></string>
     <string name="_bx_tasks_page_block_title_favorites_of_author"><![CDATA[Favorites by <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_favorites_of_author"><![CDATA[Favorites of author]]></string>
@@ -291,9 +291,9 @@
     <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Calendar]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Time in context: My]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Context: My time]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context"><![CDATA[My time in {display_name}]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Time in context: All]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Context: All time]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context_administration"><![CDATA[All time in {display_name}]]></string>
     <string name="_bx_tasks_page_block_title_sys_menu_in_context"><![CDATA[View context menu]]></string>
     <string name="_bx_tasks_page_block_title_menu_in_context"><![CDATA[Menu]]></string>
@@ -301,11 +301,11 @@
     <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[My Time in <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
     <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[All Time in <a href="{profile_link}">{display_name}</a>]]></string>
-    <string name="_bx_tasks_page_title_sys_context_pre_values"><![CDATA[Lists and values in context]]></string>
-    <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Lists and values]]></string>
-    <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Lists and values]]></string>
-    <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Lists and values]]></string>
-    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Settings]]></string>
+    <string name="_bx_tasks_page_title_sys_context_pre_values"><![CDATA[Context: Properties]]></string>
+    <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Properties]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Properties]]></string>
+    <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Properties]]></string>
+    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Context: Settings]]></string>
     <string name="_bx_tasks_page_title_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_page_block_title_system_context_authorize"><![CDATA[Authorize GitHub]]></string>
     <string name="_bx_tasks_page_block_title_context_authorize"><![CDATA[Authorize GitHub]]></string>
@@ -390,10 +390,8 @@
     <string name="_bx_tasks_menu_item_title_view_context_time"><![CDATA[My Time]]></string>
     <string name="_bx_tasks_menu_item_title_system_view_context_time_administration"><![CDATA[All Time]]></string>
     <string name="_bx_tasks_menu_item_title_view_context_time_administration"><![CDATA[All Time]]></string>
-    <string name="_bx_tasks_menu_title_manage_context_submenu"><![CDATA[Manage Context Submenu]]></string>
-    <string name="_bx_tasks_menu_set_title_manage_context_submenu"><![CDATA[Manage Context Submenu]]></string>
-    <string name="_bx_tasks_menu_item_title_system_manage_context_pre_values"><![CDATA[Lists and values]]></string>
-    <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Lists and values]]></string>
+    <string name="_bx_tasks_menu_item_title_system_manage_context_pre_values"><![CDATA[Properties]]></string>
+    <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Properties]]></string>
     <string name="_bx_tasks_menu_item_title_system_manage_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_menu_item_title_manage_context_settings"><![CDATA[Settings]]></string>
     <string name="_bx_tasks_menu_title_use_tools_submenu"><![CDATA[Usage Tools Submenu]]></string>
@@ -561,6 +559,8 @@
     <string name="_bx_tasks_txt_list_title"><![CDATA[{0} ({1})]]></string>
     <string name="_bx_tasks_txt_list_inbox"><![CDATA[Inbox]]></string>
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New Task List]]></string>
+    <string name="_bx_tasks_txt_edit_task_list"><![CDATA[Edit Task List]]></string>
+    <string name="_bx_tasks_txt_delete_task_list"><![CDATA[Delete Task List]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
     <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>

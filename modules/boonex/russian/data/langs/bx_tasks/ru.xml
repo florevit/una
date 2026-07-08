@@ -246,7 +246,7 @@
     <string name="_bx_tasks_page_title_view_entry_comments"><![CDATA[Активность в {title}]]></string>
     <string name="_bx_tasks_page_title_sys_entries_of_author"><![CDATA[Задания автора]]></string>
     <string name="_bx_tasks_page_title_entries_of_author"><![CDATA[Задания от {display_name}]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_in_context"><![CDATA[Задания в контексте]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_in_context"><![CDATA[Контекст: Задания]]></string>
     <string name="_bx_tasks_page_title_entries_in_context"><![CDATA[Задания в {display_name}]]></string>
     <string name="_bx_tasks_page_block_title_favorites_of_author"><![CDATA[Избранное <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_favorites_of_author"><![CDATA[Избранное автора]]></string>
@@ -291,9 +291,9 @@
     <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Календарь]]></string>
     <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Календарь]]></string>
     <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Календарь]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Мое время в контексте]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Контекст: Мое время]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context"><![CDATA[Мое время в {display_name}]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Всё время в контексте]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Контекст: Всё время]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context_administration"><![CDATA[Всё время в {display_name}]]></string>
     <string name="_bx_tasks_page_block_title_sys_menu_in_context"><![CDATA[Меню просмотра контекста]]></string>
     <string name="_bx_tasks_page_block_title_menu_in_context"><![CDATA[Меню]]></string>
@@ -301,11 +301,11 @@
     <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[Мое время в <a href="{profile_link}">{display_name}</a>]]></string>
     <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[Всё время в контексте]]></string>
     <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[Всё время в <a href="{profile_link}">{display_name}</a>]]></string>
-    <string name="_bx_tasks_page_title_sys_context_pre_values"><![CDATA[Списки и значения в контексте]]></string>
-    <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Списки и значения]]></string>
-    <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Списки и значения]]></string>
-    <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Списки и значения]]></string>
-    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Настройки]]></string>
+    <string name="_bx_tasks_page_title_sys_context_pre_values"><![CDATA[Контекст: Свойства]]></string>
+    <string name="_bx_tasks_page_title_context_pre_values"><![CDATA[Свойства]]></string>
+    <string name="_bx_tasks_page_block_title_system_context_pre_values"><![CDATA[Свойства]]></string>
+    <string name="_bx_tasks_page_block_title_context_pre_values"><![CDATA[Свойства]]></string>
+    <string name="_bx_tasks_page_title_sys_context_settings"><![CDATA[Контекст: Настройки]]></string>
     <string name="_bx_tasks_page_title_context_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_page_block_title_system_context_authorize"><![CDATA[Авторизовать GitHub]]></string>
     <string name="_bx_tasks_page_block_title_context_authorize"><![CDATA[Авторизовать GitHub]]></string>
@@ -388,10 +388,8 @@
     <string name="_bx_tasks_menu_item_title_view_context_time"><![CDATA[Моё время]]></string>
     <string name="_bx_tasks_menu_item_title_system_view_context_time_administration"><![CDATA[Всё время]]></string>
     <string name="_bx_tasks_menu_item_title_view_context_time_administration"><![CDATA[Всё время]]></string>
-    <string name="_bx_tasks_menu_title_manage_context_submenu"><![CDATA[Управление контекстом - Подменю]]></string>
-    <string name="_bx_tasks_menu_set_title_manage_context_submenu"><![CDATA[Управление контекстом - Подменю]]></string>
-    <string name="_bx_tasks_menu_item_title_system_manage_context_pre_values"><![CDATA[Списки и значения]]></string>
-    <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Списки и значения]]></string>
+    <string name="_bx_tasks_menu_item_title_system_manage_context_pre_values"><![CDATA[Свойства]]></string>
+    <string name="_bx_tasks_menu_item_title_manage_context_pre_values"><![CDATA[Свойства]]></string>
     <string name="_bx_tasks_menu_item_title_system_manage_context_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_menu_item_title_manage_context_settings"><![CDATA[Настройки]]></string>
     <string name="_bx_tasks_menu_title_use_tools_submenu"><![CDATA[Инструменты - Подменю]]></string>

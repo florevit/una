@@ -312,26 +312,22 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             if($bAllowAdd)
                 $aActions = array_merge($aActions, [[
                     'name' => 'add_list', 
+                    'title' => _t('_bx_tasks_txt_new_task_list'),
                     'type' => 'modal', 
                     'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iContextId . '&params[]=0',
                 ], [
                     'name' => 'add_task', 
+                    'title' => _t('_bx_tasks_txt_new_task'),
                     'type' => 'modal', 
                     'callback' => $this->MODULE . '/process_task_form&params[]=' . $iContextId . '&params[]=0',
                 ]]);
-            
-            if($bContext)
-                $aActions[] = [
-                    'name' => 'manage_settings', 
-                    'type' => 'menu', 
-                    'object' => $CNF['OBJECT_MENU_SUBMENU_MANAGE_CONTEXT']
-                ];
 
             return [
                 'context_id' => $iContextId,
                 'filters' => $mixedFilters,
                 'lists' => $aEntries,
-                'actions' => $aActions
+                'actions' => $aActions,
+                'request_url' => $this->MODULE . '/' . ($bContext ? 'browse_context' : 'browse_tasks_by_profile') . '&params[]=' . ($bContext ? $iContextId : $iLoggedId),
             ];
         }
 
@@ -365,12 +361,6 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'content' => [
                     'context_id' => $iContextId,
                     'object' => $sJsObject,
-                ]
-            ],
-            'bx_if:allow_manage_settings' => [
-                'condition' => $bContext,
-                'content' => [
-                    'context_id' => $iContextId,
                 ]
             ],
             'task_lists' => $aEntries,
@@ -465,8 +455,9 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 if($this->_bIsApi && $bTasksAllowManage)
                     $aActions[] = [
                         'name' => 'set_completed', 
+                        'title' => _t('_bx_tasks_menu_item_title_set_' . ($bCompleted ? 'uncompleted' : 'completed')),
                         'type' => 'callback', 
-                        'callback' => $this->MODULE . '/set_completed&params[]=' . $iTaskId . '&params[]=',
+                        'callback' => $this->MODULE . '/set_completed&params[]=' . $iTaskId . '&params[]=' . ($bCompleted ? 0 : 1),
                         'on_callback' => 'refresh'
                     ];
 
@@ -484,6 +475,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'url' => $sUrl
                 ], $this->_bIsApi ? [
                     'url' => bx_api_get_relative_url($sUrl),
+                    'completed' => $bCompleted ? 1 : 0,
                     'members' => $aTmplVarsMembers,
                     'actions' => $aActions
                 ] : [
@@ -516,10 +508,12 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 if($bAllowAdd)
                     $aActions = array_merge($aActions, [[
                         'name' => 'edit_list', 
+                        'title' => _t('_bx_tasks_txt_edit_task_list'),
                         'type' => 'modal', 
                         'callback' => $this->MODULE . '/process_task_list_form&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                     ], [
                         'name' => 'add_task', 
+                        'title' => _t('_bx_tasks_txt_new_task'),
                         'type' => 'modal', 
                         'callback' => $this->MODULE . '/process_task_form&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                     ]]);
@@ -527,6 +521,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 if($bAllowManage)
                     $aActions[] = [
                         'name' => 'delete_list', 
+                        'title' => _t('_bx_tasks_txt_delete_task_list'),
                         'type' => 'callback', 
                         'callback' => $this->MODULE . '/delete_task_list&params[]=' . $iTasksContextId . '&params[]=' . $iListId,
                         'on_callback' => 'hide_row'

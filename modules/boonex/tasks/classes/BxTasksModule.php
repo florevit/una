@@ -44,15 +44,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     public function actionAjaxGetInitialMembers($iContextPid)
     {
         $sTerm = bx_get('term');
-        $sModule = $this->_oConfig->getName();
-
-        $a = bx_srv('system', 'profiles_search', [$sTerm, [
-            'module' => $sModule,
-            'search_params' => ['name' => $sModule . '_initial_members', 'context_pid' => $iContextPid]
-        ]], 'TemplServiceProfiles');
 
         header('Content-Type:text/javascript; charset=utf-8');
-        echo(json_encode($a));
+        echo json_encode($this->serviceGetInitialMembers($iContextPid, $sTerm));
     }
 
     public function actionSetCompleted($iContentId, $iCompleted)
@@ -72,7 +66,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     {
         $mixedResult = $this->serviceCreateFilter($iContextId);
         if(is_array($mixedResult))
-            return echoJson($aRes);
+            return echoJson($mixedResult);
 
         $sContent = BxTemplFunctions::getInstance()->popupBox($this->_oConfig->getHtmlIds('filter_popup'), _t('_bx_tasks_popup_f_title_add'), $this->_oTemplate->parseHtmlByName('popup_form.html', [
             'form_id' => $mixedResult->getId(),
@@ -180,6 +174,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     public function serviceGetSafeServices()
     {
         return array_merge(parent::serviceGetSafeServices(), [
+            'GetInitialMembers' => '',
+            'BrowseContext' => '',
+            'BrowseTasksByProfile' => '',
             'ProcessTaskListForm' => '',
             'DeleteTaskList' => '',
             'ProcessTaskForm' => '',
@@ -190,6 +187,26 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             'ApplyFilter' => '',
             'ProcessTimer' => '',
         ]);
+    }
+
+    public function serviceGetInitialMembers($iContextPid, $sTerm)
+    {
+        if($this->_bIsApi) {
+            if(!$sTerm)
+                return [];
+
+            $aParams = json_decode($sTerm, true);
+            if(!isset($aParams['term']))
+                return [];
+
+            $sTerm = $aParams['term'];
+        }
+
+        $sModule = $this->_oConfig->getName();
+        return bx_srv('system', 'profiles_search', [$sTerm, [
+            'module' => $sModule,
+            'search_params' => ['name' => $sModule . '_initial_members', 'context_pid' => $iContextPid]
+        ]], 'TemplServiceProfiles');
     }
 
     public function serviceProcessTaskListForm($iContextId, $iId)
@@ -627,7 +644,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$oMenu)
             return $this->_bIsApi ? [] : '';
 
-        $oMenu->addMarkers(['profile_id' => $iProfileId]);
+        $oMenu->setContextId($iProfileId);
         return $this->_bIsApi ? [bx_api_get_block('menu', [
             'title' => '', 
             'content' => $oMenu->getCodeAPI()
@@ -710,12 +727,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
             $iMessageTimer = $bResult ? 3 : 0;
         }
 
-        return $this->_bIsApi ? bx_api_get_block('form', $oForm->getCodeAPI(), [
+        return $this->_bIsApi ? [bx_api_get_block('form', $oForm->getCodeAPI(), [
             'ext' => [
                 'name' => $oForm->getName(),
-                'request' => ['url' => '/api.php?r=' . $this->MODULE . '/get_block_context_settings&profile_id=' . $iContextPid, 'immutable' => true]
+                'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/get_block_context_settings&profile_id=' . $iContextPid, 'immutable' => true]
             ]
-        ]) : (!empty($sMessageText) ? MsgBox(_t($sMessageText), $iMessageTimer) : '') . $oForm->getCode();
+        ])] : (!empty($sMessageText) ? MsgBox(_t($sMessageText), $iMessageTimer) : '') . $oForm->getCode();
     }
 
     public function serviceGetBlockManageTime($sType = 'common', $iContextPid = 0)
