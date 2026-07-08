@@ -2026,6 +2026,11 @@ class BxDolFormCheckerHelper
 
     // display functions, prepare values to output to the screen
 
+    static public function displayRaw ($s)
+    {
+        return $s;
+    }
+
     static public function displayDate ($i)
     {
         return bx_process_output ($i, BX_DATA_DATE_UTC);
