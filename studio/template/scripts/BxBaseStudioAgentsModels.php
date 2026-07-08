@@ -192,6 +192,22 @@ class BxBaseStudioAgentsModels extends BxDolStudioAgentsGrid
             return false;
         return parent::_delete($mixedId);
     }
+
+    protected function _getCellDesign($sKey, $aField, $aRow)
+    {
+        if ($sKey == 'icon')
+            $aField['display'] = 'Raw';
+        return parent::_getCellDesign($sKey, $aField, $aRow);
+    }
+    
+    protected function _getCellIcon($mixedValue, $sKey, $aField, $aRow)
+    {
+        
+        if (strpos($mixedValue, '.svg') !== false)
+            $mixedValue = $this->_oTemplate->getIconContent($mixedValue);
+
+        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+    }
 }
 
 /** @} */
