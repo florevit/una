@@ -16,27 +16,29 @@ bx_import('BxDolAcl');
  */
 class BxAlbumsModule extends BxBaseModTextModule
 {
-    protected $_aContexts = array('popular', 'public', 'author');
+    protected $_aContexts = ['popular', 'public', 'author'];
 
-    function __construct(&$aModule)
+    public function __construct(&$aModule)
     {
         parent::__construct($aModule);
     }
 
     public function serviceGetSafeServices()
     {
-        $a = parent::serviceGetSafeServices();
-        return array_merge($a, array (
+        return array_merge(parent::serviceGetSafeServices(), [
             'EntityAddFiles' => '',
+            'EditMedia' => '',
+            'DeleteMedia' => '',
+            'MoveMedia' => '',
             'MediaComments' => '',
             'BrowseRecentMedia' => '',
             'BrowseFeaturedMedia' => '',
             'BrowsePopularMedia' => '',
             'BrowseTopMedia' => '',
             'BrowseFavoriteMedia' => '',
-        ));
+        ]);
     }
-    
+
     public function actionEmbed($iContentId, $sUnitTemplate = '', $sAddCode = '')
     {
         return $this->_oTemplate->getJsCode('main') . parent::actionEmbed($iContentId);
@@ -155,6 +157,109 @@ class BxAlbumsModule extends BxBaseModTextModule
         BxDolPage::deleteSeoLink ($this->getName(), 'bx_albums_media', $aMediaInfo['id']);
 
         return true;
+    }
+
+    public function serviceEditMedia($iMediaId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iMediaId = (int)$iMediaId;
+        $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
+        $aContentInfo = $this->_oDb->getContentInfoById($aMediaInfo['content_id']);
+        if(($sMsg = $this->checkAllowedEdit($aContentInfo)) !== CHECK_ACTION_RESULT_ALLOWED)
+            return $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_MEDIA'], $CNF['OBJECT_FORM_MEDIA_DISPLAY_EDIT']);
+        $oForm->initForm('edit', $iMediaId);
+        $oForm->initChecker();
+
+        if($oForm->isSubmittedAndValid()) {
+            if($oForm->update($iMediaId) !== false) {
+                $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
+                if(!empty($aMediaInfo) && is_array($aMediaInfo) && !empty($CNF['OBJECT_METATAGS_MEDIA'])) {
+                    $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS_MEDIA']);
+                    if ($oMetatags->keywordsIsEnabled())
+                        $oMetatags->keywordsAdd($aMediaInfo['id'], $aMediaInfo['title']);
+                }
+
+                $aRes = ['reload' => 1];
+            }
+            else
+                $aRes = ($sMsg = _t('_bx_albums_txt_err_cannot_perform_action')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+
+            return $aRes;
+        }
+        
+        if($this->_bIsApi) 
+            return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+                'ext' => [
+                    'name' => $this->_aModule['name'], 
+                    'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/edit_media/&params[]=' . $iMediaId, 'immutable' => true]
+                ]
+            ])];
+
+        $sContent = BxTemplStudioFunctions::getInstance()->transBox('bx-albums-edit-media-popup', $this->_oTemplate->parseHtmlByName('media-edit.html', [
+            'form_id' => $oForm->aFormAttrs['id'],
+            'form' => $oForm->getCode(true)
+        ]));
+
+        return ['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]];
+    }
+
+    public function serviceDeleteMedia($iMediaId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sUploader = reset($CNF['OBJECT_UPLOADERS']);
+        $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
+        if(!$sUploader || empty($aMediaInfo) || !is_array($aMediaInfo))
+            return [];
+
+        $oUploader = BxDolUploader::getObjectInstance($sUploader, $CNF['OBJECT_STORAGE'], '');
+        if($oUploader === false) 
+            return ($sMsg = _t('_sys_txt_error_occured')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+
+        $oUploader->deleteGhost($aMediaInfo['file_id'], bx_get_logged_profile_id());
+
+        $sRedirect = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aMediaInfo['content_id']));
+        return [
+            'redirect' => $this->_bIsApi ? bx_api_get_relative_url($sRedirect) : $sRedirect
+        ];
+    }
+
+    public function serviceMoveMedia($iMediaId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iMediaId = (int)$iMediaId;
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_MEDIA'], $CNF['OBJECT_FORM_MEDIA_DISPLAY_MOVE']);
+        $oForm->initForm('move', $iMediaId);
+        $oForm->initChecker();
+
+        if($oForm->isSubmittedAndValid()) {
+            if($oForm->update($iMediaId) !== false)
+                $aRes = ['reload' => 1];
+            else
+                $aRes = ($sMsg = _t('_bx_albums_txt_err_cannot_perform_action')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+
+            return $aRes;
+        }
+
+        if($this->_bIsApi) 
+            return [bx_api_get_block('form', $oForm->getCodeAPI(), [
+                'ext' => [
+                    'name' => $this->_aModule['name'], 
+                    'request' => ['url' => '/api.php?r=' . $this->_aModule['name'] . '/move_media/&params[]=' . $iMediaId, 'immutable' => true]
+                ]
+            ])];
+
+        $sContent = BxTemplStudioFunctions::getInstance()->transBox('bx-albums-move-media-popup', $this->_oTemplate->parseHtmlByName('media-edit.html', [
+            'form_id' => $oForm->aFormAttrs['id'],
+            'form' => $oForm->getCode(true)
+        ]));
+
+        return ['popup' => ['html' => $sContent, 'options' => ['closeOnOuterClick' => false]]];
     }
 
     /**
@@ -722,86 +827,17 @@ class BxAlbumsModule extends BxBaseModTextModule
 
     public function actionEditMedia($iMediaId)
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $iMediaId = (int)$iMediaId;
-        $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
-        $aContentInfo = $this->_oDb->getContentInfoById($aMediaInfo['content_id']);
-        if(($sMsg = $this->checkAllowedEdit($aContentInfo)) !== CHECK_ACTION_RESULT_ALLOWED)
-            return echoJson(['msg' => $sMsg]);
-
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_MEDIA'], $CNF['OBJECT_FORM_MEDIA_DISPLAY_EDIT']);
-        $oForm->initForm('edit', $iMediaId);
-        $oForm->initChecker();
-
-        if($oForm->isSubmittedAndValid()) {
-            if($oForm->update($iMediaId) !== false) {
-                $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
-                if(!empty($aMediaInfo) && is_array($aMediaInfo) && !empty($CNF['OBJECT_METATAGS_MEDIA'])) {
-                    $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS_MEDIA']);
-                    if ($oMetatags->keywordsIsEnabled())
-                        $oMetatags->keywordsAdd($aMediaInfo['id'], $aMediaInfo['title']);
-                }
-
-                $aRes = array('reload' => 1);
-            }
-            else
-                $aRes = array('msg' => _t('_bx_albums_txt_err_cannot_perform_action'));
-
-            return echoJson($aRes);
-        }
-
-        $sContent = BxTemplStudioFunctions::getInstance()->transBox('bx-albums-edit-media-popup', $this->_oTemplate->parseHtmlByName('media-edit.html', array(
-            'form_id' => $oForm->aFormAttrs['id'],
-            'form' => $oForm->getCode(true)
-        )));
-
-        echoJson(array('popup' => array('html' => $sContent, 'options' => array('closeOnOuterClick' => false))));
+        echoJson($this->serviceEditMedia($iMediaId));
     }
-	
+
     public function actionDeleteMedia($iMediaId)
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $sUploader = reset($CNF['OBJECT_UPLOADERS']);
-        $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
-        if(!$sUploader || empty($aMediaInfo) || !is_array($aMediaInfo))
-            return echoJson([]);
-
-        $oUploader = BxDolUploader::getObjectInstance($sUploader, $CNF['OBJECT_STORAGE'], '');
-        if($oUploader === false) 
-            return echoJson(['msg' => _t('_sys_txt_error_occured')]);
-
-        $oUploader->deleteGhost($aMediaInfo['file_id'], bx_get_logged_profile_id());
-
-        return echoJson(['redirect' => bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aMediaInfo['content_id']))]);            
+        echoJson($this->serviceDeleteMedia($iMediaId));
     }
 
     public function actionMoveMedia($iMediaId)
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $iMediaId = (int)$iMediaId;
-
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_MEDIA'], $CNF['OBJECT_FORM_MEDIA_DISPLAY_MOVE']);
-        $oForm->initForm('move', $iMediaId);
-        $oForm->initChecker();
-
-        if($oForm->isSubmittedAndValid()) {
-            if($oForm->update($iMediaId) !== false)
-                $aRes = array('reload' => 1);
-            else
-                $aRes = array('msg' => _t('_bx_albums_txt_err_cannot_perform_action'));
-
-            return echoJson($aRes);
-        }
-
-        $sContent = BxTemplStudioFunctions::getInstance()->transBox('bx-albums-move-media-popup', $this->_oTemplate->parseHtmlByName('media-edit.html', array(
-            'form_id' => $oForm->aFormAttrs['id'],
-            'form' => $oForm->getCode(true)
-        )));
-
-        echoJson(array('popup' => array('html' => $sContent, 'options' => array('closeOnOuterClick' => false))));
+        echoJson($this->serviceMoveMedia($iMediaId));
     }
 
     public function actionGetSiblingMedia($iMediaId, $mixedContext)

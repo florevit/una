@@ -87,28 +87,61 @@ class BxAlbumsMenuViewActionsMedia extends BxAlbumsMenuViewActions
     protected function _getMenuItemEditImage($aItem)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-
-        return $this->_getMenuItemByNameActions($aItem, array(
+        
+        $aResult = $this->_getMenuItemByNameActions($aItem, [
             'object_menu' => $CNF['OBJECT_MENU_ACTIONS_VIEW_MEDIA']
-        ));
+        ]);
+
+        if($this->_bIsApi)
+            $aResult = array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/edit_media/&params[]=' . $this->_iMediaId, 
+                    'on_callback' => 'modal'
+                ]
+            ]);
+
+        return $aResult;
     }
 	
     protected function _getMenuItemDeleteImage($aItem)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-
-        return $this->_getMenuItemByNameActions($aItem, array(
+        
+        $aResult = $this->_getMenuItemByNameActions($aItem, [
             'object_menu' => $CNF['OBJECT_MENU_ACTIONS_VIEW_MEDIA']
-        ));
+        ]);
+
+        if($this->_bIsApi)
+            $aResult = array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/delete_media/&params[]=' . $this->_iMediaId, 
+                    'on_callback' => 'hide'
+                ]
+            ]);
+
+        return $aResult;
     }
 
     protected function _getMenuItemMoveImage($aItem)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        return $this->_getMenuItemByNameActions($aItem, array(
+        $aResult = $this->_getMenuItemByNameActions($aItem, [
             'object_menu' => $CNF['OBJECT_MENU_ACTIONS_VIEW_MEDIA']
-        ));
+        ]);
+
+        if($this->_bIsApi)
+            $aResult = array_merge($aResult, [
+                'display_type' => 'callback',
+                'data' => [
+                    'request_url' => $this->_sModule . '/move_media/&params[]=' . $this->_iMediaId, 
+                    'on_callback' => 'modal'
+                ]
+            ]);
+
+        return $aResult;
     }
 
     protected function _getMenuItemView($aItem, $aParams = array())
