@@ -6873,11 +6873,11 @@ INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `icon`, `docs`, `key`
 ('openai-like', 'MODEL_NAME_HERE', 'OpenAI Like', 'ai-openai.svg', 'Use any provider with the same data format like official OpenAI API', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
-    'url', 'OLLAMA_URL',
+    'url', 'http://localhost:11434/api',
     'parameters', JSON_OBJECT()
 );
 INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `icon`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
-('ollama', '', 'Ollama', 'ai-ollama.svg', 'Run AI models locally - https://ollama.com/library', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
+('ollama', 'llama3.2:1b', 'Ollama', 'ai-ollama.svg', 'Run AI models locally - https://ollama.com/library', '', CAST(@j AS CHAR), NULL, 'chatllm', 0, 0, 0);
 
 SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
