@@ -32,9 +32,22 @@ class BxDolAIVectorStoreFactory extends BxDolFactory
         
         switch($a['type']) {
             case 'file':
+                $sDirectoryStores = BX_DIRECTORY_STORAGE . 'vector_stores/';
+                $sDirectory = $sDirectoryStores . $iId;
+                $sFile = '/data.store';
+                if (!file_exists($sDirectory . $sFile)) {
+                    @mkdir($sDirectoryStores, BX_DOL_DIR_RIGHTS);
+                    @chmod($sDirectoryStores, BX_DOL_DIR_RIGHTS);
+                    @mkdir($sDirectory, BX_DOL_DIR_RIGHTS);
+                    @chmod($sDirectory, BX_DOL_DIR_RIGHTS);
+                    @touch($sDirectory . $sFile);
+                    @chmod($sDirectory . $sFile, BX_DOL_FILE_RIGHTS);
+                }
                 $o = new NeuronAI\RAG\VectorStore\FileVectorStore(
-                    directory: BX_DIRECTORY_STORAGE . 'vector_stores/' . $iId,
-                    topK: $a['topk'] ?? 4
+                    directory: $sDirectory,
+                    topK: $a['topk'] ?? 4,
+                    name: 'data',
+                    ext: '.store'
                 );
                 break;
             case 'pinecon':
