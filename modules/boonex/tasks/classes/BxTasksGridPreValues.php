@@ -51,7 +51,7 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
 
     public function getFormCallBackUrlAPI($sAction, $iId = 0)
     {
-         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&profile_id=' . $this->_iContextPid . '&id=' . $iId;
+        return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction . '&profile_id=' . $this->_iContextPid . '&list=' . $this->_sList . '&id=' . $iId;
     }
 
     public function performActionAdd()
@@ -150,7 +150,9 @@ class BxTasksGridPreValues extends BxBaseModGeneralGrid
     protected function _getFilterControlsAPI($aFilters = [])
     {
         $aFilters = [
-            'list' => []
+            'list' => [
+                ['value' => '', 'title' => _t('_bx_tasks_grid_filter_item_title_pv_select_one_list')]
+            ]
         ];
 
         $aLists = $this->_oModule->getPreLists();

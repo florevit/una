@@ -1111,6 +1111,8 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
     public function serviceBrowseHome($aParams = [])
     {
+        $CNF = &$this->_oConfig->CNF;
+
         $sContent = '';
         if(($iContextPid = bx_process_input(bx_get('context_pid'), BX_DATA_INT))) {
             $sContent = $this->serviceBrowseTasks($iContextPid);
@@ -1118,7 +1120,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 return [
                     'title' => bx_replace_markers(_t('_bx_tasks_page_block_title_entries_in_context'), [
                         'display_name' => $oProfile->getDisplayName(),
-                        'profile_link' => $oProfile->getUrl()
+                        'profile_link' => bx_absolute_url(BxDolPermalinks::getInstance()->permalink($CNF['URL_CONTEXT_ENTRIES'], ['profile_id' => $iContextPid]))
                     ]),
                     'content' => $sContent
                 ];
