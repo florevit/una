@@ -7221,6 +7221,7 @@ CREATE TABLE `sys_agents_agents` (
   `added` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `active` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
   KEY `alert` (`alert`),
   KEY `profile_id` (`profile_id`,`message_profile_id`),
   KEY `webhook_key` (`webhook_key`(192))
