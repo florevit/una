@@ -679,6 +679,11 @@ class BxMassMailerModule extends BxBaseModGeneralModule
         $iCount = 10;
         return ceil(($iMax - $iMin) / $iCount);
     }
+
+    public function checkAllowedDeleteAnyEntryForProfile ($isPerformAction = false, $iProfileId = false)
+    {
+        return _t('_sys_txt_access_denied');
+    }
 }
 
 /** @} */

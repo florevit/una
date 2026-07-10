@@ -32,7 +32,7 @@ class BxCASModule extends BxBaseModConnectModule
 
 		require_once(getParam('bx_cas_path_simplesamlphp') . '/src/_autoload.php');
 
-		$as = new \SimpleSAML\Auth\Simple('dev-sp');
+		$as = new \SimpleSAML\Auth\Simple('default-sp');
 		$as->logout(BX_DOL_URL_ROOT);
 
 		\SimpleSAML\Session::getSessionFromRequest()->cleanup();
