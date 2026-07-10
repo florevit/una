@@ -290,6 +290,8 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
 
     protected function _getForm($sAction, $aAgent = [])
     {
+        $sJsObject = $this->getPageJsObject();
+
         $aForm = array(
             'form_attrs' => array(
                 'id' => 'bx_std_agents_' . $sAction,
@@ -304,6 +306,21 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                 ),
             ),
             'inputs' => array(
+                'title' => [
+                    'type' => 'text',
+                    'name' => 'title',
+                    'caption' => _t('_sys_agents_field_title'),
+                    'info' => _t('_sys_agents_field_title_info'),
+                    'value' => $aAgent['title'] ?? '',
+                    'required' => '1',
+                    'checker' => [
+                        'func' => 'Avail',
+                        'error' => _t('_sys_agents_form_field_err_enter'),
+                    ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
                 'name' => [
                     'type' => 'text',
                     'name' => 'name',
@@ -315,6 +332,26 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                         'func' => 'Avail',
                         'error' => _t('_sys_agents_form_field_err_enter'),
                     ],
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+                'description' => [
+                    'type' => 'textarea',
+                    'name' => 'description',
+                    'caption' => _t('_sys_agents_field_description'),
+                    'info' => _t('_sys_agents_field_description_info'),
+                    'value' => $aAgent['description'] ?? '',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ],
+                ],
+                'icon' => [
+                    'type' => 'textarea',
+                    'name' => 'icon',
+                    'caption' => _t('_sys_agents_field_icon'),
+                    'info' => _t('_sys_agents_field_icon_info'),
+                    'value' => $aAgent['icon'] ?? '',
                     'db' => [
                         'pass' => 'Xss',
                     ],
@@ -359,13 +396,13 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
                     'info' => _t('_sys_agents_field_trigger_info'),
                     'value' => isset($aAgent['trigger']) ? $aAgent['trigger'] : 0,
                     'values' => [
-                        'alert' => 'alert',
-                        'scheduler' => 'scheduler',
-                        'webhook' => 'webhook',
-                        'manual' => 'manual',
-                        'agent' => 'agent',
-                        'message' => 'message',
-                        'form-input' => 'form input',
+                        'alert' => _t('_sys_agents_field_trigger_alert'),
+                        'scheduler' => _t('_sys_agents_field_trigger_scheduler'),
+                        'webhook' => _t('_sys_agents_field_trigger_webhook'),
+                        'manual' => _t('_sys_agents_field_trigger_manual'),
+                        'agent' => _t('_sys_agents_field_trigger_agent'),
+                        'message' => _t('_sys_agents_field_trigger_message'),
+                        'form-input' => _t('_sys_agents_field_trigger_form_input'),
                     ],
                     // 'attrs' => [
                     //    'onchange' => $this->getPageJsObject() . '.onChangeAgentTrigger(this)',
@@ -612,7 +649,19 @@ class BxBaseStudioAgentsAgents extends BxDolStudioAgentsAgents
 
             ),
         );
-        
+
+        if(($sFldTitle = 'title') && ($sFldName = 'name') && isset($aForm['inputs'][$sFldTitle], $aForm['inputs'][$sFldName])) {
+            $aMask = array('mask' => "javascript:%s.agentCheckName(this, '%s', '%s');", $sJsObject, 'title', 'name');
+            if($sAction == 'edit' && ($iAgentId = $aAgent['id'] ?? false)) {
+                $aMask['mask'] = "javascript:%s.agentCheckName(this, '%s', '%s', %d);";
+                $aMask[] = (int)$iAgentId;
+            }
+
+            $sOnBlur = call_user_func_array('sprintf', array_values($aMask));
+            $aForm['inputs'][$sFldTitle]['attrs']['onblur'] = $sOnBlur;
+            $aForm['inputs'][$sFldName]['attrs']['onblur'] = $sOnBlur;
+        }
+
         $this->_getMultiField('tools', $aAgent, 'getTools', 'toolAdd', 'agents_agents_form_tools.html', $aForm);
 
         return $aForm;

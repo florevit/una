@@ -906,6 +906,42 @@ class BxDolAIQuery extends BxDolDb
         return $this->fromMemory('sys_agents_with_form_' . $sFormObject, 'getAll', "SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'form-input' AND `form_object` = :form_object AND `active` = :active", ['form_object' => $sFormObject, 'active' => $bActiveOnly ? 1 : 0]);
     }
 
+    public function getAgentsBy($aParams = [])
+    {
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+    	$sWhereClause = "";
+
+        switch($aParams['sample']) {
+            case 'id':
+            	$aMethod['name'] = 'getRow';
+            	$aMethod['params'][1] = [
+                    'id' => $aParams['id']
+                ];
+
+                $sWhereClause .= " AND `id`=:id";
+                break;
+
+            case 'all':
+                if(isset($aParams['active'])) {
+                    $aMethod['params'][3]['active'] = $aParams['active'];
+
+                    $sWhereClause .= " AND `active`=:active";
+                }
+                break;
+        }
+
+        $aMethod['params'][0] = "SELECT * 
+            FROM `sys_agents_agents`
+            WHERE 1" . $sWhereClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+    }
+
+    public function getAgentById(int $iId): mixed
+    {
+        return $this->getAgentsBy(['sample' => 'id', 'id' => $iId]);
+    }
+
     public function getAgentByTriggerWebhookKey($sKey, $bActiveOnly = true)
     {
         return $this->getRow("SELECT * FROM `sys_agents_agents` WHERE `trigger` = 'scheduler' AND `webhook_key` = :key AND `active` = :active", ['key' => $sKey, 'active' => $bActiveOnly ? 1 : 0]);

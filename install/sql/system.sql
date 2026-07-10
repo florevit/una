@@ -7198,6 +7198,9 @@ CREATE TABLE IF NOT EXISTS `sys_agents_assistants_chats_files` (
 CREATE TABLE `sys_agents_agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL DEFAULT '',
+  `title` varchar(128) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `icon` text NOT NULL,
   `model_id` int(11) NOT NULL DEFAULT 0,
   `profile_id` int(11) NOT NULL DEFAULT 0,
   `prompt_system` text NOT NULL,

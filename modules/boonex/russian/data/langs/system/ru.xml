@@ -1112,13 +1112,12 @@
     <string name="_adm_lmi_cpt_actions"><![CDATA[Действия]]></string>
     <string name="_adm_lmi_cpt_api_config"><![CDATA[Конфигурация]]></string>
     <string name="_adm_lmi_cpt_agents"><![CDATA[Агенты]]></string>
-    <string name="_adm_lmi_cpt_ai_providers"><![CDATA[ИИ поставщики]]></string>
+    <string name="_adm_lmi_cpt_ai_providers"><![CDATA[Модели]]></string>
     <string name="_adm_lmi_cpt_tools"><![CDATA[Инструменты]]></string>
-    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Вектороное хранилище]]></string>
+    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Знание]]></string>
     <string name="_adm_lmi_cpt_assistants"><![CDATA[Ассистент]]></string>
     <string name="_adm_lmi_cpt_automators"><![CDATA[Автоматизаторы]]></string>
     <string name="_adm_lmi_cpt_helpers"><![CDATA[Помощники]]></string>
-    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Векторное хранилище]]></string>
     <string name="_adm_lmi_cpt_badges"><![CDATA[Бейджи]]></string>
     <string name="_adm_lmi_cpt_categories"><![CDATA[Категории]]></string>
     <string name="_adm_lmi_cpt_checkout"><![CDATA[Оплата {checkout_counter}]]></string>
@@ -2263,14 +2262,15 @@
         <string name="_sys_agents_automators_txt_code"><![CDATA[Код]]></string>
         <string name="_sys_agents_automators_txt_added"><![CDATA[Добавлено]]></string>
         <string name="_sys_agents_automators_txt_status"><![CDATA[Статус]]></string>
-        
         <string name="_sys_agents_agents_txt_name"><![CDATA[Название]]></string>
         <string name="_sys_agents_agents_txt_trigger"><![CDATA[Триггер]]></string>
         <string name="_sys_agents_agents_txt_profile_id"><![CDATA[Профиль]]></string>
         <string name="_sys_agents_agents_popup_add"><![CDATA[Добавить агента]]></string>
-        
+        <string name="_sys_agents_builder_view_list"><![CDATA[Список]]></string>
+        <string name="_sys_agents_builder_view_grid"><![CDATA[Таблица]]></string>
+
         <string name="_Run"><![CDATA[Запустить]]></string>
-        
+
         <string name="_sys_agents_automators_btn_add"><![CDATA[Добавить]]></string>
         <string name="_sys_agents_automators_btn_tune"><![CDATA[Настройка]]></string>
         <string name="_sys_agents_automators_btn_approve"><![CDATA[Одобрить]]></string>
@@ -2292,6 +2292,13 @@
         <string name="_sys_agents_automators_field_type_webhook"><![CDATA[Вебхук]]></string>
         <string name="_sys_agents_field_trigger"><![CDATA[Триггер]]></string>
         <string name="_sys_agents_field_trigger_info"><![CDATA[Триггер, который запускает агента. Alert — системное событие. Scheduler — запуск по расписанию. Webhook — HTTP внешний вызов. Manual — ручной запуск. Agent — запуск другим агентом. Message — сообщение пользователя.]]></string>
+        <string name="_sys_agents_field_trigger_alert"><![CDATA[Сигнал]]></string>
+        <string name="_sys_agents_field_trigger_scheduler"><![CDATA[Планировщик]]></string>
+        <string name="_sys_agents_field_trigger_webhook"><![CDATA[Вебхук]]></string>
+        <string name="_sys_agents_field_trigger_manual"><![CDATA[Мануальный]]></string>
+        <string name="_sys_agents_field_trigger_agent"><![CDATA[Агент]]></string>
+        <string name="_sys_agents_field_trigger_message"><![CDATA[Сообщение]]></string>
+        <string name="_sys_agents_field_trigger_form_input"><![CDATA[Ввод данных в форму]]></string>
         <string name="_sys_agents_field_alert_sample"><![CDATA[Alert - пример данных]]></string>
         <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Пожалуйста, выберите алерт, чтобы увидеть его данные.]]></string>
         <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Пожалуйста, активируйте вебхук, чтобы увидеть его данные.]]></string>       
@@ -2321,6 +2328,11 @@
         <string name="_sys_agents_field_prompt_tools_info"><![CDATA[Инструкции по использованию доступных инструментов.]]></string>
         <string name="_sys_agents_tools_popup_edit"><![CDATA[Редактирование инструмента]]></string>
         <string name="_sys_agents_field_title"><![CDATA[Название]]></string>
+        <string name="_sys_agents_field_title_info"><![CDATA[Название для отображения]]></string>
+        <string name="_sys_agents_field_description"><![CDATA[Описание]]></string>
+        <string name="_sys_agents_field_description_info"><![CDATA[Предоставьте краткое описание для дальнейшего использования в качестве справочного материала.]]></string>
+        <string name="_sys_agents_field_icon"><![CDATA[Значок]]></string>
+        <string name="_sys_agents_field_icon_info"><![CDATA[Значок для более точного описания агента.]]></string>
         <string name="_sys_agents_tools_field_params"><![CDATA[Параметры]]></string>
         <string name="_sys_agents_tools_field_params_info"><![CDATA[Параметры для конфигурации этого инструмента, свои для каждого инструмента]]></string>
         <string name="_sys_agents_field_chat_history_context"><![CDATA[Размер контекста истории чата]]></string>

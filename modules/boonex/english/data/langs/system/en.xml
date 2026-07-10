@@ -1128,13 +1128,12 @@
     <string name="_adm_lmi_cpt_actions"><![CDATA[Actions]]></string>
     <string name="_adm_lmi_cpt_api_config"><![CDATA[Configuration]]></string>
     <string name="_adm_lmi_cpt_agents"><![CDATA[Agents]]></string>
-    <string name="_adm_lmi_cpt_ai_providers"><![CDATA[AI Providers]]></string>
+    <string name="_adm_lmi_cpt_ai_providers"><![CDATA[Models]]></string>
     <string name="_adm_lmi_cpt_tools"><![CDATA[Tools]]></string>
-    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Vector Store]]></string>
+    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Knowledge]]></string>
     <string name="_adm_lmi_cpt_assistants"><![CDATA[Assistants]]></string>
     <string name="_adm_lmi_cpt_automators"><![CDATA[Automators]]></string>
     <string name="_adm_lmi_cpt_helpers"><![CDATA[Helpers]]></string>
-    <string name="_adm_lmi_cpt_vector_store"><![CDATA[Vector Store]]></string>
     <string name="_adm_lmi_cpt_badges"><![CDATA[Badges]]></string>
     <string name="_adm_lmi_cpt_categories"><![CDATA[Categories]]></string>
     <string name="_adm_lmi_cpt_checkout"><![CDATA[Checkout {checkout_counter}]]></string>
@@ -2288,14 +2287,15 @@
     <string name="_sys_agents_automators_txt_code"><![CDATA[Code]]></string>
     <string name="_sys_agents_automators_txt_added"><![CDATA[Added]]></string>
     <string name="_sys_agents_automators_txt_status"><![CDATA[Status]]></string>
-    
     <string name="_sys_agents_agents_txt_name"><![CDATA[Name]]></string>
     <string name="_sys_agents_agents_txt_trigger"><![CDATA[Trigger]]></string>
     <string name="_sys_agents_agents_txt_profile_id"><![CDATA[Profile]]></string>
     <string name="_sys_agents_agents_popup_add"><![CDATA[Add agent]]></string>
-    
+    <string name="_sys_agents_builder_view_list"><![CDATA[List view]]></string>
+    <string name="_sys_agents_builder_view_grid"><![CDATA[Grid view]]></string>
+
     <string name="_Run"><![CDATA[Run]]></string>
-    
+
     <string name="_sys_agents_automators_btn_add"><![CDATA[Add]]></string>
     <string name="_sys_agents_automators_btn_tune"><![CDATA[Tune]]></string>
     <string name="_sys_agents_automators_btn_approve"><![CDATA[Approve]]></string>
@@ -2319,6 +2319,13 @@
     <string name="_sys_agents_automators_field_type_webhook"><![CDATA[Webhook]]></string>
     <string name="_sys_agents_field_trigger"><![CDATA[Trigger]]></string>
     <string name="_sys_agents_field_trigger_info"><![CDATA[Trigger which will initiate agent to run. Alert — system event notification. Scheduler — time-based scheduled execution. Webhook — external HTTP trigger. Manual — user-initiated run. Agent — triggered by another agent. Message — triggered by chat message. Form field — compose form field value.]]></string>
+    <string name="_sys_agents_field_trigger_alert"><![CDATA[Alert]]></string>
+    <string name="_sys_agents_field_trigger_scheduler"><![CDATA[Scheduler]]></string>
+    <string name="_sys_agents_field_trigger_webhook"><![CDATA[Webhook]]></string>
+    <string name="_sys_agents_field_trigger_manual"><![CDATA[Manual]]></string>
+    <string name="_sys_agents_field_trigger_agent"><![CDATA[Agent]]></string>
+    <string name="_sys_agents_field_trigger_message"><![CDATA[Message]]></string>
+    <string name="_sys_agents_field_trigger_form_input"><![CDATA[Form input]]></string>
     <string name="_sys_agents_field_alert_sample"><![CDATA[Alert: payload]]></string>
     <string name="_sys_agents_waiting_for_sample_data_alert"><![CDATA[Please select an alert to see its payload.]]></string>
     <string name="_sys_agents_waiting_for_sample_data_webhook"><![CDATA[Trigger webhook to see its payload.]]></string>
@@ -2347,6 +2354,11 @@
     <string name="_sys_agents_field_prompt_tools_info"><![CDATA[Instructions for using available tools.]]></string>
     <string name="_sys_agents_tools_popup_edit"><![CDATA[Edit tool]]></string>
     <string name="_sys_agents_field_title"><![CDATA[Title]]></string>
+    <string name="_sys_agents_field_title_info"><![CDATA[Title to display]]></string>
+    <string name="_sys_agents_field_description"><![CDATA[Description]]></string>
+    <string name="_sys_agents_field_description_info"><![CDATA[Provide a brief description for future references.]]></string>
+    <string name="_sys_agents_field_icon"><![CDATA[Icon]]></string>
+    <string name="_sys_agents_field_icon_info"><![CDATA[Icon to describe an agent better.]]></string>
     <string name="_sys_agents_tools_field_params"><![CDATA[Parameters]]></string>
     <string name="_sys_agents_tools_field_params_info"><![CDATA[Parameters for configuring the tool, specific to each tool]]></string>
     <string name="_sys_agents_field_chat_history_context"><![CDATA[Chat history context window]]></string>

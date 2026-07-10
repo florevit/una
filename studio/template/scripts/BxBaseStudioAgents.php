@@ -15,6 +15,8 @@ class BxBaseStudioAgents extends BxDolStudioAgents
     protected $aMenuItems;
     protected $aGridObjects;
 
+    protected $sSessionKeyAgentsView;
+
     public function __construct($sPage = '')
     {
         parent::__construct($sPage);
@@ -32,11 +34,11 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         ];
 
         $this->aMenuItems = [
-            BX_DOL_STUDIO_AGENTS_TYPE_SETTINGS => ['icon' => 'mi-agt-settings.svg'],
-            BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS => ['icon' => 'mi-agt-providers.svg'],
-            BX_DOL_STUDIO_AGENTS_TYPE_TOOLS => ['icon' => 'mi-agt-helpers.svg'],
-            BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => ['icon' => 'mi-agt-helpers.svg'],
             BX_DOL_STUDIO_AGENTS_TYPE_AGENTS => ['icon' => 'mi-agt-assistants.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS => ['icon' => 'mi-agt-providers.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_TOOLS => ['icon' => 'mi-agt-tools.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_VECTOR_STORE => ['icon' => 'mi-agt-vector-store.svg'],
+            BX_DOL_STUDIO_AGENTS_TYPE_SETTINGS => ['icon' => 'mi-agt-settings.svg'],
 
             /*
              * Hidden for now. Most probably they will be removed.
@@ -56,6 +58,7 @@ class BxBaseStudioAgents extends BxDolStudioAgents
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_chats' => 'sys_studio_agents_assistants_chats',
             BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS . '_files' => 'sys_studio_agents_assistants_files',
             BX_DOL_STUDIO_AGENTS_TYPE_AGENTS => 'sys_studio_agents_agents',
+
             /*
              * Hidden for now. Most probably they will be removed.
              * 
@@ -65,6 +68,8 @@ class BxBaseStudioAgents extends BxDolStudioAgents
              * 
              */
         ];
+
+        $this->sSessionKeyAgentsView = 'bx_std_agents_view';
     }
 
     public function getPageJsCode($aOptions = [], $bWrap = true)
@@ -107,7 +112,7 @@ class BxBaseStudioAgents extends BxDolStudioAgents
 
         return $oOptions->getCode();
     }
-    
+
     protected function getAiProviders()
     {
         $this->aPageJsOptions = array_merge($this->aPageJsOptions, [
@@ -119,7 +124,7 @@ class BxBaseStudioAgents extends BxDolStudioAgents
 
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_AI_PROVIDERS]);
     }
-    
+
     protected function getTools()
     {
         $this->aPageJsOptions['sPageUrl'] .= 'tools';
@@ -225,7 +230,134 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_ASSISTANTS]);
     }
 
+    protected function _setView($sView)
+    {
+        return BxDolSession::getInstance()->setValue($this->{'sSessionKey' . ucfirst($this->sPage) . 'View'}, $sView);
+    }
+
+    protected function _getView()
+    {
+        return BxDolSession::getInstance()->getValue($this->{'sSessionKey' . ucfirst($this->sPage) . 'View'});
+    }
+
     protected function getAgents()
+    {
+        $aTs = ['list' => 'grid', 'grid' => 'list'];
+        $aT2i = ['list' => 'ui-list.svg', 'grid' => 'ui-layout-grid.svg'];
+
+        $sType = 'list';
+        if(($sTypeGt = bx_get('view')) !== false && in_array($sTypeGt, $aTs)) {
+            $sType = $sTypeGt;
+            $this->_setView($sTypeGt);
+        }
+        else if(($sTypeSn = $this->_getView()) && in_array($sTypeSn, $aTs))
+            $sType = $sTypeSn;
+
+        $sTypeNew = $aTs[$sType];
+
+        return [
+            'type' => BX_DB_DEF,
+            'caption' => '',
+            'actions' => [[
+                'name' => $sTypeNew,
+                'caption' => _t('_sys_agents_builder_view_' . $sTypeNew),
+                'title_only' => true,
+                'url' => $this->sSubpageUrl . $this->sPage . '&view=' . $sTypeNew,
+                'icon' => $aT2i[$sTypeNew]
+            ]],
+            'content' => ($sMethod = 'getAgents' . bx_gen_method_name($sType)) && method_exists($this, $sMethod) ? $this->$sMethod() : ''
+        ];
+    }
+
+    protected function getAgentsList()
+    {
+        $sJsObject = $this->getPageJsObject();
+        $oTemplate = BxDolStudioTemplate::getInstance();
+
+        $oAi = BxDolAI::getInstance();
+        $aAgents = $oAi->getAgentsBy(['sample' => 'all']);
+
+        $oForm = new BxTemplFormView([]);
+        $aInput = [
+            'type' => 'switcher',
+            'name' => 'tabs',
+            'caption' => '',
+            'info' => '',
+            'value' => '1',
+            'checked' => '',
+            'attrs' => [
+                'onchange' => $sJsObject . '.agentActivate(this)'
+            ],
+            'db' => []
+        ];
+        
+        $aTmplVarsAgents = [];
+        foreach($aAgents as $aAgent) {
+
+            $sIcon = '';
+            if(($sIcon = $aAgent['icon'])) {
+                list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $oTemplate->getTemplateFunctions()->getIcon($sIcon);
+
+                if($sIcon)
+                    $sIcon = $oTemplate->parseIcon(BxDolIconset::getObjectInstance()->getIcon($sIcon));
+                else if($sIconHtml)
+                    $sIcon = $sIconHtml;
+            }
+            
+            $aTmplVarsTrigger = [];
+            if(($sTrigger = $aAgent['trigger']))
+                $aTmplVarsTrigger = [
+                    'trigger_title' => bx_html_attribute(_t('_sys_agents_field_trigger_' . str_replace(['-', ' '], '_', $sTrigger))),
+                    'trigger_icon_src' => $oTemplate->getIconUrl('agt-trg-' . $sTrigger . '.svg')
+                ];
+
+            $aTmplVarsModel = [];
+            if(($iModelId = (int)$aAgent['model_id'])) {
+                $aModel = $this->oDbAi->getModelsBy(['sample' => 'id', 'id' => $iModelId]);
+                if(($sModelTitle = $aModel['title'] ?? false))
+                    $aTmplVarsModel['model_title'] = bx_html_attribute($sModelTitle);
+                if(($sModelIcon = $aModel['icon'] ?? false))
+                    $aTmplVarsModel['model_icon_src'] = $oTemplate->getIconUrl($sModelIcon);
+            }
+
+            $sProfile = '';
+            if(($iProfileId = (int)$aAgent['profile_id']) && ($oProfile = BxDolProfile::getInstance($iProfileId)) !== false)
+                $sProfile = $oProfile->getUnit(0, ['template' => 'unit_wo_info']);
+
+            $aInput['checked'] = (int)$aAgent['active'] != 0;
+
+            $aTmplVarsAgents[] = [
+                'id' => $aAgent['id'],
+                'icon' => $sIcon,
+                'bx_if:show_trigger' => [
+                    'condition' => !empty($aTmplVarsTrigger),
+                    'content' => $aTmplVarsTrigger
+                ],
+                'bx_if:show_model' => [
+                    'condition' => !empty($aTmplVarsModel),
+                    'content' => $aTmplVarsModel
+                ],
+                'bx_if:show_profile' => [
+                    'condition' => (bool)$sProfile,
+                    'content' => [
+                        'unit' => $sProfile
+                    ]
+                ],
+                'title' => $aAgent['title'],
+                'switcher' => $oForm->genInput($aInput),
+                'description' => bx_process_output($aAgent['description'])
+            ];
+        }
+
+        return $oTemplate->parseHtmlByName('agents.html', [
+            'content' => $oTemplate->parseHtmlByName('agents_agents.html', [
+                'bx_repeat:agents' => $aTmplVarsAgents,
+            ]),
+            'js_content' => $this->getPageJsCode()
+        ]);
+    }
+
+    protected function getAgentsGrid()
     {
         return $this->getGrid($this->aGridObjects[BX_DOL_STUDIO_AGENTS_TYPE_AGENTS]);
     }

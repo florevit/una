@@ -444,6 +444,11 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $aAgents;
     }
 
+    public function getAgentsBy($aParams)
+    {
+        return $this->_oDb->getAgentsBy($aParams);
+    }
+
     public function getAgentsByProfileId($iProfileId)
     {
         return $this->_oDb->getAgentsByProfileId($iProfileId);
@@ -457,6 +462,11 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
     public function getAgentsByTriggerType($sTrigger)
     {
         return $this->_oDb->getAgentsByTriggerType($sTrigger);
+    }
+
+    public function getAgentById($iId)
+    {
+        return $this->_oDb->getAgentById($iId);
     }
 
     public function getAgentByTriggerWebhookKey($sKey)
