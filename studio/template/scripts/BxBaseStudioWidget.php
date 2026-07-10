@@ -171,14 +171,18 @@ class BxBaseStudioWidget extends BxDolStudioWidget
             if(!$bWrap || in_array($sPage, $this->aPageCodeNoWrap))
                 $sResult .= $mixedContent;
             else if(is_string($mixedContent))
-                $sResult .= $this->getBlockCode(array(
+                $sResult .= $this->getBlockCode([
                     'content' => $mixedContent
-                ));
-            else if(is_array($mixedContent))
-                foreach($mixedContent as $sBlock)
-                    $sResult .= $this->getBlockCode(array(
-                        'content' => $sBlock
-                    ));
+                ]);
+            else if(is_array($mixedContent)) {
+                if(isset($mixedContent['content']))
+                    $sResult .= $this->getBlockCode($mixedContent);
+                else
+                    foreach($mixedContent as $sBlock)
+                        $sResult .= $this->getBlockCode([
+                            'content' => $sBlock
+                        ]);
+            }
             else if(is_a($mixedContent, 'BxDolPage'))
                 $sResult .= $mixedContent->getCode();
         }
@@ -234,36 +238,75 @@ class BxBaseStudioWidget extends BxDolStudioWidget
     {
         if(empty($aBlock) || !is_array($aBlock) || (empty($aBlock['caption']) && empty($aBlock['actions'])))
             return '';
+        
+        $oTemplate = BxDolStudioTemplate::getInstance();
 
         $aTmplActions = array();
         if(!empty($aBlock['actions']) && is_array($aBlock['actions']))
             foreach($aBlock['actions'] as $aAction) {
+                $aTmplVarsIcon = $aTmplVarsIconUrl = $aTmplVarsIconHtml = [];
+                if(($sIcon = $aAction['icon'] ?? false)) {
+                    list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $oTemplate->getTemplateFunctions()->getIcon($sIcon);
+                    
+                    if($sIcon)
+                        $aTmplVarsIcon = [
+                            'icon' => BxDolIconset::getObjectInstance()->getIcon($sIcon)
+                        ];
+                    else if($sIconUrl)
+                        $aTmplVarsIconUrl = [
+                            'icon_url' => $sIconUrl,
+                        ];
+                    else if($sIconHtml)
+                        $aTmplVarsIconHtml = [
+                            'icon_html' => $sIconHtml
+                        ];
+                }
+
                 $sCaption = is_array($aAction['caption']) ? call_user_func_array('_t', $aAction['caption']) : _t($aAction['caption']);
+                $bTitleOnly = $aAction['title_only'] ?? false;
 
                 $bOnClick = !empty($aAction['onclick']);
                 $aOnClick = $bOnClick ? array('onclick' => $aAction['onclick']) : array();
 
-                $aTmplActions[] = array(
+                $aTmplActions[] = [
                     'name' => $aAction['name'],
                     'url' => $aAction['url'],
-                    'title' => $sCaption,
-                    'bx_if:show_onclick' => array(
+                    'title' => bx_html_attribute($sCaption),
+                    'bx_if:show_onclick' => [
                         'condition' => $bOnClick,
                         'content' => $aOnClick
-                    ),
-                    'caption' => $sCaption
-                );
+                    ],
+                    'bx_if:show_bc_icon' => [
+                        'condition' => !empty($aTmplVarsIcon),
+                        'content' => $aTmplVarsIcon
+                    ],
+                    'bx_if:show_bc_icon_url' => [
+                        'condition' => !empty($aTmplVarsIconUrl),
+                        'content' => $aTmplVarsIconUrl
+                    ],
+                    'bx_if:show_bc_icon_html' => [
+                        'condition' => !empty($aTmplVarsIconHtml),
+                        'content' => $aTmplVarsIconHtml
+                    ],
+                    'bx_if:show_bc_text' => [
+                        'condition' => (bool)$sCaption && !$bTitleOnly,
+                        'content' => [
+                            'caption' => $sCaption
+                        ]
+                    ],
+                    
+                ];
             }
 
-        return BxDolStudioTemplate::getInstance()->parseHtmlByName('block_caption.html', array(
+        return $oTemplate->parseHtmlByName('block_caption.html', [
             'caption' => is_array($aBlock['caption']) ? call_user_func_array('_t', $aBlock['caption']) : _t($aBlock['caption']),
-            'bx_if:show_actions' => array(
+            'bx_if:show_actions' => [
                 'condition' => !empty($aTmplActions),
-                'content' => array(
+                'content' => [
                     'bx_repeat:actions' => $aTmplActions
-                )
-            ),
-        ));
+                ]
+            ],
+        ]);
     }
 
     public function getBlockPanelTop($aBlock)

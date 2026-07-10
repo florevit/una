@@ -469,6 +469,7 @@
     }
 
     /* Borders */
+    .bx-std .bx-def-border,
     .bx-artificer .bx-def-border {
         @apply border border-gray-200 dark:border-gray-700;
     }
