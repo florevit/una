@@ -57,7 +57,7 @@ class BxBaseStudioMenuTop extends BxDolStudioMenuTop
                             'condition' => $this->sPageName == 'home' && getParam('sys_std_show_header_right_search') == 'on',
                             'content' => [
                                 'bx_if:show_active' => [
-                                    'condition' => true,
+                                    'condition' => false,
                                     'content' => []
                                 ]
                             ]

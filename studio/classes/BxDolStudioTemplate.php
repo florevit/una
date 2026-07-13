@@ -204,6 +204,7 @@ class BxDolStudioTemplate extends BxDolTemplate implements iBxDolSingleton
         if(($mixedResult = $oPage->checkAction()) !== false)
             return echoJson($mixedResult);
 
+        $sPageMenu = $oPage->getPageMenu();
         $sPageCode = $oPage->getPageCode();
         if($sPageCode === false)
             $this->displayMsg(($sError = $oPage->getError(false)) !== false ? $sError : '_sys_txt_error_occured', true, BX_PAGE_DEFAULT, BX_DB_PADDING_NO_CAPTION);
@@ -212,7 +213,7 @@ class BxDolStudioTemplate extends BxDolTemplate implements iBxDolSingleton
         $this->setPageHeader($oPage->getPageHeader());
         $this->setPageContent('page_caption_code', $oPage->getPageCaption());
         $this->setPageContent('page_attributes', $oPage->getPageAttributes());
-        $this->setPageContent('page_menu_code', $oPage->getPageMenu());
+        $this->setPageContent('page_menu_code', $sPageMenu);
         $this->setPageContent('page_main_code', $sPageCode);
         $this->addCss($oPage->getPageCss());
         $this->addJs($oPage->getPageJs());

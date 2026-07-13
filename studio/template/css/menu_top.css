@@ -108,22 +108,32 @@ div.bx-std-menu-top .bx-menu-top-center li {
 }
 
 div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-div img {
-    height: 2.0rem;
+    height: 1.0rem;
 }
 
 div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item.bx-menu-bc-page {
     width: auto;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-actions img,
+div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-actions svg {
+    width: 1.0rem;
+    height: 1.0rem;
 }
 
-/*
- * Vertical divider between static and dynamic menu items.
- *
-div.bx-std-menu-top .bx-menu-top-center li.bx-menu-item-static + li.bx-menu-item-dynamic {
-    border-left: 1px solid rgba(240, 240, 240, 0.2);
+div.bx-std-menu-top .bx-menu-top-center li.bx-menu-item-divider {
+    width: auto;
+    height: 2.5rem;
 }
-*/
+div.bx-std-menu-top .bx-menu-top-center li.bx-menu-item-divider a {
+    display: none;
+}
 
 .bx-menu-breadcrumb li.bx-menu-bc-item > a,
 div.bx-std-menu-top .bx-menu-top-center li a {
@@ -152,17 +162,9 @@ div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item .bx-mi-icon,
 div.bx-std-menu-top .bx-menu-top-center li .bx-mi-icon {
     overflow: hidden;
 }
-div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item .bx-mi-icon {
-    border-radius: 1.5rem;
-}
 div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item .bx-mi-title {    
     text-align: center;
     letter-spacing: -0.02em;
-
-    font-size: 1.5rem;
-    font-weight: 500;   
-
-    color: rgb(243, 244, 246);
 }
 div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item img,
 div.bx-std-menu-top .bx-menu-breadcrumb li.bx-menu-bc-item:not(.bx-menu-tab-search) svg,

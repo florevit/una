@@ -29,9 +29,6 @@ class BxDevStudioPage extends BxTemplStudioModule
     {
         $oTemplate = BxDolStudioTemplate::getInstance();
 
-        $sActions = $this->getPageCaptionActions();
-        $oTemplate->addInjection('injection_header', 'text', BxTemplStudioFunctions::getInstance()->transBox('bx-std-pmenu-popup-actions', $sActions, true));
-
         $this->aMenuItems = [];
         foreach($this->oModule->aTools as $aTool)
             $this->aMenuItems[] = [
@@ -44,9 +41,16 @@ class BxDevStudioPage extends BxTemplStudioModule
 
         $oMenu = new BxTemplStudioMenu(['template' => 'menu_main_dev.html', 'menu_items' => $this->aMenuItems], $this->oModule->_oTemplate);
 
+        $sActions = $this->bPageMenuTitle ? $this->getPageCaptionActions() : '';
+
         return $this->oModule->_oTemplate->parseHtmlByName('page_menu.html', [
-            'actions_onclick' => BX_DOL_STUDIO_PAGE_JS_OBJECT . ".togglePopup('actions', this)",
-            'actions_icon' => $oTemplate->getIconUrl('mi-cog.svg'),
+            'bx_if:show_title' => [
+                'condition' => (bool)$sActions,
+                'content' => [
+                    'actions_onclick' => $sActions,
+                    'actions_icon' => $oTemplate->getIconUrl('mi-cog.svg'),
+                ]
+            ],
             'menu' => $oMenu->getCode()
         ]);
     }

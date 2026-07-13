@@ -19,7 +19,7 @@ class BxBaseStudioWidget extends BxDolStudioWidget
     {
         parent::__construct($mixedPageName);
 
-        $this->bPageMenuTitle = true;
+        $this->bPageMenuTitle = getParam('sys_std_show_header_left') != 'on';
         $this->bPageMenuIconsInline = true;
 
         $this->aPageCodeNoWrap = [];
@@ -100,14 +100,6 @@ class BxBaseStudioWidget extends BxDolStudioWidget
                 'title' => '_adm_tmi_cpt_site'
             ];
 
-        $aItemsRight['scheme'] = [
-            'name' => 'scheme',
-            'icon' => 'tmi-scheme-auto.svg',
-            'link' => 'javascript:void(0);',
-            'onclick' => 'bx_menu_popup_inline(\'#bx-std-pcap-menu-popup-scheme\', this);',
-            'title' => '_adm_tmi_cpt_scheme'
-        ];
-
         $aItemsRight['account'] = [
             'name' => 'account',
             'icon' => 'tmi-account.svg',
@@ -133,18 +125,19 @@ class BxBaseStudioWidget extends BxDolStudioWidget
         if(!$this->bPageMenuTitle && $aMenu === false)
             return '';
 
-        $oTemplate = BxDolStudioTemplate::getInstance();
+        $sActions = $this->bPageMenuTitle ? $this->getPageCaptionActions() : '';           
 
-        $bActions = false;
-        if($this->bPageMenuTitle && ($sActions = $this->getPageCaptionActions()) && ($bActions = strlen($sActions)) > 0)
-            $oTemplate->addInjection('injection_header', 'text', BxTemplStudioFunctions::getInstance()->transBox('bx-std-pmenu-popup-actions', $sActions, true));
-
-        return $oTemplate->parseHtmlByName('page_menu.html', [
-            'title' => _t($this->aPage['caption']),
-            'bx_if:show_actions' => [
-                'condition' => $bActions,
+        return BxDolStudioTemplate::getInstance()->parseHtmlByName('page_menu.html', [
+            'bx_if:show_title' => [
+                'condition' => $this->bPageMenuTitle,
                 'content' => [
-                    'onclick' => BX_DOL_STUDIO_PAGE_JS_OBJECT . ".togglePopup('actions', this)",
+                    'title' => _t($this->aPage['caption']),
+                    'bx_if:show_actions' => [
+                        'condition' => (bool)$sActions,
+                        'content' => [
+                            'onclick' => $sActions,
+                        ]
+                    ],
                 ]
             ],
             'menu' => parent::getPageMenu($aMenu, $aMarkers)
@@ -217,7 +210,8 @@ class BxBaseStudioWidget extends BxDolStudioWidget
             BX_DB_DEF => 'cnt-ttl-bg',
             BX_DB_NO_CAPTION => 'cnt-bg'
         ];
-        $iType = isset($aBlock['type'], $aTypeI2S[$aBlock['type']]) ? $aBlock['type'] : BX_DB_NO_CAPTION;
+
+        $iType = isset($aBlock['type'], $aTypeI2S[$aBlock['type']]) ? $aBlock['type'] : BX_DB_DEF;
 
         $sContent = '';
         if(!empty($aBlock['content']))
@@ -236,6 +230,16 @@ class BxBaseStudioWidget extends BxDolStudioWidget
 
     public function getBlockCaption($aBlock)
     {
+        if(($sK = 'caption') && empty($aBlock[$sK])) {
+            if(($sPageCaption = $this->aPage['subcaption'] ?? false))
+                $aBlock[$sK] = $sPageCaption;
+            else if(($sPageCaption = $this->aPage['caption'] ?? false)) {
+                $_sPageCaption = _t($sPageCaption);
+                if(strcmp($sPageCaption, $_sPageCaption) !== 0)
+                    $aBlock[$sK] = $_sPageCaption;
+            }
+        }
+
         if(empty($aBlock) || !is_array($aBlock) || (empty($aBlock['caption']) && empty($aBlock['actions'])))
             return '';
         
@@ -333,17 +337,6 @@ class BxBaseStudioWidget extends BxDolStudioWidget
     /**
      * Internal methods.
      */
-    protected function getPageCaptionActions()
-    {
-        $sActions = $this->getPageActions();
-        if(empty($sActions))
-            return "";
-
-        return BxDolStudioTemplate::getInstance()->parseHtmlByName('page_caption_actions.html', array(
-            'content' => $sActions
-        ));
-    }
-
     protected function getPageActions($iWidgetId = 0)
     {
         if(empty($this->aActions))

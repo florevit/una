@@ -14,16 +14,12 @@ class BxDolStudioWidget extends BxTemplStudioPage
 {
     protected $sPage;
     protected $sPageDefault = BX_DOL_STUDIO_WGT_TYPE_DEFAULT;
-    
-    protected $aActions;
 
     public function __construct($mixedPageName)
     {
         parent::__construct($mixedPageName);
 
         $this->sPage = $this->sPageDefault;
-
-        $this->aActions = array();
 
         if(!$this->bPage)
             return;

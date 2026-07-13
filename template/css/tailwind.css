@@ -1366,9 +1366,16 @@
     .bx-std .bx-menu-top-center .bx-menu-tab-active .bx-mi-icon {
         @apply ring-4 ring-blue-500/50 ring-offset-2 ring-offset-white dark:ring-offset-black;
     }
+    .bx-std .bx-menu-top-center .bx-menu-item-divider {
+        @apply border-l border-black/10 dark:border-white/10;
+    }
     .bx-std .bx-menu-top-center .bx-menu-item-static,
     .bx-std .bx-menu-top-center .bx-menu-item-dynamic {
         @apply hidden md:flex;
+    }
+
+    .bx-std .bx-std-menu-top-left li a {
+        @apply text-gray-800 dark:text-gray-200;
     }
 
     .bx-std .bx-stg-icon-gray-bg {

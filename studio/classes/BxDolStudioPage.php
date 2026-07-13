@@ -34,6 +34,7 @@ class BxDolStudioPage extends BxDol
 
     protected $_sTypesPreList;
 
+    protected $aActions;
     protected $aMarkers;
 
     protected $iError;
@@ -64,10 +65,11 @@ class BxDolStudioPage extends BxDol
 
         $this->_sTypesPreList = 'sys_studio_widget_types';
 
-        $this->aMarkers = array(
+        $this->aActions = [];
+        $this->aMarkers = [
             'url_root' => BX_DOL_URL_ROOT,
             'url_studio' => BX_DOL_URL_STUDIO
-        );
+        ];
 
         $this->iError = 0;
         $this->sError = false;
