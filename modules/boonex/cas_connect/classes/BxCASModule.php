@@ -9,13 +9,14 @@
  * @{
  */
 
+
 class BxCASModule extends BxBaseModConnectModule
 {
     function __construct(&$aModule)
     {
         parent::__construct($aModule);
     }
-    
+
 	/**
 	 * This service need to be called when we call logout from UNA,
 	 * so it will propagate logout to IDP
@@ -39,37 +40,6 @@ class BxCASModule extends BxBaseModConnectModule
 	}
 
 	/**
-	 * Single Logout Service in SAML logout chain,
-	 * this URL ned to be specified in ResponceLocation for SingleLogoutService in SAML metadata.
-	 * Other words: logout in UNA only
-     */
-	public function actionLogout()
-	{
-		if (!getParam('bx_cas_path_simplesamlphp')) {
-			echoJson(['code' => 500, 'message' => "SimpleSAML folder isn't configred."]);
-			exit;
-		}
-		else {
-
-			if (!isLogged()) {
-				echo "You aren't logged in.";
-				exit;
-			}
-
-			// cleanup UNA sessioon
-			bx_logout(false /* disable logout hook, so serviceLogout isn't called at all */);
-
-			// cleanup SAML related staff locally only
-			require_once(getParam('bx_cas_path_simplesamlphp') . '/src/_autoload.php');
-			\SimpleSAML\Session::getSessionFromRequest()->cleanup();
-
-			echo 'OK';
-
-			exit;
-		}
-	}
-
-    /**
      * Redirect to remote site login form
      *
      * @return n/a - redirect or HTML page in case of error
@@ -83,22 +53,41 @@ class BxCASModule extends BxBaseModConnectModule
             require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
             bx_import('BxDolLanguages');
             $sCode =  MsgBox( _t('_bx_cas_profile_error_config') );
-            $this->_oTemplate->getPage(_t('_bx_cas'), $sCode);            
-        } 
+            $this->_oTemplate->getPage(_t('_bx_cas'), $sCode);
+        }
 	    else {
             // add referrer to the session to redirect after login
             if(isset($_SERVER['HTTP_REFERER']) && mb_stripos($_SERVER['HTTP_REFERER'], BX_DOL_URL_ROOT) === 0)
                 BxDolSession::getInstance()->setValue($this->_oConfig->getName() . '_relocate', $_SERVER['HTTP_REFERER']);
-
-            require_once(getParam('bx_cas_path_simplesamlphp') . '/lib/_autoload.php');
+                
+            require_once(getParam('bx_cas_path_simplesamlphp') . '/src/_autoload.php');
+			require_once(getParam('bx_cas_path_simplesamlphp') . '/una_helpers/session_cleanup_class.php');
+            // session_cleanup_class.php must be included twice:
+            //  - UNA: in BxCASModule.php (here)
+            //  - SimpleSAMLPHP: in config/config.php
+            // 
+            // SAMPLE session_cleanup_class.php:
+            // ```
+            // if (!defined('BX_DOL_VERSION'))
+	        //     require_once('/var/www/staging.novaliscircle.org/current/html/inc/header.inc.php');
+            //
+            // class BxCasLogoutCallback
+            // {
+            //     public static function run()
+            //     {
+            //         bx_logout(false);
+            //     }
+            // }
+            // ```
 
             $as = new \SimpleSAML\Auth\Simple('default-sp');
 
             $as->requireAuth();
-            // $as->login(['saml:idp' => 'https://url.to/saml/metadata.php']);
+
+			\SimpleSAML\Session::getSessionFromRequest()->registerLogoutHandler('default-sp', 'BxCasLogoutCallback', 'run');
 
             $aAttributes = $as->getAttributes();
-			
+
             // check if user logged in before
             $iLocalProfileId = $this->_oDb->getProfileId($aAttributes['salesforce_id'][0]);
 
@@ -106,7 +95,7 @@ class BxCASModule extends BxBaseModConnectModule
 
             if ($iLocalProfileId && $oProfile = BxDolProfile::getInstance($iLocalProfileId)) {
                 // user already exists
-                $this->setLogged($oProfile->id(), '', true, true); // remember user
+                $this->setLogged($oProfile->id(), '', true, true); 
             }
             else {
                 // register new user
