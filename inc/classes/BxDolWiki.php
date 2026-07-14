@@ -156,7 +156,7 @@ class BxDolWiki extends BxDolFactory implements iBxDolFactoryObject
         $aWikiVer = $this->_oQuery->getBlockContent ($iBlockId, $sLang, $iRevision);
         $aWikiLatest = $this->_oQuery->getBlockContent ($iBlockId, $sLang);
         if ($aWikiVer) {
-            if ($this->_bProcessMarkdown) {
+            if ($this->_bProcessMarkdown && !$this->_bIsApi) {
                 $oParsedown = new BxDolParsedown();
                 $oParsedown->setSafeMode($aWikiVer['unsafe'] ? false : true);
                 $s = $oParsedown->text($aWikiVer['content']);
