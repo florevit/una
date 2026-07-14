@@ -1,5 +1,6 @@
--- PAGES: config_api
+-- PAGES: 
 
+-- PAGES: config_api
 
 -- PAGES: active_api
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_create_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_create_entry';
@@ -9,12 +10,9 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_delete_en
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_text';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_attachments';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_comments';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_location';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_author';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_sys_entry_context' AND `title`='_bx_albums_page_block_title_entry_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_all_actions';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_entry' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_reports';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_media' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_view_media';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_media' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_author';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_view_media' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_entry_comments';
@@ -35,27 +33,21 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_favorites
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_favorites' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_favorites_entries_info';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_favorites' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_favorites_entries_actions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_context' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_sys_entries_in_context' AND `title`='_bx_albums_page_block_title_entries_in_context';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_featured_entries_view_extended';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_featured_entries_view_gallery_media';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_updated_entries';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_popular_keywords_albums';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_popular_keywords_media';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_home' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_popular_keywords_media_camera';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_search' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_search_form';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_search' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_search_results';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_search' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_search_form_media';
-UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_search' AND `module`='bx_albums' AND `title_system`='' AND `title`='_bx_albums_page_block_title_search_results_media';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_manage' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_system_manage' AND `title`='_bx_albums_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_albums_administration' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_system_manage_administration' AND `title`='_bx_albums_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_organizations_view_profile' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_sys_my_entries' AND `title`='_bx_albums_page_block_title_my_entries';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_albums' AND `title_system`='_bx_albums_page_block_title_sys_my_entries' AND `title`='_bx_albums_page_block_title_my_entries';
-
 
 -- MENUS:
 
 -- MENUS: config_api
 
 -- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_albums' AND `name`='albums-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_albums' AND `name`='create-album';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_albums' AND `name`='profile-stats-my-albums';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_albums_view' AND `module`='bx_albums' AND `name`='add-images-to-album';
 UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_albums_view' AND `module`='bx_albums' AND `name`='edit-album';
