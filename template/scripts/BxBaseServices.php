@@ -1575,17 +1575,17 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
 
     public function serviceGetOptionsStudioAssistant()
     {
-        return ['' => _t('_Select_one')] + BxDolAI::getInstance()->getAssistants(['active' => true, 'hidden' => false]);
+        return $this->_getOptionsAiAssistants();
     }
 
     public function serviceGetOptionsLiveSearchAssistant()
     {
-        return ['' => _t('_Select_one')] + BxDolAI::getInstance()->getAssistants(['active' => true, 'hidden' => false]);
+        return $this->_getOptionsAiAssistants();
     }
 
     public function serviceGetOptionsAskBlockAssistant()
     {
-        return ['' => _t('_Select_one')] + BxDolAI::getInstance()->getAssistants(['active' => true, 'hidden' => false]);
+        return $this->_getOptionsAiAssistants();
     }
 
     public function serviceRedirect($sUrl = false)
@@ -1789,6 +1789,17 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return echoJson(['code' => 200, 'msg' => $mixed]);
     }
 
+    protected function _getOptionsAiAssistants()
+    {
+        $aResult = ['' => _t('_Select_one')];
+
+        $aAgents = BxDolAI::getInstance()->getAgentsByTriggerType('manual');
+        if($aAgents && is_array($aAgents)) 
+            foreach($aAgents as $aAgent)
+                $aResult[$aAgent['id']] = $aAgent['title'];
+
+        return $aResult;
+    }
 }
 
 /** @} */

@@ -257,7 +257,6 @@ class BxBaseStudioAgents extends BxDolStudioAgents
 
         return [
             'type' => BX_DB_DEF,
-            'caption' => '',
             'actions' => [[
                 'name' => $sTypeNew,
                 'caption' => _t('_sys_agents_builder_view_' . $sTypeNew),
