@@ -736,9 +736,9 @@ class BxBasePage extends BxDolPage
             }
         }
 
-        if(!$bIsAvailable)
+        if($bIsAvailable !== true)
             $a['page_status'] = 404;
-        else if(!$bIsVisible)
+        else if($bIsVisible !== true)
             $a['page_status'] = 403;
 
         return array_merge($a, [
