@@ -28,6 +28,7 @@ UPDATE `sys_pages_blocks` SET `config_api`='{\"rounded\": true}' WHERE `object`=
 UPDATE `sys_pages_blocks` SET `config_api`='{\r\n\"content_type\":\"browse_simple\", \r\n\"header_more_url\": \"/context-invitations\", \r\n\"header_more_text\": \"View All\"\r\n}' WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_invitations';
 
 -- 'active_api' switch
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_system_title_login';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_about' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_about';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_terms' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_terms';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_privacy' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_privacy';
