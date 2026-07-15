@@ -5874,12 +5874,13 @@ INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `fie
 ('sys_studio_agents_agents', 'Sql', 'SELECT * FROM `sys_agents_agents` WHERE 1 ', 'sys_agents_agents', 'id', 'added', 'active', '', 20, NULL, 'start', '', 'name', '', 'like', '', '', 'BxTemplStudioAgentsAgents', '');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `hidden_on`, `order`) VALUES
-('sys_studio_agents_agents', 'checkbox', '', '2%', 0, 0, '', '', 1),
-('sys_studio_agents_agents', 'switcher', '_sys_active', '8%', 0, 0, '', '', 2),
-('sys_studio_agents_agents', 'name', '_sys_agents_agents_txt_name', '10%', 0, 0, '', '', 3),
-('sys_studio_agents_agents', 'trigger', '_sys_agents_agents_txt_trigger', '8%', 0, 0, '', '', 4),
-('sys_studio_agents_agents', 'profile_id', '_sys_agents_agents_txt_profile_id', '10%', 0, 0, '', '', 6),
-('sys_studio_agents_agents', 'actions', '', '20%', 0, 0, '', '', 11);
+('sys_studio_agents_agents', 'checkbox', '', '2%', 0, 0, '', '', 10),
+('sys_studio_agents_agents', 'switcher', '_sys_active', '5%', 0, 0, '', '', 20),
+('sys_studio_agents_agents', 'model_id', '_sys_agents_agents_txt_model', '5%', 0, 0, '', '', 30),
+('sys_studio_agents_agents', 'name', '_sys_agents_agents_txt_name', '30%', 0, 0, '', '', 40),
+('sys_studio_agents_agents', 'trigger', '_sys_agents_agents_txt_trigger', '5%', 0, 0, '', '', 50),
+('sys_studio_agents_agents', 'profile_id', '_sys_agents_agents_txt_profile_id', '8%', 0, 0, '', '', 60),
+('sys_studio_agents_agents', 'actions', '', '45%', 0, 0, '', '', 70);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
 ('sys_studio_agents_agents', 'bulk', 'delete', '_Delete', '', 0, 1, 1),
@@ -6194,7 +6195,7 @@ INSERT INTO `sys_objects_page` (`object`, `uri`, `title_system`, `title`, `modul
 ('sys_dashboard_content', 'dashboard-content', '_sys_page_title_system_dashboard_content', '_sys_page_title_dashboard_content', 'system', 1, 12, '', 2147483646, 1, 'page.php?i=dashboard-content', '', '', '', 0, 1, 0, 'BxTemplPageDashboard', '', 0),
 ('sys_dashboard_reports', 'dashboard-reports', '_sys_page_title_system_dashboard_reports', '_sys_page_title_dashboard_reports', 'system', 1, 12, '', 2147483646, 1, 'page.php?i=dashboard-reports', '', '', '', 0, 1, 0, 'BxTemplPageDashboard', '', 0),
 ('sys_dashboard_audit', 'dashboard-audit', '_sys_page_title_system_dashboard_audit', '_sys_page_title_dashboard_audit', 'system', 1, 12, '', 2147483646, 1, 'page.php?i=dashboard-audit', '', '', '', 0, 1, 0, 'BxTemplPageDashboard', '', 0),
-('sys_create_account', 'create-account', '_sys_page_title_system_create_account', '_sys_page_title_create_account', 'system', 1, 18, '', 2147483647, 1, 'page.php?i=create-account', '', '', '', 0, 1, 0, '', '', 0),
+('sys_create_account', 'create-account', '_sys_page_title_system_create_account', '_sys_page_title_create_account', 'system', 1, 5, '', 2147483647, 1, 'page.php?i=create-account', '', '', '', 0, 1, 0, '', '', 0),
 ('sys_login', 'login', '_sys_page_title_system_login', '_sys_page_title_login', 'system', 0, 18, '', 2147483647, 1, 'page.php?i=login', '', '', '', 0, 1, 0, '', '', 0),
 ('sys_login_step2', 'login-step2', '_sys_page_title_system_login_step2', '_sys_page_title_login_step2', 'system', 1, 18, '', 2147483647, 1, 'page.php?i=login-step2', '', '', '', 0, 1, 0, '', '', 0),
 ('sys_login_step3', 'login-step3', '_sys_page_title_system_login_step3', '_sys_page_title_login_step3', 'system', 1, 18, '', 2147483647, 1, 'page.php?i=login-step3', '', '', '', 0, 1, 0, '', '', 0),
