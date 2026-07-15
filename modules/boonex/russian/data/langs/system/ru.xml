@@ -2263,6 +2263,7 @@
         <string name="_sys_agents_automators_txt_added"><![CDATA[Добавлено]]></string>
         <string name="_sys_agents_automators_txt_status"><![CDATA[Статус]]></string>
         <string name="_sys_agents_agents_txt_name"><![CDATA[Название]]></string>
+        <string name="_sys_agents_agents_txt_model"><![CDATA[Модель]]></string>
         <string name="_sys_agents_agents_txt_trigger"><![CDATA[Триггер]]></string>
         <string name="_sys_agents_agents_txt_profile_id"><![CDATA[Профиль]]></string>
         <string name="_sys_agents_agents_popup_add"><![CDATA[Добавить агента]]></string>

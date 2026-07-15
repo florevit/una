@@ -1027,6 +1027,12 @@ class BxDolAIQuery extends BxDolDb
         $aValues = [];
         $aForms = $this->getAll("SELECT `f`.`object`, `f`.`title`, `f`.`module`, `m`.`title` AS `module_title` FROM `sys_objects_form` AS f INNER JOIN `sys_modules` as `m` ON `m`.`name` = `f`.`module` ORDER BY `f`.`module`, `f`.`object` ASC");
         foreach ($aForms as $r) {
+            if ('system' != $r['module']) {
+                $oModule = BxDolModule::getInstance($r['module']);
+                if (!$oModule || !$oModule->isEnabled())
+                    continue;
+            }
+            
             $sDisplay = $this->getFormDisplay($r['object']);
             if (!$sDisplay) 
                 continue;
