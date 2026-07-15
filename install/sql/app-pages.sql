@@ -2,20 +2,6 @@
 -- NEO APP: pages
 --
 
--- Homepage
-UPDATE `sys_objects_page` SET `layout_id`=21 WHERE `object`='sys_home';
-
-INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `class`, `submenu`, `tabs`, `async`, `visible_for_levels`, `hidden_on`, `type`, `content`, `content_empty`, `text`, `text_updated`, `help`, `cache_lifetime`, `config_api`, `deletable`, `copyable`, `active`, `active_api`, `order`) VALUES
-('sys_home', 2, 'system', '', '_sys_page_block_title_profile_menu', 0, '', '', 0, 0, 2147483644, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:12:"profile_menu";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0),
-('sys_home', 3, 'system', '_sys_page_block_title_sys_create_post', '_sys_page_block_title_create_post', 0, '', '', 1, 4, 2147483644, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:20:"get_create_post_form";s:6:"params";a:1:{i:0;i:0;}s:5:"class";s:13:"TemplServices";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0),
-('sys_home', 4, 'system', '_sys_page_block_title_sys_recom_friends', '_sys_page_block_title_recom_friends', 11, '', '', 1, 0, 2147483644, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:30:"browse_recommendations_friends";s:6:"params";a:2:{i:0;i:0;i:1;a:1:{s:8:"per_page";i:3;}}s:5:"class";s:20:"TemplServiceProfiles";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0),
-('sys_home', 4, 'system', '_sys_page_block_title_sys_recom_subscriptions', '_sys_page_block_title_recom_subscriptions', 11, '', '', 1, 0, 2147483644, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:36:"browse_recommendations_subscriptions";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0),
-('sys_home', 4, 'system', '_sys_page_block_title_sys_invitations', '_sys_page_block_title_invitations', 11, '', '', 1, 0, 2147483644, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:18:"browse_invitations";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0);
-
--- Dashboard
-INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `class`, `submenu`, `tabs`, `async`, `visible_for_levels`, `hidden_on`, `type`, `content`, `content_empty`, `text`, `text_updated`, `help`, `cache_lifetime`, `config_api`, `deletable`, `copyable`, `active`, `active_api`, `order`) VALUES
-('sys_dashboard', 1, 'system', '', '_sys_block_type_service_1693231260', 13, '', '', 0, 0, 2147483647, '0', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:14:"get_stat_block";s:6:"params";a:0:{}s:5:"class";s:22:"TemplDashboardServices";}', '', '', 0, '', 0, '', 1, 0, 0, 1, 0);
-
 -- 'config_api' settings
 UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'create-account\',\r\n    blocks: {\r\n        form_join: {\r\n            name: \'system:create_account_form\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        form_invitation: {\r\n            name: \'bx_invites:get_block_form_request\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n    },\r\n}' WHERE `object`='sys_create_account';
 UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'login\',\r\n}' WHERE `object`='sys_forgot_password';
@@ -28,13 +14,25 @@ UPDATE `sys_pages_blocks` SET `config_api`='{\"rounded\": true}' WHERE `object`=
 UPDATE `sys_pages_blocks` SET `config_api`='{\r\n\"content_type\":\"browse_simple\", \r\n\"header_more_url\": \"/context-invitations\", \r\n\"header_more_text\": \"View All\"\r\n}' WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_invitations';
 
 -- 'active_api' switch
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title`='_sys_page_block_title_create_account';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_system_title_login';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title`='_sys_page_block_title_forgot_password';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title`='_sys_page_block_title_profile_menu';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_recom_friends';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_recom_subscriptions';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_invitations';
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_home' AND `module`='system' AND `title_system`='_sys_page_block_system_title_login';
+
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_about' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_about';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_terms' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_terms';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_privacy' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_privacy';
+
+UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_dashboard' AND `module`='system' AND `title_system`='_sys_page_block_title_dash_stats';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_dashboard_content' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_dashboard_content';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_dashboard_audit' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_dashboard_audit';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_dashboard_reports' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_dashboard_reports';
+
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_create_account' AND `module`='system' AND `title_system`='' AND `title`='_sys_page_block_title_create_account';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_login' AND `module`='system' AND `title_system`='_sys_page_block_system_title_login' AND `title`='_sys_page_block_title_login';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='sys_login_step2' AND `module`='system' AND `title_system`='_sys_page_block_system_title_login_step2' AND `title`='_sys_page_block_title_login_step2';
