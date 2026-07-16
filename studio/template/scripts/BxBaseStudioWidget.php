@@ -19,7 +19,7 @@ class BxBaseStudioWidget extends BxDolStudioWidget
     {
         parent::__construct($mixedPageName);
 
-        $this->bPageMenuTitle = getParam('sys_std_show_header_left') != 'on';
+        $this->bPageMenuTitle = !$this->_bShowHeaderBreadcrumb;
         $this->bPageMenuIconsInline = true;
 
         $this->aPageCodeNoWrap = [];

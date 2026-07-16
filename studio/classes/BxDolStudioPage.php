@@ -39,7 +39,8 @@ class BxDolStudioPage extends BxDol
 
     protected $iError;
     protected $sError;
-    
+
+    protected $_bShowHeaderBreadcrumb;
     protected $_bShowHeaderRightSearch;
     protected $_bShowHeaderRightSite;
     protected $_bShowHeaderRightAssistant;
@@ -74,6 +75,7 @@ class BxDolStudioPage extends BxDol
         $this->iError = 0;
         $this->sError = false;
 
+        $this->_bShowHeaderBreadcrumb = getParam('sys_std_show_header_left') == 'on';
         $this->_bShowHeaderRightSearch = getParam('sys_std_show_header_right_search') == 'on';
         $this->_bShowHeaderRightSite = getParam('sys_std_show_header_right_site') == 'on';
         $this->_bShowHeaderRightAssistant = $this->iPageAssistantId != 0;
