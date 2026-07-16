@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f564e30ede1cd007042f79796804f51",
+    "content-hash": "d17564377c879180b700e94c9bf41bd3",
     "packages": [
         {
             "name": "achingbrain/php5-akismet",
@@ -22,12 +22,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeeba/s3.git",
-                "reference": "af2346edd52ca4331ac30776209e9a79709c18fc"
+                "reference": "111fdfc7d2a9f9cebedf07a0300f24942f25b42d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeeba/s3/zipball/af2346edd52ca4331ac30776209e9a79709c18fc",
-                "reference": "af2346edd52ca4331ac30776209e9a79709c18fc",
+                "url": "https://api.github.com/repos/akeeba/s3/zipball/111fdfc7d2a9f9cebedf07a0300f24942f25b42d",
+                "reference": "111fdfc7d2a9f9cebedf07a0300f24942f25b42d",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
                 "issues": "https://github.com/akeeba/s3/issues",
                 "source": "https://github.com/akeeba/s3/tree/development"
             },
-            "time": "2026-06-19T08:08:24+00:00"
+            "time": "2026-07-14T08:45:05+00:00"
         },
         {
             "name": "avto-dev/composer-cleanup-plugin",
@@ -207,16 +207,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.388.2",
+            "version": "3.388.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d48fe5eabeda0cf58025636f78ac8dcd8e60a724"
+                "reference": "9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d48fe5eabeda0cf58025636f78ac8dcd8e60a724",
-                "reference": "d48fe5eabeda0cf58025636f78ac8dcd8e60a724",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28",
+                "reference": "9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28",
                 "shasum": ""
             },
             "require": {
@@ -298,9 +298,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.388.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.388.7"
             },
-            "time": "2026-07-08T23:12:50+00:00"
+            "time": "2026-07-15T18:08:26+00:00"
         },
         {
             "name": "bshaffer/oauth2-server-php",
@@ -880,31 +880,31 @@
         },
         {
             "name": "ffmpeg/ffmpeg",
-            "version": "6.0.0",
+            "version": "6.1.1",
             "dist": {
                 "type": "file",
-                "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.0/ffmpeg-linux-x64"
+                "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64"
             },
             "type": "library"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.14.0",
+            "version": "7.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "aef242412e13128b5049864867bb49fc37dd39de"
+                "reference": "fa88c57803501ad0770f5cddb1e60525d49da9a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/aef242412e13128b5049864867bb49fc37dd39de",
-                "reference": "aef242412e13128b5049864867bb49fc37dd39de",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fa88c57803501ad0770f5cddb1e60525d49da9a1",
+                "reference": "fa88c57803501ad0770f5cddb1e60525d49da9a1",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/promises": "^2.5.1",
-                "guzzlehttp/psr7": "^2.12.4",
+                "guzzlehttp/psr7": "^2.12.5",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
@@ -997,7 +997,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.14.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.14.2"
             },
             "funding": [
                 {
@@ -1013,7 +1013,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T22:54:09+00:00"
+            "time": "2026-07-14T18:15:01+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1101,16 +1101,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.4",
+            "version": "2.12.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c"
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
-                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
                 "shasum": ""
             },
             "require": {
@@ -1200,7 +1200,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.4"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
             },
             "funding": [
                 {
@@ -1216,7 +1216,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T15:56:20+00:00"
+            "time": "2026-07-13T01:27:20+00:00"
         },
         {
             "name": "html2text/html2text",
@@ -1984,16 +1984,16 @@
         },
         {
             "name": "neuron-core/neuron-ai",
-            "version": "3.15.22",
+            "version": "3.15.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neuron-core/neuron-ai.git",
-                "reference": "ca03548594fe4db144d50bde8977cc4d10389019"
+                "reference": "83f64636516509ae7736be027a954921dc72f4b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/ca03548594fe4db144d50bde8977cc4d10389019",
-                "reference": "ca03548594fe4db144d50bde8977cc4d10389019",
+                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/83f64636516509ae7736be027a954921dc72f4b9",
+                "reference": "83f64636516509ae7736be027a954921dc72f4b9",
                 "shasum": ""
             },
             "require": {
@@ -2044,7 +2044,7 @@
             "description": "The PHP Agentic Framework.",
             "support": {
                 "issues": "https://github.com/neuron-core/neuron-ai/issues",
-                "source": "https://github.com/neuron-core/neuron-ai/tree/3.15.22"
+                "source": "https://github.com/neuron-core/neuron-ai/tree/3.15.23"
             },
             "funding": [
                 {
@@ -2052,7 +2052,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-03T17:25:45+00:00"
+            "time": "2026-07-15T11:07:38+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -2134,16 +2134,16 @@
         },
         {
             "name": "open-telemetry/api",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opentelemetry-php/api.git",
-                "reference": "6f8d237ce2c304ca85f31970f788e7f074d147be"
+                "reference": "7c029c4a6fd457094a20569bf98f93d95e9a7559"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/6f8d237ce2c304ca85f31970f788e7f074d147be",
-                "reference": "6f8d237ce2c304ca85f31970f788e7f074d147be",
+                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/7c029c4a6fd457094a20569bf98f93d95e9a7559",
+                "reference": "7c029c4a6fd457094a20569bf98f93d95e9a7559",
                 "shasum": ""
             },
             "require": {
@@ -2200,7 +2200,7 @@
                 "issues": "https://github.com/open-telemetry/opentelemetry-php/issues",
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
-            "time": "2026-02-25T13:24:05+00:00"
+            "time": "2026-07-06T12:28:04+00:00"
         },
         {
             "name": "open-telemetry/context",
