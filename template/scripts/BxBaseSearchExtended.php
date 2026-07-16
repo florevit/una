@@ -122,42 +122,41 @@ class BxBaseSearchExtended extends BxDolSearchExtended
             return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage)] : '';
 
         $aParamsSearch = [];
-        if(empty($aParams['search_params'])) {
-            foreach($this->_aObject['fields'] as $aField) {
-                $mixedValue = $oForm->getCleanValue($aField['name']);
-                if(empty($mixedValue) || (is_array($mixedValue) && bx_is_empty_array($mixedValue)))
-                    continue;
+        if($this->_bIsApi && ($sK = 'search_params') && !empty($aParams[$sK]) && is_array($aParams[$sK]))
+            $aParamsSearch = $aParams[$sK];
 
-                $aParamsSearch[$aField['name']] = [
-                    'type' => $aField['search_type'],
-                    'value' => $mixedValue,
-                    'operator' => $aField['search_operator']
-                ];
+        foreach($this->_aObject['fields'] as $aField) {
+            $mixedValue = $oForm->getCleanValue($aField['name']);
+            if(empty($mixedValue) || (is_array($mixedValue) && bx_is_empty_array($mixedValue)))
+                continue;
 
-                if(!$bCondition) {
-                    if(!isset($aParams['cond']))
-                        $aParams['cond'] = array();
+            $aParamsSearch[$aField['name']] = [
+                'type' => $aField['search_type'],
+                'value' => $mixedValue,
+                'operator' => $aField['search_operator']
+            ];
 
-                    switch($oForm->aInputs[$aField['name']]['type']) {
-                        case 'location':
-                        case 'location_radius':
-                            $aParams['cond'][$aField['name']] = $mixedValue['string'];
+            if(!$bCondition) {
+                if(!isset($aParams['cond']))
+                    $aParams['cond'] = array();
 
-                            $aLocationComponents = BxDolMetatags::locationsParseComponents($mixedValue['array'], $aField['name']);
-                            if($oForm->aInputs[$aField['name']]['type'] == 'location_radius' && count($mixedValue['array']) > count($aLocationComponents))
-                                $aLocationComponents[$aField['name'] . '_rad'] = array_pop($mixedValue['array']);
+                switch($oForm->aInputs[$aField['name']]['type']) {
+                    case 'location':
+                    case 'location_radius':
+                        $aParams['cond'][$aField['name']] = $mixedValue['string'];
 
-                            $aParams['cond'] = array_merge($aParams['cond'], $aLocationComponents);
-                            break;
+                        $aLocationComponents = BxDolMetatags::locationsParseComponents($mixedValue['array'], $aField['name']);
+                        if($oForm->aInputs[$aField['name']]['type'] == 'location_radius' && count($mixedValue['array']) > count($aLocationComponents))
+                            $aLocationComponents[$aField['name'] . '_rad'] = array_pop($mixedValue['array']);
 
-                        default:
-                            $aParams['cond'][$aField['name']] = $mixedValue;
-                    }
+                        $aParams['cond'] = array_merge($aParams['cond'], $aLocationComponents);
+                        break;
+
+                    default:
+                        $aParams['cond'][$aField['name']] = $mixedValue;
                 }
             }
         }
-        else 
-            $aParamsSearch = $aParams['search_params'];
 
         if((empty($aParamsSearch) || !is_array($aParamsSearch)) && !$this->_bFilterMode)
             return $this->_bIsApi ? [$this->getResultsAPI([], $iStart, $iPerPage, $aParamsSearch)] : '';
