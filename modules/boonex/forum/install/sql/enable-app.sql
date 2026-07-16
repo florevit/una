@@ -1,3 +1,8 @@
+-- PAGES: Home
+DELETE FROM `sys_pages_blocks` WHERE `object`='bx_forum_home' AND `title`='_bx_forum_page_block_title_latest_entries';
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `active_api`, `order`) VALUES 
+('bx_forum_home', 3, 'bx_forum', '_bx_forum_page_block_title_latest_entries_view_gallery', '_bx_forum_page_block_title_latest_entries', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_forum";s:6:"method";s:13:"browse_latest";s:6:"params";a:3:{s:9:"unit_view";s:7:"gallery";s:13:"empty_message";b:0;s:13:"ajax_paginate";b:1;}}', 0, 1, 0, 1, 0);
+
 -- PAGES: config_api
 UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'post\',\r\n}' WHERE `object`='bx_forum_view_entry';
 UPDATE `sys_objects_page` SET `config_api`='{\r\n    layout: \'navigator\',\r\n    blocks: {\r\n        browse: {\r\n            name: \'system:categories_list\',\r\n            showTitle: false,\r\n            showBg: false,\r\n        },\r\n        browse_sidebar: {\r\n            name: \'bx_forum:browse_popular\',\r\n            showTitle: true,\r\n            showBg: false,\r\n            sidebar: true,\r\n        },\r\n        categories: {\r\n            name: \'system:categories_list\',\r\n            showTitle: false,\r\n            showBg: true,\r\n            sidebar: false,\r\n            hidden: true,\r\n        },\r\n    },\r\n}' WHERE `object`='bx_forum_categories';
