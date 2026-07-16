@@ -189,10 +189,12 @@ class BxDolStudioModule extends BxTemplStudioWidget
 
         $aResult = array('code' => 0, 'message' => _t('_adm_scs_operation_done'));
         if($iWidgetId == 0) {
-            $aResult['content'] = BxDolStudioTemplate::getInstance()->parseHtmlByName('page_content_2_col.html', [
-                'page_menu_code' => $this->getPageMenu(),
-                'page_main_code' => $this->getPageCode()
-            ]);
+            $aResult['content'] = '';
+            if(!$this->_bShowHeaderBreadcrumb || (int)$aModule['enabled'] == 0)
+                $aResult['content'] = BxDolStudioTemplate::getInstance()->parseHtmlByName('page_content_2_col.html', [
+                    'page_menu_code' => $this->getPageMenu(),
+                    'page_main_code' => $this->getPageCode()
+                ]);
         }
         else
             $aResult['widget'] = BxTemplStudioFunctions::getInstance()->getWidget($iWidgetId);
