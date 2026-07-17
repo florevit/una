@@ -5,16 +5,23 @@
    
     if ($this->oDb->isFieldExists('sys_agents_models', 'icon')) {
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-claude.svg' WHERE `type` = 'anthropic'");
-        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-openai.svg' WHERE `type` IN('openai-responses', 'openai-like')");
+        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-openai.svg' WHERE `type` IN('openai-responses', 'openai-like', 'openai-embeddings', 'openai-like-embeddings')");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-azure.svg' WHERE `type` = 'azure-openai'");
-        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-ollama.svg' WHERE `type` IN('ollama', 'ollama-embeddings', 'openai-embeddings', 'openai-like-embeddings')");
+        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-ollama.svg' WHERE `type` IN('ollama', 'ollama-embeddings')");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-gemini.svg' WHERE `type` = 'gemini'");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-mistral.svg' WHERE `type` = 'mistral'");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-huggingface.svg' WHERE `type` = 'huggingface'");
-        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-deepseek.svg'' WHERE `type` = 'deepseek'");
+        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-deepseek.svg' WHERE `type` = 'deepseek'");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-bedrock.svg' WHERE `type` IN('aws-bedrock', 'aws-bedrock-embeddings')");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-cohere.svg' WHERE `type` = 'cohere'");
         $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-voyage.svg' WHERE `type` = 'voyageai-embeddings'");
+        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'ai-grok.svg' WHERE `type` = 'grok'");
+        $this->oDb->query("
+SET @j = JSON_OBJECT(
+    'url', 'http://localhost:11434/api',
+    'parameters', JSON_OBJECT()
+)");
+        $this->oDb->query("UPDATE `sys_agents_models` SET `model` = 'llama3.2:1b', `params` = CAST(@j AS CHAR) WHERE `type` = 'ollama' AND `model` = ''");
         $this->oDb->query("
 SET @j = JSON_OBJECT(
     'baseUri', 'https://api.moonshot.ai/v1',
@@ -23,12 +30,11 @@ SET @j = JSON_OBJECT(
         'type', 'disabled'
       )
     )
-)";
+ )");
         $this->oDb->query("INSERT INTO `sys_agents_models` (`type`, `model`, `title`, `icon`, `docs`, `key`, `params`, `params_user`, `capabilities`, `duplicate`, `active`, `changed`) VALUES
 ('openai-like', 'kimi-k2.6', 'Kimi', 'ai-kimi.svg', 'Kimi - https://www.kimi.com/ai-models/kimi-k2-6', '', CAST(@j AS CHAR), NULL, 'chatvlm', 0, 0, 0)");
 
 
-        $this->oDb->query("UPDATE `sys_agents_models` SET `icon` = 'XXX' WHERE `type` = 'XXX'");
     }
 
     if (!$this->oDb->isFieldExists('sys_agents_agents', 'title'))
