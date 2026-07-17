@@ -22,6 +22,7 @@ SET @j = JSON_OBJECT(
     'parameters', JSON_OBJECT()
 )");
         $this->oDb->query("UPDATE `sys_agents_models` SET `model` = 'llama3.2:1b', `params` = CAST(@j AS CHAR) WHERE `type` = 'ollama' AND `model` = ''");
+
         $this->oDb->query("
 SET @j = JSON_OBJECT(
     'baseUri', 'https://api.moonshot.ai/v1',
